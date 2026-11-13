@@ -18,7 +18,6 @@ import { playTour, stopTour, tourRunning, focusAfterRun } from './ui/tour.js';
 import { playStory, stopStory, storyRunning } from './ui/story.js';
 import { startCorridor, stopCorridor, corridorActive, corridorSiteIds } from './ui/corridor.js';
 import { startBase, stopBase, baseActive } from './ui/base.js';
-import { openAsk } from './ui/ask.js';
 import { initKit, kit, refreshKit, feedLine, openPanel as openKitPanel, closePanel as closeKitPanel } from './kit/kit.js';
 import { loadScreening, scoreBoxes, findBox } from './screening.js';
 import { BoxLayer } from './globe/boxes.js';
@@ -433,7 +432,7 @@ function need3D(what) {
 function openBase(sel, place) {
   const target = sel.kind === 'target' ? place : findTarget(state.data, state.targetId);
   const result = sel.kind === 'site' ? ranked.find((r) => r.site.id === sel.id) : null;
-  startBase(api, { sel: { ...sel }, place, target, result, here: state.view === 'closeup', onAsk: (q) => openAsk(q) });
+  startBase(api, { sel: { ...sel }, place, target, result, here: state.view === 'closeup' });
 }
 
 // Story mode: the short animated story (Earth -> Jordan -> Mars -> the crew's base). The start button in the
@@ -720,7 +719,6 @@ async function main() {
   initMore();
   $('#corridor-btn').addEventListener('click', toggleCorridor);
   $('#method-btn').addEventListener('click', openMethod);
-  $('#ask-btn').addEventListener('click', () => openAsk());
   set3D(true);
   $('#token-btn').addEventListener('click', openTokenSetup);
   $('#banner').addEventListener('click', (e) => { if (e.target.closest('[data-setup]')) openTokenSetup(); });

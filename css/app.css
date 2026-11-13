@@ -1,29 +1,33 @@
-/* Analog Atlas – theme A "Mission Control".
-   Amber = scores, cyan = live sensor data, everything else stays calm and dark. */
+/* Analog Atlas – calm black theme.
+   True black ground, cards one lightness step above it (no borders, no glow), one typeface, sentence case.
+   Amber is the only data hue (the match scores); cyan stays only on live field-kit readings.
+   The overrides that remove the old "mission control" look are in the last section of this file. */
 
 :root {
   color-scheme: dark;
-  --void: #05080f;
-  --panel: rgba(9, 15, 27, 0.86);
-  --panel-solid: #0a111e;
-  --panel-raised: #0e1828;
-  --line: #1a2640;
-  --line-strong: #2a3b5c;
-  --text: #e6edf7;
-  --muted: #8f9cb3;
-  --dim: #8090a8;            /* 4.5:1 or more on the panels and on the selected row (WCAG AA) */
-  --amber: #ffb547;
-  --amber-soft: rgba(255, 181, 71, 0.13);
+  --void: #000000;
+  --panel: rgba(17, 17, 17, 0.96);
+  --panel-solid: #111111;
+  --panel-raised: #222222;
+  --line: #262626;
+  --line-strong: #3a3a3a;
+  --text: #ffffff;
+  --muted: #b4b4b4;
+  --dim: #949494;            /* 4.5:1 or more on #111 and on #222 (WCAG AA) */
+  --amber: #f2b33d;
+  --amber-soft: rgba(242, 179, 61, 0.12);
   --cyan: #5ce1e6;
   --cyan-soft: rgba(92, 225, 230, 0.12);
-  --red: #ff6b5c;
+  --red: #e5566f;
   --green: #7ee08f;
   --mars: #ff8a65;
   --moon: #c9d1df;
   --earth: #74b9ff;
-  --fd: 'IBM Plex Sans Condensed', 'Arial Narrow', 'Segoe UI', sans-serif;
+  --fd: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
   --fb: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
-  --fm: 'IBM Plex Mono', Consolas, 'Courier New', monospace;
+  --fm: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif; /* no monospace: figures use tabular digits instead */
+  --r-card: 16px;
+  --r-ctl: 999px;
   --gap: 12px;
   --top: 64px;
   --kit-h: 46px;
@@ -861,3 +865,185 @@ body.story-on #story-btn .txt::after { content: ' (stop)'; }
 .swap-label i { width: 12px; height: 12px; border: 2px solid var(--amber); border-top-color: transparent; border-radius: 50%; animation: spin .8s linear infinite; }
 .swap-cover.opening .swap-label { opacity: 0; transition: opacity .3s; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===================================================================================================
+   Calm black theme: the overrides. One typeface in sentence case, no corner brackets, no outlines on
+   cards, no glow. Cards are #111 on the black ground; nested boxes #222. Primary buttons are white pills
+   with black text; the other buttons are grey pills. Amber marks the scores only.
+   =================================================================================================== */
+body { font-variant-numeric: tabular-nums; }
+a { color: var(--text); text-decoration: underline; text-decoration-color: rgba(255,255,255,.35); text-underline-offset: 2px; }
+a:hover { text-decoration-color: #fff; }
+:focus-visible { outline: 2px solid #fff; }
+#globe canvas:focus-visible { outline-color: #fff; }
+
+/* Words: no tracked capitals anywhere. */
+.label, .panel h2.label, .panel h3, .brand .name, .seg button, .compare label, .tm-head, .tm-glabel, .body-chip, .btn,
+.mode-toggle button, .tag, table.facts th, .kit-state, .kit-reads span, .hud, .hud span, .loading .box, .sheet-handle,
+.pano-empty b, .caption .k, .viz-stats span, .viz-total, .viz-hero span, .rank-tabs button, .base-part, .st-k,
+.st-match > span, .st-crop span, .pin, .detail h2.title, .sheet-head h2, .caption .t, .tour-card.end .t, .st-t {
+  text-transform: none; letter-spacing: 0;
+}
+
+/* Panels: a flat card one step above the ground. */
+.panel { background: var(--panel); border: 0; border-radius: var(--r-card); backdrop-filter: none; -webkit-backdrop-filter: none; }
+.panel.bracket::before, .panel.bracket::after, .overlay .sheet.bracket::before, .overlay .sheet.bracket::after { display: none; }
+.overlay { background: rgba(0,0,0,.78); }
+.overlay .sheet { border: 0; border-radius: var(--r-card); box-shadow: 0 24px 60px rgba(0,0,0,.6); overflow: hidden; }
+.sheet-head h2 { font-size: 18px; }
+
+/* Section titles: small grey sentence-case text, not amber capitals. */
+.label, .panel h2.label, .panel h3 { font-size: 13px; font-weight: 600; color: var(--muted); }
+.method h3.label, .base-plan h3.label { font-size: 16px; color: var(--text); }
+
+/* Top bar */
+.topbar { background: transparent; padding: 0 4px 0 6px; }
+.brand svg { width: 26px; height: 26px; }
+.brand .name { font-size: 16px; font-weight: 600; }
+.brand .sub { display: none; }
+.seg { border: 0; padding: 0; gap: 4px; }
+.seg button { font-size: 14px; color: #bbb; padding: 6px 12px; border-radius: var(--r-ctl); }
+.seg button:hover { color: #fff; }
+.seg button[aria-pressed="true"] { background: var(--panel-raised); color: #fff; box-shadow: none; }
+.compare { border: 0; background: var(--panel-solid); border-radius: var(--r-ctl); padding: 0 6px 0 14px; height: 36px; }
+.compare label { font-size: 13px; color: var(--muted); }
+.target-picker:hover, .target-picker[aria-expanded="true"] { color: #fff; }
+.target-menu { border: 0; border-radius: 14px; background: #161616; }
+.tm-head { font-size: 13px; }
+.tm-head .dot { box-shadow: none; }
+.tm-glabel { font-size: 12px; }
+.tm-opt { border-left: 0; border-radius: 8px; }
+.tm-opt:hover { background: rgba(255,255,255,.06); }
+.tm-opt:focus-visible { outline-color: #fff; background: rgba(255,255,255,.06); }
+.tm-opt[aria-selected="true"] { color: #fff; background: var(--panel-raised); }
+.body-chip { font-size: 12px; padding: 3px 10px; border: 0; border-radius: var(--r-ctl); background: var(--panel-raised); }
+
+/* Buttons: grey pills; the primary action is a white pill. */
+.btn { font-size: 13px; font-weight: 500; border: 0; border-radius: var(--r-ctl); background: var(--panel-raised); color: #fff; padding: 8px 14px; }
+.btn:hover { background: #333; color: #fff; }
+.btn:disabled:hover { background: var(--panel-raised); color: #fff; }
+.btn.primary { background: #fff; color: #000; }
+.btn.primary:hover { background: #e2e2e2; color: #000; }
+.btn.small { padding: 6px 11px; font-size: 12px; }
+.btn.live { color: #fff; }
+.btn .dot.on { box-shadow: none; }
+.top-actions { gap: 8px; }
+.top-actions .btn { background: var(--panel-solid); }
+.top-actions .btn:hover { background: var(--panel-raised); }
+.top-actions .btn.primary, .top-actions .btn[aria-pressed="true"], #story-btn[aria-pressed="true"] { background: #fff; color: #000; }
+#back-btn { color: #fff; }
+#token-btn.on { color: var(--green); }
+#token-btn.off { color: #fff; }
+.more-menu { background: #161616; border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,.6); }
+.more-menu .btn { background: transparent; }
+.more-menu .btn:hover { background: var(--panel-raised); }
+
+/* Ranking */
+.rank { padding: 16px 12px 12px 16px; }
+.mode-toggle, .rank-tabs { border: 0; background: var(--panel-raised); border-radius: var(--r-ctl); padding: 3px; gap: 2px; }
+.mode-toggle button, .rank-tabs button { font-size: 12px; border-radius: var(--r-ctl); color: #bbb; }
+.mode-toggle button[aria-pressed="true"], .rank-tabs button[aria-pressed="true"] { background: #fff; color: #000; box-shadow: none; }
+.rank-row { border-left: 0; border-radius: 10px; }
+.rank-row:hover { background: rgba(255,255,255,.05); }
+.rank-row[aria-current="true"] { background: var(--panel-raised); }
+.rank-row .nm { font-size: 14px; }
+.rank-row .pc { font-size: 14px; font-weight: 500; }
+.tag { border: 0; background: var(--panel-raised); border-radius: 4px; padding: 0 6px; }
+.tag.nasa, .tag.analog, .tag.candidate, .tag.jo, .tag.screen, .tag.near, .tag.rock { color: var(--muted); }
+.tag.flag { color: var(--red); background: rgba(229,86,111,.14); }
+.rank-foot { border-top: 0; }
+.legend .ramp { background: linear-gradient(90deg, #949494, var(--amber)); border-radius: 3px; } /* the colour key of the pins */
+
+/* Detail panel */
+.detail { padding: 20px 20px 16px; }
+.detail .close { top: 12px; right: 12px; }
+.detail h2.title { font-size: 24px; margin: 10px 0 2px; }
+.scorebox { border: 0; background: var(--panel-raised); border-radius: 12px; padding: 12px 14px; }
+.scorebox .big { font-weight: 500; }
+.stab { color: var(--muted); }
+table.facts th { font-size: 12px; }
+.caveat { border-left: 0; border-radius: 10px; background: var(--amber-soft); color: #f4e3c2; padding: 8px 12px; }
+.twins button:hover, .compare-sites button:hover { color: #fff; background: rgba(255,255,255,.04); }
+.welcome p, .welcome ol, .method p, .method li, .setup-steps, .strict-row, .caption .s { color: #d6d6d6; }
+.screen-label { border: 0; border-radius: 10px; background: rgba(116,185,255,.1); }
+.method .formula, .strict-row { border: 0; border-radius: 10px; }
+.temp-toggle { border: 0; background: var(--panel-raised); border-radius: 12px; overflow: hidden; }
+.temp-toggle button + button { border-left: 0; }
+.temp-toggle button[aria-pressed="true"] { background: #fff; color: #000; box-shadow: none; }
+.linkish { color: var(--text); text-decoration-color: rgba(255,255,255,.35); }
+.token-form input, .kp-form input, .sender input[type="text"], .ask .ask-form input { border: 0; border-radius: 10px; background: var(--panel-raised); }
+
+/* Field kit bar */
+.kit-bar { background: transparent; padding: 0 4px; }
+.kit-state { border: 0; border-radius: var(--r-ctl); background: var(--panel-solid); font-size: 12px; padding: 4px 11px; }
+.kit-state.sim, .kit-state.off { color: var(--muted); }
+.kit-reads span { font-size: 12px; }
+.kit-reads b { font-weight: 500; }
+.kit-reads.sim b { color: #fff; }
+
+/* Pins: a plain dot, no glow, no ping. */
+.pin { font: 500 12px/1 var(--fb); }
+.pin .dot { box-shadow: 0 0 0 2px rgba(0,0,0,.7); }
+.pin .lbl { background: rgba(17,17,17,.92); border: 0; border-radius: 6px; padding: 4px 8px; }
+.pin:hover .lbl, .pin:focus-visible .lbl { box-shadow: 0 0 0 1px #fff; }
+.pin.selected .dot { box-shadow: 0 0 0 2px #fff; }
+.pin.selected .dot::after { display: none; }
+
+/* Flight read-out, banners, toast, loading */
+.hud { background: rgba(17,17,17,.9); border: 0; border-radius: var(--r-ctl); font-size: 12px; color: #fff; }
+.hud span { font-size: 12px; color: var(--muted); }
+.banner { background: rgba(17,17,17,.95); border: 0; border-radius: 12px; color: #e6e6e6; }
+.banner b { color: #fff; }
+.toast { border: 0; border-radius: var(--r-ctl); background: #fff; color: #000; }
+.loading .box { font-size: 18px; color: #fff; font-weight: 600; }
+.credits { background: rgba(0,0,0,.6); border-radius: 4px; }
+
+/* Captions, tour, base card */
+.caption, .caption.tour-card, .caption.base-card { background: rgba(17,17,17,.96); border: 0; border-radius: var(--r-card); }
+.caption .k { font-size: 13px; color: var(--muted); }
+.caption .bar, .tour-card .segs i, .st-segs i { background: var(--line-strong); border-radius: 2px; }
+.caption .bar i, .tour-card .segs i.done, .tour-card .segs i.now::after, .st-segs i.done, .story.ready .st-segs i.now::after { background: #fff; }
+.tour-ring { border-color: #fff; box-shadow: none; animation: none; border-radius: 12px; }
+.viz-stats b, .viz-total b, .viz-hero em, .bar-row b { font-weight: 500; }
+.viz-stats span, .viz-total, .viz-hero span { font-size: 13px; }
+.viz-chips .chip { border: 0; border-radius: var(--r-ctl); }
+.bar-row .track { border-radius: 4px; overflow: hidden; }
+.bar-row .track i { background: var(--amber); }
+.base-part { font: 500 12px var(--fb); border: 0; border-radius: var(--r-ctl); background: color-mix(in srgb, var(--c) 22%, #111); color: #fff; }
+.sender-track { border-radius: 3px; }
+.sender-track i { background: var(--amber); box-shadow: none; }
+.ask .ask-q { border: 0; border-radius: 12px; }
+.ask .ask-a { border: 0; border-radius: 12px; }
+.swap-label { border: 0; border-radius: var(--r-ctl); background: rgba(17,17,17,.95); }
+.swap-label i { border-color: #fff; border-top-color: transparent; }
+
+/* Story */
+.story { background: rgba(17,17,17,.96); border: 0; border-radius: var(--r-card); backdrop-filter: none; }
+.st-k { font: 600 13px var(--fb); color: var(--muted); }
+.st-t { font: 600 30px/1.15 var(--fb); }
+.st-match > span { font: 600 15px var(--fb); }
+.st-match b { font: 600 44px/1 var(--fb); }
+.st-link { background: var(--amber); }
+.st-parts span { border: 0; border-radius: var(--r-ctl); background: var(--panel-raised); color: var(--dim); }
+.st-parts span.on { color: #fff; background: color-mix(in srgb, var(--c) 30%, #111); box-shadow: none; }
+.st-crop { border: 0; border-radius: 12px; background: var(--panel-raised); }
+.st-crop span { font: 500 12px var(--fb); }
+.st-typed, .st-clock, .st-msg text, .st-cat small { font-family: var(--fb); }
+.st-hazards span { border: 0; border-radius: var(--r-ctl); background: var(--panel-raised); }
+.st-hazards span.hot { background: var(--amber); color: #000; animation: popIn .4s ease forwards; animation-delay: calc(0.9s + var(--i) * 0.15s); }
+
+/* Start screen: only the globe, one sentence and two buttons. The ranking, the brief and the kit bar
+   come in when the visitor picks a place, a target or anything in the top bar (js/main.js). */
+body.intro #rank, body.intro #detail, body.intro #kit-bar { opacity: 0; visibility: hidden; pointer-events: none; }
+#detail, #kit-bar { transition: opacity .4s ease, visibility 0s; }
+.story-hero {
+  top: auto; bottom: calc(var(--gap) + 56px); transform: translateX(-50%); gap: 10px; padding: 0; border: 0; border-radius: 0;
+  background: none; box-shadow: none; animation: none; cursor: default; text-align: center; width: min(680px, calc(100vw - 2 * var(--gap)));
+}
+.story-hero:hover, .story-hero:focus-visible { background: none; }
+.story-hero h1 { margin: 0; font: 600 36px/1.1 var(--fb); color: #fff; text-shadow: 0 2px 18px #000, 0 0 4px #000; }
+.story-hero p { margin: 0 0 8px; color: #e0e0e0; font-size: 16px; text-shadow: 0 1px 10px #000, 0 0 3px #000; }
+.story-hero .hero-ctl { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.story-hero .btn { font-size: 15px; padding: 11px 22px; }
+.story-hero .btn:not(.primary) { background: rgba(34,34,34,.94); }
+@media (max-width: 720px) { .story-hero h1 { font-size: 24px; } .story-hero p { font-size: 14px; } }

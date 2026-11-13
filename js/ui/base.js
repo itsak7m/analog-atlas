@@ -151,11 +151,9 @@ function showCard() {
     <div class="s">Call home from the communication room: ${esc(delayLine(body))}.</div>
     <div class="ctl">${ctx.swapTo ? `<button type="button" class="btn small primary" data-b="swap">${esc(swapLabel(ctx.swapTo))}</button>` : ''}
       <button type="button" class="btn small${ctx.swapTo ? '' : ' primary'}" data-b="plan">Plan details</button>
-      <button type="button" class="btn small" data-b="ask">Ask SI about this base</button>
       <button type="button" class="btn small" data-b="exit">Exit base</button></div>`;
   el.querySelector('[data-b="plan"]').addEventListener('click', () => openBaseDetails(ctx));
   el.querySelector('[data-b="swap"]')?.addEventListener('click', swapWorld);
-  el.querySelector('[data-b="ask"]').addEventListener('click', () => ctx.onAsk?.(`Plan a ${test ? 'test base' : 'base'} at ${place.name}${test ? ` to prepare for ${target.name}` : ''}: what are the main problems there and how does each part of the base solve them?`));
   el.querySelector('[data-b="exit"]').addEventListener('click', () => { const { api } = active; stopBase(); api.backToGlobe(); });
   (el.querySelector('[data-b="swap"]') || el.querySelector('[data-b="plan"]')).focus();
 }
@@ -322,12 +320,11 @@ export async function openBaseDetails(ctx) {
     <h3 class="label">What makes ${esc(name)} ${esc(name)}</h3>${madeOf(body)}
     <h3 class="label">Hydroponic greenhouse</h3>${greenhouse(body)}
     <h3 class="label">Communication room</h3>${comm(body)}
-    <div class="actions"><button type="button" class="btn" data-b="ask">Ask SI about this base</button></div>
+    
   </div>`;
   const el = openOverlay({ title: `Base plan · ${test ? `test base at ${place.name}` : `${name} base at ${place.name}`}`, body: html });
   bindPlate(el);
   bindSender(el);
-  el.querySelector('[data-b="ask"]').addEventListener('click', () => ctx.onAsk?.(`Plan a ${test ? 'test base' : 'base'} at ${place.name}${test ? ` to prepare for ${target.name}` : ''}: what are the main problems there and how does each part of the base solve them?`));
 }
 
 // For the Ask panel: the facts it may use, as plain text lines with their sources.
