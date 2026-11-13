@@ -14,7 +14,9 @@
   "conjunction-2023": { "label": "NASA, 10 November 2023: NASA's Mars fleet will still conduct science while lying low (solar conjunction)", "url": "https://www.nasa.gov/solar-system/planets/mars/nasas-mars-fleet-will-still-conduct-science-while-lying-low/" },
   "jpl-approx": { "label": "JPL Solar System Dynamics: Approximate Positions of the Planets (Standish, Table 1, 1800-2050)", "url": "https://ssd.jpl.nasa.gov/planets/approx_pos.html" },
   "usda-fdc": { "label": "USDA FoodData Central (SR Legacy), nutrients per 100 g of the raw food", "url": "https://fdc.nal.usda.gov/" },
-  "speed-of-light": { "label": "BIPM, the SI Brochure: the speed of light in vacuum is exactly 299 792 458 m/s", "url": "https://www.bipm.org/en/publications/si-brochure" }
+  "speed-of-light": { "label": "BIPM, the SI Brochure: the speed of light in vacuum is exactly 299 792 458 m/s", "url": "https://www.bipm.org/en/publications/si-brochure" },
+  "nasa-hazards": { "label": "NASA Human Research Program: 5 Hazards of Human Spaceflight (isolation and confinement, distance from Earth)", "url": "https://www.nasa.gov/hrp/hazards/" },
+  "nasa-hera": { "label": "NASA: HERA, Human Exploration Research Analog (an analog for isolation, confinement and remote conditions)", "url": "https://www.nasa.gov/mission/hera/" }
  },
  "bodies": {
   "earth": {
@@ -69,6 +71,7 @@
  },
  "comm": {
   "light_km_s": { "value": 299792.458, "source": "speed-of-light" },
+  "isolation": { "text": "NASA lists isolation and confinement as one of the five hazards of human spaceflight: small groups far from Earth, in a small space, react to it, so crews must be chosen, trained and supported to work well as a team", "source": "nasa-hazards" },
   "conjunction": { "text": "About every two years the Sun passes between Earth and Mars (solar conjunction). Hot, ionised gas from the Sun can corrupt radio signals, so NASA holds off sending commands to its Mars fleet for about two weeks.", "source": "conjunction-2023" }
  }
 }

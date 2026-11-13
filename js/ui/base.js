@@ -109,6 +109,7 @@ function problems(body, ctx) {
     ['Food', 'Nothing grows in lunar soil on its own.', 'Hydroponic greenhouse with LED light: water and nutrients, no soil.', 'veggie'],
     ['Water', b.moon.made_of[3].text, 'Mine ice from the shadowed craters near the base.', 'lcross'],
     ['Talking to family', `Signals take ${delayLine('moon')}.`, 'Communication room with live video calls.', 'moon-factsheet'],
+    ['Isolation and stress', `${docs.base.comm.isolation.text}.`, 'Private space in the habitat, regular family contact from the communication room, and crew support. NASA already tests this on Earth in its HERA analog habitat.', 'nasa-hazards', 'nasa-hera'],
     ['Low gravity', `${g(b.moon.gravity_ms2)}.`, 'Exercise; cannot be tested on Earth.', 'moon-factsheet'],
   ] : [
     ['Thin air', `${fmt(b.mars.pressure_mbar.value, 2)} mbar, ${fmt((b.mars.pressure_mbar.value / e.pressure_mbar.value) * 100, 1)} % of Earth's air pressure; ${b.mars.air_text.text}.`, 'Pressurised habitat; the CO₂ in the air can feed the plants.', 'mars-factsheet'],
@@ -117,10 +118,11 @@ function problems(body, ctx) {
     ['Toxic soil', b.mars.made_of[3].text, 'Hydroponics: plants grow in water with nutrients, not in Martian soil.', 'phoenix-perchlorate'],
     ['Dust storms', b.mars.made_of[1].text, 'Dust-proof seals and stored energy for dark, dusty weeks.', 'mars-facts'],
     ['Talking to family', `Signals take ${delayLine('mars')}.`, 'Communication room for recorded video messages; plan for the solar conjunction break.', 'jpl-approx'],
+    ['Isolation and stress', `${docs.base.comm.isolation.text}.`, 'Private space in the habitat, regular family contact from the communication room, and crew support. NASA already tests this on Earth in its HERA analog habitat.', 'nasa-hazards', 'nasa-hera'],
     ['Low gravity', `${g(b.mars.gravity_ms2)}.`, 'Exercise; cannot be tested on Earth.', 'mars-factsheet'],
   ];
   const head = '<tr><th>Problem</th><th>Measured</th><th>Part of the base that solves it (concept)</th></tr>';
-  return `<div class="scroll-x"><table class="facts">${head}${rows.map(([p, m, s, id]) => `<tr><td><b>${esc(p)}</b></td><td>${esc(m)} ${src(id)}</td><td>${esc(s)}</td></tr>`).join('')}</table></div>`;
+  return `<div class="scroll-x"><table class="facts">${head}${rows.map(([p, m, s, id, sid]) => `<tr><td><b>${esc(p)}</b></td><td>${esc(m)} ${src(id)}</td><td>${esc(s)}${sid ? ` ${src(sid)}` : ''}</td></tr>`).join('')}</table></div>`;
 }
 
 function testSection(ctx) {
