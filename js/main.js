@@ -582,6 +582,12 @@ const api = {
 async function main() {
   if (HAS_ION) Cesium.Ion.defaultAccessToken = ION_TOKEN;
   state.data = await loadData();
+  // Measured ground height at a pin (data/terrain.json centre elevation), only where the terrain box is
+  // centred on the pin itself (some boxes, such as Mistastin's, are moved off the pin on purpose).
+  const knownGroundHeight = (body, lon, lat) => {
+    const p = Object.values(state.data.terrain || {}).find((t) => t.body === body && Math.abs(t.lat - lat) < 0.005 && Math.abs(t.lon - lon) < 0.005);
+    return p && Number.isFinite(p.centre_elev_m) ? p.centre_elev_m : null;
+  };
 
   pins = new Pins($('#pins'), (item) => {
     if (item.kind === 'kit') openKitPanel();
@@ -591,6 +597,7 @@ async function main() {
   boxes = new BoxLayer({ onPick: (id) => pickBox(id) });
   globe = new Globe({
     container: 'globe',
+    knownHeight: knownGroundHeight,
     creditContainer: $('#credits'),
     onFrame,
     onStatus: (s) => {

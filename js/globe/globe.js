@@ -42,7 +42,7 @@ function flySpherePromise(camera, sphere, options) {
 }
 
 export class Globe {
-  constructor({ container, creditContainer, onFrame, onInput, onStatus }) {
+  constructor({ container, creditContainer, onFrame, onInput, onStatus, knownHeight }) {
     this.container = container;
     this.creditContainer = creditContainer;
     this.onFrame = onFrame || (() => {});
@@ -63,6 +63,9 @@ export class Globe {
     this.tilesReady = Promise.resolve(false);   // Moon/Mars: resolves true when the 3D tiles are showing
     this.has3D = false;
     this.heightCache = new Map();
+    // Measured ground height at a place (LOLA, MOLA or Copernicus DEM from data/terrain.json), or null.
+    // Used only while the 3D terrain is still too slow to answer, so the camera never ends up underground.
+    this.knownHeight = knownHeight || (() => null);
     // Every camera move gets a new number, so a slow move can tell that a newer one took over.
     this.flightId = 0;
     // Clicks and keys anywhere (panels, tour, corridor) count as activity, so the idle spin waits.
@@ -458,16 +461,31 @@ export class Globe {
     return SOUTH_POLE_VIEW.height * Math.min(1, aspect * 1.1);
   }
 
-  // Ground height under a place. Never waits more than a few seconds and remembers real answers,
-  // so a second visit is instant. Without an answer it uses 0 (the bare globe) but does not remember
-  // that, so a later visit samples again once the 3D terrain has loaded.
+  // Ground height under a place: { h, sampled }. Waits a few seconds at most and remembers real answers,
+  // so a second visit is instant. While the 3D terrain is still loading it uses the measured height from
+  // data/terrain.json (or 0, the bare globe) and does not remember that; sampled is then false, and
+  // refineHeight() moves the camera once the 3D terrain answers. Without this the camera could end up
+  // inside a mountain (Malapert's summit is about 5 km above the Moon's reference sphere).
   async groundHeight(lon, lat) {
     const key = `${this.body}:${lon.toFixed(4)}:${lat.toFixed(4)}`;
-    if (this.heightCache.has(key)) return this.heightCache.get(key);
-    const h = await Promise.race([this.sampleHeight(lon, lat), new Promise((resolve) => setTimeout(() => resolve(null), 6000))]);
-    if (!Number.isFinite(h)) return 0;
-    this.heightCache.set(key, h);
-    return h;
+    if (this.heightCache.has(key)) return { h: this.heightCache.get(key), sampled: true };
+    const h = await Promise.race([this.sampleHeight(lon, lat), new Promise((resolve) => setTimeout(() => resolve(null), 8000))]);
+    if (Number.isFinite(h)) {
+      this.heightCache.set(key, h);
+      return { h, sampled: true };
+    }
+    const known = this.knownHeight(this.body, lon, lat);
+    return { h: Number.isFinite(known) ? known : 0, sampled: false };
+  }
+
+  // After a move that had to guess the ground height: wait for the 3D terrain (no time limit) and,
+  // if the same move still owns the camera, call apply(height) with the real height.
+  refineHeight(lon, lat, stillCurrent, apply) {
+    this.sampleHeight(lon, lat).then((h) => {
+      if (!Number.isFinite(h) || !stillCurrent()) return;
+      this.heightCache.set(`${this.body}:${lon.toFixed(4)}:${lat.toFixed(4)}`, h);
+      apply(h);
+    });
   }
 
   // Height of the 3D terrain at a place, or null when there is no 3D terrain (yet) or sampling failed.
@@ -515,7 +533,7 @@ export class Globe {
       easingFunction: Cesium.EasingFunction.QUADRATIC_IN_OUT,
     });
     if (!ok) { if (current()) this.mode = 'globe'; return false; }
-    const h = await this.groundHeight(place.lon, place.lat);
+    const { h, sampled } = await this.groundHeight(place.lon, place.lat);
     if (!current()) return false; // the newer move owns the camera and the mode
     const center = Cesium.Cartesian3.fromDegrees(place.lon, place.lat, h, ellipsoid);
     const heading = rad(25);
@@ -531,6 +549,12 @@ export class Globe {
     this.orbit = { center, heading, pitch, range, paused: false };
     this.camera.lookAt(center, new Cesium.HeadingPitchRange(heading, pitch, range));
     this.mode = 'closeup';
+    if (!sampled) {
+      this.refineHeight(place.lon, place.lat, () => current() && this.mode === 'closeup' && this.orbit, (real) => {
+        this.orbit.center = Cesium.Cartesian3.fromDegrees(place.lon, place.lat, real, this.ellipsoid);
+        this.camera.lookAt(this.orbit.center, new Cesium.HeadingPitchRange(this.orbit.heading, this.orbit.pitch, this.orbit.range));
+      });
+    }
     return true;
   }
 
@@ -554,7 +578,7 @@ export class Globe {
     this.lastInput = performance.now();
     this.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
     this.setSunForPlace(place);
-    const h = await this.groundHeight(place.lon, place.lat);
+    const { h, sampled } = await this.groundHeight(place.lon, place.lat);
     if (!current()) return false;
     const destination = Cesium.Cartesian3.fromDegrees(place.lon, place.lat, h + body.eye, this.ellipsoid);
     const ok = await flyPromise(this.camera, {
@@ -565,6 +589,15 @@ export class Globe {
     if (!ok || !current()) return false;
     this.enterLook();
     this.mode = 'ground';
+    if (!sampled) {
+      this.refineHeight(place.lon, place.lat, () => current() && this.mode === 'ground', (real) => {
+        const cam = this.camera;
+        cam.setView({
+          destination: Cesium.Cartesian3.fromDegrees(place.lon, place.lat, real + body.eye, this.ellipsoid),
+          orientation: { heading: cam.heading, pitch: cam.pitch, roll: 0 },
+        });
+      });
+    }
     return { eyeHeight: body.eye, groundHeight: h };
   }
 
