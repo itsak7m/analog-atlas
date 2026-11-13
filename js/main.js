@@ -404,7 +404,8 @@ async function showWorld(world) {
   }
   boxes.attach(globe.viewer); // globe.show() made a new viewer (on the Moon or Mars the layer only detaches)
   buildPins();
-  if (poleTarget()) await farView(0); // the target was already set (onWorld changes it before this point)
+  // Every world opens whole, from far away (globe.show() already put the camera at the body's home view).
+  // The tilted south-pole view is used only after a site visit (Back to globe) or when a pole target is chosen.
 }
 
 // Without WebGL the 3D globe cannot start. The ranking, the details and the field kit still work.
