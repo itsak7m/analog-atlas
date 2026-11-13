@@ -19,3 +19,4 @@ Thumbs.db
 .claude/
 HANDOFF_PROMPT.md
 SUBMISSION_TEXTS.md
+/anthropic_key.txt

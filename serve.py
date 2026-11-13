@@ -35,6 +35,19 @@ PORT = int(os.environ.get("PORT", "8080"))
 # No "[::1]": the server listens on 127.0.0.1 only (browsers fall back to it for "localhost").
 ALLOWED_HOSTS = {f"{name}:{PORT}" for name in ("localhost", "127.0.0.1")}
 
+# Ask Atlas (the Ask button): the Claude model and its instructions. Used only when an API key is set up.
+ASK_MODEL = "claude-opus-5-5"
+ASK_SYSTEM = (
+    "You are Ask Atlas, the assistant inside Analog Atlas, a NASA Space Apps 2026 project by team Cosmic Cats "
+    "(Amman, Jordan). It finds places on Earth that resemble places on the Moon and Mars. Answer the question "
+    "using only the facts sent with it. Every number you give must appear in those facts; if they do not contain "
+    "a value, say it is not measured in this app. Never estimate or invent a number. Answer in plain English for "
+    "students and judges, in at most 150 words, without headings. When asked to plan a base, go problem by "
+    "problem and name the part of the base that solves it (habitat, hydroponic greenhouse, communication room, "
+    "solar power), and say it is a concept. Say clearly what an Earth analog cannot test: low gravity, vacuum or "
+    "thin Martian air, and radiation."
+)
+
 
 def rel_parts(path):
     # The parts of a path inside ROOT, in lower case. None if the path is outside ROOT (a link).
@@ -247,6 +260,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             except OSError:  # nobody is listening any more
                 pass
             return
+        if self.path == "/api/ask":
+            self.ask_claude()
+            return
         if self.path != "/api/save-token":
             self.send_error(404)
             return
@@ -275,6 +291,94 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
+
+    def send_json(self, status, obj):
+        body = json.dumps(obj).encode()
+        try:
+            self.send_response(status)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+        except OSError:  # nobody is listening any more
+            pass
+
+    def ask_key(self):
+        key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
+        key_file = ROOT / "anthropic_key.txt"
+        if not key and key_file.is_file():
+            key = key_file.read_text(encoding="utf-8").strip()
+        return key
+
+    def do_GET(self):
+        # /api/ask-status: can Ask Atlas use Claude here (a key and the SDK)? Never says anything about the key itself.
+        if self.path == "/api/ask-status":
+            if not self.host_ok():
+                self.send_error(403, "unknown host name")
+                return
+            ready = bool(self.ask_key()) and importlib.util.find_spec("anthropic") is not None
+            self.send_json(200, {"claude": ready})
+            return
+        super().do_GET()
+
+    def ask_claude(self):
+        # Ask Atlas: one question to Claude (SI), together with the app's own facts (sent by the page).
+        # The Anthropic API key is read here, on this computer: anthropic_key.txt next to this file (never served:
+        # top-level .txt files are private, and it is in .gitignore) or the ANTHROPIC_API_KEY variable.
+        # The browser never sees the key. Without a key, the SDK or internet the app answers from its own data.
+        try:
+            length = int(self.headers.get("Content-Length", "0"))
+        except ValueError:
+            length = -1
+        if not 0 < length <= 60000 or "application/json" not in self.headers.get("Content-Type", ""):
+            self.send_json(400, {"error": "bad request"})
+            return
+        try:
+            data = json.loads(self.rfile.read(length))
+            question = str(data.get("question", ""))[:400].strip()
+            context = str(data.get("context", ""))[:40000]
+        except (ValueError, AttributeError):
+            question = ""
+        if not question:
+            self.send_json(400, {"error": "no question"})
+            return
+        key = self.ask_key()
+        if not key:
+            self.send_json(503, {"error": "no-key"})
+            return
+        try:
+            import anthropic
+        except ImportError:
+            self.send_json(503, {"error": "no-sdk: run  python -m pip install anthropic"})
+            return
+        client = anthropic.Anthropic(api_key=key, timeout=60.0, max_retries=1)
+        try:
+            msg = client.beta.messages.create(
+                model=ASK_MODEL,
+                max_tokens=2000,
+                betas=["server-side-fallback-2026-07-01"],
+                fallbacks="default",
+                output_config={"effort": "low"},
+                system=ASK_SYSTEM,
+                messages=[{"role": "user", "content": "Facts from the app:" + chr(10) + context + chr(10) * 2 + "Question: " + question}],
+            )
+        except anthropic.AuthenticationError:
+            self.send_json(503, {"error": "the API key was not accepted"})
+            return
+        except anthropic.RateLimitError:
+            self.send_json(503, {"error": "rate limited"})
+            return
+        except anthropic.APIStatusError as err:
+            self.send_json(502, {"error": f"Anthropic API error {err.status_code}"})
+            return
+        except anthropic.APIConnectionError:
+            self.send_json(503, {"error": "no internet"})
+            return
+        if msg.stop_reason == "refusal":
+            self.send_json(502, {"error": "declined"})
+            return
+        text = "".join(b.text for b in msg.content if b.type == "text").strip()
+        self.send_json(200 if text else 502, {"answer": text, "model": msg.model} if text else {"error": "empty answer"})
 
     def log_message(self, fmt, *args):
         if "--quiet" not in sys.argv:

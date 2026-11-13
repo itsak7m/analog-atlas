@@ -520,6 +520,7 @@ function limitsList() {
   const items = ['Climate alone barely separates desert sites (several tie within 1 %). That is why terrain, geology and field measurements matter.',
     'Mean temperature and daily swing compare Earth air (NASA POWER T2M and T2M_RANGE, 2 m above the ground) with surface or ground temperatures on the Moon and at the Mars targets measured from orbit (see "How the score works"). At Jezero the coldest value is air too (MEDA). The Ground surface switch in Tune factors uses MODIS surface temperature instead: clear-sky only, its mean is about 2–3 K warmer than a 24 h mean and its swing catches about 88 % of the daily range.',
     'Gravity, vacuum, radiation and the thin Martian air cannot be reproduced anywhere on Earth, so they are not scored and every analog breaks there. Dust storms are not scored either: we have no dust measurement for the Earth sites.',
+    'Base plan is a concept for future work: the layout of the base is ours, not a design. Its numbers (Moon and Mars facts, crop nutrients, signal delay) come from data/base.json and data/crops.json, each with a source, or are computed from them.',
     'The surface composition indicators (MODIS emissivity, Sentinel-2, ASTER, EMIT) are display only. Their reading cut values were set while looking at the same sites, so they illustrate rather than test.'];
   const thin = d.targets.filter((t) => targetGaps(t).length).map((t) => `${esc(t.name)}: ${pillarText(t)}`);
   if (thin.length) items.push(`Some targets have no data for whole pillars, so their full analog match uses fewer pillars. ${thin.join('; ')}.`);
@@ -605,7 +606,7 @@ function challengeCriteria() {
     ['Volcanic terrain', 'Covered', 'Basalt sites (for example Harrat al-Shaam, Craters of the Moon, Holuhraun) are scored against volcanic targets: the Arsia Mons skylight, the Mare Tranquillitatis pit, Apollo 11 and Apollo 17.'],
     ['Underground environments', 'Covered', 'Two cave targets (the Mare Tranquillitatis pit on the Moon, the Arsia Mons skylight on Mars). Lava tubes on Earth earn the "shelter" resource. Nobody has measured inside these caves, so their values describe the surface around the opening.'],
     ['Dust storms', 'Not scored', 'We have no dust-storm measurement for the Earth sites, so dust is not a factor. It appears only in the target notes (for example the UV drop during a dust storm measured by Perseverance).'],
-    ['A place to test equipment for a base', 'Covered', 'Landing-zone pillar (largest flat square in a 10 km box), "Stand here" in 3D, and the ESP32 field kit for a test day at the site.'],
+    ['A place to test equipment for a base', 'Covered', 'Landing-zone pillar (largest flat square in a 10 km box), "Stand here" in 3D, the ESP32 field kit for a test day at the site, and Base plan: a 3D concept test base that lists what the site can practise for the chosen target (future work).'],
     ['Topography', 'Covered', 'Terrain pillar: slope statistics over a 10 km box on the same 500 m grid on all three worlds (Copernicus DEM, LRO LOLA, MGS MOLA).'],
     ['Gravity, radiation, vacuum', 'Cannot be reproduced', 'No place on Earth has low gravity, vacuum or Moon or Mars radiation, and Mars air pressure is under 1 % of Earth’s. They are not scored for any site; every analog breaks here. Gravity maps (GRAIL) are therefore not used.'],
     ['Where it works, how well, where it does not', 'Covered', 'Every result gives a %, the score of each pillar, the weak pillars, a ⚑ when data is weak, and the Limits list.'],
@@ -644,6 +645,7 @@ function dataFiles() {
       <li>${link('data/screening_jordan.json')} (Discover Jordan: every 10 km box, built by scripts/build_screening.py) · ${link('data/screening_rockmap_igme5000.json')} (IGME5000 map unit to rock type) · data/raw/screening/: the raw files every box number comes from (${link('data/raw/screening/README.txt', 'README.txt')})</li>
       <li>Rebuild the boxes, in this order: <code>python -I scripts/screening_grid.py</code>, <code>screening_power.py</code>, <code>screening_terrain.py</code>, <code>screening_geology.py</code>, <code>build_screening.py</code>. The big downloads stay outside the project, in a cache folder.</li>
       <li>${opt('data/lst.json', d.lstDoc)} and ${link('data/screening_lst.json')} (MODIS surface temperature of the sites and the boxes, built by scripts/fetch_lst.py; ${link('data/raw/lst/README.txt', 'data/raw/lst/README.txt')}) · ${opt('data/composition.json', d.compositionDoc)} and ${link('data/screening_composition.json')} (surface composition, built by scripts/fetch_composition.py; ${link('data/raw/composition/README.txt', 'data/raw/composition/README.txt')})${d.emitDoc ? ` · ${link('data/emit.json')} (NASA EMIT minerals, built by scripts/fetch_emit.py)` : ''}</li>
+      <li>${link('data/base.json')} (Base plan: Moon and Mars facts, crops, communication room, each with its source) · ${link('data/crops.json')} (USDA FoodData Central nutrients, built by scripts/fetch_crops.py from the raw records in data/raw/crops/) · signal delay and solar conjunction: js/orbits.js (JPL approximate planet positions)</li>
       <li>Check the scores without a browser: <code>python -I scripts/check_scores.py</code></li></ul>`;
 }
 
@@ -738,7 +740,7 @@ export function openMethod() {
     <h3 class="label">Data files</h3>${dataFiles()}
     <h3 class="label">Credits</h3>${creditsSection()}
     <h3 class="label">Use of Super Intelligence (SI)</h3>
-    <p>SI tool used: Claude (Anthropic), a large language model. The code (app, scripts, tests, firmware) and the research notes were written with its help and reviewed by the team. The data is not SI-generated: every number comes from the cited data files or sources, not from the SI. The drawings, slide backgrounds and promo-video music were made by code written with Claude and carry an "SI-assisted" mark. See README section 10.</p>
+    <p>SI tool used: Claude (Anthropic), a large language model. The code (app, scripts, tests, firmware) and the research notes were written with its help and reviewed by the team. The data is not SI-generated: every number comes from the cited data files or sources, not from the SI. The drawings, slide backgrounds and promo-video music were made by code written with Claude and carry an "SI-assisted" mark. Ask Atlas uses Claude at run time only on our computer with an API key, and marks those answers "Claude (SI)"; otherwise it answers with fixed rules over our data ("no SI"). See README section 10.</p>
   </div>`;
   const el = openOverlay({ title: 'Method & data', body });
   el.querySelector('[data-action="matrix-csv"]')?.addEventListener('click', downloadMatrix);

@@ -1,0 +1,130 @@
+{
+ "about": "Nutrients per 100 g of the raw food, from USDA FoodData Central (SR Legacy). Values as published; null = not in the record.",
+ "source": {
+  "label": "U.S. Department of Agriculture, FoodData Central (SR Legacy)",
+  "url": "https://fdc.nal.usda.gov/"
+ },
+ "made_by": "scripts/fetch_crops.py",
+ "crops": {
+  "potato": {
+   "fdcId": 170026,
+   "description": "Potatoes, flesh and skin, raw",
+   "per100g": {
+    "kcal": 77.0,
+    "protein_g": 2.05,
+    "fat_g": 0.09,
+    "carbs_g": 17.49,
+    "fiber_g": 2.1,
+    "vitc_mg": 19.7,
+    "potassium_mg": 425.0
+   },
+   "url": "https://fdc.nal.usda.gov/food-details/170026/nutrients",
+   "raw": "data/raw/crops/potato.json"
+  },
+  "sweet-potato": {
+   "fdcId": 168482,
+   "description": "Sweet potato, raw, unprepared",
+   "per100g": {
+    "kcal": 86,
+    "protein_g": 1.57,
+    "fat_g": 0.05,
+    "carbs_g": 20.1,
+    "fiber_g": 3.0,
+    "vitc_mg": 2.4,
+    "potassium_mg": 337
+   },
+   "url": "https://fdc.nal.usda.gov/food-details/168482/nutrients",
+   "raw": "data/raw/crops/sweet-potato.json"
+  },
+  "soybean": {
+   "fdcId": 174270,
+   "description": "Soybeans, mature seeds, raw",
+   "per100g": {
+    "kcal": 446.0,
+    "protein_g": 36.49,
+    "fat_g": 19.94,
+    "carbs_g": 30.16,
+    "fiber_g": 9.3,
+    "vitc_mg": 6.0,
+    "potassium_mg": 1797.0
+   },
+   "url": "https://fdc.nal.usda.gov/food-details/174270/nutrients",
+   "raw": "data/raw/crops/soybean.json"
+  },
+  "wheat": {
+   "fdcId": 168890,
+   "description": "Wheat, hard red winter",
+   "per100g": {
+    "kcal": 327.0,
+    "protein_g": 12.61,
+    "fat_g": 1.54,
+    "carbs_g": 71.18,
+    "fiber_g": 12.2,
+    "vitc_mg": 0.0,
+    "potassium_mg": 363.0
+   },
+   "url": "https://fdc.nal.usda.gov/food-details/168890/nutrients",
+   "raw": "data/raw/crops/wheat.json"
+  },
+  "peanut": {
+   "fdcId": 172430,
+   "description": "Peanuts, all types, raw",
+   "per100g": {
+    "kcal": 567.0,
+    "protein_g": 25.8,
+    "fat_g": 49.24,
+    "carbs_g": 16.13,
+    "fiber_g": 8.5,
+    "vitc_mg": 0.0,
+    "potassium_mg": 705.0
+   },
+   "url": "https://fdc.nal.usda.gov/food-details/172430/nutrients",
+   "raw": "data/raw/crops/peanut.json"
+  },
+  "lettuce": {
+   "fdcId": 169249,
+   "description": "Lettuce, green leaf, raw",
+   "per100g": {
+    "kcal": 15,
+    "protein_g": 1.36,
+    "fat_g": 0.15,
+    "carbs_g": 2.87,
+    "fiber_g": 1.3,
+    "vitc_mg": 9.2,
+    "potassium_mg": 194
+   },
+   "url": "https://fdc.nal.usda.gov/food-details/169249/nutrients",
+   "raw": "data/raw/crops/lettuce.json"
+  },
+  "tomato": {
+   "fdcId": 170457,
+   "description": "Tomatoes, red, ripe, raw, year round average",
+   "per100g": {
+    "kcal": 18,
+    "protein_g": 0.88,
+    "fat_g": 0.2,
+    "carbs_g": 3.89,
+    "fiber_g": 1.2,
+    "vitc_mg": 13.7,
+    "potassium_mg": 237
+   },
+   "url": "https://fdc.nal.usda.gov/food-details/170457/nutrients",
+   "raw": "data/raw/crops/tomato.json"
+  },
+  "rice": {
+   "fdcId": 169703,
+   "description": "Rice, brown, long-grain, raw",
+   "per100g": {
+    "kcal": 367,
+    "protein_g": 7.54,
+    "fat_g": 3.2,
+    "carbs_g": 76.2,
+    "fiber_g": 3.6,
+    "vitc_mg": 0.0,
+    "potassium_mg": 250
+   },
+   "url": "https://fdc.nal.usda.gov/food-details/169703/nutrients",
+   "raw": "data/raw/crops/rice.json"
+  }
+ }
+}

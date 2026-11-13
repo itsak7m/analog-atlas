@@ -1,0 +1,74 @@
+{
+ "about": "Future base concept (Base plan in the app). Facts about the Moon and Mars, the crops for a hydroponic greenhouse and the communication room. Every number has a source below; the base layout itself is our concept, not a measurement.",
+ "sources": {
+  "moon-factsheet": { "label": "NASA NSSDCA Moon Fact Sheet", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html" },
+  "mars-factsheet": { "label": "NASA NSSDCA Mars Fact Sheet", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html" },
+  "earth-factsheet": { "label": "NASA NSSDCA Earth Fact Sheet", "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html" },
+  "moon-composition": { "label": "NASA Science: Moon Composition & Structure", "url": "https://science.nasa.gov/moon/composition/" },
+  "mars-facts": { "label": "NASA Science: Mars Facts", "url": "https://science.nasa.gov/mars/facts/" },
+  "lcross": { "label": "Colaprete et al. 2010, Science: Detection of water in the LCROSS ejecta plume", "url": "https://doi.org/10.1126/science.1186986" },
+  "phoenix-perchlorate": { "label": "Hecht et al. 2009, Science 325: Detection of perchlorate and the soluble chemistry of martian soil at the Phoenix lander site", "url": "https://doi.org/10.1126/science.1172466" },
+  "bpc-1996": { "label": "Wheeler et al. 1996, Advances in Space Research 18: NASA's Biomass Production Chamber, a testbed for bioregenerative life support studies (NASA NTRS 20040089951)", "url": "https://ntrs.nasa.gov/citations/20040089951" },
+  "veggie": { "label": "NASA: Growing Plants in Space (Veggie on the space station)", "url": "https://www.nasa.gov/exploration-research-and-technology/growing-plants-in-space/" },
+  "veggie-2015": { "label": "Phys.org, 10 August 2015: First bite of space-grown lettuce (Expedition 44, Veggie)", "url": "https://phys.org/news/2015-08-space-grown-lettuce-awesome.html" },
+  "conjunction-2023": { "label": "NASA, 10 November 2023: NASA's Mars fleet will still conduct science while lying low (solar conjunction)", "url": "https://www.nasa.gov/solar-system/planets/mars/nasas-mars-fleet-will-still-conduct-science-while-lying-low/" },
+  "jpl-approx": { "label": "JPL Solar System Dynamics: Approximate Positions of the Planets (Standish, Table 1, 1800-2050)", "url": "https://ssd.jpl.nasa.gov/planets/approx_pos.html" },
+  "usda-fdc": { "label": "USDA FoodData Central (SR Legacy), nutrients per 100 g of the raw food", "url": "https://fdc.nal.usda.gov/" },
+  "speed-of-light": { "label": "BIPM, the SI Brochure: the speed of light in vacuum is exactly 299 792 458 m/s", "url": "https://www.bipm.org/en/publications/si-brochure" }
+ },
+ "bodies": {
+  "earth": {
+   "gravity_ms2": { "value": 9.82, "source": "earth-factsheet" },
+   "pressure_mbar": { "value": 1014, "source": "earth-factsheet" },
+   "sunlight_wm2": { "value": 1361.0, "source": "earth-factsheet" }
+  },
+  "moon": {
+   "gravity_ms2": { "value": 1.62, "source": "moon-factsheet" },
+   "pressure_text": { "text": "Practically a vacuum: about 3 × 10⁻¹⁵ bar at night", "source": "moon-factsheet" },
+   "temperature_text": { "text": "95 K to 390 K at the equator (about −178 °C to +117 °C), day to night", "source": "moon-factsheet" },
+   "sunlight_wm2": { "value": 1361.0, "source": "moon-factsheet" },
+   "day_length_text": { "text": "One day and night lasts 29.53 Earth days (synodic period)", "source": "moon-factsheet" },
+   "distance_km": { "min": 363300, "mean": 384400, "max": 405500, "source": "moon-factsheet", "note": "perigee, semimajor axis, apogee" },
+   "made_of": [
+    { "text": "The bright highlands are rich in calcium and aluminium; the dark maria are seas of cooled lava with more iron and titanium.", "source": "moon-composition" },
+    { "text": "The crust is made of oxygen, silicon, magnesium, iron, calcium and aluminium, with small amounts of titanium, uranium, thorium, potassium and hydrogen.", "source": "moon-composition" },
+    { "text": "The crust is about 60 km thick on the far side and about 40 km on the near side, where most of the lava seas are.", "source": "moon-composition" },
+    { "text": "Water ice: 5.6 ± 2.9 % by mass in the regolith of the permanently shadowed crater Cabeus (LCROSS impact).", "source": "lcross" }
+   ]
+  },
+  "mars": {
+   "gravity_ms2": { "value": 3.73, "source": "mars-factsheet" },
+   "pressure_mbar": { "value": 6.36, "source": "mars-factsheet", "note": "at mean radius; 4.0 to 8.7 mbar with the season" },
+   "temperature_text": { "text": "Average about 214 K (−59 °C); 184 K to 242 K (−89 °C to −31 °C) day to night at the Viking 1 site", "source": "mars-factsheet" },
+   "air_text": { "text": "95.1 % carbon dioxide, 2.59 % nitrogen, 1.94 % argon, 0.16 % oxygen (by volume)", "source": "mars-factsheet" },
+   "sunlight_wm2": { "value": 586.2, "source": "mars-factsheet" },
+   "day_length_text": { "text": "One day (sol) lasts 24.66 hours", "source": "mars-factsheet" },
+   "distance_km": { "min": 54600000, "max": 401400000, "source": "mars-factsheet", "note": "closest and farthest distance from Earth" },
+   "synodic_days": { "value": 779.94, "source": "mars-factsheet" },
+   "made_of": [
+    { "text": "Mars looks red because the iron in its rocks has oxidised: it has rusted.", "source": "mars-facts" },
+    { "text": "Winds are strong enough to make dust storms that cover much of the planet.", "source": "mars-facts" },
+    { "text": "Water ice lies just under the surface in the polar regions.", "source": "mars-facts" },
+    { "text": "The soil at the Phoenix site holds perchlorate: 0.4 to 0.6 % perchlorate by mass, leached from each soil sample. Perchlorate is toxic, so soil must be washed before it can grow food; hydroponics avoids the soil.", "source": "phoenix-perchlorate" }
+   ]
+  }
+ },
+ "crops": {
+  "potato": { "name": "Potato", "role": "Carbohydrates (energy), vitamin C and potassium.", "nasa": { "text": "Grown hydroponically in NASA's Biomass Production Chamber: four crops of 90 to 105 days.", "sources": ["bpc-1996"] } },
+  "wheat": { "name": "Wheat", "role": "Carbohydrates and some protein (bread, pasta).", "nasa": { "text": "Biomass Production Chamber: five crops of 64 to 86 days.", "sources": ["bpc-1996"] } },
+  "soybean": { "name": "Soybean", "role": "The main protein and fat source of the set.", "nasa": { "text": "Biomass Production Chamber: three crops of 90 to 97 days.", "sources": ["bpc-1996"] } },
+  "lettuce": { "name": "Lettuce", "role": "Fresh vitamins and fibre; very few calories. Fast.", "nasa": { "text": "Biomass Production Chamber: five crops of 28 to 30 days. Red romaine lettuce grown in Veggie was eaten on the space station in August 2015.", "sources": ["bpc-1996", "veggie-2015"] } },
+  "sweet-potato": { "name": "Sweet potato", "role": "Carbohydrates; a second tuber crop next to potato." },
+  "peanut": { "name": "Peanut", "role": "Very high energy, fat and protein." },
+  "tomato": { "name": "Tomato", "role": "Vitamin C and variety; few calories." },
+  "rice": { "name": "Rice (brown)", "role": "Carbohydrates; a staple grain." }
+ },
+ "best_set": {
+  "crops": ["potato", "soybean", "lettuce"],
+  "why": "Potato for energy (carbohydrates), soybean for protein and fat, lettuce for fresh vitamins. All three were grown without soil in NASA's Biomass Production Chamber."
+ },
+ "comm": {
+  "light_km_s": { "value": 299792.458, "source": "speed-of-light" },
+  "conjunction": { "text": "About every two years the Sun passes between Earth and Mars (solar conjunction). Hot, ionised gas from the Sun can corrupt radio signals, so NASA holds off sending commands to its Mars fleet for about two weeks.", "source": "conjunction-2023" }
+ }
+}

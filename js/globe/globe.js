@@ -510,6 +510,25 @@ export class Globe {
 
   // Fly from space down to the place, tilt towards the horizon, then slowly orbit it.
   // Resolves false when the flight was interrupted or a newer camera move (or another world) took over.
+  // Base plan: come closer to the place of the current close-up (the slow orbit goes on), so a base about
+  // 80 m wide fills the view. Returns the ground height of the orbit centre, or null if there is no close-up.
+  async closeOrbit(range, pitchDeg) {
+    const o = this.orbit;
+    if (!o || this.mode !== 'closeup') return null;
+    o.paused = true;
+    const pitch = rad(pitchDeg);
+    this.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+    const ok = await flySpherePromise(this.camera, new Cesium.BoundingSphere(o.center, 10), {
+      offset: new Cesium.HeadingPitchRange(o.heading, pitch, range),
+      duration: REDUCED_MOTION ? 0 : 2.4,
+      easingFunction: Cesium.EasingFunction.QUADRATIC_IN_OUT,
+    });
+    if (!ok || this.orbit !== o) return null;
+    Object.assign(o, { pitch, range, paused: false });
+    this.camera.lookAt(o.center, new Cesium.HeadingPitchRange(o.heading, pitch, range));
+    return this.ellipsoid.cartesianToCartographic(o.center).height;
+  }
+
   async flyToPlace(place) {
     const body = BODIES[this.body];
     const ellipsoid = this.ellipsoid;

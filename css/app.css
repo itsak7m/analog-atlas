@@ -705,3 +705,32 @@ table.boxes .sw { display: inline-block; width: 12px; height: 12px; vertical-ali
   .box-nav .btn { min-width: 44px; }
   #discover-all { min-height: 44px; }
 }
+
+/* ---------- Base plan (future work) and Ask Atlas ---------- */
+.caption.base-card { width: min(760px, calc(100vw - 2 * var(--gap))); background: rgba(5,8,15,.93); z-index: 25; }
+body.basing #rank { visibility: hidden; }
+.base-parts { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+.base-part { font: 600 12px var(--fd); letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border: 1px solid var(--c); color: var(--c); background: rgba(5,8,15,.6); }
+.base-plan h4.label { margin-top: 14px; }
+.base-plan table.crops tr.best td:first-child { box-shadow: inset 3px 0 0 var(--green); }
+.plate { display: grid; gap: 6px; max-width: 520px; }
+.plate-row { display: grid; grid-template-columns: 110px 1fr 60px; align-items: center; gap: 10px; }
+.plate-row input { width: 100%; accent-color: var(--green); }
+.plate-row output { font-family: var(--fm); text-align: right; }
+.plate-total { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 8px 0 2px; font-family: var(--fm); color: var(--green); }
+.sender { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center; max-width: 640px; }
+.sender input[type="text"] { padding: 7px 9px; background: var(--panel-solid); color: var(--text); border: 1px solid var(--line-strong); font: inherit; min-width: 0; }
+.sender-track { grid-column: 1 / -1; height: 6px; background: var(--line); position: relative; overflow: hidden; }
+.sender-track i { position: absolute; inset: 0 auto 0 0; width: 0; background: linear-gradient(90deg, var(--amber), var(--cyan)); box-shadow: 0 0 12px var(--cyan); }
+.sender-log { grid-column: 1 / -1; min-height: 1.4em; }
+.ask .ask-log { display: flex; flex-direction: column; gap: 10px; max-height: 46vh; overflow-y: auto; margin: 10px 0; }
+.ask .ask-q { align-self: flex-end; max-width: 85%; background: var(--amber-soft); border: 1px solid rgba(255,181,71,.35); padding: 8px 11px; }
+.ask .ask-a { align-self: flex-start; max-width: 92%; background: var(--panel-raised); border: 1px solid var(--line-strong); padding: 9px 12px; line-height: 1.5; }
+.ask .ask-a .src { margin-top: 6px; }
+.ask .ask-ex { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.ask .ask-form { display: flex; gap: 8px; }
+.ask .ask-form input { flex: 1; min-width: 0; padding: 8px 10px; background: var(--panel-solid); color: var(--text); border: 1px solid var(--line-strong); font: inherit; }
+@media (max-width: 640px) {
+  .sender { grid-template-columns: 1fr auto; }
+  .plate-row { grid-template-columns: 90px 1fr 52px; }
+}

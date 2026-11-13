@@ -1031,6 +1031,48 @@ test('?no3d turns 3D off for one visit (config.js), even with a token', () => {
   if (cfg.NO_3D && cfg.HAS_ION) throw new Error('HAS_ION must be false with ?no3d');
 });
 
+// ---------- Base plan (js/orbits.js, data/base.json, data/crops.json) and Ask Atlas ----------
+const orbits = await import('../js/orbits.js').catch((err) => ({ importError: err }));
+const baseDoc = await getJSON('../data/base.json');
+const cropsDoc = await getJSON('../data/crops.json');
+test('orbits: Earth-Mars distance stays inside the fact-sheet range (54.6-401.4 million km) in 2000-2050', () => {
+  if (orbits.importError) throw new Error(`js/orbits.js did not load: ${orbits.importError.message}`);
+  const { min, max } = baseDoc.bodies.mars.distance_km;
+  let lo = Infinity, hi = 0;
+  for (let t = Date.UTC(2000, 0, 1); t < Date.UTC(2050, 0, 1); t += 86400e3) { const d = orbits.marsDistanceKm(new Date(t)); lo = Math.min(lo, d); hi = Math.max(hi, d); }
+  if (lo < min * 0.995 || hi > max * 1.005) throw new Error(`computed ${Math.round(lo / 1e6)}-${Math.round(hi / 1e6)} million km`);
+  near(lo / 1e6, 55.8, 0.3, 'closest approach (2003):');
+});
+test('orbits: the 2023 solar conjunction falls inside NASA\'s command pause (11-25 Nov 2023)', () => {
+  if (orbits.importError) throw new Error(`js/orbits.js did not load: ${orbits.importError.message}`);
+  const c = orbits.nextConjunction(new Date(Date.UTC(2023, 9, 1))).date.getTime();
+  if (!(c > Date.UTC(2023, 10, 11) && c < Date.UTC(2023, 10, 25))) throw new Error(`computed ${new Date(c).toISOString()}`);
+  eq(orbits.formatDelay(182), '3 min 2 s', 'delay format:');
+});
+const cropCheck = await (async () => {
+  const bad = [];
+  const NUM = { kcal: '208', protein_g: '203', fat_g: '204', carbs_g: '205', fiber_g: '291', vitc_mg: '401', potassium_mg: '306' };
+  for (const [id, c] of Object.entries(cropsDoc.crops)) {
+    const raw = await getJSON(`../${c.raw}`);
+    if (raw.fdcId !== c.fdcId) bad.push(`${id}: fdcId`);
+    for (const [k, num] of Object.entries(NUM)) {
+      const x = raw.foodNutrients.find((n) => n.nutrient?.number === num && (n.amount ?? n.value) != null);
+      if ((x ? (x.amount ?? x.value) : null) !== c.per100g[k]) bad.push(`${id} ${k}`);
+    }
+    if (!baseDoc.crops[id]) bad.push(`${id}: no entry in data/base.json`);
+  }
+  return bad;
+})();
+test('Base plan: crop values match the raw USDA files', () => { if (cropCheck.length) throw new Error(cropCheck.join(', ')); });
+test('Base plan: every source named in data/base.json exists', () => {
+  const ids = new Set(Object.keys(baseDoc.sources));
+  const used = [...JSON.stringify(baseDoc.bodies).matchAll(/"source":"([^"]+)"/g), ...JSON.stringify(baseDoc.comm).matchAll(/"source":"([^"]+)"/g)].map((m) => m[1]);
+  for (const c of Object.values(baseDoc.crops)) used.push(...(c.nasa?.sources || []));
+  const missing = used.filter((u) => !ids.has(u));
+  if (missing.length) throw new Error(`unknown: ${missing.join(', ')}`);
+  for (const id of baseDoc.best_set.crops) if (!cropsDoc.crops[id]) throw new Error(`best set crop ${id} has no USDA values`);
+});
+
 // The docs repeat counts and the short-answer percentages by hand (README.md, JUDGE_GUIDE_AR.md, the deck's
 // pitch/deck/slides.json). This last test recomputes them from the data, so a change in the data cannot leave them stale.
 const docText = await Promise.all(['../README.md', '../JUDGE_GUIDE_AR.md', '../pitch/deck/slides.json']

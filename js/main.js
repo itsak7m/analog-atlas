@@ -16,6 +16,8 @@ import { openMethod } from './ui/method.js';
 import { closeOverlay, overlayOpen } from './ui/overlay.js';
 import { playTour, stopTour, tourRunning, focusAfterRun } from './ui/tour.js';
 import { startCorridor, stopCorridor, corridorActive, corridorSiteIds } from './ui/corridor.js';
+import { startBase, stopBase, baseActive } from './ui/base.js';
+import { openAsk } from './ui/ask.js';
 import { initKit, kit, refreshKit, feedLine, openPanel as openKitPanel, closePanel as closeKitPanel } from './kit/kit.js';
 import { loadScreening, scoreBoxes, findBox } from './screening.js';
 import { BoxLayer } from './globe/boxes.js';
@@ -229,6 +231,7 @@ function onDetailAction(e) {
     case 'street': if (place) openStreet(place); break;
     case 'twin': if (place) openTwin(place, findTarget(state.data, state.targetId)); break;
     case 'tour': if (need3D('The mission tour')) playTour(api); break;
+    case 'base': if (place && state.selected?.kind !== 'box') openBase(state.selected, place); break;
     case 'brief-more': {
       const open = btn.closest('.welcome').classList.toggle('open');
       btn.setAttribute('aria-expanded', String(open));
@@ -261,6 +264,7 @@ function placeOf(sel) {
 }
 
 function select(sel) {
+  if (baseActive() && (sel?.kind !== state.selected?.kind || sel?.id !== state.selected?.id)) stopBase();
   state.selected = sel;
   // A site below the strong-twin line (picked from a twin list, the tour or the corridor) gets its row and pin back.
   if (sel?.kind === 'site' && !$(`#rank-list .rank-row[data-id="${CSS.escape(sel.id)}"]`)) {
@@ -309,6 +313,7 @@ function setCloseup(on) {
 
 // Leave the close-up UI before a camera move back to a far view (used by api.home and api.lookAt).
 function resetCloseupUi() {
+  stopBase();
   const wasCloseup = state.view !== 'globe';
   setCloseup(false);
   setBackVisible(false);
@@ -378,6 +383,7 @@ async function standHere() {
 }
 
 async function backToGlobe() {
+  stopBase();
   update({ view: 'globe' });
   setCloseup(false);
   setBackVisible(false);
@@ -418,6 +424,14 @@ function need3D(what) {
   if (globe.viewer) return true;
   toast(`${what} needs the 3D globe, which this browser cannot show (no WebGL).`, 5000);
   return false;
+}
+
+// Base plan (future work): the 3D concept base at a site or target, with its plan. At an Earth site the
+// plan is a test base for the current target; at a target it is the base itself.
+function openBase(sel, place) {
+  const target = sel.kind === 'target' ? place : findTarget(state.data, state.targetId);
+  const result = sel.kind === 'site' ? ranked.find((r) => r.site.id === sel.id) : null;
+  startBase(api, { sel: { ...sel }, place, target, result, here: state.view === 'closeup', onAsk: (q) => openAsk(q) });
 }
 
 function toggleCorridor() {
@@ -538,7 +552,7 @@ const api = {
   openTwin: (siteId, targetId) => openTwin(findSite(state.data, siteId), findTarget(state.data, targetId)),
   closeOverlay,
   // Also turns Discover off, so the tour and the Jordan corridor show the hand-picked sites only.
-  closePanels: () => { stopCorridor(); closeKitPanel(); closeOverlay(); closeDiscover(); },
+  closePanels: () => { stopBase(); stopCorridor(); closeKitPanel(); closeOverlay(); closeDiscover(); },
   ranking: () => ranked,
   setTarget: (id) => { if (id !== state.targetId) changeTarget(id); },
   setMode: (mode) => {
@@ -656,6 +670,7 @@ async function main() {
   $('#tour-btn').addEventListener('click', () => (tourRunning() ? stopTour() : need3D('The mission tour') && playTour(api)));
   $('#corridor-btn').addEventListener('click', toggleCorridor);
   $('#method-btn').addEventListener('click', openMethod);
+  $('#ask-btn').addEventListener('click', () => openAsk());
   set3D(true);
   $('#token-btn').addEventListener('click', openTokenSetup);
   $('#banner').addEventListener('click', (e) => { if (e.target.closest('[data-setup]')) openTokenSetup(); });
@@ -667,6 +682,7 @@ async function main() {
     if (e.key !== 'Escape' || overlayOpen()) return;
     if (tourRunning()) { stopTour(); return; }
     if (corridorActive()) { stopCorridor(); backToGlobe(); return; } // the same as the corridor's Exit button
+    if (baseActive()) { backToGlobe(); return; } // the same as Exit base
     if (!$('#kit-panel').hidden) { closeKitPanel(); return; }
     if (state.view !== 'globe') backToGlobe();
   });

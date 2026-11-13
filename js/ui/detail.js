@@ -294,6 +294,7 @@ export function renderSite(site, target, result, extra = {}) {
       ${inCloseup ? '<button type="button" class="btn" data-action="back">Back to globe</button>' : '<button type="button" class="btn primary" data-action="fly">Fly down</button>'}
       ${standButtons(site.id)}
       ${hasImagery(site.id) || hasImagery(target.id) ? '<button type="button" class="btn" data-action="twin">Twin view</button>' : ''}
+      <button type="button" class="btn" data-action="base" title="A test base here for the current target: 3D concept, crops, communication room">Base plan</button>
     </div>
     ${photoNote(site.id)}
     ${twinOfSection(site)}
@@ -338,6 +339,7 @@ export function renderTarget(target, twins, extra = {}) {
     <div class="actions" style="margin-top:0">
       ${inCloseup ? '<button type="button" class="btn" data-action="back">Back to globe</button>' : '<button type="button" class="btn primary" data-action="fly">Fly down</button>'}
       ${standButtons(target.id)}
+      <button type="button" class="btn" data-action="base" title="A base here: 3D concept, problems and solutions, crops, communication room">Base plan</button>
     </div>
     ${photoNote(target.id)}
     ${measured < TARGET_MIN_MEASURED ? `<p class="caveat">⚑ Data quality: only ${measured} of the ${CLIMATE_FACTORS.length} factors ${measured === 1 ? 'is' : 'are'} measured at this site itself; the others in the reference values are ${esc(BODY_LABEL[target.body])}-wide averages or general statements (see "Environment used in the score"). Read its ranking with care${measured >= STRICT_MIN_FACTORS ? ', or switch on Strict data in Tune factors.' : `. Strict data will not help here: a strict climate score needs at least ${STRICT_MIN_FACTORS} factors measured at the site, and this target has ${measured ? `only ${measured}` : 'none'}, so the strict climate match gives no scores (the full analog match then leaves climate out).`}</p>` : ''}
