@@ -1,0 +1,57 @@
+{
+ "check": "(a) scout's 2023 MOD21A2 e29 at the 5 Jordan sites, reproduced with the scout's sample (the 12 Terra composites of 2023 that start nearest the 1st of each month, ties to the later one) and statistic (median of all valid 3 x 3 window pixels, no LST screen); tolerance 0.0005",
+ "ok": true,
+ "sites": {
+  "wadi-rum": {
+   "scout": 0.864,
+   "reproduced": 0.864,
+   "n_scout_method": 108,
+   "composites_scout_method": 12,
+   "own_method_2023_mean": 0.8646,
+   "n_own_method": 405,
+   "composites_2023": 45,
+   "ok": true
+  },
+  "harrat": {
+   "scout": 0.976,
+   "reproduced": 0.976,
+   "n_scout_method": 108,
+   "composites_scout_method": 12,
+   "own_method_2023_mean": 0.9739,
+   "n_own_method": 413,
+   "composites_2023": 46,
+   "ok": true
+  },
+  "waqf-as-suwwan": {
+   "scout": 0.87,
+   "reproduced": 0.87,
+   "n_scout_method": 108,
+   "composites_scout_method": 12,
+   "own_method_2023_mean": 0.8694,
+   "n_own_method": 413,
+   "composites_2023": 46,
+   "ok": true
+  },
+  "lisan-dead-sea": {
+   "scout": 0.966,
+   "reproduced": 0.966,
+   "n_scout_method": 108,
+   "composites_scout_method": 12,
+   "own_method_2023_mean": 0.9607,
+   "n_own_method": 403,
+   "composites_2023": 46,
+   "ok": true
+  },
+  "qa-al-jafr": {
+   "scout": 0.97,
+   "reproduced": 0.97,
+   "n_scout_method": 108,
+   "composites_scout_method": 12,
+   "own_method_2023_mean": 0.9626,
+   "n_own_method": 414,
+   "composites_2023": 46,
+   "ok": true
+  }
+ },
+ "run": "2026-10-10T15:08:58Z"
+}

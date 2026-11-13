@@ -1,0 +1,274 @@
+{
+ "summer_avg": {
+  "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_avg-float.tif",
+  "description": "Williams+2019: south-polar SUMMER (subsolar lat < 0) diurnal-average bolometric T",
+  "bytes": 25686193,
+  "georef": {
+   "format": "GeoTIFF float32, uncompressed",
+   "size": [
+    2533,
+    2533
+   ],
+   "pixel_size_m": [
+    240.03595736281088,
+    240.03595736281088
+   ],
+   "upper_left_corner_m": [
+    -304005.54,
+    304005.54
+   ],
+   "nodata": "nan",
+   "geokeys": {
+    "GTModelType": 1,
+    "GTRasterType": 1,
+    "SemiMajorAxis_m": 1737400.0,
+    "SemiMinorAxis_m": 1737400.0,
+    "ProjCoordTrans(15=PolarStereographic)": 15,
+    "ProjNatOriginLat": -90.0,
+    "FalseEasting": 0.0,
+    "FalseNorthing": 0.0,
+    "ScaleAtNatOrigin": 1.0,
+    "StraightVertPoleLong": 0.0
+   }
+  }
+ },
+ "summer_min": {
+  "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_min-float.tif",
+  "description": "Williams+2019: south-polar SUMMER minimum bolometric T",
+  "bytes": 25686193,
+  "georef": {
+   "format": "GeoTIFF float32, uncompressed",
+   "size": [
+    2533,
+    2533
+   ],
+   "pixel_size_m": [
+    240.03595736281088,
+    240.03595736281088
+   ],
+   "upper_left_corner_m": [
+    -304005.54,
+    304005.54
+   ],
+   "nodata": "nan",
+   "geokeys": {
+    "GTModelType": 1,
+    "GTRasterType": 1,
+    "SemiMajorAxis_m": 1737400.0,
+    "SemiMinorAxis_m": 1737400.0,
+    "ProjCoordTrans(15=PolarStereographic)": 15,
+    "ProjNatOriginLat": -90.0,
+    "FalseEasting": 0.0,
+    "FalseNorthing": 0.0,
+    "ScaleAtNatOrigin": 1.0,
+    "StraightVertPoleLong": 0.0
+   }
+  }
+ },
+ "summer_max": {
+  "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_max-float.tif",
+  "description": "Williams+2019: south-polar SUMMER maximum bolometric T",
+  "bytes": 25686193,
+  "georef": {
+   "format": "GeoTIFF float32, uncompressed",
+   "size": [
+    2533,
+    2533
+   ],
+   "pixel_size_m": [
+    240.03595736281088,
+    240.03595736281088
+   ],
+   "upper_left_corner_m": [
+    -304005.54,
+    304005.54
+   ],
+   "nodata": "nan",
+   "geokeys": {
+    "GTModelType": 1,
+    "GTRasterType": 1,
+    "SemiMajorAxis_m": 1737400.0,
+    "SemiMinorAxis_m": 1737400.0,
+    "ProjCoordTrans(15=PolarStereographic)": 15,
+    "ProjNatOriginLat": -90.0,
+    "FalseEasting": 0.0,
+    "FalseNorthing": 0.0,
+    "ScaleAtNatOrigin": 1.0,
+    "StraightVertPoleLong": 0.0
+   }
+  }
+ },
+ "winter_avg": {
+  "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_avg-float.tif",
+  "description": "Williams+2019: south-polar WINTER (subsolar lat > 0) diurnal-average bolometric T",
+  "bytes": 25686193,
+  "georef": {
+   "format": "GeoTIFF float32, uncompressed",
+   "size": [
+    2533,
+    2533
+   ],
+   "pixel_size_m": [
+    240.03595736281088,
+    240.03595736281088
+   ],
+   "upper_left_corner_m": [
+    -304005.54,
+    304005.54
+   ],
+   "nodata": "nan",
+   "geokeys": {
+    "GTModelType": 1,
+    "GTRasterType": 1,
+    "SemiMajorAxis_m": 1737400.0,
+    "SemiMinorAxis_m": 1737400.0,
+    "ProjCoordTrans(15=PolarStereographic)": 15,
+    "ProjNatOriginLat": -90.0,
+    "FalseEasting": 0.0,
+    "FalseNorthing": 0.0,
+    "ScaleAtNatOrigin": 1.0,
+    "StraightVertPoleLong": 0.0
+   }
+  }
+ },
+ "winter_min": {
+  "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_min-float.tif",
+  "description": "Williams+2019: south-polar WINTER minimum bolometric T",
+  "bytes": 25686193,
+  "georef": {
+   "format": "GeoTIFF float32, uncompressed",
+   "size": [
+    2533,
+    2533
+   ],
+   "pixel_size_m": [
+    240.03595736281088,
+    240.03595736281088
+   ],
+   "upper_left_corner_m": [
+    -304005.54,
+    304005.54
+   ],
+   "nodata": "nan",
+   "geokeys": {
+    "GTModelType": 1,
+    "GTRasterType": 1,
+    "SemiMajorAxis_m": 1737400.0,
+    "SemiMinorAxis_m": 1737400.0,
+    "ProjCoordTrans(15=PolarStereographic)": 15,
+    "ProjNatOriginLat": -90.0,
+    "FalseEasting": 0.0,
+    "FalseNorthing": 0.0,
+    "ScaleAtNatOrigin": 1.0,
+    "StraightVertPoleLong": 0.0
+   }
+  }
+ },
+ "winter_max": {
+  "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_max-float.tif",
+  "description": "Williams+2019: south-polar WINTER maximum bolometric T",
+  "bytes": 25686193,
+  "georef": {
+   "format": "GeoTIFF float32, uncompressed",
+   "size": [
+    2533,
+    2533
+   ],
+   "pixel_size_m": [
+    240.03595736281088,
+    240.03595736281088
+   ],
+   "upper_left_corner_m": [
+    -304005.54,
+    304005.54
+   ],
+   "nodata": "nan",
+   "geokeys": {
+    "GTModelType": 1,
+    "GTRasterType": 1,
+    "SemiMajorAxis_m": 1737400.0,
+    "SemiMinorAxis_m": 1737400.0,
+    "ProjCoordTrans(15=PolarStereographic)": 15,
+    "ProjNatOriginLat": -90.0,
+    "FalseEasting": 0.0,
+    "FalseNorthing": 0.0,
+    "ScaleAtNatOrigin": 1.0,
+    "StraightVertPoleLong": 0.0
+   }
+  }
+ },
+ "annual_mean": {
+  "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/24x6_240m/additional_maps/polar_south_80_Tmean.grd",
+  "description": "Schorghofer & Williams 2020: mean T averaged over ecliptic (Ls) and subsolar longitudes",
+  "bytes": 25705152,
+  "georef": {
+   "format": "GMT netCDF-3 classic grid (x, y pixel centres normalised by R=1737.4 km)",
+   "size": [
+    2533,
+    2533
+   ],
+   "pixel_size_m": [
+    240.03595749798663,
+    240.03595749798663
+   ],
+   "x_range_norm": [
+    -0.17490820892854325,
+    0.17490820892854325
+   ],
+   "y_range_norm": [
+    -0.17490820892854325,
+    0.17490820892854325
+   ],
+   "row0_is": "south (y increasing)",
+   "global_attributes": {
+    "node_offset": [
+     1
+    ],
+    "title": "polar_south_80_24x6"
+   },
+   "z_attributes": {
+    "valid_range": [
+     29.1129207611084,
+     190.11619567871094
+    ]
+   }
+  }
+ },
+ "annual_max_smoothed": {
+  "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/24x6_240m/additional_maps/polar_south_80_Tmax.grd",
+  "description": "Schorghofer & Williams 2020: maximum T after Fourier smoothing (all seasons)",
+  "bytes": 25705152,
+  "georef": {
+   "format": "GMT netCDF-3 classic grid (x, y pixel centres normalised by R=1737.4 km)",
+   "size": [
+    2533,
+    2533
+   ],
+   "pixel_size_m": [
+    240.03595749798663,
+    240.03595749798663
+   ],
+   "x_range_norm": [
+    -0.17490820892854325,
+    0.17490820892854325
+   ],
+   "y_range_norm": [
+    -0.17490820892854325,
+    0.17490820892854325
+   ],
+   "row0_is": "south (y increasing)",
+   "global_attributes": {
+    "node_offset": [
+     1
+    ],
+    "title": "polar_south_80_24x6"
+   },
+   "z_attributes": {
+    "valid_range": [
+     41.91171646118164,
+     335.04522705078125
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<base href="../">
+<title>Analog Atlas · promo</title>
+<link rel="stylesheet" href="vendor/fonts/fonts.css">
+<style>
+  html, body { margin: 0; background: #000; }
+  canvas { display: block; width: 100vw; height: 56.25vw; max-height: 100vh; max-width: 177.78vh; margin: auto; }
+  #ui { position: fixed; left: 12px; bottom: 12px; font: 13px monospace; color: #8f9cb3; }
+  #ui button { font: 600 13px sans-serif; margin-right: 6px; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1920" height="1080"></canvas>
+<div id="ui"><button id="p30">Play 30 s</button><button id="p60">Play 60 s</button><button id="r30">Save 30 s</button><button id="r60">Save 60 s</button><span id="msg"></span></div>
+<script type="module">
+import { makePixelCat } from '/pitch/pixelcat.js';
+// Analog Atlas promo: "Earth plays space" (Team Cosmic Cats, NASA Space Apps 2026 Amman).
+// Real photos of the app's places (credits drawn at the end, as their licences ask) with drawn, animated spacecraft.
+// No numbers from the app: it invites people to explore. Music is generated here (no third-party audio).
+// Two scenes name a result, in words: the McMurdo Dry Valleys are the app's #1 Earth twin of the Malapert Moon base
+// site, and Harrat al-Shaam is its #1 Earth twin of Jezero (full match, default weights). The Mars scene says that
+// Wadi Rum only looks like Mars, because the app ranks it near the bottom for every Mars target. The other place
+// tags are about looks, not data results.
+// ?len=30|60  ?record=1 records the canvas itself and saves pitch/analog-atlas-pitch-promo<30|60>.webm through serve.py
+// (it asks first; a headless Chrome recorder adds &overwrite=1). The old video stays if the save fails.
+// ?t=<s> shows one still frame.
+const W = 1920, H = 1080, FPS = 30;
+const params = new URLSearchParams(location.search);
+const C = { amber: '#ffb547', mars: '#ff6a3d', cyan: '#5ce1e6', moon: '#dfe5f2', white: '#f6f8fc', dim: '#9aa6bd' };
+const cv = document.getElementById('c'), g = cv.getContext('2d');
+const { pixelCat, flyCat } = makePixelCat(g, W);
+
+// ---------- assets ----------
+const PH = {
+  iceland: 'panoramas/holuhraun-lava-field.jpg', ice: 'panoramas/dry-valleys-wright.jpg',
+  moon: 'panoramas/apollo11-pan4.jpg', mars: 'panoramas/jezero-pia24264.jpg', atacama: 'panoramas/atacama-armazones.jpg',
+  haughton: 'panoramas/haughton-crater-edge.jpg', tinto: 'panoramas/rio-tinto-pena-de-hierro.jpg', qaidam: 'panoramas/qaidam-yardangs-mangya.jpg',
+  cotm: 'panoramas/craters-of-the-moon-big-craters-spatter-cones.jpg', dv: 'panoramas/death-valley.jpg', harrat: 'panoramas/harrat-usaykhim.jpg', rum: 'panoramas/wadi-rum-day.jpg',
+  gale: 'panoramas/gale-pia23623.jpg', apollo17: 'panoramas/apollo17-lm-pan.jpg',
+  appHome: 'pitch/shots/clean-earth.png', appDiscover: 'pitch/shots/clean-discover.png', appTwin: 'pitch/shots/clean-twin.png', appMars: 'pitch/shots/clean-mars.png', appMoon: 'pitch/shots/clean-moon.png',
+  earthTex: 'textures/earth.jpg',
+};
+const img = (src) => new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+const I = Object.fromEntries(await Promise.all(Object.entries(PH).map(async ([k, v]) => [k, await img(v)])));
+let credits = [];
+try {
+  const pano = (await (await fetch('data/panoramas.json')).json()).panoramas;
+  const used = new Set(Object.values(PH).filter((p) => p.startsWith('panoramas/')));
+  credits = pano.filter((p) => used.has(p.file)).map((p) => `${p.credit.split(' (')[0].split(';')[0]} (${p.licence.replace(/\s*\(.*\)/, '')})`);
+  credits = [...new Set(credits)];
+} catch { /* no credits line */ }
+const FONTS = { 'IBM Plex Sans': [400, 500, 600], 'IBM Plex Sans Condensed': [500, 600], 'IBM Plex Mono': [400, 500] };
+await Promise.all(Object.entries(FONTS).flatMap(([f, ws]) => ws.map((w) => document.fonts.load(`${w} 40px '${f}'`))));
+const fw = (f, w) => (FONTS[f] || [w]).reduce((a, b) => (Math.abs(b - w) < Math.abs(a - w) ? b : a));
+
+// Earth texture for the opening globe.
+const earthTex = (() => { const im = I.earthTex; if (!im) return null; const w = 1024, h = 512, c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d'); x.drawImage(im, 0, 0, w, h); return { w, h, d: x.getImageData(0, 0, w, h).data }; })();
+
+// ---------- helpers ----------
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const span = (t, a, b) => clamp((t - a) / (b - a));
+const eo = (t) => 1 - Math.pow(1 - clamp(t), 3);
+const eio = (t) => { t = clamp(t); return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+const back = (t) => { t = clamp(t); const c = 1.8; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
+const hit = (t, at, k = 8) => (t >= at ? Math.exp(-(t - at) * k) : 0);
+let seed = 11; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const font = (s, w = 600, f = 'IBM Plex Sans Condensed') => `${fw(f, w)} ${s}px '${f}', sans-serif`;
+
+function photo(im, { zoom = 1.08, panX = 0, panY = 0, letterbox = false, grade = null } = {}) {
+  if (!im) return;
+  const boxH = letterbox ? 820 : H, y0 = (H - boxH) / 2;
+  const s = Math.max(W / im.width, boxH / im.height) * zoom, sw = W / s, sh = boxH / s;
+  const mx = im.width - sw, my = im.height - sh;
+  g.drawImage(im, clamp(mx / 2 + panX * mx / 2, 0, mx), clamp(my / 2 + panY * my / 2, 0, my), sw, sh, 0, y0, W, boxH);
+  if (grade) { g.save(); g.globalCompositeOperation = 'soft-light'; g.fillStyle = grade; g.fillRect(0, y0, W, boxH); g.restore(); }
+  if (letterbox) { g.fillStyle = '#000'; g.fillRect(0, 0, W, y0); g.fillRect(0, H - y0, W, y0); }
+}
+function shade(a, color = '#000') { if (a <= 0) return; g.save(); g.globalAlpha = a; g.fillStyle = color; g.fillRect(0, 0, W, H); g.restore(); }
+function title(str, x, y, size, { color = C.white, alpha = 1, scale = 1, rgb = 0, align = 'center', stroke = true, weight = 600, family = 'IBM Plex Sans Condensed', spacing = 2 } = {}) {
+  if (alpha <= 0) return;
+  g.save(); g.translate(x, y); g.scale(scale, scale); g.globalAlpha = alpha;
+  g.font = font(size, weight, family); g.textAlign = align; g.textBaseline = 'middle';
+  if ('letterSpacing' in g) g.letterSpacing = `${spacing}px`;
+  if (stroke) { g.shadowColor = 'rgba(0,0,0,0.65)'; g.shadowBlur = 30; g.shadowOffsetY = 6; }
+  if (rgb) { g.globalCompositeOperation = 'lighter'; g.fillStyle = 'rgba(255,40,70,0.8)'; g.fillText(str, -rgb, 0); g.fillStyle = 'rgba(40,220,255,0.8)'; g.fillText(str, rgb, 0); g.globalCompositeOperation = 'source-over'; }
+  g.fillStyle = color; g.fillText(str, 0, 0); g.restore();
+}
+// Location pin tag: "📍 ICELAND" style, slams in.
+function tag(str, sub, x, y, t, at) {
+  const k = back(span(t, at, at + 0.35)); if (k <= 0) return;
+  g.save(); g.translate(x, y); g.scale(k, k); g.rotate(-0.04);
+  g.font = font(54); const w = g.measureText(str).width + 120;
+  g.fillStyle = C.amber; g.fillRect(-w / 2, -48, w, 96);
+  g.fillStyle = '#111'; g.beginPath(); g.arc(-w / 2 + 50, -6, 16, Math.PI, 0); g.lineTo(-w / 2 + 50, 26); g.closePath(); g.fill();
+  g.fillStyle = C.amber; g.beginPath(); g.arc(-w / 2 + 50, -6, 6, 0, 7); g.fill();
+  g.fillStyle = '#111'; g.textAlign = 'left'; g.textBaseline = 'middle'; g.fillText(str, -w / 2 + 84, 2);
+  g.restore();
+  if (sub) title(sub, x, y + 84, 30, { family: 'IBM Plex Sans', weight: 500, alpha: span(t, at + 0.2, at + 0.5), spacing: 0 });
+}
+const grain = (() => { const c = document.createElement('canvas'); c.width = 256; c.height = 256; const x = c.getContext('2d'), d = x.createImageData(256, 256); for (let i = 0; i < d.data.length; i += 4) { const v = rnd() * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 18; } x.putImageData(d, 0, 0); return c; })();
+function finish(time) {
+  const vg = g.createRadialGradient(W / 2, H / 2, 520, W / 2, H / 2, 1250); vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,0.5)');
+  g.fillStyle = vg; g.fillRect(0, 0, W, H);
+  g.save(); g.globalAlpha = 0.5; const ox = (time * 997) % 256, oy = (time * 613) % 256; g.fillStyle = g.createPattern(grain, 'repeat'); g.translate(-ox, -oy); g.fillRect(0, 0, W + 256, H + 256); g.restore();
+  // Space Apps 2026 rule: SI-generated images and video carry a visible watermark. Drawings and music here are made by code written with Claude.
+  g.save(); g.font = '600 22px "IBM Plex Sans Condensed", sans-serif'; g.textAlign = 'right'; g.textBaseline = 'top'; g.globalAlpha = 0.85; g.lineWidth = 4; g.strokeStyle = 'rgba(0,0,0,0.75)'; g.strokeText('SI-assisted: drawings & music made with Claude · photos real', W - 28, 22); g.fillStyle = '#fff'; g.fillText('SI-assisted: drawings & music made with Claude · photos real', W - 28, 22); g.restore();
+}
+
+// ---------- drawn spacecraft ----------
+const parts = [];
+function dust(x, y, n, spread, up, color = 'rgba(170,150,130,') { for (let i = 0; i < n; i++) parts.push({ x: x + (rnd() - 0.5) * 30, y, vx: (rnd() - 0.5) * spread, vy: -rnd() * up, r: 6 + rnd() * 18, life: 0, max: 0.8 + rnd() * 1.2, c: color }); }
+function drawParts(dt) {
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const p = parts[i]; p.life += dt; if (p.life > p.max) { parts.splice(i, 1); continue; }
+    p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 60 * dt; p.vx *= 0.98; p.r += 30 * dt;
+    g.fillStyle = p.c + (0.35 * (1 - p.life / p.max)).toFixed(3) + ')'; g.beginPath(); g.arc(p.x, p.y, p.r, 0, 7); g.fill();
+  }
+}
+function groundShadow(x, y, w, a = 0.55) { // soft contact shadow on the photo's ground
+  if (a <= 0) return; g.save(); g.translate(x, y); g.scale(1, 0.16); const sh = g.createRadialGradient(0, 0, 0, 0, 0, w); sh.addColorStop(0, `rgba(0,0,0,${a})`); sh.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = sh; g.beginPath(); g.arc(0, 0, w, 0, 7); g.fill(); g.restore();
+}
+function lander(x, y, s, flame = 0, legs = 1) { // Apollo Lunar Module, (x, y) = bottom of the foot pads
+  g.save(); g.translate(x, y); g.scale(s, s);
+  g.shadowColor = 'rgba(0,0,0,0.5)'; g.shadowBlur = 20;
+  if (flame > 0) { const fl = g.createLinearGradient(0, -60, 0, 60 + 140 * flame); fl.addColorStop(0, 'rgba(255,255,230,0.95)'); fl.addColorStop(0.4, 'rgba(255,170,60,0.7)'); fl.addColorStop(1, 'rgba(255,100,40,0)');
+    g.fillStyle = fl; g.beginPath(); g.moveTo(-26, -58); g.lineTo(26, -58); g.lineTo(10 + 30 * flame, 60 + 150 * flame); g.lineTo(-10 - 30 * flame, 60 + 150 * flame); g.closePath(); g.fill(); }
+  g.strokeStyle = '#c8c8c8'; g.lineWidth = 7; // legs
+  for (const sx of [-1, 1]) { g.beginPath(); g.moveTo(sx * 70, -95); g.lineTo(sx * (100 + 30 * legs), -10 * legs); g.stroke(); g.beginPath(); g.moveTo(sx * 50, -60); g.lineTo(sx * (100 + 30 * legs), -10 * legs); g.stroke(); g.fillStyle = '#dcdcdc'; g.beginPath(); g.ellipse(sx * (100 + 30 * legs), -4 * legs, 22, 7, 0, 0, 7); g.fill(); }
+  const gold = g.createLinearGradient(-90, 0, 90, 0); gold.addColorStop(0, '#7a5a12'); gold.addColorStop(0.35, '#e8c25a'); gold.addColorStop(0.6, '#b8862a'); gold.addColorStop(1, '#5e440d');
+  g.fillStyle = gold; g.beginPath(); g.moveTo(-90, -150); g.lineTo(90, -150); g.lineTo(100, -95); g.lineTo(80, -55); g.lineTo(-80, -55); g.lineTo(-100, -95); g.closePath(); g.fill(); // descent stage
+  g.fillStyle = '#555'; g.fillRect(-26, -62, 52, 14);
+  const grey = g.createLinearGradient(-80, 0, 80, 0); grey.addColorStop(0, '#6d7076'); grey.addColorStop(0.5, '#d9dbe0'); grey.addColorStop(1, '#73767c');
+  g.fillStyle = grey; g.beginPath(); g.moveTo(-70, -150); g.lineTo(-80, -205); g.lineTo(-45, -260); g.lineTo(45, -260); g.lineTo(80, -205); g.lineTo(70, -150); g.closePath(); g.fill(); // ascent stage
+  g.fillStyle = '#1d2230'; g.beginPath(); g.moveTo(-40, -235); g.lineTo(-10, -235); g.lineTo(-14, -205); g.lineTo(-44, -210); g.closePath(); g.fill(); g.beginPath(); g.moveTo(40, -235); g.lineTo(10, -235); g.lineTo(14, -205); g.lineTo(44, -210); g.closePath(); g.fill();
+  g.strokeStyle = '#ddd'; g.lineWidth = 4; g.beginPath(); g.moveTo(30, -260); g.lineTo(55, -300); g.stroke(); g.beginPath(); g.arc(58, -306, 12, 0, 7); g.stroke(); // antenna
+  g.restore();
+}
+function rover(x, y, s, t, dir = 1) { // Mars rover (Perseverance-like), (x, y) = ground under the wheels
+  g.save(); g.translate(x, y); g.scale(s * dir, s); g.shadowColor = 'rgba(0,0,0,0.45)'; g.shadowBlur = 18;
+  const bob = Math.sin(t * 9) * 2;
+  g.strokeStyle = '#3a3d44'; g.lineWidth = 8; g.beginPath(); g.moveTo(-120, -45); g.lineTo(-60, -85); g.lineTo(0, -45); g.moveTo(-60, -85); g.lineTo(60, -85 + bob); g.lineTo(120, -45); g.stroke();
+  for (const wx of [-120, 0, 120]) { g.fillStyle = '#2a2c31'; g.beginPath(); g.arc(wx, -32, 32, 0, 7); g.fill(); g.strokeStyle = '#8a8f99'; g.lineWidth = 4; g.save(); g.translate(wx, -32); g.rotate(t * 6); g.beginPath(); for (let k = 0; k < 6; k++) { g.moveTo(0, 0); g.lineTo(Math.cos(k) * 26, Math.sin(k) * 26); } g.stroke(); g.restore(); }
+  const body = g.createLinearGradient(0, -150, 0, -85); body.addColorStop(0, '#f5f5f2'); body.addColorStop(1, '#b9bbbf');
+  g.fillStyle = body; g.fillRect(-130, -150 + bob, 250, 66);
+  g.fillStyle = '#c99a3a'; g.fillRect(-130, -96 + bob, 250, 10);
+  g.fillStyle = '#9a9ea8'; g.beginPath(); g.moveTo(-130, -140 + bob); g.lineTo(-175, -170 + bob); g.lineTo(-165, -110 + bob); g.lineTo(-130, -110 + bob); g.closePath(); g.fill(); // RTG
+  g.strokeStyle = '#e6e6e6'; g.lineWidth = 9; g.beginPath(); g.moveTo(80, -150 + bob); g.lineTo(80, -265 + bob); g.stroke(); // mast
+  g.fillStyle = '#f0f0ee'; g.fillRect(52, -300 + bob, 70, 40); g.fillStyle = '#1b2433'; g.beginPath(); g.arc(100, -280 + bob, 9, 0, 7); g.fill(); g.beginPath(); g.arc(74, -280 + bob, 7, 0, 7); g.fill();
+  g.strokeStyle = '#d0d0d0'; g.lineWidth = 7; g.beginPath(); g.moveTo(120, -120 + bob); g.lineTo(175, -95 + bob); g.lineTo(200, -60 + bob); g.stroke(); // arm
+  g.restore();
+}
+function globe(cx, cy, r, lon0) {
+  if (!earthTex) return;
+  const R = r, rr = Math.round(Math.min(r, 230)), c = document.createElement('canvas'); c.width = c.height = rr * 2;
+  const x = c.getContext('2d'), im = x.createImageData(rr * 2, rr * 2), out = im.data, { w, h, d } = earthTex;
+  for (let j = 0; j < 2 * rr; j++) for (let i = 0; i < 2 * rr; i++) {
+    const X = (i + 0.5 - rr) / rr, Y = (rr - j - 0.5) / rr, q = X * X + Y * Y, o = (j * 2 * rr + i) * 4; if (q > 1) continue;
+    const z = Math.sqrt(1 - q), la = Math.asin(Y * 0.95 + z * 0.31), lo = lon0 + Math.atan2(X, z * 0.95 - Y * 0.31);
+    let u = lo / 6.2832 + 0.5; u -= Math.floor(u); const p = ((Math.min(h - 1, ((0.5 - la / Math.PI) * h) | 0) * w) + ((u * w) | 0)) * 4;
+    const s = 0.2 + 0.8 * clamp(-0.5 * X + 0.4 * Y + 0.77 * z); out[o] = d[p] * s; out[o + 1] = d[p + 1] * s; out[o + 2] = d[p + 2] * s; out[o + 3] = 255 * clamp((1 - q) * rr);
+  }
+  x.putImageData(im, 0, 0);
+  const gl = g.createRadialGradient(cx, cy, R * 0.9, cx, cy, R * 1.3); gl.addColorStop(0, 'rgba(110,180,255,0.35)'); gl.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gl; g.beginPath(); g.arc(cx, cy, R * 1.3, 0, 7); g.fill();
+  g.drawImage(c, cx - R, cy - R, R * 2, R * 2);
+}
+const stars = Array.from({ length: 300 }, () => ({ x: rnd() * W, y: rnd() * H, a: 0.3 + rnd() * 0.7, r: rnd() * 1.6 }));
+const starfield = (a = 1) => { g.save(); g.fillStyle = '#e6eeff'; for (const s of stars) { g.globalAlpha = a * s.a; g.fillRect(s.x, s.y, s.r + 0.6, s.r + 0.6); } g.restore(); };
+function device(im, x, y, w, rot, a) { // app screenshot on a floating screen
+  if (!im || a <= 0) return;
+  g.save(); g.globalAlpha = a; g.translate(x, y); g.rotate(rot);
+  g.shadowColor = 'rgba(255,181,71,0.45)'; g.shadowBlur = 60;
+  const h = w * 9 / 16; g.fillStyle = '#0b0f18'; g.fillRect(-w / 2 - 14, -h / 2 - 14, w + 28, h + 28);
+  g.shadowBlur = 0; g.drawImage(im, -w / 2, -h / 2, w, h); g.restore();
+}
+
+// ---------- scenes (the same building blocks; 30 s and 60 s versions) ----------
+const BEAT = 0.5; // 120 BPM
+let lastT = 0;
+const S = {
+  open(t, len) { // Earth from space: "THIS IS EARTH." … "OR IS IT?"
+    starfield(1); globe(960, 560 + 40 * (1 - eo(span(t, 0, 2))), 330, 0.6 + t * 0.12);
+    title('THIS IS EARTH.', 960, 160, 110, { alpha: span(t, 0.4, 0.8) * (1 - span(t, len - 1.3, len - 1.0)), scale: 1 + 0.1 * hit(t, 0.4) });
+    if (t > 0.3) flyCat(-250 + (W + 900) * (t - 0.3) / (len - 0.3), 930 + (Math.floor(t * 4) % 2) * 6, 6, t); // our mascot flies past
+    title('…OR IS IT?', 960, 160, 130, { color: C.amber, alpha: span(t, len - 1.0, len - 0.9), scale: 1 + 0.2 * hit(t, len - 1.0), rgb: 14 * hit(t, len - 1.0) });
+  },
+  lander(t, len) { // Iceland's black lava: a Moon lander touches down. "THE MOON?" → ICELAND
+    photo(I.iceland, { zoom: 1.12 - 0.04 * t / len, panX: -0.2 + 0.2 * t / len, grade: 'rgba(120,130,150,0.4)' });
+    shade(0.15);
+    const land = Math.min(len * 0.55, 3), k = eio(span(t, 0, land)), y = -200 + (790 - -200) * k;
+    if (t > land - 0.05 && t < land + 0.1 && !S._landed) { dust(1060, 790, 60, 900, 220, 'rgba(60,60,64,'); S._landed = true; }
+    if (t < 0.05) S._landed = false;
+    groundShadow(1060, 795, 230 * (0.5 + 0.5 * k), 0.6 * k);
+    lander(1060, y, 0.95, t < land ? 0.6 + 0.4 * Math.sin(t * 40) : 0, 1);
+    drawParts(1 / FPS);
+    title('THE MOON?', 960, 170, 150, { alpha: span(t, 0.6, 0.9), scale: 1 + 0.15 * hit(t, 0.6), rgb: 10 * hit(t, 0.6) });
+    tag('ICELAND', 'Holuhraun lava field', 520, 860, t, land + 0.4);
+  },
+  rover(t, len) { // Wadi Rum: a Mars rover rolls through. "MARS?" → JORDAN: Wadi Rum looks like Mars; the data's twin of Jezero is Harrat al-Shaam
+    photo(I.rum, { letterbox: true, zoom: 1.0, panX: -0.6 + 1.2 * t / len, grade: 'rgba(255,120,60,0.35)' });
+    const x = -300 + (W + 300) * (t / (len + 1.5));
+    if (Math.floor(t * FPS) % 3 === 0) dust(x - 140, 905, 2, 120, 80, 'rgba(210,140,90,');
+    drawParts(1 / FPS);
+    groundShadow(x + 10, 912, 210, 0.6);
+    rover(x, 910, 0.85, t);
+    title('MARS?', 960, 220, 170, { color: C.mars, alpha: span(t, 0.5, 0.8), scale: 1 + 0.18 * hit(t, 0.5), rgb: 12 * hit(t, 0.5) });
+    tag('JORDAN', 'Wadi Rum · looks like Mars', 1400, 760, t, len * 0.5);
+    title('Our closest twin of Jezero: Harrat al-Shaam', 1400, 884, 30, { family: 'IBM Plex Sans', weight: 500, alpha: span(t, len * 0.5 + 0.5, len * 0.5 + 0.8), spacing: 0 });
+  },
+  ice(t, len) { // Antarctica's Dry Valleys: a pixel space cat plants a flag. "A MOON BASE?" → ANTARCTICA, the app's #1 twin of Malapert
+    photo(I.ice, { zoom: 1.1, panX: 0.3 - 0.3 * t / len, grade: 'rgba(150,190,255,0.35)' });
+    const walkEnd = len * 0.55, x = 520 + 360 * eo(span(t, 0, walkEnd));
+    groundShadow(x, 902, 160, 0.5);
+    pixelCat(x, 900, 9, t, { walk: t < walkEnd, flag: eo(span(t, walkEnd, walkEnd + 0.6)) });
+    title('A MOON BASE?', 960, 170, 150, { color: C.cyan, alpha: span(t, 0.4, 0.7), scale: 1 + 0.15 * hit(t, 0.4) });
+    tag('ANTARCTICA', 'McMurdo Dry Valleys · our closest twin of Malapert', 1470, 780, t, walkEnd + 0.3);
+  },
+  guess(t, len) { // Split screen: one is the Moon, one is Iceland.
+    const half = W / 2;
+    g.save(); g.beginPath(); g.rect(0, 0, half - 6, H); g.clip(); g.translate(-half / 2, 0); photo(I.moon, { zoom: 1.45, panX: -0.8, panY: 0.15 }); g.restore();
+    g.save(); g.beginPath(); g.rect(half + 6, 0, half, H); g.clip(); g.translate(half / 2, 0); photo(I.iceland, { zoom: 1.15, grade: 'rgba(120,130,150,0.4)' }); g.restore();
+    g.fillStyle = '#000'; g.fillRect(half - 6, 0, 12, H);
+    title('ONE IS THE MOON.', 960, 150, 110, { alpha: span(t, 0.2, 0.5), scale: 1 + 0.1 * hit(t, 0.2) });
+    title('ONE IS ICELAND.', 960, 270, 110, { color: C.amber, alpha: span(t, 1.0, 1.3), scale: 1 + 0.1 * hit(t, 1.0) });
+    const r = len * 0.6;
+    tag('THE MOON', 'Apollo 11, 1969', 480, 900, t, r);
+    tag('ICELAND', 'Holuhraun', 1440, 900, t, r + 0.25);
+  },
+  montage(t, len, list) { // fast cuts on every beat
+    const i = Math.min(list.length - 1, Math.floor(t / BEAT)), [key, label, sub, grade] = list[i], k = (t % BEAT) / BEAT;
+    photo(I[key], { zoom: 1.18 - 0.08 * k, panX: (i % 2 ? 1 : -1) * 0.3, grade });
+    shade(0.25);
+    title(label, 960, 500, 170, { scale: 1 + 0.15 * hit(t, i * BEAT, 10), rgb: 10 * hit(t, i * BEAT, 10) });
+    title(sub, 960, 640, 44, { family: 'IBM Plex Sans', weight: 500, color: C.white, spacing: 0 });
+    shade(0.35 * hit(t, i * BEAT, 14), '#fff');
+  },
+  cave(t, len) { // a lava field at dusk, a pixel space cat's lamp searches a cave. "A CAVE TO LIVE IN?"
+    photo(I.cotm, { zoom: 1.15, panX: 0.2, grade: 'rgba(30,40,80,0.6)' });
+    shade(0.55, '#020410');
+    groundShadow(560, 952, 160, 0.5);
+    pixelCat(560, 950, 9, t, { walk: false, light: eo(span(t, 0.3, 0.9)) * (0.8 + 0.2 * Math.sin(t * 13)) });
+    title('A CAVE TO LIVE IN?', 960, 180, 130, { alpha: span(t, 0.5, 0.8), scale: 1 + 0.12 * hit(t, 0.5) });
+    tag('LAVA TUBES', 'Idaho · Jordan', 1380, 820, t, len * 0.55);
+  },
+  statement(t, len, lines) { // big words on the beat over a moving starfield and dim photo
+    photo(I.harrat, { zoom: 1.1, panX: -0.4 + 0.8 * t / len, grade: 'rgba(255,181,71,0.25)' }); shade(0.6);
+    lines.forEach(([str, color], i) => { const at = i * BEAT * 2; title(str, 960, 380 + i * 170, 120, { color, alpha: span(t, at, at + 0.08), scale: 1 + 0.15 * hit(t, at), rgb: 10 * hit(t, at) }); });
+  },
+  app(t, len) { // the app on a floating screen
+    starfield(0.8); shade(0.0);
+    const shots = [I.appHome, I.appTwin, I.appMoon, I.appDiscover, I.appMars].filter(Boolean);
+    const each = len / Math.max(1, Math.min(shots.length, Math.round(len / 1.6)));
+    const i = Math.min(shots.length - 1, Math.floor(t / each)), k = (t % each) / each;
+    device(shots[i], 960, 560, 1250 + 60 * k, -0.04 + 0.03 * k, span(t, 0, 0.3));
+    title('ANALOG ATLAS', 960, 110, 90, { alpha: span(t, 0.2, 0.5), spacing: 10 });
+    title('A 3D atlas of the places on Earth that behave like the Moon and Mars', 960, 1000, 38, { family: 'IBM Plex Sans', weight: 500, alpha: span(t, 0.5, 0.8), spacing: 0 });
+  },
+  end(t, len) {
+    starfield(1);
+    const gl = g.createRadialGradient(960, 520, 50, 960, 520, 900); gl.addColorStop(0, 'rgba(255,181,71,0.3)'); gl.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gl; g.fillRect(0, 0, W, H);
+    title('FIND THE MOON AND MARS', 960, 380, 120, { scale: back(span(t, 0, 0.4)), rgb: 12 * hit(t, 0) });
+    if (t > 0.2 && t < Math.min(len - 0.2, 3.5)) flyCat(-250 + (W + 900) * span(t, 0.2, Math.min(len - 0.2, 3.5)), 210 + (Math.floor(t * 4) % 2) * 6, 6, t);
+    title('ON EARTH.', 960, 510, 150, { color: C.amber, scale: back(span(t, 0.25, 0.65)), rgb: 12 * hit(t, 0.25) });
+    title('Explore Analog Atlas', 960, 660, 50, { family: 'IBM Plex Sans', weight: 600, alpha: span(t, 0.8, 1.1), spacing: 1 });
+    title('Team Cosmic Cats · NASA Space Apps Challenge 2026 · Amman', 960, 740, 34, { family: 'IBM Plex Sans', weight: 500, color: C.dim, alpha: span(t, 1.0, 1.3), spacing: 0 });
+    if (credits.length) {
+      g.save(); g.globalAlpha = span(t, 1.2, 1.5) * 0.85; g.fillStyle = '#aab3c5'; g.font = font(17, 400, 'IBM Plex Sans'); g.textAlign = 'center';
+      const line = `Photos: ${credits.join(' · ')} · Globe and app views: Earth NASA Blue Marble and Black Marble (NASA GIBS); Moon LRO (NASA/GSFC/Arizona State University) and Mars Viking, CTX, HiRISE (NASA, USGS Astrogeology) via Cesium ion · photos cropped and colour-graded, drawings added · music synthesized in code`;
+      const words = line.split(' '); let row = '', y = 960;
+      for (const w of words) { if (g.measureText(row + w).width > 1700) { g.fillText(row, 960, y); row = ''; y += 24; } row += w + ' '; }
+      g.fillText(row, 960, y); g.restore();
+    }
+  },
+};
+const MONTAGE = [
+  ['atacama', 'CHILE', 'Atacama Desert · one of the driest places on Earth', 'rgba(255,170,90,0.3)'],
+  ['haughton', 'CANADA', 'Haughton Crater · Arctic impact crater', 'rgba(150,180,220,0.3)'],
+  ['tinto', 'SPAIN', 'Rio Tinto · acid red river', 'rgba(255,90,60,0.3)'],
+  ['qaidam', 'CHINA', 'Qaidam Basin · salt desert', 'rgba(255,200,120,0.3)'],
+  ['dv', 'USA', 'Death Valley · salt flats', 'rgba(255,190,120,0.3)'],
+  ['harrat', 'JORDAN', 'Harrat al-Shaam · black basalt', 'rgba(255,181,71,0.3)'],
+];
+const VERSIONS = {
+  30: [['open', 3], ['lander', 5], ['rover', 5], ['ice', 4], ['guess', 3.5], ['montage', 3, MONTAGE], ['app', 3.5], ['end', 2.9]],
+  60: [['open', 4], ['lander', 7], ['rover', 7], ['ice', 6], ['guess', 5], ['cave', 6], ['montage', 3, MONTAGE],
+       ['statement', 6, [['TEST THE GEAR.', C.white], ['TRAIN THE CREWS.', C.white], ['BEFORE THEY FLY.', C.amber]]], ['app', 8], ['end', 7.9]],
+};
+const LEN = params.get('len') === '60' ? 60 : 30;
+function timeline(len) { let a = 0; return VERSIONS[len].map(([fn, d, arg]) => { const s = { fn, a, b: a + d, arg }; a += d; return s; }); }
+let TL = timeline(LEN);
+function frame(time) {
+  g.globalAlpha = 1; g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
+  const s = TL.find((x) => time >= x.a && time < x.b) || TL[TL.length - 1];
+  const t = time - s.a, len = s.b - s.a;
+  S[s.fn](t, len, s.arg);
+  // whip transitions: a quick white-amber flash and zoom blur at every cut
+  shade(0.6 * hit(t, 0, 16), '#fff');
+  shade(1 - span(t, 0, 0.12), '#000');
+  finish(time);
+  lastT = time;
+}
+
+// ---------- music: 120 BPM, made here ----------
+function track(ac, out, len) {
+  const t0 = ac.currentTime + 0.1, master = ac.createGain(); master.gain.value = 0.85; master.connect(out);
+  const comp = ac.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 4; comp.connect(master);
+  const nb = ac.createBuffer(1, ac.sampleRate, ac.sampleRate), nd = nb.getChannelData(0); for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+  const at = (s) => t0 + s, f = (m) => 440 * Math.pow(2, (m - 69) / 12);
+  const kick = (s, v = 1) => { const o = ac.createOscillator(), gn = ac.createGain(); o.frequency.setValueAtTime(140, at(s)); o.frequency.exponentialRampToValueAtTime(40, at(s) + 0.12); gn.gain.setValueAtTime(v, at(s)); gn.gain.exponentialRampToValueAtTime(0.001, at(s) + 0.35); o.connect(gn).connect(comp); o.start(at(s)); o.stop(at(s) + 0.4); };
+  const noise = (s, d, v, fr, type = 'highpass') => { const b = ac.createBufferSource(), fl = ac.createBiquadFilter(), gn = ac.createGain(); b.buffer = nb; fl.type = type; fl.frequency.value = fr; gn.gain.setValueAtTime(v, at(s)); gn.gain.exponentialRampToValueAtTime(0.001, at(s) + d); b.connect(fl).connect(gn).connect(comp); b.start(at(s)); b.stop(at(s) + d + 0.05); };
+  const tone = (s, m, d, v, type = 'sawtooth', cut = 2000) => { const o = ac.createOscillator(), fl = ac.createBiquadFilter(), gn = ac.createGain(); o.type = type; o.frequency.value = f(m); fl.type = 'lowpass'; fl.frequency.value = cut; gn.gain.setValueAtTime(0.0001, at(s)); gn.gain.linearRampToValueAtTime(v, at(s) + 0.02); gn.gain.exponentialRampToValueAtTime(0.0001, at(s) + d); o.connect(fl).connect(gn).connect(comp); o.start(at(s)); o.stop(at(s) + d + 0.05); };
+  const pad = (s, notes, d, v = 0.05) => notes.forEach((m) => [-7, 7].forEach((dt) => { const o = ac.createOscillator(), fl = ac.createBiquadFilter(), gn = ac.createGain(); o.type = 'sawtooth'; o.frequency.value = f(m); o.detune.value = dt; fl.type = 'lowpass'; fl.frequency.value = 1200; gn.gain.setValueAtTime(0.0001, at(s)); gn.gain.linearRampToValueAtTime(v, at(s) + 0.8); gn.gain.linearRampToValueAtTime(0.0001, at(s) + d); o.connect(fl).connect(gn).connect(comp); o.start(at(s)); o.stop(at(s) + d + 0.1); }));
+  const riser = (s0, s1) => { const b = ac.createBufferSource(), fl = ac.createBiquadFilter(), gn = ac.createGain(); b.buffer = nb; b.loop = true; fl.type = 'bandpass'; fl.Q.value = 3; fl.frequency.setValueAtTime(300, at(s0)); fl.frequency.exponentialRampToValueAtTime(8000, at(s1)); gn.gain.setValueAtTime(0.001, at(s0)); gn.gain.exponentialRampToValueAtTime(0.3, at(s1)); gn.gain.setValueAtTime(0.0001, at(s1) + 0.01); b.connect(fl).connect(gn).connect(comp); b.start(at(s0)); b.stop(at(s1) + 0.05); };
+  const impact = (s) => { kick(s, 1.25); noise(s, 1.4, 0.45, 180, 'lowpass'); noise(s, 0.6, 0.2, 4000); };
+  const prog = [[45, [57, 60, 64]], [41, [53, 57, 60]], [48, [55, 60, 64]], [43, [55, 59, 62]]]; // Am F C G
+  const open = TL[0].b, endA = TL[TL.length - 1].a;
+  // intro: pad + heartbeat, riser into the first cut
+  pad(0, prog[0][1], open + 0.3, 0.06); for (let s = 0.5; s < open; s += 1) kick(s, 0.6); riser(open - 1.6, open);
+  // main groove until the end card
+  for (let s = open; s < endA; s += BEAT) {
+    const bar = Math.floor((s - open) / 2) % 4, [root, ch] = prog[bar], n = Math.round((s - open) / BEAT);
+    kick(s); noise(s + BEAT / 2, 0.05, 0.16, 8000); if (n % 2 === 1) noise(s, 0.18, 0.4, 1500, 'bandpass');
+    tone(s, root, 0.22, 0.3, 'sawtooth', 700); tone(s + BEAT / 2, root + 12, 0.2, 0.22, 'sawtooth', 700);
+    if (n % 4 === 0) ch.forEach((m) => tone(s, m + 12, 0.3, 0.07, 'sawtooth', 3000));
+    if (n % 8 === 0) pad(s, ch, 2.1, 0.035);
+  }
+  TL.forEach((x, i) => { if (i > 0 && x.fn !== 'end') impact(x.a); });
+  riser(endA - 1.5, endA); impact(endA); pad(endA, prog[0][1], len - endA, 0.07); noise(endA, 2.5, 0.2, 3000);
+  master.gain.setValueAtTime(0.85, at(len - 1.0)); master.gain.linearRampToValueAtTime(0.0001, at(len - 0.1));
+  return t0;
+}
+
+// ---------- play / record ----------
+const msg = (s) => { document.getElementById('msg').textContent = s; };
+async function run(len, record = false) {
+  TL = timeline(len); parts.length = 0;
+  const END = len - 0.1;
+  const ac = new AudioContext(); await ac.resume();
+  const dest = record ? ac.createMediaStreamDestination() : ac.destination;
+  const t0 = track(ac, dest, len);
+  let rec = null, chunks = [], vt = null;
+  if (record) {
+    vt = cv.captureStream(0).getVideoTracks()[0];
+    const types = ['video/webm;codecs=vp8,opus', 'video/webm;codecs=vp9,opus', 'video/webm'];
+    const type = types.find((m) => MediaRecorder.isTypeSupported(m)); // VP8 encodes fast enough for 30 fps
+    rec = new MediaRecorder(new MediaStream([vt, ...dest.stream.getAudioTracks()]), { mimeType: type, videoBitsPerSecond: 9_000_000, audioBitsPerSecond: 192_000 });
+    rec.ondataavailable = (e) => e.data.size && chunks.push(e.data);
+    rec.start(1000);
+  }
+  const start = performance.now() + (t0 - ac.currentTime) * 1000, stats = { frames: 0, ms: 0 };
+  await new Promise((done) => {
+    let n = 0;
+    const tick = () => {
+      const time = (performance.now() - start) / 1000, f0 = performance.now();
+      frame(clamp(time, 0, END)); if (vt && vt.requestFrame) vt.requestFrame();
+      stats.frames += 1; stats.ms += performance.now() - f0;
+      if (time >= END) { done(); return; }
+      n += 1; setTimeout(tick, Math.max(0, start + (n * 1000) / FPS - performance.now()));
+    };
+    tick();
+  });
+  if (rec) {
+    await new Promise((r) => { rec.onstop = r; rec.stop(); });
+    const blob = new Blob(chunks, { type: 'video/webm' });
+    console.log(`PROMO-STATS len=${len} frames=${stats.frames} avgDraw=${(stats.ms / stats.frames).toFixed(1)}ms size=${blob.size}`);
+    const res = await fetch(`api/save-video?name=promo${len}`, { method: 'POST', body: blob }).catch(() => null);
+    const out = res ? await res.json().catch(() => ({})) : {};
+    // "saved" only when serve.py answered OK and wrote every byte of the recording.
+    const ok = !!res && res.ok && out.bytes === blob.size;
+    msg(ok ? `saved pitch/${out.saved}` : `NOT saved (the old video was not changed): ${res ? `HTTP ${res.status}` : 'serve.py did not answer'}, ${out.bytes ?? 0} of ${blob.size} bytes${out.error ? `, ${out.error}` : ''}`);
+    document.title = ok ? 'DONE' : 'FAILED';
+  }
+  ac.close();
+}
+window.__frame = frame;
+frame(0);
+// Save records the video again and replaces the file in pitch/, so it always asks first.
+// ?record=1 asks too. Only a headless Chrome recorder may skip the question, with ?record=1&overwrite=1
+// (a link or a bookmark opened in a normal browser can never replace the video without a click on OK).
+const sure = (len) => confirm(`Record the ${len} s video again and replace pitch/analog-atlas-pitch-promo${len}.webm?`);
+const save = (len) => { if (sure(len)) run(len, true); };
+document.getElementById('p30').onclick = () => run(30); document.getElementById('p60').onclick = () => run(60);
+document.getElementById('r30').onclick = () => save(30); document.getElementById('r60').onclick = () => save(60);
+const headless = /HeadlessChrome\//.test(navigator.userAgent);
+if (params.get('record')) { if ((headless && params.get('overwrite') === '1') || sure(LEN)) run(LEN, true); else msg('not recorded: nothing was changed'); }
+else if (params.get('t')) { const tt = Number(params.get('t')); for (let x = Math.max(0, tt - 1.2); x < tt; x += 1 / FPS) frame(x); frame(tt); }
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{
+ "about": "Research record for the base-site sunlight data added on 2026-10-23 (data agent, second judging round). Every quote below was checked by script to appear in the page, abstract or PDS label fetched on that date. LOLA illumination values: scripts/extract_illumination.py (summary data/illumination.json; 5x5 windows and the PDS label text in data/raw/illumination/).",
+ "sources": [
+  {
+   "key": "lola-illumination",
+   "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/extras/illumination/img/",
+   "paper": "Mazarico et al. 2011, Icarus 211, 1066-1081, https://doi.org/10.1016/j.icarus.2010.10.030",
+   "fetched": "2026-10-23",
+   "usedFor": "the 'Sunlight (LOLA)', 'Earth in view (LOLA)' and 'Nearest permanent shadow (LOLA)' facts of malapert, mons-mouton and shackleton-ridge",
+   "quotes": [
+    "This data product is a map of the average illumination by the solar disc of the Lunar South Pole at a resolution of 60 m/pix by 60 m/pix",
+    "The values are continuous between 0 (permanent shadow) and 1, and indicate the percentage of timesteps where each pixel was sunlit (by any fraction of the solar disc).",
+    "This data product is a map of the permanently shadowed regions (PSRs) in the lunar South Pole.",
+    "As with all EXTRAs products, these files are not supported by the PDS or the LOLA Science Team."
+   ],
+   "readme": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/extras/illumination/readme_illumination_2016.txt (last quote)"
+  },
+  {
+   "key": "moon-tilt",
+   "url": "https://science.nasa.gov/photojournal/south-pole-illumination-map/",
+   "alsoAt": "https://photojournal.jpl.nasa.gov/catalog/PIA13720",
+   "fetched": "2026-10-23",
+   "usedFor": "the Moon tilt (1.54°) in the 'Sun height' value of the base-site targets",
+   "quotes": [
+    "The spin axis of the Moon is tilted by only 1.54"
+   ]
+  },
+  {
+   "key": "earth-factsheet",
+   "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html",
+   "fetched": "2026-10-23",
+   "usedFor": "the Earth tilt (23.44°) in the 'Sun height' value of every Earth site (computed from the site latitude in js/scoring.js)",
+   "quotes": [
+    "Obliquity to orbit (deg) 23.44"
+   ]
+  },
+  {
+   "key": "thomson-2012",
+   "url": "https://doi.org/10.1029/2012GL052119",
+   "via": "https://api.openalex.org/works/doi:10.1029/2012GL052119 (abstract)",
+   "fetched": "2026-10-23",
+   "usedFor": "the regolith tag of the Shackleton crater floor (southpole), replacing a general polar quote",
+   "quotes": [
+    "Here we report on the first orbital radar measurements of Shackleton crater near the lunar south pole.",
+    "a result that is most consistent with a roughness effect due to less mature regolith present on the crater wall slopes",
+    "an upper limit of ∼5–10 wt% H2O ice (up to 30 vol.%) present in the uppermost meter of regolith is also consistent with the observations"
+   ]
+  }
+ ],
+ "searchedNotFound": {
+  "sp-crater-sfvf regolith": "No source documents SP Crater's own material as a regolith simulant or building material. The JSC-1/1A simulants come from Merriam Crater (about 40 km away) and BP-1 from the Black Point lava flow, both in the same volcanic field but not SP Crater. Tag removed under the regolith rule.",
+  "malapert regolith": "Kring et al. 2025 (doi 10.1029/2024JE008905) lists 'regolith physical properties' as a goal of planned EVAs, not as a measurement at the summit. No tag.",
+  "mons-mouton / shackleton-ridge regolith": "No source documents regolith at these pins. General south-polar statements do not count (same rule as the crater floor). No tag.",
+  "base-site ice": "The LOLA maps give the distance to the nearest permanently shadowed pixel, but a shadowed place is where ice can stay, not detected ice. No ice tag (the resources rule needs ice documented at the target)."
+ }
+}

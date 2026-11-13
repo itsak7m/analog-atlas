@@ -1,0 +1,2040 @@
+{
+ "about": "Proposal by the 'caves' researcher, 2026-10-10. Nothing in the project was edited. Two cave targets whose scored climate values are MEASURED (orbital data at the site), so the 'shelter' resource and basalt lava caves such as Harrat al-Shaam count in the score. Values describe the ground surface around each skylight (the skylights are smaller than the map pixels); readings or models for the inside of the caves are facts only. To merge: add both 'targets' to data/targets.json, merge 'newSources' into its sources, add 'resources' to data/resources.json places, add 'terrainPoints' to data/terrain_points.json, add the 'moon-cave' and 'mars-cave' groups to the app (see appChangesNeeded), then run python -I scripts/compute_terrain.py --only tranquillitatis-pit --only arsia-skylight. Supersedes scratchpad/fix/pit_proposal.json for the Moon pit (its quotes and coordinates are reused). No ranking numbers here.",
+ "targets": [
+  {
+   "id": "tranquillitatis-pit",
+   "body": "moon",
+   "group": "moon-cave",
+   "name": "Mare Tranquillitatis pit (cave skylight)",
+   "mission": "Proposed cave shelter for a Moon base (seen by LRO; no landing yet)",
+   "lat": 8.3355,
+   "lon": 33.222,
+   "values": {
+    "meanTemp": {
+     "value": -54.7,
+     "source": "diviner-gcp",
+     "note": "Surface temperature of the mare plain around the pit, not inside it (the Moon has no air): mean of the LRO Diviner day-night curve, 218.5 K, in the 0.5° (about 15 km) map bin that contains the pit (all nadir data 2009-2015, 15-minute local-time bins; 43 empty bins filled by straight lines between neighbours). The 100 m pit is far smaller than the bin. The eight bins around it give 217.8-222.3 K. Inside the shaded cave a model gives about 17 °C (see facts)."
+    },
+    "swing": {
+     "value": 301.1,
+     "source": "diviner-gcp",
+     "note": "Highest minus lowest point of the same Diviner day-night curve: 394.8 K near noon minus 93.8 K just before sunrise. Each point is the average of all observations in one 15-minute local-time bin. A lunar day lasts about 29.5 Earth days."
+    },
+    "coldGround": {
+     "value": -179.4,
+     "source": "diviner-gcp",
+     "note": "Coldest point of the Diviner day-night curve in the bin with the pit: 93.8 K at about 05:20 local time, just before sunrise. It is a bin average, so single readings can be a little colder."
+    },
+    "rain": {
+     "value": 0,
+     "source": "moon-factsheet",
+     "note": "No atmosphere."
+    },
+    "albedo": {
+     "value": null,
+     "source": null,
+     "note": "Not used: the only site value found is LOLA's laser normal albedo at 1064 nm (0.156, zero phase angle), a different quantity from the broadband surface albedo of the Earth sites (see facts)."
+    }
+   },
+   "facts": [
+    {
+     "label": "Map pin",
+     "text": "Mare Tranquillitatis pit, 8.3355° N, 33.222° E (LROC Lunar Pit Atlas); the temperatures above are for the flat mare plain around it",
+     "source": "lroc-pit-atlas"
+    },
+    {
+     "label": "Pit size",
+     "text": "Opening about 100 × 88 m inside a funnel about 146 × 140 m; 105 m deep below the funnel floor (the funnel is about 20 m deep). Measured from LRO camera stereo images",
+     "source": "lroc-pit-atlas"
+    },
+    {
+     "label": "Overhang",
+     "text": "The walls overhang by at least 10-15 m on the east, west and north sides; the open part of the floor is flat and covered in boulders",
+     "source": "lroc-pit-atlas"
+    },
+    {
+     "label": "Cave (radar)",
+     "text": "Part of the radar echoes from the pit come from a cave passage tens of metres long under the surface (LRO Mini-RF radar, 2010)",
+     "source": "carrer-2024"
+    },
+    {
+     "label": "Cave length",
+     "text": "More than 60 m (200 feet) from the base of the pit; the full length is unknown",
+     "source": "nasa-caves"
+    },
+    {
+     "label": "Night (measured)",
+     "text": "LRO Diviner sees the pit about 100 K warmer than the ground around it at night",
+     "source": "horvath-2022"
+    },
+    {
+     "label": "Night (measured, map)",
+     "text": "At midnight the 237 m Diviner map pixel that holds the pit reads 126.1 K, while the mare around it (1-6 km away) reads about 100.4 K: 26 K warmer, although the pit fills only part of the pixel",
+     "source": "diviner-ghrm"
+    },
+    {
+     "label": "Protection",
+     "text": "Pits or caves would also give some protection from cosmic rays, solar radiation and micrometeorites",
+     "source": "nasa-pits-temps"
+    },
+    {
+     "label": "Geology",
+     "text": "Hard, dense basalt lava around the pit (judged from rocks and crater wear seen from orbit)",
+     "source": "costello-2026"
+    },
+    {
+     "label": "Pit walls",
+     "text": "Pits in the lunar seas show the layers of the top 20-100 m of basalt lava flows",
+     "source": "wagner-robinson-2022"
+    },
+    {
+     "label": "Distance",
+     "text": "About 370 km (230 miles) north-east of the Apollo 11 landing site",
+     "source": "nasa-caves"
+    },
+    {
+     "label": "Air pressure",
+     "text": "about zero",
+     "source": "moon-factsheet"
+    },
+    {
+     "label": "Hottest (surface)",
+     "text": "394.8 K (+121.7 °C) near local noon, mare surface in the Diviner bin with the pit",
+     "source": "diviner-gcp"
+    },
+    {
+     "label": "Night average (surface)",
+     "text": "104 K (-169 °C) between 18:00 and 06:00 local time, same Diviner bin",
+     "source": "diviner-gcp"
+    },
+    {
+     "label": "Inside the cave (model)",
+     "text": "A heat model checked against Diviner night data says the permanently shaded part under the overhang stays near 290 K (about 17 °C) all lunar day; this is a model result, not a reading",
+     "source": "horvath-2022"
+    },
+    {
+     "label": "Sunlit pit floor (model)",
+     "text": "Pit floors near the equator can reach more than 420 K (about 147 °C) at midday (model)",
+     "source": "horvath-2022"
+    },
+    {
+     "label": "Laser albedo (measured)",
+     "text": "LOLA normal albedo at 1064 nm: 0.156 in the 3 km map pixel with the pit (zero phase angle, one infrared wavelength; not the broadband albedo used for Earth sites)",
+     "source": "lola-albedo"
+    }
+   ],
+   "geology": {
+    "primary": "basalt",
+    "secondary": [],
+    "source": "costello-2026"
+   }
+  },
+  {
+   "id": "arsia-skylight",
+   "body": "mars",
+   "group": "mars-cave",
+   "name": "Arsia Mons cave skylight ('Jeanne')",
+   "mission": "Candidate cave entrance seen from orbit (Mars Odyssey THEMIS, MRO HiRISE); no landing yet",
+   "lat": -5.5332,
+   "lon": -118.6069,
+   "values": {
+    "meanTemp": {
+     "value": -72.3,
+     "source": "mcs-surface-temps",
+     "note": "Average ground temperature from orbit (MRO Mars Climate Sounder, 25 km around the skylight). Seen near 3 AM and 3 PM only, so close to but not exactly a true average; ground, not air. It describes the dusty lava plain around the skylight, not the inside of the cave."
+    },
+    "swing": {
+     "value": null,
+     "source": null,
+     "note": "Not measured: no measured daily range here. Orbit maps give only the warmest afternoon and coldest night over all seasons (warmest +3.9 °C)."
+    },
+    "coldGround": {
+     "value": -128.7,
+     "source": "mcs-surface-temps",
+     "note": "Coldest ground temperature seen by Mars Climate Sounder (144.5 K, 25 km mean, near 3 AM). The true pre-dawn minimum is probably a little colder."
+    },
+    "rain": {
+     "value": 0,
+     "source": "mars-factsheet",
+     "note": "No liquid rain on Mars."
+    },
+    "albedo": {
+     "value": 0.28,
+     "source": "tes-albedo",
+     "note": "MGS TES Lambert albedo, mean within 25 km of the skylight (not corrected for the atmosphere); a bright, dusty surface."
+    }
+   },
+   "facts": [
+    {
+     "label": "Map pin",
+     "text": "Cave-entrance candidate APC075 ('Jeanne'), 5.5332° S, 241.3931° E (USGS Mars cave catalogue); the HiRISE image of it is centred at 5.532° S, 241.396° E",
+     "source": "mgc3"
+    },
+    {
+     "label": "Pit size",
+     "text": "About 165 m across and more than 245 m deep, with an overhanging rim of unknown extent (measured from orbital images and shadows)",
+     "source": "mgc3"
+    },
+    {
+     "label": "No floor seen",
+     "text": "HiRISE sees no detail in the shadow and cannot see the walls: they are vertical or, more likely, overhanging",
+     "source": "hirise-jeanne"
+    },
+    {
+     "label": "Evening (measured)",
+     "text": "In 4 THEMIS images taken about 18:15-19:15 local time (2017-2020), a spot within about 0.3 km of the skylight is 12-18 K warmer than the plain around it (166-181 K against 154-165 K; 100 m pixels)",
+     "source": "themis-pbt"
+    },
+    {
+     "label": "Afternoon (measured)",
+     "text": "At 14:46 local time (2009) the same spot is about 10 K cooler than the plain (263 K against 273 K); in 5 later-afternoon images the difference is 0-3 K",
+     "source": "themis-pbt"
+    },
+    {
+     "label": "Before dawn (measured)",
+     "text": "In 7 THEMIS images between 03:30 and 07:30 local time no clear difference shows at 100 m pixels",
+     "source": "themis-pbt"
+    },
+    {
+     "label": "Thermal behaviour (published)",
+     "text": "Floors of these deep pits are warmer at night and change much less between day and night than the ground around them (THEMIS)",
+     "source": "cushing-2015"
+    },
+    {
+     "label": "Warmest ground",
+     "text": "+3.9 °C (277.1 K), the warmest afternoon value in the Mars Climate Sounder maps (25 km mean, about 3 PM)",
+     "source": "mcs-surface-temps"
+    },
+    {
+     "label": "Seven sisters",
+     "text": "One of seven candidate cave skylights found on the flanks of Arsia Mons with Mars Odyssey's THEMIS camera (reported 2007)",
+     "source": "cushing-2007"
+    },
+    {
+     "label": "Height",
+     "text": "About 10.0 km above the Mars datum (MOLA elevation at the pin)",
+     "source": "mola-trek"
+    },
+    {
+     "label": "Landing",
+     "text": "The discoverers note that the air at these heights is too thin for a lander to slow down and steer onto such a small target",
+     "source": "cushing-lpsc-2007"
+    },
+    {
+     "label": "Protection",
+     "text": "Lava-tube caves would shield people from dust storms, micrometeoroids and radiation, and keep temperatures steadier than the surface",
+     "source": "cushing-2012"
+    },
+    {
+     "label": "Surface",
+     "text": "A very dark hole in an otherwise bright, dusty lava plain north-east of Arsia Mons",
+     "source": "hirise-jeanne"
+    },
+    {
+     "label": "Lava flows",
+     "text": "Lava flows around Arsia Mons look very much like Hawaiian lava flows (THEMIS image of flows south of the volcano)",
+     "source": "arsia-lava-flows"
+    },
+    {
+     "label": "Rock type",
+     "text": "Lava of a Tharsis shield volcano; NASA says such lava is most likely basalt. Inferred, not measured: dust hides the rock",
+     "source": "tharsis-basalt"
+    }
+   ],
+   "geology": {
+    "primary": "basalt",
+    "secondary": [],
+    "note": "Inferred, not measured: shield-volcano lava under dust.",
+    "source": "tharsis-basalt"
+   }
+  }
+ ],
+ "newSources": {
+  "horvath-2022": {
+   "label": "Horvath, Hayne & Paige 2022: Thermal and illumination environments of lunar pits and caves, models and observations from LRO Diviner (GRL, open access)",
+   "url": "https://doi.org/10.1029/2022GL099710"
+  },
+  "nasa-pits-temps": {
+   "label": "NASA (2022): NASA's LRO finds lunar pits harbor comfortable temperatures",
+   "url": "https://www.nasa.gov/solar-system/nasas-lro-finds-lunar-pits-harbor-comfortable-temperatures/"
+  },
+  "carrer-2024": {
+   "label": "Carrer et al. 2024: Radar evidence of an accessible cave conduit on the Moon below the Mare Tranquillitatis pit (Nature Astronomy)",
+   "url": "https://doi.org/10.1038/s41550-024-02302-y"
+  },
+  "nasa-caves": {
+   "label": "NASA (2024): New evidence adds to findings hinting at network of caves on Moon",
+   "url": "https://science.nasa.gov/solar-system/new-evidence-adds-to-findings-hinting-at-network-of-caves-on-moon/"
+  },
+  "lroc-pit-atlas": {
+   "label": "LROC Lunar Pit Atlas: Mare Tranquillitatis Pit (NASA/GSFC/Arizona State University)",
+   "url": "https://lroc.im-ldi.com/atlases/pits/3"
+  },
+  "wagner-robinson-2022": {
+   "label": "Wagner & Robinson 2022: Lunar pit morphology, implications for exploration (JGR Planets)",
+   "url": "https://doi.org/10.1029/2022JE007328"
+  },
+  "costello-2026": {
+   "label": "Costello et al. 2026: Craters and lunar lua (pits/skylights) in Mare Tranquillitatis and Marius Hills reveal variations in protolith properties (JGR Planets, open access)",
+   "url": "https://doi.org/10.1029/2025JE009427"
+  },
+  "diviner-gcp": {
+   "label": "LRO Diviner Global Cumulative Product: bolometric temperature in 0.5° bins and 15-minute local-time bins, all nadir data 5 Jul 2009 - 1 Apr 2015 (Williams et al. 2017, Icarus, doi 10.1016/j.icarus.2016.08.012; NASA PDS); values at the pit read by caves/tools/moon_diviner_extract.py",
+   "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_gcp/"
+  },
+  "diviner-ghrm": {
+   "label": "LRO Diviner Global High-Resolution Mosaics: bolometric temperature at midnight, 128 pixels per degree, data 2009-2022 (Powell et al. 2023, JGR Planets, doi 10.1029/2022JE007532; NASA PDS)",
+   "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_ghrm/"
+  },
+  "lola-albedo": {
+   "label": "LRO LOLA normal albedo map at 1064 nm, 10 pixels per degree (LDAM_10_FLOAT, NASA PDS; Lucey et al. 2014, JGR Planets, doi 10.1002/2013JE004592)",
+   "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/float_img/"
+  },
+  "mgc3": {
+   "label": "Cushing: Mars Global Cave Candidate Catalog (MGC3), USGS, NASA PDS bundle (doi 10.17189/1519222); entry APC075 'APC ~ Jeanne'",
+   "url": "https://doi.org/10.17189/1519222"
+  },
+  "hirise-jeanne": {
+   "label": "HiRISE PSP_003647_1745: Candidate cavern entrance northeast of Arsia Mons (NASA/JPL-Caltech/UArizona, 2007)",
+   "url": "https://www.uahirise.org/PSP_003647_1745"
+  },
+  "cushing-2007": {
+   "label": "Cushing, Titus, Wynne & Christensen 2007: THEMIS observes possible cave skylights on Mars (GRL)",
+   "url": "https://doi.org/10.1029/2007GL030709"
+  },
+  "cushing-lpsc-2007": {
+   "label": "Cushing et al. 2007: THEMIS observes possible cave skylights on Mars (Lunar and Planetary Science XXXVIII, abstract 1371)",
+   "url": "https://www.lpi.usra.edu/meetings/lpsc2007/pdf/1371.pdf"
+  },
+  "cushing-2012": {
+   "label": "Cushing 2012: Candidate cave entrances on Mars (Journal of Cave and Karst Studies 74, 33-47, doi 10.4311/2010EX0167R)",
+   "url": "https://legacy.caves.org/pub/journal/PDF/V74/cave-74-01-33.pdf"
+  },
+  "cushing-2015": {
+   "label": "Cushing, Okubo & Titus 2015: Atypical pit craters on Mars, new insights from THEMIS, CTX and HiRISE (JGR Planets)",
+   "url": "https://doi.org/10.1002/2014JE004735"
+  },
+  "themis-pbt": {
+   "label": "Mars Odyssey THEMIS band-9 (12.6 µm) projected brightness temperature images, 100 m pixels (NASA PDS, ASU); 17 images over the skylight read by caves/tools/themis_pbt_extract.py",
+   "url": "https://pds-geosciences.wustl.edu/missions/odyssey/themis.html"
+  },
+  "tharsis-basalt": {
+   "label": "NASA Photojournal PIA04289, Flows of Ascraeus: Tharsis shield-volcano lava is most likely basaltic (MGS MOC)",
+   "url": "https://science.nasa.gov/photojournal/flows-of-ascraeus/"
+  },
+  "arsia-lava-flows": {
+   "label": "NASA Photojournal PIA03963: Arsia Mons lava flows (Mars Odyssey THEMIS)",
+   "url": "https://science.nasa.gov/photojournal/arsia-mons-lava-flows/"
+  },
+  "mola-trek": {
+   "label": "MGS MOLA elevation at the pin (128/64 ppd merge, NASA Mars Trek), as used by scripts/compute_terrain.py",
+   "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_dem_463m"
+  }
+ },
+ "supportingSources": {
+  "lroc-terms": {
+   "label": "LROC Terms & Citation (PDS products are public domain)",
+   "url": "https://lroc.im-ldi.com/about/terms"
+  },
+  "jass-2022": {
+   "label": "Park, Hong & Jung 2022: Investigation of the characteristic nighttime temperature of potential caves on Mars (J. Astron. Space Sci. 39, 141-144, CC BY-NC)",
+   "url": "https://doi.org/10.5140/JASS.2022.39.4.141"
+  }
+ },
+ "existingSourcesUsed": [
+  "moon-factsheet",
+  "mars-factsheet",
+  "mcs-surface-temps",
+  "tes-albedo"
+ ],
+ "resources": {
+  "tranquillitatis-pit": {
+   "tags": {
+    "shelter": {
+     "url": "https://doi.org/10.1038/s41550-024-02302-y",
+     "quote": "This discovery suggests that the MTP is a promising site for a lunar base, as it offers shelter from the harsh surface environment and could support long-term human exploration of the Moon.",
+     "note": "Carrer et al. 2024, Nature Astronomy (abstract). The same abstract: radar reflections 'can be attributed to a subsurface cave conduit tens of metres long'."
+    },
+    "regolith": {
+     "url": "https://doi.org/10.1029/2025JE009427",
+     "quote": "We investigated the regolith parent rock (“protolith”) properties of Mare Tranquillitatis and Marius Hills on the Moon, utilizing lunar pit craters (“lua”) to contextualize observations of rock abundance and crater degradation.",
+     "note": "Costello et al. 2026, JGR Planets (abstract)."
+    }
+   },
+   "notTagged": {
+    "ice": "No source for water ice at the pit was found."
+   }
+  },
+  "arsia-skylight": {
+   "tags": {
+    "shelter": {
+     "url": "https://doi.org/10.1029/2007GL030709",
+     "quote": "Seven possible skylight entrances into Martian caves were observed on and around the flanks of Arsia Mons by the Mars Odyssey Thermal Emission Imaging System (THEMIS).",
+     "note": "Cushing et al. 2007, GRL (abstract, via OpenAlex). This pit is one of the seven ('Jeanne', MGC3 APC075). On why caves matter: 'Lava-tube caves, by their nature, can protect inhabitants from all of the hazards that humans would encounter on the surface.' (Cushing 2012, J. Cave Karst Stud., https://legacy.caves.org/pub/journal/PDF/V74/cave-74-01-33.pdf). A candidate only: the USGS catalogue says none can be verified as genuine caves from orbit."
+    },
+    "regolith": {
+     "url": "https://www.uahirise.org/PSP_003647_1745",
+     "quote": "This image shows a very dark spot on an otherwise bright dusty lava plain to the northeast of Arsia Mons, one of the four giant Tharsis volcanoes.",
+     "note": "HiRISE caption (A. McEwen, 2007). Weak tag: it shows loose dust on the surface at the site, not a measured regolith layer (compare Phoenix). Lead may drop it."
+    }
+   },
+   "notTagged": {
+    "ice": "Cushing 2012 suggests caves near Arsia Mons could trap ice, but this is a hypothesis; no ice was detected here.",
+    "salts": "No source found."
+   }
+  }
+ },
+ "terrainPoints": [
+  {
+   "id": "tranquillitatis-pit",
+   "body": "moon",
+   "name": "Mare Tranquillitatis pit (cave skylight)",
+   "lat": 8.3355,
+   "lon": 33.222,
+   "kind": "target",
+   "coordSource": "LROC Lunar Pit Atlas, Mare Tranquillitatis Pit (lat 8.3355, long 33.222), https://lroc.im-ldi.com/atlases/pits/3; same in Carrer et al. 2024, Nature Astronomy, Fig. 1 (8.3355° N, 33.222° E)"
+  },
+  {
+   "id": "arsia-skylight",
+   "body": "mars",
+   "name": "Arsia Mons cave skylight ('Jeanne')",
+   "lat": -5.5332,
+   "lon": -118.6069,
+   "kind": "target",
+   "coordSource": "USGS Mars Global Cave Candidate Catalog (MGC3, PDS doi 10.17189/1519222), APC075 'APC ~ Jeanne' (241.3931 E, -5.5332); HiRISE PSP_003647_1745 is centred at -5.532, 241.396 E"
+  }
+ ],
+ "terrainPreview": {
+  "tranquillitatis-pit": {
+   "note": "Preview computed with scripts/compute_terrain.py on 2026-10-10, before the point was added to the project. LOLA 128 ppd pixels (~237 m) are larger than the pit (~100 m), so these numbers describe the flat mare plain around the pit, not the pit itself. The official entry is in data/terrain.json; its raw response is data/raw/terrain/tranquillitatis-pit.json.",
+   "entry": {
+    "body": "moon",
+    "lat": 8.3355,
+    "lon": 33.222,
+    "median_slope_deg": 0.32,
+    "mean_slope_deg": 0.55,
+    "p90_slope_deg": 0.93,
+    "pct_lt_8": 100.0,
+    "pct_lt_10": 100.0,
+    "pct_lt_15": 100.0,
+    "max_flat_square_km": 9.5,
+    "relief_m": 136.4,
+    "centre_elev_m": -785.6,
+    "elev_datum": "m relative to the 1,737,400 m reference sphere (Moon 2000; radius = value + 1,737,400 m)",
+    "n_samples": 441,
+    "flat_water_suspect": false,
+    "dataset": "lro-lola-dem-global-128ppd-v04@trek",
+    "notes": "",
+    "name": "Mare Tranquillitatis pit (lava-tube skylight)",
+    "kind": "target",
+    "coordSource": "LROC Lunar Pit Atlas, Mare Tranquillitatis Pit (8.3355, 33.222), https://lroc.im-ldi.com/atlases/pits/3; same in Carrer et al. 2024, Nature Astronomy, Fig. 1 (8.3355 N, 33.222 E)",
+    "n_slope_cells": 361,
+    "max_identical_pct": 0.9,
+    "fetched": "2026-10-10T01:02:51Z"
+   }
+  },
+  "arsia-skylight": {
+   "note": "Computed in the scratchpad with scripts/compute_terrain.py --points caves/terrain/points.json --out caves/terrain/terrain_caves.json --cache-dir caves/terrain/cache (Mars Trek MOLA only). MOLA pixels (~463 m) are larger than the skylight (~165 m): these numbers describe the plain around it.",
+   "cacheFile": "caves/terrain/cache/arsia-skylight.json",
+   "entry": {
+    "body": "mars",
+    "lat": -5.5332,
+    "lon": -118.6069,
+    "median_slope_deg": 1.58,
+    "mean_slope_deg": 1.6,
+    "p90_slope_deg": 2.06,
+    "pct_lt_8": 100.0,
+    "pct_lt_10": 100.0,
+    "pct_lt_15": 100.0,
+    "max_flat_square_km": 9.5,
+    "relief_m": 299.0,
+    "centre_elev_m": 9966.0,
+    "elev_datum": "m above the MOLA areoid (Mars geoid from gravity model GMM-2B, degree and order 50)",
+    "n_samples": 441,
+    "flat_water_suspect": false,
+    "dataset": "mgs-mola-dem-128-64ppd-merge@trek",
+    "notes": "",
+    "name": "Arsia Mons cave skylight 'Jeanne'",
+    "kind": "target",
+    "coordSource": "USGS Mars Global Cave Candidate Catalog (MGC3, PDS doi 10.17189/1519222), APC075 'APC ~ Jeanne' (241.3931 E, -5.5332)",
+    "n_slope_cells": 361,
+    "max_identical_pct": 1.4,
+    "fetched": "2026-10-10T14:13:40Z"
+   }
+  }
+ },
+ "rule": {
+  "text": "A target needs at least 2 truly measured factors (rain = 0 counts). The app also flags (⚑) targets with fewer than 3 (TARGET_MIN_MEASURED in js/scoring.js).",
+  "tranquillitatis-pit": {
+   "measured": [
+    "meanTemp",
+    "swing",
+    "coldGround",
+    "rain"
+   ],
+   "count": 4,
+   "passes": true,
+   "flag": false
+  },
+  "arsia-skylight": {
+   "measured": [
+    "meanTemp",
+    "coldGround",
+    "rain",
+    "albedo"
+   ],
+   "count": 4,
+   "passes": true,
+   "flag": false
+  }
+ },
+ "measuredVsModelled": {
+  "tranquillitatis-pit": {
+   "measured": [
+    "meanTemp -54.7 °C, swing 301.1 °C, coldGround -179.4 °C: LRO Diviner GCP day-night curve (bolometric brightness temperature, 2009-2015) in the 0.5° bin 8.0-8.5° N, 33.0-33.5° E that contains the pit; mare surface, not the pit",
+    "Midnight Diviner map (GHRM, 237 m pixels, 2009-2022): pit pixel 126.1 K vs 100.43 K median 1-5.7 km around (+25.7 K). The same pixel has the largest midnight anomaly (25.87 K) and Diviner rock abundance (0.1) in the 11.6 km window, which confirms the georeferencing",
+    "Night: pit about 100 K warmer than the surrounding surface (Diviner; horvath-2022 abstract)",
+    "LOLA 1064 nm normal albedo 0.1559 (3 km pixel) - measured, but not used as the scored albedo",
+    "Pit size and overhangs (LROC NAC images and stereo); radar echoes (Mini-RF); terrain (LOLA via Moon Trek); rain 0 (no atmosphere)"
+   ],
+   "modelled_or_derived": [
+    "About 290 K (~17 °C) in the permanently shaded cave part; >420 K on sunlit floors (horvath-2022 thermal model) -> facts only",
+    "Cave passage tens of metres long (fit of radar simulations, carrer-2024) -> fact and shelter tag",
+    "Basalt: inferred from orbital rock counts and crater wear (costello-2026)",
+    "GHRM midnight values come from an empirical fit of the measurements to exactly midnight; the GHRM 'anomaly' map is measurement minus a thermal model (cross-check only); rock abundance is a model fit (cross-check only)",
+    "meanTemp: 43 of 96 local-time bins are empty and filled by straight lines (mean of filled bins only: 218.53 K, almost the same)"
+   ],
+   "notMeasured": [
+    "broadband albedo at the pit",
+    "any temperature reading inside the pit or cave"
+   ]
+  },
+  "arsia-skylight": {
+   "measured": [
+    "meanTemp -72.3 °C and coldGround -128.7 °C: MRO MCS surface temperature maps, mean of 5 pixels within 25 km (project script data/raw/mars_ez_extract/mcs_extract.py; the same rule as the Deuteronilus and Erebus Montes targets)",
+    "albedo 0.28: MGS TES Lambert albedo, mean of 36 pixels within 25 km (project script data/raw/mars_ez_extract/tes_albedo.py)",
+    "THEMIS band-9 brightness temperatures at the skylight from 17 PDS images (evening warm spot +12 to +18 K; afternoon cool spot down to -10 K; nothing clear before dawn or in the morning) -> facts only",
+    "Position, size (~165 m) and minimum depth (>245 m) from orbital images and shadows (MGC3, HiRISE); terrain and height (MOLA via Mars Trek); rain 0"
+   ],
+   "modelled_or_derived": [
+    "MCS 'average' is the mean of ~3 AM and ~3 PM observations, close to but not exactly a true mean (dataset readme)",
+    "Basalt: inferred (dust hides the rock)",
+    "That it is a cave at all: inferred from orbit (no floor or walls visible); the USGS catalogue stresses none can be verified from orbit"
+   ],
+   "notMeasured": [
+    "swing (daily range)",
+    "any temperature inside the cave"
+   ]
+  }
+ },
+ "extraction": {
+  "moon": {
+   "gcp": {
+    "script": "caves/tools/moon_diviner_extract.py",
+    "product": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_gcp/global_cumul_avg_cyl_00n10n_002.tab",
+    "bin": {
+     "center_lat": 8.25,
+     "center_lonE": 33.25,
+     "row_first": 819456,
+     "dist_center_to_pit_km": 2.73,
+     "contains_pit": true,
+     "n_localtime_bins_with_data": 53,
+     "max_K": 394.8355,
+     "max_localtime_h": 12.62,
+     "min_K": 93.7713,
+     "min_localtime_h": 5.38,
+     "mean_interp_K": 218.5,
+     "mean_of_filled_bins_only_K": 218.53,
+     "night_mean_K": 104.0,
+     "predawn_5to6h_mean_K": 94.97,
+     "empty_bins_localtimes_h": [
+      0.62,
+      1.12,
+      1.62,
+      2.38,
+      2.88,
+      3.38,
+      4.62,
+      4.88,
+      6.12,
+      6.38,
+      6.88,
+      7.12,
+      7.88,
+      8.12,
+      8.62,
+      9.88,
+      10.12,
+      10.62,
+      11.88,
+      12.12,
+      12.38,
+      12.88,
+      13.62,
+      14.12,
+      14.38,
+      15.38,
+      15.62,
+      16.38,
+      17.12,
+      17.62,
+      17.88,
+      19.12,
+      19.38,
+      19.88,
+      20.12,
+      21.12,
+      21.62,
+      22.12,
+      22.88,
+      23.12,
+      23.38,
+      23.62,
+      23.88
+     ]
+    },
+    "neighbourBins": {
+     "+7.75_+32.75": {
+      "mean_interp_K": 222.3,
+      "max_K": 393.9037,
+      "min_K": 95.8003,
+      "n_localtime_bins_with_data": 51
+     },
+     "+7.75_+33.25": {
+      "mean_interp_K": 218.22,
+      "max_K": 394.84,
+      "min_K": 93.7236,
+      "n_localtime_bins_with_data": 54
+     },
+     "+7.75_+33.75": {
+      "mean_interp_K": 218.91,
+      "max_K": 394.9295,
+      "min_K": 94.5833,
+      "n_localtime_bins_with_data": 51
+     },
+     "+8.25_+32.75": {
+      "mean_interp_K": 218.62,
+      "max_K": 394.7133,
+      "min_K": 94.7268,
+      "n_localtime_bins_with_data": 53
+     },
+     "+8.25_+33.75": {
+      "mean_interp_K": 218.63,
+      "max_K": 394.5262,
+      "min_K": 94.9501,
+      "n_localtime_bins_with_data": 51
+     },
+     "+8.75_+32.75": {
+      "mean_interp_K": 217.76,
+      "max_K": 394.8205,
+      "min_K": 93.5774,
+      "n_localtime_bins_with_data": 54
+     },
+     "+8.75_+33.25": {
+      "mean_interp_K": 218.77,
+      "max_K": 394.0793,
+      "min_K": 95.0338,
+      "n_localtime_bins_with_data": 52
+     },
+     "+8.75_+33.75": {
+      "mean_interp_K": 219.0,
+      "max_K": 394.6051,
+      "min_K": 94.8696,
+      "n_localtime_bins_with_data": 50
+     }
+    },
+    "curve_K_by_localtime_h": [
+     [
+      0.12,
+      102.381
+     ],
+     [
+      0.38,
+      100.5304
+     ],
+     [
+      0.62,
+      -9999.0
+     ],
+     [
+      0.88,
+      100.08
+     ],
+     [
+      1.12,
+      -9999.0
+     ],
+     [
+      1.38,
+      99.7332
+     ],
+     [
+      1.62,
+      -9999.0
+     ],
+     [
+      1.88,
+      98.8536
+     ],
+     [
+      2.12,
+      98.7657
+     ],
+     [
+      2.38,
+      -9999.0
+     ],
+     [
+      2.62,
+      97.729
+     ],
+     [
+      2.88,
+      -9999.0
+     ],
+     [
+      3.12,
+      97.5028
+     ],
+     [
+      3.38,
+      -9999.0
+     ],
+     [
+      3.62,
+      97.1296
+     ],
+     [
+      3.88,
+      96.3986
+     ],
+     [
+      4.12,
+      96.6702
+     ],
+     [
+      4.38,
+      97.1031
+     ],
+     [
+      4.62,
+      -9999.0
+     ],
+     [
+      4.88,
+      -9999.0
+     ],
+     [
+      5.12,
+      96.4515
+     ],
+     [
+      5.38,
+      93.7713
+     ],
+     [
+      5.62,
+      95.1164
+     ],
+     [
+      5.88,
+      94.5368
+     ],
+     [
+      6.12,
+      -9999.0
+     ],
+     [
+      6.38,
+      -9999.0
+     ],
+     [
+      6.62,
+      239.3548
+     ],
+     [
+      6.88,
+      -9999.0
+     ],
+     [
+      7.12,
+      -9999.0
+     ],
+     [
+      7.38,
+      292.1831
+     ],
+     [
+      7.62,
+      306.4614
+     ],
+     [
+      7.88,
+      -9999.0
+     ],
+     [
+      8.12,
+      -9999.0
+     ],
+     [
+      8.38,
+      340.2269
+     ],
+     [
+      8.62,
+      -9999.0
+     ],
+     [
+      8.88,
+      354.3957
+     ],
+     [
+      9.12,
+      358.5621
+     ],
+     [
+      9.38,
+      364.5219
+     ],
+     [
+      9.62,
+      372.017
+     ],
+     [
+      9.88,
+      -9999.0
+     ],
+     [
+      10.12,
+      -9999.0
+     ],
+     [
+      10.38,
+      380.501
+     ],
+     [
+      10.62,
+      -9999.0
+     ],
+     [
+      10.88,
+      390.5317
+     ],
+     [
+      11.12,
+      390.4019
+     ],
+     [
+      11.38,
+      393.4945
+     ],
+     [
+      11.62,
+      391.5408
+     ],
+     [
+      11.88,
+      -9999.0
+     ],
+     [
+      12.12,
+      -9999.0
+     ],
+     [
+      12.38,
+      -9999.0
+     ],
+     [
+      12.62,
+      394.8355
+     ],
+     [
+      12.88,
+      -9999.0
+     ],
+     [
+      13.12,
+      390.6809
+     ],
+     [
+      13.38,
+      382.8632
+     ],
+     [
+      13.62,
+      -9999.0
+     ],
+     [
+      13.88,
+      380.5655
+     ],
+     [
+      14.12,
+      -9999.0
+     ],
+     [
+      14.38,
+      -9999.0
+     ],
+     [
+      14.62,
+      358.9154
+     ],
+     [
+      14.88,
+      360.0245
+     ],
+     [
+      15.12,
+      355.2951
+     ],
+     [
+      15.38,
+      -9999.0
+     ],
+     [
+      15.62,
+      -9999.0
+     ],
+     [
+      15.88,
+      335.2218
+     ],
+     [
+      16.12,
+      315.5022
+     ],
+     [
+      16.38,
+      -9999.0
+     ],
+     [
+      16.62,
+      300.9537
+     ],
+     [
+      16.88,
+      280.6326
+     ],
+     [
+      17.12,
+      -9999.0
+     ],
+     [
+      17.38,
+      240.3036
+     ],
+     [
+      17.62,
+      -9999.0
+     ],
+     [
+      17.88,
+      -9999.0
+     ],
+     [
+      18.12,
+      128.1565
+     ],
+     [
+      18.38,
+      121.9751
+     ],
+     [
+      18.62,
+      119.2494
+     ],
+     [
+      18.88,
+      118.6021
+     ],
+     [
+      19.12,
+      -9999.0
+     ],
+     [
+      19.38,
+      -9999.0
+     ],
+     [
+      19.62,
+      112.8144
+     ],
+     [
+      19.88,
+      -9999.0
+     ],
+     [
+      20.12,
+      -9999.0
+     ],
+     [
+      20.38,
+      109.9457
+     ],
+     [
+      20.62,
+      108.8182
+     ],
+     [
+      20.88,
+      108.3617
+     ],
+     [
+      21.12,
+      -9999.0
+     ],
+     [
+      21.38,
+      106.6051
+     ],
+     [
+      21.62,
+      -9999.0
+     ],
+     [
+      21.88,
+      105.9643
+     ],
+     [
+      22.12,
+      -9999.0
+     ],
+     [
+      22.38,
+      104.919
+     ],
+     [
+      22.62,
+      103.7809
+     ],
+     [
+      22.88,
+      -9999.0
+     ],
+     [
+      23.12,
+      -9999.0
+     ],
+     [
+      23.38,
+      -9999.0
+     ],
+     [
+      23.62,
+      -9999.0
+     ],
+     [
+      23.88,
+      -9999.0
+     ]
+    ],
+    "rowOrderCheck": "row = ilon*1920 + ilat*96 + ilt, checked by reading rows 0, 96, 1920 and the last row (clon/clat/ltim columns)",
+    "rawFile": "caves/dl_moon/gcp_00n10n_pit_3x3_rows.txt",
+    "rawSha256": "207cf27644bfa395ec0955fde711516bb34b974e4a8db613e9df07f8c7f6bc3b"
+   },
+   "ghrm": {
+    "script": "caves/tools/moon_diviner_extract.py",
+    "pitPixel": {
+     "line": 7893,
+     "sample": 4252,
+     "lat_range": [
+      8.328125,
+      8.3359375
+     ],
+     "lon_range": [
+      33.21875,
+      33.2265625
+     ],
+     "pixel_size_m": 236.90117518866782
+    },
+    "tbol_m": {
+     "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_ghrm/img/dghrm_tbol_m_70s70n_img.img",
+     "raw_file": "ghrm_tbol_m_pit_window_49x49.f32",
+     "raw_sha256": "4542d1a214e9b208740433e0eab6ebd698749cecceb3428192b09507307b4da8",
+     "window": "lines 7869..7917, samples 4228..4276",
+     "pit_pixel": 126.1,
+     "ring1": {
+      "n": 8,
+      "mean": 106.24,
+      "median": 104.34,
+      "min": 101.95,
+      "max": 121.81
+     },
+     "ring2": {
+      "n": 16,
+      "mean": 102.37,
+      "median": 102.26,
+      "min": 100.38,
+      "max": 107.12
+     },
+     "background_4to24px": {
+      "n": 2352,
+      "mean": 101.24,
+      "median": 100.43,
+      "min": 98.99,
+      "max": 129.31
+     },
+     "window_max": {
+      "value": 129.31,
+      "dline": 23,
+      "dsample": 23
+     }
+    },
+    "tbol_m_center_7x7": [
+     [
+      100.08,
+      100.13,
+      100.61,
+      102.4,
+      104.54,
+      109.13,
+      103.26
+     ],
+     [
+      99.66,
+      100.39,
+      101.78,
+      107.12,
+      103.02,
+      106.76,
+      102.16
+     ],
+     [
+      99.8,
+      100.94,
+      104.34,
+      121.81,
+      102.69,
+      102.35,
+      101.16
+     ],
+     [
+      100.0,
+      101.06,
+      105.72,
+      126.1,
+      103.06,
+      101.55,
+      100.77
+     ],
+     [
+      100.06,
+      100.9,
+      101.95,
+      108.27,
+      102.09,
+      102.54,
+      100.93
+     ],
+     [
+      100.22,
+      100.38,
+      100.49,
+      102.26,
+      102.34,
+      104.05,
+      100.58
+     ],
+     [
+      99.88,
+      99.82,
+      100.38,
+      100.94,
+      101.85,
+      102.77,
+      100.26
+     ]
+    ],
+    "tbol_anom_pit_pixel": 25.87,
+    "ra_sam_pit_pixel": 0.1
+   },
+   "lola": {
+    "script": "caves/tools/moon_lola_albedo.py",
+    "pixel_line0": 816,
+    "pixel_sample0": 332,
+    "pixel_center_lat": 8.35,
+    "pixel_center_lonE": 33.25,
+    "pixel_size_km": 3.03,
+    "pit_pixel": 0.1559,
+    "window5x5_mean": 0.1572,
+    "window5x5_min": 0.1546,
+    "window5x5_max": 0.1619,
+    "raw_sha256": "08c2ff72e311b18e7398d97d91076c8ecb0121bb512f9fa108393b76710803d9",
+    "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/float_img/ldam_10_float.img"
+   }
+  },
+  "mars": {
+   "mcs": {
+    "script": "data/raw/mars_ez_extract/mcs_extract.py (project, unchanged)",
+    "command": "python -I data/raw/mars_ez_extract/mcs_extract.py <scratchpad/mcs> '{\"jeanne_25km\":[-5.5332, 241.3931, 25]}'",
+    "inputSha256": {
+     "Figure_08.map": "12d3b4f75947c1b99955062fb542c62e5eb1b6b3145407f1946e9cdea7553fdd",
+     "Figure_11.map": "66cdc3f123b30492f289385017642315b88e01dcd8a5e59c639ef17044e547b6",
+     "Figure_13.map": "6764d6534299733a736bbae516048ac654dc8b5dc26f7a2257fdb1b32603fcbb"
+    },
+    "result": {
+     "nearest_pixel": {
+      "row": 286,
+      "col": 724,
+      "lat": -5.5,
+      "lonE": 241.5,
+      "dist_km": 6.6
+     },
+     "min_pixel_K": 144.31,
+     "min_within_25km": {
+      "n": 5,
+      "mean_K": 144.47,
+      "min_K": 143.8,
+      "max_K": 145.54
+     },
+     "max_pixel_K": 278.54,
+     "max_within_25km": {
+      "n": 5,
+      "mean_K": 277.08,
+      "min_K": 275.07,
+      "max_K": 279.82
+     },
+     "avg_pixel_K": 201.59,
+     "avg_within_25km": {
+      "n": 5,
+      "mean_K": 200.89,
+      "min_K": 199.56,
+      "max_K": 202.06
+     }
+    },
+    "crossCheck": "Same run gives Jezero avg 217.49 K, min 184.51 K, max 254.32 K, identical to data/raw/mars_ez_research.json"
+   },
+   "tes": {
+    "script": "data/raw/mars_ez_extract/tes_albedo.py (project, unchanged)",
+    "command": "python -I data/raw/mars_ez_extract/tes_albedo.py <scratchpad/tes/global_albedo_8ppd.img> '{\"jeanne_25km\":[-5.5332, -118.6069, 25]}'",
+    "inputSha256": {
+     "global_albedo_8ppd.img": "47ee17fc9aca6aa9fd5d49e383c1acc366d4cb31cab4635bc823bc27a33283c7"
+    },
+    "result": {
+     "pixel": {
+      "line0": 764,
+      "sample0": 491,
+      "lat": -5.5625,
+      "lon": -118.5625,
+      "albedo": 0.2813
+     },
+     "within_25km": {
+      "n": 36,
+      "mean": 0.2788,
+      "median": 0.2802,
+      "min": 0.2711,
+      "max": 0.2874
+     }
+    },
+    "crossCheck": "Same run gives Deuteronilus 25 km mean 0.135 (targets.json: 0.14)"
+   },
+   "themis": {
+    "script": "caves/tools/themis_pbt_extract.py then caves/tools/themis_summary.py",
+    "method": "PDS3 PBT label read for each image; pixel of the MGC3 point found in the SINUSOIDAL projection (conventions checked against each label's min/max latitude and west/east longitude); 25-line window read by HTTP Range. The evening warm spot and the 14:46 cool spot both sit 2 lines north and 2 samples west of the MGC3 pixel (about 0.28 km), so all images are summarised at that offset (3 x 3 pixels) against the median of pixels 6-12 px from the MGC3 point.",
+    "images": [
+     {
+      "product_id": "I35441012PBT",
+      "start_time": "2009-12-10T12:34:31.173",
+      "local_time_h": 3.526,
+      "Ls": 21.682,
+      "pixel_at_offset_K": 155.74,
+      "warmest_3x3_K": 156.91,
+      "coldest_3x3_K": 152.31,
+      "background_median_K": 155.25,
+      "warmest_minus_bg_K": 1.66,
+      "coldest_minus_bg_K": -2.94,
+      "window_file": "I35441012PBT_lines2006-2030.bin",
+      "window_sha256": "c140fd24ca6273f426f57defe656032306086ed8820e25cdd1ef994d9d0e0a39",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip1_0032/i354xxpbt/I35441012PBT.IMG"
+     },
+     {
+      "product_id": "I37188002PBT",
+      "start_time": "2010-05-03T08:46:50.987",
+      "local_time_h": 4.03,
+      "Ls": 85.67,
+      "pixel_at_offset_K": 153.15,
+      "warmest_3x3_K": 153.73,
+      "coldest_3x3_K": 149.79,
+      "background_median_K": 151.84,
+      "warmest_minus_bg_K": 1.89,
+      "coldest_minus_bg_K": -2.05,
+      "window_file": "I37188002PBT_lines6653-6677.bin",
+      "window_sha256": "9a1bae22ec30af2262f1b683db34b6b8febdd0cd212db500a86ba22964a313a7",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip1_0034/i371xxpbt/I37188002PBT.IMG"
+     },
+     {
+      "product_id": "I05728006PBT",
+      "start_time": "2003-03-31T02:18:21.252",
+      "local_time_h": 5.239,
+      "Ls": 160.447,
+      "pixel_at_offset_K": 140.52,
+      "warmest_3x3_K": 145.85,
+      "coldest_3x3_K": 136.0,
+      "background_median_K": 141.59,
+      "warmest_minus_bg_K": 4.26,
+      "coldest_minus_bg_K": -5.59,
+      "window_file": "I05728006PBT_lines6683-6707.bin",
+      "window_sha256": "058eee79633e29cf683e57b5a0f53eedcad094fc6fed0e9012ce549d87569bf9",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip1_0005/i057xxpbt/I05728006PBT.IMG"
+     },
+     {
+      "product_id": "I54977009PBT",
+      "start_time": "2014-05-06T14:33:28.815",
+      "local_time_h": 5.731,
+      "Ls": 126.684,
+      "pixel_at_offset_K": 150.6,
+      "warmest_3x3_K": 156.05,
+      "coldest_3x3_K": 150.6,
+      "background_median_K": 153.92,
+      "warmest_minus_bg_K": 2.13,
+      "coldest_minus_bg_K": -3.32,
+      "window_file": "I54977009PBT_lines5442-5466.bin",
+      "window_sha256": "7793368ba20dc918b23af48e952a43d2179532bbbf03aca70a196d6f65111e60",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip2_0050/i549xxpbt/I54977009PBT.IMG"
+     },
+     {
+      "product_id": "I62852002PBT",
+      "start_time": "2016-02-14T00:19:08.452",
+      "local_time_h": 7.118,
+      "Ls": 108.753,
+      "pixel_at_offset_K": 173.31,
+      "warmest_3x3_K": 173.78,
+      "coldest_3x3_K": 170.64,
+      "background_median_K": 172.26,
+      "warmest_minus_bg_K": 1.52,
+      "coldest_minus_bg_K": -1.62,
+      "window_file": "I62852002PBT_lines2212-2236.bin",
+      "window_sha256": "2ec65c604dc2b9f431736e5c2ce700888530f4d3d03f2612e7ee7291036fe59b",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip2_0057/i628xxpbt/I62852002PBT.IMG"
+     },
+     {
+      "product_id": "I80066002PBT",
+      "start_time": "2020-01-01T22:48:20.735",
+      "local_time_h": 7.158,
+      "Ls": 129.289,
+      "pixel_at_offset_K": 176.22,
+      "warmest_3x3_K": 177.68,
+      "coldest_3x3_K": 175.94,
+      "background_median_K": 175.75,
+      "warmest_minus_bg_K": 1.93,
+      "coldest_minus_bg_K": 0.19,
+      "window_file": "I80066002PBT_lines671-695.bin",
+      "window_sha256": "2104be2d37ae681a5112425ae40f10132fe945c0586c3fc7bf69baa2ab5694df",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip2_0073/i800xxpbt/I80066002PBT.IMG"
+     },
+     {
+      "product_id": "I64586002PBT",
+      "start_time": "2016-07-05T20:05:10.450",
+      "local_time_h": 7.436,
+      "Ls": 180.664,
+      "pixel_at_offset_K": 208.97,
+      "warmest_3x3_K": 209.17,
+      "coldest_3x3_K": 208.25,
+      "background_median_K": 207.82,
+      "warmest_minus_bg_K": 1.35,
+      "coldest_minus_bg_K": 0.43,
+      "window_file": "I64586002PBT_lines2586-2610.bin",
+      "window_sha256": "cb3a21eb226cfef5093c3cbde7c5c52ce4894cce24b6be36a34ee307925358de",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip2_0059/i645xxpbt/I64586002PBT.IMG"
+     },
+     {
+      "product_id": "I33900001PBT",
+      "start_time": "2009-08-05T14:44:31.319",
+      "local_time_h": 14.765,
+      "Ls": 316.09,
+      "pixel_at_offset_K": 263.32,
+      "warmest_3x3_K": 271.48,
+      "coldest_3x3_K": 263.32,
+      "background_median_K": 273.16,
+      "warmest_minus_bg_K": -1.68,
+      "coldest_minus_bg_K": -9.84,
+      "window_file": "I33900001PBT_lines416-440.bin",
+      "window_sha256": "0aa77819392969af22caf8a6e6c0c91c166715441dd232347b6bd52dc9ce5d45",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip1_0031/i339xxpbt/I33900001PBT.IMG"
+     },
+     {
+      "product_id": "I36707018PBT",
+      "start_time": "2010-03-24T19:18:38.823",
+      "local_time_h": 15.887,
+      "Ls": 68.37,
+      "pixel_at_offset_K": 219.96,
+      "warmest_3x3_K": 220.77,
+      "coldest_3x3_K": 219.84,
+      "background_median_K": 220.31,
+      "warmest_minus_bg_K": 0.46,
+      "coldest_minus_bg_K": -0.47,
+      "window_file": "I36707018PBT_lines8067-8091.bin",
+      "window_sha256": "0d0c78a9519bc9f70ded82d185370fb27dbf64e4dbbd82b133a9ff1beea1a466",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip1_0033/i367xxpbt/I36707018PBT.IMG"
+     },
+     {
+      "product_id": "I37306018PBT",
+      "start_time": "2010-05-13T02:59:50.668",
+      "local_time_h": 16.043,
+      "Ls": 89.966,
+      "pixel_at_offset_K": 212.22,
+      "warmest_3x3_K": 212.68,
+      "coldest_3x3_K": 211.4,
+      "background_median_K": 212.86,
+      "warmest_minus_bg_K": -0.18,
+      "coldest_minus_bg_K": -1.46,
+      "window_file": "I37306018PBT_lines6879-6903.bin",
+      "window_sha256": "333ae03a2e447c7103089cbc3a65807aeff729e8a048cbfd15bb523d124801f7",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip1_0034/i373xxpbt/I37306018PBT.IMG"
+     },
+     {
+      "product_id": "I37594001PBT",
+      "start_time": "2010-06-05T18:11:15.841",
+      "local_time_h": 16.086,
+      "Ls": 100.47,
+      "pixel_at_offset_K": 209.63,
+      "warmest_3x3_K": 210.94,
+      "coldest_3x3_K": 209.21,
+      "background_median_K": 211.29,
+      "warmest_minus_bg_K": -0.35,
+      "coldest_minus_bg_K": -2.08,
+      "window_file": "I37594001PBT_lines2809-2833.bin",
+      "window_sha256": "37a4455e6794cadc859af56404e74d5274a586ec8df34d93562d5355d1e8ba99",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip1_0034/i375xxpbt/I37594001PBT.IMG"
+     },
+     {
+      "product_id": "I39341001PBT",
+      "start_time": "2010-10-27T14:36:36.203",
+      "local_time_h": 16.419,
+      "Ls": 171.044,
+      "pixel_at_offset_K": 230.64,
+      "warmest_3x3_K": 233.31,
+      "coldest_3x3_K": 230.64,
+      "background_median_K": 234.07,
+      "warmest_minus_bg_K": -0.76,
+      "coldest_minus_bg_K": -3.43,
+      "window_file": "I39341001PBT_lines1030-1054.bin",
+      "window_sha256": "2816bafd479c60c0d47100aa0a6c249c2e1dcb1ae5b1e1d4068918bd02aa9fc2",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip1_0036/i393xxpbt/I39341001PBT.IMG"
+     },
+     {
+      "product_id": "I47915009PBT",
+      "start_time": "2012-10-02T12:03:09.844",
+      "local_time_h": 16.676,
+      "Ls": 181.6,
+      "pixel_at_offset_K": 214.28,
+      "warmest_3x3_K": 214.52,
+      "coldest_3x3_K": 213.52,
+      "background_median_K": 214.34,
+      "warmest_minus_bg_K": 0.18,
+      "coldest_minus_bg_K": -0.82,
+      "window_file": "I47915009PBT_lines3774-3798.bin",
+      "window_sha256": "270074cdb10e629f782d8f515d6e3fc624268c66d2d02c0dc3534017a93a2ce0",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip1_0044/i479xxpbt/I47915009PBT.IMG"
+     },
+     {
+      "product_id": "I68833001PBT",
+      "start_time": "2017-06-20T16:40:25.738",
+      "local_time_h": 18.284,
+      "Ls": 22.301,
+      "pixel_at_offset_K": 171.15,
+      "warmest_3x3_K": 181.19,
+      "coldest_3x3_K": 165.0,
+      "background_median_K": 165.44,
+      "warmest_minus_bg_K": 15.75,
+      "coldest_minus_bg_K": -0.44,
+      "window_file": "I68833001PBT_lines2401-2425.bin",
+      "window_sha256": "5f72699fa99cbf270fcc97a9b887d474d9902dab75be74b1cbe1124559f985e6",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip2_0063/i688xxpbt/I68833001PBT.IMG"
+     },
+     {
+      "product_id": "I78176001PBT",
+      "start_time": "2019-07-30T06:50:33.826",
+      "local_time_h": 18.698,
+      "Ls": 59.474,
+      "pixel_at_offset_K": 173.95,
+      "warmest_3x3_K": 173.95,
+      "coldest_3x3_K": 161.2,
+      "background_median_K": 159.87,
+      "warmest_minus_bg_K": 14.08,
+      "coldest_minus_bg_K": 1.33,
+      "window_file": "I78176001PBT_lines353-377.bin",
+      "window_sha256": "5a6c6c416664558f6c92c69f634b10217b369f9977f65080c08e31f5f872868d",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip2_0071/i781xxpbt/I78176001PBT.IMG"
+     },
+     {
+      "product_id": "I71664001PBT",
+      "start_time": "2018-02-08T22:28:29.799",
+      "local_time_h": 19.149,
+      "Ls": 126.882,
+      "pixel_at_offset_K": 165.87,
+      "warmest_3x3_K": 166.17,
+      "coldest_3x3_K": 156.07,
+      "background_median_K": 153.86,
+      "warmest_minus_bg_K": 12.31,
+      "coldest_minus_bg_K": 2.21,
+      "window_file": "I71664001PBT_lines168-192.bin",
+      "window_sha256": "a03e455ecad457a8889513add2193c70fd4d5cb1f547e1ecede7dac7735fca2d",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip2_0065/i716xxpbt/I71664001PBT.IMG"
+     },
+     {
+      "product_id": "I80759001PBT",
+      "start_time": "2020-02-27T23:23:10.784",
+      "local_time_h": 19.248,
+      "Ls": 157.887,
+      "pixel_at_offset_K": 170.55,
+      "warmest_3x3_K": 177.74,
+      "coldest_3x3_K": 162.16,
+      "background_median_K": 159.84,
+      "warmest_minus_bg_K": 17.9,
+      "coldest_minus_bg_K": 2.32,
+      "window_file": "I80759001PBT_lines195-219.bin",
+      "window_sha256": "c1b43b09ede6e7ed3220a4da26c218893ad9c466371d71c94ef931c73ebc8bc8",
+      "url": "https://static.mars.asu.edu/pds/ODTGEO_v2/data/odtip2_0073/i807xxpbt/I80759001PBT.IMG"
+     }
+    ]
+   }
+  }
+ },
+ "images": {
+  "tranquillitatis-pit": {
+   "product": "LROC NAC M126710873RC (2010-04-24, Sun 63° high, nadir view; covers 8.12-9.07° N, 33.17-33.24° E)",
+   "pds": "https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0/LROLRC_1003/DATA/MAP/2010114/NAC/M126710873RC.IMG",
+   "viewer": "https://data.lroc.im-ldi.com/lroc/view_lroc/LRO-L-LROC-3-CDR-V1.0/M126710873RC",
+   "alternatives": [
+    "M155016845RC (2011-03-17, incidence 10.6°, emission 4.8°)",
+    "M1133982603LC (2013-09-16, incidence 11.4°, emission 3.6°)"
+   ],
+   "licence": "LROC terms page: 'Data products available through the LROC Data Node of the PDS or through NASA PDS interfaces are in the public domain' (pds.lroc.im-ldi.com and data.lroc.im-ldi.com/lroc/thumbnails are on its list). Images on the LROC website itself (Featured Images, atlases) are copyrighted, so crop the PDS CDR (504 MB) rather than reuse the Pit Atlas pictures. Credit NASA/GSFC/Arizona State University.",
+   "licenceUrl": "https://lroc.im-ldi.com/about/terms"
+  },
+  "arsia-skylight": {
+   "product": "HiRISE PSP_003647_1745 (2007-05-07, 15:27 local time, 25 cm/pixel, map-projected)",
+   "browse": "https://hirise-pds.lpl.arizona.edu/PDS/EXTRAS/RDR/PSP/ORB_003600_003699/PSP_003647_1745/PSP_003647_1745_RED.browse.jpg",
+   "closeUp": "https://static.uahirise.org/images/2007/details/cut/PSP_3647_1745_cut_b.jpg",
+   "page": "https://www.uahirise.org/PSP_003647_1745",
+   "licence": "HiRISE image usage policy: 'All of the images produced by HiRISE and accessible on this site are within the public domain' (credit requested: NASA/JPL-Caltech/UArizona; the policy page itself says NASA/JPL/University of Arizona).",
+   "licenceUrl": "https://www.uahirise.org/media/usage.php",
+   "stereoPair": "PSP_004847_1745"
+  }
+ },
+ "appChangesNeeded": [
+  "js/ui/topbar.js TARGET_GROUPS has no 'moon-cave' (only a comment, contract C2) and no 'mars-cave'. Add {id:'moon-cave', label:'Moon · cave shelter (lava-tube pit)'} after 'moon-base' and e.g. {id:'mars-cave', label:'Mars · cave skylight (lava-flow pit)'} after 'mars-base'; otherwise the targets are not listed.",
+  "tests/index.html test 'every target is in a valid group, in the agreed order': ORDER and LABEL know 'moon-cave' but not 'mars-cave'. Add 'mars-cave' to both (after 'mars-base') or the test fails.",
+  "js/ui/tour.js GROUP_WORDS has 'moon-cave' but not 'mars-cave': add e.g. 'mars-cave': ['Mars cave skylight', 'Mars cave skylights'].",
+  "If the lead prefers no new Mars group, 'mars-base' is the closest existing group, but its label says 'proposed human landing zones (NASA, 2015)', which this site is not."
+ ],
+ "decisionsForLead": [
+  "Moon pit: the scored values are now the MEASURED mare surface around the pit (Diviner), not the modelled 17 °C cave interior (which becomes a fact). This replaces the earlier proposal's meanTemp 17 / strict null and lifts the pit from 1 to 4 measured factors.",
+  "Both targets compare Earth air/ground climate with the ground surface outside the cave. The 'shelter' tag, basalt geology and terrain are what make them cave analogs; say so in the notes and in Method.",
+  "Moon albedo left null on purpose: LOLA 1064 nm zero-phase normal albedo (0.156) is measured but is a different quantity from NASA POWER broadband surface albedo; it is a fact. If the lead wants it scored, put 0.16 with that note (it would not change the pass/fail rule).",
+  "Mars regolith tag is weak (a 'dusty lava plain' caption). Keep or drop.",
+  "Mars name/ID: 'arsia-skylight' / \"Arsia Mons cave skylight ('Jeanne')\". 'Jeanne' is the discoverers' informal name (LPSC 2007); the USGS catalogue ID is APC075.",
+  "MGC3 table row lists depth 345 m while the MGC3 description and Cushing 2012 both say >245 m for this pit (HiRISE PSP_003647_1745); the proposal uses >245 m.",
+  "THEMIS facts are our own extraction from PDS images (the GRL 2007 full text with the authors' numbers is behind a Cloudflare check and was not read). If the lead wants only published numbers, keep the 'Thermal behaviour (published)' fact and drop the three THEMIS facts."
+ ],
+ "couldNotRead": [
+  "Cushing et al. 2007 GRL and Cushing et al. 2015 JGR full texts: Wiley returns a Cloudflare 'Just a moment' check (not bypassed). Only abstracts (OpenAlex) are quoted; LPSC 2007 abstract 1371 (LPI) was read in full.",
+  "Horvath et al. 2022 full text (same Wiley check).",
+  "luna1.diviner.ucla.edu (UCLA Diviner level-4 site) timed out; the PDS copies of the same products were used instead.",
+  "Jung, Yi & Kim 2014 (JASS) PDF came back empty; it covers Pavonis/Ascraeus candidates anyway, not Arsia."
+ ],
+ "files_sha256": {
+  "moon_diviner_out.json": "2ab8c4f184af935c1cebc51b1f5bdbdebc9ed33698ec8675e3e62510c70c0d4e",
+  "dl_moon/gcp_00n10n_pit_3x3_rows.txt": "207cf27644bfa395ec0955fde711516bb34b974e4a8db613e9df07f8c7f6bc3b",
+  "dl_moon/ghrm_tbol_m_pit_window_49x49.f32": "4542d1a214e9b208740433e0eab6ebd698749cecceb3428192b09507307b4da8",
+  "dl_moon/ghrm_tbol_sam_pit_window_49x49.f32": "2abcc6f6e3fea0aac9fa7b48e127b07e884345f8970138b30ddd80b84f579c57",
+  "dl_moon/ghrm_tbol_anom_pit_window_49x49.f32": "91069660f07ba2207afeb72f69820a119c2c68471dfb16d1c48699be23efb778",
+  "dl_moon/ghrm_ra_sam_pit_window_49x49.f32": "61e2d3c60668e63d13c89a7adddae8929a2c4900a52bd988e8bdb0a31f0e6ec9",
+  "dl_gcp/global_cumul_avg_cyl_00n10n_002.lbl": "78a85ed9020f04751af928af6070ad4238ca39ff5396c5234caf7dcfffa65534",
+  "dl_gcp/global_cumul_avg_cyl_00n10n_002.xml": "f59ade00e9e17125d31125743e14a5d305ad7b60a70529fb792cdc82c40e0a88",
+  "dl_ghrm/dghrm_tbol_m_70s70n_img.xml": "1d221419b090c0deeb1541e9707b6427ae1401bcdb726c9598ac328421083fe7",
+  "dl_lola/ldam_10_float_pit_5x5.f32": "08c2ff72e311b18e7398d97d91076c8ecb0121bb512f9fa108393b76710803d9",
+  "dl_lola/ldam_10_float.lbl": "ed098719e9a7d59ba380a8a548c5ca3490a66e5be0c653eb914149eb90e46073",
+  "dl_lola/lola_albedo_out.json": "582d0a184c85c9d1da040cb26e94256fae06d681be53c29cbca84c8970d27799",
+  "dl_docs/Diviner_RDR_SIS.pdf": "a2d2f02ec364021b0a3ff5d475395a8126192e32de94500e9a13d197d2974a46",
+  "themis_jeanne_v1.json": "abf3f2d485be5f1c015509805bc0d6f07746b31bd4871b8799f7d6e73e1d907c",
+  "themis_jeanne_v2.json": "ff5f8c97f15b953ec23e7d10918062a0b531f4e25673c8f62333ffde1d2699e1",
+  "themis_jeanne_summary.json": "f2182afc58ea70e0d3271e919a5d98ed37e987b9a7fd5085418e39d52ab40478",
+  "mars_mcs_out.txt": "9af6ccfbc95dced4dbc8339c32e74da95df4ea13afde45cf896130d6324de30c",
+  "mars_tes_out.txt": "2bbfdb4d66f349eec778a42ae8060076b3e0a0b62be5b14ce7c564581592c917",
+  "dl_mars/mars_cave_catalog.zip": "d2703c128b29f47d44bd482344887156bae82831a636844d1418d75661726097",
+  "dl_mars/mgc3/data/Mars_Cave_Catalog.csv": "5175fbe92043429c7e74b59bd71f748cd8058a87b3bbc8572d1455eba1ad8ba7",
+  "dl_mars/mgc3/document/mars_cave_catalog_archive_description.pdf": "f3c1415e39d14742c8a5e315242ee27c653239c6c74fe0b699e094a978a7a865",
+  "dl_mars/lpsc2007_1371.pdf": "22ade872385bed5bc4df61c4a88abb439ab35164779320bf5013be59b8424f63",
+  "dl_mars/cushing2012_jcks.pdf": "079a4d71d3765886b247b12666d9f2c063b687fe3063b5798a25be78c183e411",
+  "dl_mars/jass2022.pdf": "cf1938dd98052cd1d35d5d3077440b09c9e783881bed7794879c172735cdc8b5",
+  "terrain/terrain_caves.json": "dab6cd84dd6d3d4a9b140ee6acfe7a2c5af6013c65375503d1836624874e3aee",
+  "terrain/cache/arsia-skylight.json": "29bc941f0077c056a76e9ea06f5725b1b4d69b7f925594d2a200b685dd642718",
+  "tools/moon_diviner_extract.py": "c21710f2eb03ea2fbb6ea8df6a018c805bf13c08cf7ed0363027ad7691e28546",
+  "tools/moon_lola_albedo.py": "5eb95c04d41b1bbab8d8d6784ee6f2e58d31a49b0b1c577f027f7a4bfa2ac6e6",
+  "tools/themis_pbt_extract.py": "dbe019077740ff2e33e0d0bdba4df140bc896980ce6373ed893c46a072e0a3bb",
+  "tools/themis_summary.py": "121df1c59919d171364377e4fe3a00ee8938f9c220658d9e096b1588ee0c561b",
+  "tools/make_caves_proposal.py": "a7f82e7408eaad173d2311ae91cb1f6032da035b669505533a020b148d186d82",
+  "tools/verify_quotes.py": "a46f72f69a85d8a75c5e368c052c923f6754d9159d0c9048cbd04af47ea085dd",
+  "tools/check_caves_proposal.py": "34899aaf8bb9981a638addb836780046c29e5976d156eacace1dbe4b792ac0aa",
+  "tools/oa.py": "5285805f1801094e1336669ecc4e1e70b3d45b6c484944ec9eff57d3142df947",
+  "oa_moon.txt": "924d0b9c304115c2883733306d78f2e5a13e7417739eabeefec71d13640672f9",
+  "oa_mars.txt": "8732ddfd827bb6439168f7ccff8162bb60e5bd7bb30eef9b5019f611205624a0",
+  "dl_pages/hirise_PSP_003647_1745.html": "1fdcce40e59064f30ee8e23ec5809bcb05a2da9baef2a0bc71f77c334d387d68",
+  "dl_pages/lroc_terms.html": "fb2b3db1a882bb3d23a1471bd80601d5d0d981aae56d2bcb95cb832e786f6d7c",
+  "dl_pages/nasa_flows-of-ascraeus.html": "96ce93db91b7e6f126265cf42a9ac2276981e4f96003c1cdeed2be48f32314d6",
+  "dl_pages/nasa_arsia-mons-lava-flows.html": "0a0ac0102ca7393d7e5e7dbf1484c4c8b8dffade888d4ef1366bcc01f108318e",
+  "dl_mars/lpsc2007_1371.raw.txt": "3288b0f33d748d1de0449872c71b64f65129e840281527453598154c403a4dc7",
+  "dl_mars/cushing2012_jcks.raw.txt": "9aad204826a7a18d0873373defcfc0c9c2841712f3b47f77ad1ac0629a750646",
+  "dl_mars/mgc3/desc.raw.txt": "78da4918cf06e57f6767cc86d97dee10f0b9fd1f7b6cd0d59fdfc1f54c5e1e84",
+  "dl_themis/I35441012PBT_lines2006-2030.bin": "c140fd24ca6273f426f57defe656032306086ed8820e25cdd1ef994d9d0e0a39",
+  "dl_themis/I37188002PBT_lines6653-6677.bin": "9a1bae22ec30af2262f1b683db34b6b8febdd0cd212db500a86ba22964a313a7",
+  "dl_themis/I05728006PBT_lines6683-6707.bin": "058eee79633e29cf683e57b5a0f53eedcad094fc6fed0e9012ce549d87569bf9",
+  "dl_themis/I54977009PBT_lines5442-5466.bin": "7793368ba20dc918b23af48e952a43d2179532bbbf03aca70a196d6f65111e60",
+  "dl_themis/I62852002PBT_lines2212-2236.bin": "2ec65c604dc2b9f431736e5c2ce700888530f4d3d03f2612e7ee7291036fe59b",
+  "dl_themis/I80066002PBT_lines671-695.bin": "2104be2d37ae681a5112425ae40f10132fe945c0586c3fc7bf69baa2ab5694df",
+  "dl_themis/I64586002PBT_lines2586-2610.bin": "cb3a21eb226cfef5093c3cbde7c5c52ce4894cce24b6be36a34ee307925358de",
+  "dl_themis/I33900001PBT_lines416-440.bin": "0aa77819392969af22caf8a6e6c0c91c166715441dd232347b6bd52dc9ce5d45",
+  "dl_themis/I36707018PBT_lines8067-8091.bin": "0d0c78a9519bc9f70ded82d185370fb27dbf64e4dbbd82b133a9ff1beea1a466",
+  "dl_themis/I37306018PBT_lines6879-6903.bin": "333ae03a2e447c7103089cbc3a65807aeff729e8a048cbfd15bb523d124801f7",
+  "dl_themis/I37594001PBT_lines2809-2833.bin": "37a4455e6794cadc859af56404e74d5274a586ec8df34d93562d5355d1e8ba99",
+  "dl_themis/I39341001PBT_lines1030-1054.bin": "2816bafd479c60c0d47100aa0a6c249c2e1dcb1ae5b1e1d4068918bd02aa9fc2",
+  "dl_themis/I47915009PBT_lines3774-3798.bin": "270074cdb10e629f782d8f515d6e3fc624268c66d2d02c0dc3534017a93a2ce0",
+  "dl_themis/I68833001PBT_lines2401-2425.bin": "5f72699fa99cbf270fcc97a9b887d474d9902dab75be74b1cbe1124559f985e6",
+  "dl_themis/I78176001PBT_lines353-377.bin": "5a6c6c416664558f6c92c69f634b10217b369f9977f65080c08e31f5f872868d",
+  "dl_themis/I71664001PBT_lines168-192.bin": "a03e455ecad457a8889513add2193c70fd4d5cb1f547e1ecede7dac7735fca2d",
+  "dl_themis/I80759001PBT_lines195-219.bin": "c1b43b09ede6e7ed3220a4da26c218893ad9c466371d71c94ef931c73ebc8bc8"
+ },
+ "quotes": [
+  {
+   "source": "diviner-gcp",
+   "where": "PDS3 label of the GCP product (pds-geosciences.wustl.edu)",
+   "localFile": "caves/dl_gcp/global_cumul_avg_cyl_00n10n_002.lbl",
+   "quote": "binned at 0.5 degree latitude and longitude and 0.25 hours of local time derived from a compilation of all nadir observations acquired from 5-July-2009 to 1-April-2015.",
+   "verified": true
+  },
+  {
+   "source": "diviner-gcp",
+   "where": "PDS3 label",
+   "localFile": "caves/dl_gcp/global_cumul_avg_cyl_00n10n_002.lbl",
+   "quote": "Constant -9999 corresponds to bins that contained no observations.",
+   "verified": true
+  },
+  {
+   "source": "diviner-gcp",
+   "where": "Williams et al. 2017 abstract (OpenAlex)",
+   "localFile": "caves/oa_moon.txt",
+   "quote": "Approximately a quarter trillion calibrated radiance measurements of the Moon, acquired over 5.5 years by Diviner, have been compiled into a 0.5° resolution global dataset with a 0.25 h local time resolution.",
+   "verified": true
+  },
+  {
+   "source": "diviner-gcp",
+   "where": "Williams et al. 2017 abstract (OpenAlex)",
+   "localFile": "caves/oa_moon.txt",
+   "quote": "Daytime maximum temperatures are sensitive to the albedo of the surface and are ∼387–397 K at the equator, dropping to ∼95 K just before sunrise",
+   "verified": true
+  },
+  {
+   "source": "diviner-ghrm",
+   "where": "PDS4 label title",
+   "localFile": "caves/dl_ghrm/dghrm_tbol_m_70s70n_img.xml",
+   "quote": "LRO Diviner global high-resolution mosaic of bolometric temperature at midnight",
+   "verified": true
+  },
+  {
+   "source": "diviner-ghrm",
+   "where": "Diviner RDR and derived products SIS v1.21, section 2.2.9",
+   "localFile": "caves/dl_docs/Diviner_RDR_SIS.raw.txt",
+   "quote": "For each spatial bin and channel, empirical fitting is used to calculate the brightness temperature at midnight and slope-adjusted midnight.",
+   "verified": true
+  },
+  {
+   "source": "diviner-ghrm",
+   "where": "Powell et al. 2023 abstract (OpenAlex)",
+   "localFile": "caves/oa_moon.txt",
+   "quote": "In this work, we compile ∼13 years of Diviner data to produce improved global maps of nighttime brightness temperature, bolometric temperature, regolith temperature, and rock abundance (RA).",
+   "verified": true
+  },
+  {
+   "source": "lola-albedo",
+   "where": "PDS3 label of LDAM_10_FLOAT",
+   "localFile": "caves/dl_lola/ldam_10_float.lbl",
+   "quote": "This data product is an albedo map (brightness) of the Moon at a resolution of 3032.34 m/pix by 3032.34 m/pix",
+   "verified": true
+  },
+  {
+   "source": "lola-albedo",
+   "where": "Lucey et al. 2014 abstract (OpenAlex)",
+   "localFile": "caves/oa_moon.txt",
+   "quote": "these data are used to map the reflectivity of the Moon at zero-phase angle with a photometrically uniform data set.",
+   "verified": true
+  },
+  {
+   "source": "lroc-terms",
+   "where": "LROC Terms & Citation page",
+   "localFile": "caves/dl_pages/lroc_terms.html",
+   "quote": "Data products available through the LROC Data Node of the PDS or through NASA PDS interfaces are in the public domain",
+   "verified": true
+  },
+  {
+   "source": "mgc3",
+   "where": "MGC3 data table, row 69",
+   "localFile": "caves/dl_mars/mgc3/data/Mars_Cave_Catalog.csv",
+   "quote": "APC075,241.3931,-5.5332,APC,0,165,345,APC ~ Jeanne",
+   "verified": true
+  },
+  {
+   "source": "mgc3",
+   "where": "MGC3 archive description, Figure 2 caption",
+   "localFile": "caves/dl_mars/mgc3/desc.raw.txt",
+   "quote": "lower image shows an Atypical Pit Crater (APC) with a diameter of 165 m, a depth >245 m, and an overhanging rim of unknown extent (HiRISE: PSP_003647_1745 - see Cushing, 2012).",
+   "verified": true
+  },
+  {
+   "source": "mgc3",
+   "where": "MGC3 archive description, column C-2",
+   "localFile": "caves/dl_mars/mgc3/desc.raw.txt",
+   "quote": "[0-360] Eastward-positive in decimal degrees.",
+   "verified": true
+  },
+  {
+   "source": "mgc3",
+   "where": "MGC3 archive description, column C-3",
+   "localFile": "caves/dl_mars/mgc3/desc.raw.txt",
+   "quote": "[+/- 90] Planetocentric values in decimal degrees.",
+   "verified": true
+  },
+  {
+   "source": "mgc3",
+   "where": "MGC3 archive description, section 1",
+   "localFile": "caves/dl_mars/mgc3/desc.raw.txt",
+   "quote": "NOTE: Because the candidates listed here have only been observed from Mars orbit, NONE can be verified as genuine caves with cavities extending into dark zones beneath the surface",
+   "verified": true
+  },
+  {
+   "source": "hirise-jeanne",
+   "where": "HiRISE caption (A. McEwen, 23 May 2007)",
+   "localFile": "caves/dl_pages/hirise_PSP_003647_1745.html",
+   "quote": "This image shows a very dark spot on an otherwise bright dusty lava plain to the northeast of Arsia Mons, one of the four giant Tharsis volcanoes.",
+   "verified": true
+  },
+  {
+   "source": "hirise-jeanne",
+   "where": "HiRISE caption",
+   "localFile": "caves/dl_pages/hirise_PSP_003647_1745.html",
+   "quote": "What's amazing is that we cannot see any detail in the shadow!",
+   "verified": true
+  },
+  {
+   "source": "hirise-jeanne",
+   "where": "HiRISE caption",
+   "localFile": "caves/dl_pages/hirise_PSP_003647_1745.html",
+   "quote": "We cannot see the walls because they are either perfectly vertical and extremely dark or, more likely, overhanging.",
+   "verified": true
+  },
+  {
+   "source": "hirise-jeanne",
+   "where": "HiRISE image facts",
+   "localFile": "caves/dl_pages/hirise_PSP_003647_1745.html",
+   "quote": "Latitude (centered) -5.532° Longitude (East) 241.396°",
+   "verified": true
+  },
+  {
+   "source": "hirise-jeanne",
+   "where": "HiRISE page, usage policy",
+   "localFile": "caves/dl_pages/hirise_PSP_003647_1745.html",
+   "quote": "All of the images produced by HiRISE and accessible on this site are within the public domain",
+   "verified": true
+  },
+  {
+   "source": "cushing-2007",
+   "where": "Cushing et al. 2007 GRL abstract (OpenAlex)",
+   "localFile": "caves/oa_mars.txt",
+   "quote": "Seven possible skylight entrances into Martian caves were observed on and around the flanks of Arsia Mons by the Mars Odyssey Thermal Emission Imaging System (THEMIS).",
+   "verified": true
+  },
+  {
+   "source": "cushing-2007",
+   "where": "Cushing et al. 2007 GRL abstract (OpenAlex)",
+   "localFile": "caves/oa_mars.txt",
+   "quote": "these candidates appear to be deep dark holes at visible wavelengths while infrared observations show their thermal behaviors to be consistent with subsurface materials.",
+   "verified": true
+  },
+  {
+   "source": "cushing-lpsc-2007",
+   "where": "LPSC 2007 abstract 1371",
+   "localFile": "caves/dl_mars/lpsc2007_1371.raw.txt",
+   "quote": "Thermal-infrared data suggest temperatures inside these features remain nearly constant throughout each diurnal cycle.",
+   "verified": true
+  },
+  {
+   "source": "cushing-lpsc-2007",
+   "where": "LPSC 2007 abstract 1371",
+   "localFile": "caves/dl_mars/lpsc2007_1371.raw.txt",
+   "quote": "Meanwhile, nighttime temperatures for this candidate are warmer than all nearby surfaces.",
+   "verified": true
+  },
+  {
+   "source": "cushing-lpsc-2007",
+   "where": "LPSC 2007 abstract 1371",
+   "localFile": "caves/dl_mars/lpsc2007_1371.raw.txt",
+   "quote": "the atmosphere at these elevations is too thin for a lander to slow down or maneuver sufficiently to reach them.",
+   "verified": true
+  },
+  {
+   "source": "cushing-lpsc-2007",
+   "where": "LPSC 2007 abstract 1371",
+   "localFile": "caves/dl_mars/lpsc2007_1371.raw.txt",
+   "quote": "Wendy, Dena, Annie and Jeanne are the strongest candidates",
+   "verified": true
+  },
+  {
+   "source": "cushing-2012",
+   "where": "Cushing 2012, Human habitat potential",
+   "localFile": "caves/dl_mars/cushing2012_jcks.raw.txt",
+   "quote": "Lava-tube caves, by their nature, can protect inhabitants from all of the hazards that humans would encounter on the surface.",
+   "verified": true
+  },
+  {
+   "source": "cushing-2012",
+   "where": "Cushing 2012, Human habitat potential",
+   "localFile": "caves/dl_mars/cushing2012_jcks.raw.txt",
+   "quote": "Dust storms and micrometeoroids cannot reach cave interiors, temperature variations are minimized in cave environments",
+   "verified": true
+  },
+  {
+   "source": "cushing-2012",
+   "where": "Cushing 2012, abstract",
+   "localFile": "caves/dl_mars/cushing2012_jcks.raw.txt",
+   "quote": "Martian caves are promising potential sites for future human habitation and astrobiology investigations",
+   "verified": true
+  },
+  {
+   "source": "cushing-2015",
+   "where": "Cushing, Okubo & Titus 2015 abstract (OpenAlex)",
+   "localFile": "caves/oa_mars.txt",
+   "quote": "Observations by the Mars Odyssey Thermal Emission Imaging System (THEMIS) show that APC floor temperatures are warmer at night and fluctuate with much lower diurnal amplitudes than nearby surfaces or adjacent bowl‐shaped pit craters.",
+   "verified": true
+  },
+  {
+   "source": "tharsis-basalt",
+   "where": "NASA Photojournal PIA04289 caption",
+   "localFile": "caves/dl_pages/nasa_flows-of-ascraeus.html",
+   "quote": "Shield volcanoes typically form from silica-, oxygen-, and aluminum-bearing rocks that are enriched in iron and magnesium -- that is, basalt.",
+   "verified": true
+  },
+  {
+   "source": "tharsis-basalt",
+   "where": "NASA Photojournal PIA04289 caption",
+   "localFile": "caves/dl_pages/nasa_flows-of-ascraeus.html",
+   "quote": "The lava flows of Ascraeus Mons are most likely basaltic",
+   "verified": true
+  },
+  {
+   "source": "arsia-lava-flows",
+   "where": "NASA Photojournal PIA03963 caption (THEMIS)",
+   "localFile": "caves/dl_pages/nasa_arsia-mons-lava-flows.html",
+   "quote": "The region of flows south of the volcano have had little modification and appear very similar in appearance to Hawaiian lava flows.",
+   "verified": true
+  },
+  {
+   "source": "jass-2022",
+   "where": "Park, Hong & Jung 2022, J. Astron. Space Sci. 39, 141 (CC BY-NC), abstract",
+   "localFile": "caves/dl_mars/jass2022.txt",
+   "quote": "We find that 79% of the cave entrance candidates exhibit higher temperatures than the surrounding areas, and 59% show a temperature difference over 20K",
+   "verified": true
+  },
+  {
+   "source": "themis-pbt",
+   "where": "PDS3 label of THEMIS PBT I71664001",
+   "localFile": "caves/dl_themis/I71664001PBT_head.bin",
+   "quote": "BAND_CENTER = 12.57 <MICROMETERS>",
+   "verified": true
+  },
+  {
+   "source": "themis-pbt",
+   "where": "PDS3 label of THEMIS PBT I71664001",
+   "localFile": "caves/dl_themis/I71664001PBT_head.bin",
+   "quote": "LOCAL_TIME = 19.149",
+   "verified": true
+  },
+  {
+   "source": "horvath-2022",
+   "where": "Abstract (text as deposited by the publisher at Crossref: https://api.crossref.org/works/10.1029/2022GL099710; also in OpenAlex)",
+   "quote": "We present Diviner Lunar Radiometer measurements showing that the Mare Tranquillitatis and Mare Ingenii pits exhibit elevated thermal emission during the night, ∼100 K warmer than the surrounding surface.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "horvath-2022",
+   "where": "Abstract (text as deposited by the publisher at Crossref: https://api.crossref.org/works/10.1029/2022GL099710; also in OpenAlex)",
+   "quote": "Using these data, along with computational thermophysical models, we characterize the thermal environment inside pits and potential caves.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "horvath-2022",
+   "where": "Abstract (text as deposited by the publisher at Crossref: https://api.crossref.org/works/10.1029/2022GL099710; also in OpenAlex)",
+   "quote": "Near the equator, peak day‐time temperatures on regolith‐covered pit floors can potentially reach >420 K, whereas temperatures beyond the opening in permanent shadow would maintain a nearly constant temperature of ∼290 K, similar to that of a blackbody cavity in radiative equilibrium.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "horvath-2022",
+   "where": "Abstract (text as deposited by the publisher at Crossref: https://api.crossref.org/works/10.1029/2022GL099710; also in OpenAlex)",
+   "quote": "Thermal IR measurements such as those of Diviner can readily detect pit thermal signatures but would be insensitive to the existence of caves they may host, as the latter would only induce a 0.1 K increase to night‐time temperatures of the overlying surface.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "nasa-pits-temps",
+   "where": "NASA article text (page fetched 2026-10-10)",
+   "quote": "NASA-funded scientists have discovered shaded locations within pits on the Moon that always hover around a comfortable 63 F (about 17 C) using data from NASA’s Lunar Reconnaissance Orbiter (LRO) spacecraft and computer modeling.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "nasa-pits-temps",
+   "where": "NASA article text (page fetched 2026-10-10)",
+   "quote": "Focusing on a roughly cylindrical 328-foot (100-meter)–deep depression about the length and width of a football field in an area of the Moon known as the Mare Tranquillitatis, Horvath and his colleagues used computer modeling to analyze the thermal properties of the rock and lunar dust and to chart the pit’s temperatures over time.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "nasa-pits-temps",
+   "where": "NASA article text (page fetched 2026-10-10)",
+   "quote": "The results revealed that temperatures within the permanently shadowed reaches of the pit fluctuate only slightly throughout the lunar day, remaining at around 63 F or 17 C.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "nasa-pits-temps",
+   "where": "NASA article text (page fetched 2026-10-10)",
+   "quote": "The pits or caves would also offer some protection from cosmic rays, solar radiation and micrometeorites.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "nasa-pits-temps",
+   "where": "NASA article text (page fetched 2026-10-10)",
+   "quote": "The pits, and caves to which they may lead, would make thermally stable sites for lunar exploration compared to areas at the Moon’s surface, which heat up to 260 F (about 127 C) during the day and cool to minus 280 F (about minus 173 C) at night.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "carrer-2024",
+   "where": "Abstract and figure caption on the Nature Astronomy article page (fetched 2026-10-10; the full text is subscription-only)",
+   "quote": "Here we analyse radar images of the Mare Tranquillitatis pit (MTP), an elliptical skylight with vertical or overhanging walls and a sloping pit floor that seems to extend further underground.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "carrer-2024",
+   "where": "Abstract and figure caption on the Nature Astronomy article page (fetched 2026-10-10; the full text is subscription-only)",
+   "quote": "The images were obtained by the Mini-RF instrument onboard the Lunar Reconnaissance Orbiter in 2010.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "carrer-2024",
+   "where": "Abstract and figure caption on the Nature Astronomy article page (fetched 2026-10-10; the full text is subscription-only)",
+   "quote": "We find that a portion of the radar reflections originating from the MTP can be attributed to a subsurface cave conduit tens of metres long, suggesting that the MTP leads to an accessible cave conduit beneath the Moon’s surface.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "carrer-2024",
+   "where": "Abstract and figure caption on the Nature Astronomy article page (fetched 2026-10-10; the full text is subscription-only)",
+   "quote": "This discovery suggests that the MTP is a promising site for a lunar base, as it offers shelter from the harsh surface environment and could support long-term human exploration of the Moon.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "carrer-2024",
+   "where": "Abstract and figure caption on the Nature Astronomy article page (fetched 2026-10-10; the full text is subscription-only)",
+   "quote": "Fig. 1: Experimental results for the MTP (8.3355° N, 33.222° E) imaging with Mini-RF.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "nasa-caves",
+   "where": "NASA Science article text (fetched 2026-10-10)",
+   "quote": "In re-analyzing radar data collected by LRO’s Mini-RF (Miniature Radio-Frequency) instrument in 2010, the team found evidence of a cave extending more than 200 feet from the base of a pit.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "nasa-caves",
+   "where": "NASA Science article text (fetched 2026-10-10)",
+   "quote": "The pit is located 230 miles northeast of the first human landing site on the Moon in Mare Tranquillitatis .",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "nasa-caves",
+   "where": "NASA Science article text (fetched 2026-10-10)",
+   "quote": "The full extent of the cave is unknown, but it could stretch for miles beneath the mare.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "lroc-pit-atlas",
+   "where": "LROC Lunar Pit Atlas page for pit 3 and the pits list table (fetched 2026-10-10; www.lroc.asu.edu now redirects to lroc.im-ldi.com)",
+   "quote": "Lat. 8.3355 Long. 33.222",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "lroc-pit-atlas",
+   "where": "LROC Lunar Pit Atlas page for pit 3 and the pits list table (fetched 2026-10-10; www.lroc.asu.edu now redirects to lroc.im-ldi.com)",
+   "quote": "Funnel Min. Diam. 140",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "lroc-pit-atlas",
+   "where": "LROC Lunar Pit Atlas page for pit 3 and the pits list table (fetched 2026-10-10; www.lroc.asu.edu now redirects to lroc.im-ldi.com)",
+   "quote": "Funnel Max. Diam. 146",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "lroc-pit-atlas",
+   "where": "LROC Lunar Pit Atlas page for pit 3 and the pits list table (fetched 2026-10-10; www.lroc.asu.edu now redirects to lroc.im-ldi.com)",
+   "quote": "Inner Min. Diam. 88",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "lroc-pit-atlas",
+   "where": "LROC Lunar Pit Atlas page for pit 3 and the pits list table (fetched 2026-10-10; www.lroc.asu.edu now redirects to lroc.im-ldi.com)",
+   "quote": "Inner Max. Diam. 100",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "lroc-pit-atlas",
+   "where": "LROC Lunar Pit Atlas page for pit 3 and the pits list table (fetched 2026-10-10; www.lroc.asu.edu now redirects to lroc.im-ldi.com)",
+   "quote": "Depth 105.0",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "lroc-pit-atlas",
+   "where": "LROC Lunar Pit Atlas page for pit 3 and the pits list table (fetched 2026-10-10; www.lroc.asu.edu now redirects to lroc.im-ldi.com)",
+   "quote": "Elliptical pit with vertical walls. The type example for cylindrical pits. Funnel is ~20 m deep, inner pit depth of 105m is measured from bottom of funnel.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "lroc-pit-atlas",
+   "where": "LROC Lunar Pit Atlas page for pit 3 and the pits list table (fetched 2026-10-10; www.lroc.asu.edu now redirects to lroc.im-ldi.com)",
+   "quote": "Walls are vertical and are visible to ~80m depth, although there is a recess all the way around the pit at ~40m depth below the surface.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "lroc-pit-atlas",
+   "where": "LROC Lunar Pit Atlas page for pit 3 and the pits list table (fetched 2026-10-10; www.lroc.asu.edu now redirects to lroc.im-ldi.com)",
+   "quote": "Floor that is not overhung is flat and covered in boulders, floor under the E wall slopes downward. There are overhangs of at least 10-15 m on E, W, and N sides.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "lroc-pit-atlas",
+   "where": "LROC Lunar Pit Atlas page for pit 3 and the pits list table (fetched 2026-10-10; www.lroc.asu.edu now redirects to lroc.im-ldi.com)",
+   "quote": "Depth is determined from stereo modelling; image 1/2/3 are merely useful views",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "wagner-robinson-2022",
+   "where": "Abstract (Crossref deposit)",
+   "quote": "Several of these pits may provide access to lava tubes or other caves, and those in the maria expose the layering record of the top 20–100 m of basaltic lava flows.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "wagner-robinson-2022",
+   "where": "Abstract (Crossref deposit)",
+   "quote": "Much of the original volume of most pits is now filled with debris, but some exhibit significant overhangs and may have present‐day cave access.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "costello-2026",
+   "where": "Abstract (Crossref deposit)",
+   "quote": "We discovered a significant difference in underlying materials: the region around the Tranquillitatis lua is characterized by a competent, dense, solidified basalt, whereas the region around the Marius Hills lua exhibits a more friable protolith, indicative of porous or vesicular volcanic deposits.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  },
+  {
+   "source": "costello-2026",
+   "where": "Abstract (Crossref deposit)",
+   "quote": "Consequently, the competent protolith of Mare Tranquillitatis makes its lua an ideal candidate for future lunar exploration missions, offering superior geotechnical integrity for potential subsurface habitats and enhanced protection from surface radiation and impact bombardment.",
+   "verified": "reused from scratchpad/fix/pit_proposal.json (checked by the pit researcher on 2026-10-10)"
+  }
+ ]
+}

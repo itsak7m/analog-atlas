@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Analog Atlas</title>
+<meta name="si-use" content="SI-assisted code: written with help from Claude (Anthropic), a large language model, and reviewed by team Cosmic Cats. Data is not SI-generated: every number comes from cited NASA, ESA and published sources.">
+<meta name="description" content="Places on Earth that behave like the Moon and Mars. NASA Space Apps Challenge 2026, Amman.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23ffb547' stroke-width='2'/%3E%3Cellipse cx='16' cy='16' rx='15' ry='5.5' fill='none' stroke='%235ce1e6' stroke-width='1.4' transform='rotate(-25 16 16)'/%3E%3Ccircle cx='16' cy='16' r='2.4' fill='%23ffb547'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="vendor/fonts/fonts.css">
+<link rel="stylesheet" href="vendor/cesium/Widgets/widgets.css">
+<link rel="stylesheet" href="css/app.css">
+<script>window.CESIUM_BASE_URL = 'vendor/cesium/';</script>
+<script src="vendor/cesium/Cesium.js"></script>
+<script src="config.js"></script>
+<script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#rank">Skip to the ranking</a>
+  <div id="globe" aria-hidden="false"></div>
+
+  <header class="panel topbar" role="banner">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="9" fill="none" stroke="#ffb547" stroke-width="1.6"/><ellipse cx="16" cy="16" rx="15" ry="5.5" fill="none" stroke="#5ce1e6" stroke-width="1.2" transform="rotate(-25 16 16)"/><circle cx="16" cy="16" r="2.2" fill="#ffb547"/></svg>
+      <div><div class="name">Analog Atlas</div><div class="sub">Places on Earth that behave like the Moon and Mars</div></div>
+    </div>
+    <div class="seg" id="worlds" role="group" aria-label="Show world">
+      <button type="button" data-world="earth" aria-pressed="true">Earth</button>
+      <button type="button" data-world="moon" aria-pressed="false">Moon</button>
+      <button type="button" data-world="mars" aria-pressed="false">Mars</button>
+    </div>
+    <div class="compare">
+      <label for="target-picker">Compare with</label>
+      <select id="target-select" hidden aria-hidden="true" tabindex="-1"></select>
+      <button type="button" id="target-picker" class="target-picker" aria-haspopup="listbox" aria-expanded="false" aria-controls="target-menu"><span class="tp-name"></span></button>
+      <div id="target-menu" class="target-menu" role="listbox" aria-label="Choose a place on the Moon or Mars" hidden></div>
+      <button type="button" id="target-body" class="body-chip mars" title="Show the target's data and its closest Earth twins">Mars ⓘ</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="top-actions">
+      <button type="button" class="btn" id="token-btn" title="3D terrain on or off">3D <span id="token-state">off</span></button>
+      <button type="button" class="btn" id="back-btn" hidden><span aria-hidden="true">◀</span> <span class="txt">Back to globe</span></button>
+      <button type="button" class="btn" id="tour-btn" title="Play the 2-minute mission tour"><span aria-hidden="true">▶</span> <span class="txt">Tour</span></button>
+      <button type="button" class="btn" id="corridor-btn" title="Jordan Analog Corridor"><span aria-hidden="true">◆</span> <span class="txt">Jordan</span></button>
+      <button type="button" class="btn" id="method-btn" title="Method and data sources"><span aria-hidden="true">≡</span> <span class="txt">Method &amp; data</span></button>
+    </div>
+    <!-- The flight read-out sits just under the top bar, whatever height the bar wraps to. -->
+    <div id="hud" class="hud" hidden aria-hidden="true"></div>
+  </header>
+
+  <aside id="rank" class="panel bracket rank" aria-labelledby="rank-title" tabindex="-1">
+    <!-- Phones only: the sheet opens short, so the globe stays in view; this makes it taller. -->
+    <button type="button" class="sheet-handle" id="rank-handle" aria-expanded="false" aria-controls="rank-list">Show more of the list</button>
+    <div class="rank-head">
+      <div class="seg rank-tabs" id="rank-tabs" role="group" aria-label="Which places to rank">
+        <button type="button" data-tab="sites" aria-pressed="true" aria-controls="rank-list">Hand-picked sites</button>
+        <button type="button" data-tab="discover" aria-pressed="false" aria-controls="discover-panel">Discover Jordan</button>
+      </div>
+      <h2 class="label" id="rank-title"><span id="rank-lead">Earth twins of</span> <span id="rank-target">…</span></h2>
+      <p class="hint" id="rank-hint">Full match: climate, terrain, landing, geology, resources</p>
+      <div class="mode-toggle" role="group" aria-label="Score type">
+        <button type="button" data-mode="climate" aria-pressed="false">Climate match</button>
+        <button type="button" data-mode="full" aria-pressed="true">Full analog match</button>
+      </div>
+    </div>
+    <ol class="rank-list" id="rank-list"></ol>
+    <!-- Discover Jordan: 10 km boxes scored with the same method. Filled by js/ui/discover.js. -->
+    <div class="discover-panel" id="discover-panel" hidden>
+      <p class="hint" id="discover-hint">Found by data, not field-checked · climate, terrain, landing, geology (no resources data)</p>
+      <ol class="rank-list" id="discover-list" aria-labelledby="rank-title"></ol>
+      <div class="discover-notes" id="discover-notes"></div>
+      <button type="button" class="btn small" id="discover-all">All boxes · table and CSV</button>
+    </div>
+    <div class="rank-foot">
+      <span class="legend" id="legend" role="img" aria-label="Colour scale from 30 percent to 70 percent or more"><span id="legend-lo">30%</span><span class="ramp"></span><span id="legend-hi">70%+</span></span>
+      <button type="button" class="btn small" id="tune-btn">Tune factors</button>
+    </div>
+    <!-- Pillar key and ⚑ meaning for the site list: filled by js/ui/ranking.js. -->
+    <p class="legend-note" id="rank-legend" hidden></p>
+    <p class="legend-note" id="discover-legend" hidden>Brighter box = closer twin. For each target the colours run from the left number of the scale (grey-blue) to its best box (amber, the right number). Faded boxes are left out of the list: missing data, a ⚑ data warning, or a box that already holds a hand-picked site.</p>
+  </aside>
+
+  <aside id="detail" class="panel bracket detail" hidden></aside>
+
+  <!-- Pins and credits come after the panels so the keyboard reaches the top bar and the ranking first. -->
+  <div id="pins" class="pins-layer"></div>
+  <div id="credits" class="credits" role="region" aria-label="Data credits"></div>
+
+  <footer id="kit-bar" class="panel kit-bar" aria-label="ESP32 field kit">
+    <span id="kit-state" class="kit-state off">Field kit</span>
+    <div id="kit-reads" class="kit-reads"><span>Not connected</span></div>
+    <div class="spacer"></div>
+    <button type="button" class="btn small live" id="kit-btn" aria-expanded="false" aria-controls="kit-panel"><span class="dot" id="kit-dot"></span><span>Field kit</span></button>
+  </footer>
+
+  <section id="kit-panel" class="panel bracket kit-panel" hidden aria-label="ESP32 field kit"></section>
+  <div id="overlay-root"></div>
+  <div id="caption" class="caption" hidden role="status" aria-live="polite"></div>
+
+  <div id="banner" class="banner" hidden role="status"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="sr-status" role="status" class="sr-only"></div>
+
+  <div id="loading" class="loading" role="status">
+    <div class="box">Analog Atlas<small>Loading NASA data and the globe…</small></div>
+  </div>
+  <script>
+    // A double-clicked index.html (file://) cannot load the app's modules, so the loading text would never change.
+    (function () {
+      var small = document.querySelector('#loading small');
+      var help = 'Open it with start.bat (http://localhost:8080).';
+      if (location.protocol === 'file:') { small.innerHTML = 'This page does not work as a file.<br>' + help; return; }
+      setTimeout(function () {
+        var box = document.getElementById('loading');
+        if (!box.classList.contains('done') && small.isConnected) small.insertAdjacentHTML('beforeend', '<br>Still loading? Check the internet connection, or ' + help.charAt(0).toLowerCase() + help.slice(1));
+      }, 20000);
+    })();
+  </script>
+  <noscript><p style="padding:20px">Analog Atlas needs JavaScript. Run it with start.bat and open http://localhost:8080 in Chrome or Edge.</p></noscript>
+</body>
+</html>

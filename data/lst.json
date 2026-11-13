@@ -1,0 +1,1113 @@
+{
+ "about": "Land surface (skin) temperature of each Earth site from NASA MODIS: MOD21A2 (Terra) and MYD21A2 (Aqua), Collection 6.1, 8-day composites at 1 km, all composites that start in 2003-2020, at the 1 km pixel that holds the site's coordinates. Clear-sky satellite measurements of the ground surface, not air temperature (compare NASA POWER T2M = air at 2 m, TS = model skin temperature). Built by scripts/fetch_lst.py; raw point answers in data/raw/lst/sites/ and every STAC item id in data/raw/lst/manifest.json.",
+ "product": {
+  "names": [
+   "MOD21A2 (Terra) - MODIS/Terra Land Surface Temperature/3-Band Emissivity 8-Day L3 Global 1km SIN Grid V061",
+   "MYD21A2 (Aqua) - MODIS/Aqua Land Surface Temperature/3-Band Emissivity 8-Day L3 Global 1km SIN Grid V061"
+  ],
+  "collection": "6.1 (version 061)",
+  "algorithm": "MOD21 Temperature Emissivity Separation (TES); LST and emissivity retrieved together (suits bare rock and desert, where emissivity varies)",
+  "dois": [
+   "10.5067/MODIS/MOD21A2.061",
+   "10.5067/MODIS/MYD21A2.061"
+  ],
+  "citation": [
+   "Hulley, G., & Hook, S. (2021). MODIS/Terra Land Surface Temperature/3-Band Emissivity 8-Day L3 Global 1km SIN Grid V061 [Dataset]. NASA Land Processes Distributed Active Archive Center. https://doi.org/10.5067/MODIS/MOD21A2.061",
+   "Hulley, G. (2021). MODIS/Aqua Land Surface Temperature/3-Band Emissivity 8-Day L3 Global 1km SIN Grid V061 [Dataset]. NASA Land Processes Distributed Active Archive Center. https://doi.org/10.5067/MODIS/MYD21A2.061"
+  ],
+  "citationSource": [
+   "https://www.earthdata.nasa.gov/data/catalog/lpcloud-mod21a2-061",
+   "https://www.earthdata.nasa.gov/data/catalog/lpcloud-myd21a2-061"
+  ],
+  "licence": {
+   "name": "CC0 (NASA-led mission data)",
+   "quote": "Unless the content is marked with a use restriction or license, data provided from a NASA-led mission are licensed as Creative Commons Zero (CC0).",
+   "url": "https://www.earthdata.nasa.gov/engage/open-data-services-software-policies/data-use-guidance",
+   "catalogNote": "Both LP DAAC catalog pages: 'This dataset is openly shared, without restriction, in accordance with the EOSDIS Data Use and Citation Guidance.'"
+  },
+  "userGuide": "MOD21 C6.1 user guide (Hulley et al.), Table 12 (MxD21A2 SDS) and Table 13 (QC_Day/QC_Night bits); the same QC legend is in each COG's GDAL metadata ('QA Legend').",
+  "units": {
+   "LST": "uint16, scale 0.02 K, fill 0, valid 7500-65535",
+   "View_Time": "uint8, scale 0.1 h (local solar time), fill 255, valid 0-240",
+   "QC": "uint8 bit field"
+  }
+ },
+ "access": {
+  "route": "Microsoft Planetary Computer (NASA LP DAAC data mirrored as COGs)",
+  "collection": "modis-21A2-061 (holds both MOD21A2 and MYD21A2; property 'platform' = terra / aqua)",
+  "account": "none (anonymous)",
+  "endpoints": {
+   "stacSearch": "POST https://planetarycomputer.microsoft.com/api/stac/v1/search",
+   "pointValue": "GET https://planetarycomputer.microsoft.com/api/data/v1/item/point/{lon},{lat}?collection=modis-21A2-061&item=<id>&assets=LST_Day_1KM&assets=LST_Night_1KM&assets=QC_Day&assets=QC_Night&assets=View_Time_Day&assets=View_Time_Night",
+   "sasToken": "GET https://planetarycomputer.microsoft.com/api/sas/v1/token/modiseuwest/modis-061-cogs",
+   "cogs": "https://modiseuwest.blob.core.windows.net/modis-061-cogs/<MOD21A2|MYD21A2>/<h>/<v>/<YYYYDDD>/<id>_<asset>.tif (HTTP range reads of the header and the 512 x 512 internal tiles)",
+   "landWaterMask": "modis-13A1-061 (MOD13A1 v061, 500 m), asset 500m_16_days_VI_Quality, bits 11-13 'Land/Water Flag'"
+  },
+  "sites": "point API, the 1 km pixel that holds the site's lat/lon",
+  "boxes": "COG range reads of tiles h20v05, h21v05 and h21v06; only the internal tiles that hold Jordan; nothing stored but per-composite pixel values in a cache outside the project"
+ },
+ "period": {
+  "first": "2003-01-01",
+  "last": "2020-12-31",
+  "rule": "every 8-day composite whose start date is in 2003-2020, Terra and Aqua (the common period: Aqua LST starts July 2002; both orbits drift after 2020)"
+ },
+ "qcRule": "A value is used when LST is not the fill value 0 and its QC byte (MOD21 C6.1 user guide, Table 13, bit 0 = least significant) has mandatory QA bits 1-0 = 00 (produced, good quality) or 01 (produced, nominal/other quality) AND LST accuracy bits 7-6 = 01 (1.5-2 K), 10 (1-1.5 K) or 11 (<1 K), i.e. the estimated LST error is at most 2 K; bits 7-6 = 00 (>2 K, poor) and mandatory 10 (cloud) / 11 (other) are rejected. Bits 3-2 (L1B data quality) and 5-4 (emissivity accuracy) are not used. This mirrors the MOD11 'standard' rule (good or other quality with LST error <= 2 K); note the MOD21 bits 7-6 run the other way from MOD11's.",
+ "derivedRules": {
+  "perOverpass": "terra/aqua day/night: mean_C = arithmetic mean of every 8-day composite of 2003-2020 whose value passes the QC rule (no monthly weighting); n = number of those composites; viewTime = circular mean of View_Time (local solar time, hours) of those composites. 'composites' = 8-day composites of that satellite found for the tile in 2003-2020 (46 a year; a few are missing in the archive).",
+  "meanSurface_C": "Mean of the four overpass means (Terra ~10:30 day, Terra ~22:30 night, Aqua ~13:30 day, Aqua ~01:30 night). Clear-sky only. It is NOT a 24-hour mean: in the scout's diurnal check (NASA POWER hourly MERRA-2 skin temperature, Harrat and Wadi Rum, 2015-2017) these four times average about +2.5 to +2.8 K warmer than the true 24 h mean (Harrat +2.54 K, Wadi Rum +2.83 K), i.e. roughly +2 to +3 K.",
+  "swingSurface_C": "Aqua mean day minus Aqua mean night (~13:30 minus ~01:30), in kelvin (a difference, so K = degC). It captures about 88 % of the true daily range of skin temperature (scout's diurnal check: 0.88 +/- 0.07 at both Jordan test sites), so the real daily swing is roughly swingSurface / 0.88.",
+  "coldSurface_C": "The coldest valid Aqua night 8-day composite of 2003-2020; coldSurfaceStart = first day of that composite. An 8-day mean of ~01:30 values: single nights get colder (scout: the coldest single night was on average 4.2 K colder than the coldest 8-day composite at Harrat, 18 winters), and ~01:30 is about 1.7 K warmer than the pre-dawn minimum.",
+  "nightP5_C": "5th percentile (linear interpolation) of all valid Aqua night composites, for information.",
+  "validShare": "share of the 2 x (Terra + Aqua composites) day and night values that pass QC.",
+  "flags": {
+   "polar": "|latitude| >= 66.56 deg (inside a polar circle): the sun stays up or down for days, so MODIS 'day' and 'night' are not the usual overpass times; checked against the data (months with no day or no night LST at all, listed in polarEvidence). meanSurface_C and swingSurface_C are set to null there; coldSurface_C and nightP5_C are kept (polar-night composites are true night).",
+   "fewClear": "fewer than 50 % of the day and night values pass QC (validShare < 0.5): the means describe the clear composites only.",
+   "water": "more than half of the 1 km pixel is water in the MODIS land/water flag: at least 3 of its 4 500 m sub-pixels have code 000 shallow ocean, 011 shallow inland water, 101 deep inland water, 110 moderate/continental ocean or 111 deep ocean (001 land, 010 ocean coastline/lake shoreline and 100 ephemeral water are not counted). Flag read from MOD09A1 v061 sur_refl_state_500m bits 3-5 (8-day composite starting 2015-07-28); the code table is the 'Land/Water Flag' legend stored in MOD13A1 v061 VI_Quality (bits 11-13), which carries the same flag; both are compared in data/raw/lst/manifest.json. waterShare = share of the 4 sub-pixels that are water; landWater500m lists their codes."
+  },
+  "nulls": "A value is null when it is not measured or cannot be computed honestly (see each place's note)."
+ },
+ "units": {
+  "temperatures": "degC",
+  "swingSurface_C": "K (difference)",
+  "viewTime": "hours, local solar time"
+ },
+ "generated": "2026-10-10T15:52:55Z",
+ "places": {
+  "wadi-rum": {
+   "lat": 29.58,
+   "lon": 35.42,
+   "tile": "h21v06",
+   "row": 50,
+   "col": 96,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 34.13,
+     "n": 827,
+     "viewTime": 10.81
+    },
+    "night": {
+     "mean_C": 17.19,
+     "n": 827,
+     "viewTime": 22.17
+    }
+   },
+   "aqua": {
+    "composites": 827,
+    "day": {
+     "mean_C": 37.62,
+     "n": 827,
+     "viewTime": 13.21
+    },
+    "night": {
+     "mean_C": 15.4,
+     "n": 826,
+     "viewTime": 1.75
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 29.58,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": 26.09,
+   "swingSurface_C": 22.22,
+   "coldSurface_C": 0.17,
+   "coldSurfaceStart": "2008-01-09",
+   "nightP5_C": 4.61,
+   "nComposites": 1655,
+   "validShare": 0.999,
+   "flags": [],
+   "note": null
+  },
+  "harrat": {
+   "lat": 32.2,
+   "lon": 37.13,
+   "tile": "h21v05",
+   "row": 935,
+   "col": 170,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 36.96,
+     "n": 827,
+     "viewTime": 10.83
+    },
+    "night": {
+     "mean_C": 15.23,
+     "n": 827,
+     "viewTime": 22.07
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 40.61,
+     "n": 826,
+     "viewTime": 13.14
+    },
+    "night": {
+     "mean_C": 12.69,
+     "n": 826,
+     "viewTime": 1.79
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 32.2,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": 26.37,
+   "swingSurface_C": 27.92,
+   "coldSurface_C": -4.79,
+   "coldSurfaceStart": "2008-01-09",
+   "nightP5_C": 1.2,
+   "nComposites": 1656,
+   "validShare": 0.998,
+   "flags": [],
+   "note": null
+  },
+  "atacama": {
+   "lat": -24.08,
+   "lon": -70.0,
+   "tile": "h11v11",
+   "row": 489,
+   "col": 730,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 46.24,
+     "n": 827,
+     "viewTime": 10.22
+    },
+    "night": {
+     "mean_C": 9.57,
+     "n": 828,
+     "viewTime": 22.7
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 48.22,
+     "n": 828,
+     "viewTime": 13.8
+    },
+    "night": {
+     "mean_C": 6.85,
+     "n": 827,
+     "viewTime": 1.3
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 24.08,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": 27.72,
+   "swingSurface_C": 41.37,
+   "coldSurface_C": -2.01,
+   "coldSurfaceStart": "2010-07-12",
+   "nightP5_C": 2.11,
+   "nComposites": 1656,
+   "validShare": 0.999,
+   "flags": [],
+   "note": null
+  },
+  "haughton": {
+   "lat": 75.38,
+   "lon": -89.67,
+   "tile": "h15v01",
+   "row": 554,
+   "col": 883,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": -12.1,
+     "n": 511,
+     "viewTime": 12.86
+    },
+    "night": {
+     "mean_C": -31.3,
+     "n": 533,
+     "viewTime": 19.45
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": -14.71,
+     "n": 580,
+     "viewTime": 9.52
+    },
+    "night": {
+     "mean_C": -31.96,
+     "n": 524,
+     "viewTime": 3.06
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 75.38,
+    "monthsWithoutDayLST": [
+     12
+    ],
+    "monthsWithoutNightLST": [
+     5,
+     7
+    ]
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": null,
+   "swingSurface_C": null,
+   "coldSurface_C": -52.25,
+   "coldSurfaceStart": "2008-02-02",
+   "nightP5_C": -45.48,
+   "nComposites": 1656,
+   "validShare": 0.649,
+   "flags": [
+    "polar"
+   ],
+   "note": "Polar site (|latitude| 75.38 >= 66.56): the sun stays up or down for days around the solstices, so 'day' and 'night' composites are not the ~10:30/13:30 and ~22:30/01:30 overpasses of lower latitudes; months with no day LST at all: [12]; months with no night LST at all: [5, 7]. meanSurface_C and swingSurface_C are not computed (null): day values come only from the sunlit season and night values mostly from the dark one, so their average and difference would not be a mean or a daily range. coldSurface_C and nightP5_C are kept: in the polar night every overpass is a night overpass, so the coldest Aqua night composite is a real 8-day mean of dark-sky surface temperature."
+  },
+  "death-valley": {
+   "lat": 36.46,
+   "lon": -116.87,
+   "tile": "h08v05",
+   "row": 424,
+   "col": 720,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 38.56,
+     "n": 814,
+     "viewTime": 10.9
+    },
+    "night": {
+     "mean_C": 20.47,
+     "n": 823,
+     "viewTime": 21.96
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 43.26,
+     "n": 824,
+     "viewTime": 12.95
+    },
+    "night": {
+     "mean_C": 16.48,
+     "n": 828,
+     "viewTime": 1.87
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 36.46,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": 29.69,
+   "swingSurface_C": 26.79,
+   "coldSurface_C": -4.27,
+   "coldSurfaceStart": "2011-12-27",
+   "nightP5_C": 1.12,
+   "nComposites": 1656,
+   "validShare": 0.993,
+   "flags": [],
+   "note": null
+  },
+  "dry-valleys": {
+   "lat": -77.47,
+   "lon": 161.8,
+   "tile": "h21v16",
+   "row": 896,
+   "col": 612,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": -17.61,
+     "n": 480,
+     "viewTime": 7.55
+    },
+    "night": {
+     "mean_C": -29.48,
+     "n": 481,
+     "viewTime": 0.95
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": -24.86,
+     "n": 241,
+     "viewTime": 14.9
+    },
+    "night": {
+     "mean_C": -28.94,
+     "n": 539,
+     "viewTime": 20.37
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 77.47,
+    "monthsWithoutDayLST": [
+     5,
+     6,
+     7
+    ],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": null,
+   "landWater500m": null,
+   "meanSurface_C": null,
+   "swingSurface_C": null,
+   "coldSurface_C": -42.33,
+   "coldSurfaceStart": "2013-06-02",
+   "nightP5_C": -38.46,
+   "nComposites": 1656,
+   "validShare": 0.526,
+   "flags": [
+    "polar"
+   ],
+   "note": "Polar site (|latitude| 77.47 >= 66.56): the sun stays up or down for days around the solstices, so 'day' and 'night' composites are not the ~10:30/13:30 and ~22:30/01:30 overpasses of lower latitudes; months with no day LST at all: [5, 6, 7]; months with no night LST at all: none. meanSurface_C and swingSurface_C are not computed (null): day values come only from the sunlit season and night values mostly from the dark one, so their average and difference would not be a mean or a daily range. coldSurface_C and nightP5_C are kept: in the polar night every overpass is a night overpass, so the coldest Aqua night composite is a real 8-day mean of dark-sky surface temperature."
+  },
+  "holuhraun": {
+   "lat": 64.85,
+   "lon": -16.83,
+   "tile": "h17v02",
+   "row": 617,
+   "col": 341,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 6.85,
+     "n": 721,
+     "viewTime": 11.26
+    },
+    "night": {
+     "mean_C": -6.75,
+     "n": 635,
+     "viewTime": 20.83
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 6.84,
+     "n": 716,
+     "viewTime": 11.89
+    },
+    "night": {
+     "mean_C": -8.81,
+     "n": 635,
+     "viewTime": 2.34
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 64.85,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": -0.47,
+   "swingSurface_C": 15.65,
+   "coldSurface_C": -33.39,
+   "coldSurfaceStart": "2017-12-27",
+   "nightP5_C": -20.32,
+   "nComposites": 1656,
+   "validShare": 0.817,
+   "flags": [],
+   "note": null
+  },
+  "rio-tinto": {
+   "lat": 37.72,
+   "lon": -6.56,
+   "tile": "h17v05",
+   "row": 273,
+   "col": 577,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 27.06,
+     "n": 805,
+     "viewTime": 10.84
+    },
+    "night": {
+     "mean_C": 14.29,
+     "n": 806,
+     "viewTime": 21.97
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 28.7,
+     "n": 809,
+     "viewTime": 13.05
+    },
+    "night": {
+     "mean_C": 12.36,
+     "n": 813,
+     "viewTime": 1.89
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 37.72,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "ocean coastline or lake shoreline",
+    "land"
+   ],
+   "meanSurface_C": 20.6,
+   "swingSurface_C": 16.35,
+   "coldSurface_C": -3.01,
+   "coldSurfaceStart": "2008-01-01",
+   "nightP5_C": 3.98,
+   "nComposites": 1656,
+   "validShare": 0.976,
+   "flags": [],
+   "note": null
+  },
+  "mdrs": {
+   "lat": 38.41,
+   "lon": -110.79,
+   "tile": "h09v05",
+   "row": 190,
+   "col": 382,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 32.01,
+     "n": 806,
+     "viewTime": 10.96
+    },
+    "night": {
+     "mean_C": 7.73,
+     "n": 819,
+     "viewTime": 21.95
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 34.59,
+     "n": 810,
+     "viewTime": 12.92
+    },
+    "night": {
+     "mean_C": 4.26,
+     "n": 819,
+     "viewTime": 1.94
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 38.41,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": 19.65,
+   "swingSurface_C": 30.32,
+   "coldSurface_C": -21.65,
+   "coldSurfaceStart": "2020-01-01",
+   "nightP5_C": -11.48,
+   "nComposites": 1656,
+   "validShare": 0.982,
+   "flags": [],
+   "note": null
+  },
+  "waqf-as-suwwan": {
+   "lat": 31.05,
+   "lon": 36.8,
+   "tile": "h21v05",
+   "row": 1073,
+   "col": 183,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 36.09,
+     "n": 826,
+     "viewTime": 10.82
+    },
+    "night": {
+     "mean_C": 15.0,
+     "n": 827,
+     "viewTime": 22.17
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 40.76,
+     "n": 827,
+     "viewTime": 13.2
+    },
+    "night": {
+     "mean_C": 12.0,
+     "n": 827,
+     "viewTime": 1.78
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 31.05,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": 25.97,
+   "swingSurface_C": 28.76,
+   "coldSurface_C": -3.95,
+   "coldSurfaceStart": "2008-01-09",
+   "nightP5_C": 1.68,
+   "nComposites": 1656,
+   "validShare": 0.998,
+   "flags": [],
+   "note": null
+  },
+  "lisan-dead-sea": {
+   "lat": 31.268,
+   "lon": 35.459,
+   "tile": "h21v05",
+   "row": 1047,
+   "col": 37,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 36.84,
+     "n": 781,
+     "viewTime": 10.87
+    },
+    "night": {
+     "mean_C": 20.75,
+     "n": 821,
+     "viewTime": 22.08
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 40.03,
+     "n": 810,
+     "viewTime": 13.1
+    },
+    "night": {
+     "mean_C": 18.97,
+     "n": 819,
+     "viewTime": 1.83
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 31.268,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": 29.15,
+   "swingSurface_C": 21.07,
+   "coldSurface_C": 3.21,
+   "coldSurfaceStart": "2016-01-25",
+   "nightP5_C": 7.97,
+   "nComposites": 1656,
+   "validShare": 0.976,
+   "flags": [],
+   "note": null
+  },
+  "qa-al-jafr": {
+   "lat": 30.313,
+   "lon": 36.328,
+   "tile": "h21v05",
+   "row": 1162,
+   "col": 163,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 32.69,
+     "n": 824,
+     "viewTime": 10.89
+    },
+    "night": {
+     "mean_C": 13.42,
+     "n": 824,
+     "viewTime": 22.13
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 37.07,
+     "n": 827,
+     "viewTime": 13.17
+    },
+    "night": {
+     "mean_C": 10.06,
+     "n": 824,
+     "viewTime": 1.79
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 30.313,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": 23.31,
+   "swingSurface_C": 27.01,
+   "coldSurface_C": -9.09,
+   "coldSurfaceStart": "2008-01-09",
+   "nightP5_C": -1.71,
+   "nComposites": 1656,
+   "validShare": 0.996,
+   "flags": [],
+   "note": null
+  },
+  "sp-crater-sfvf": {
+   "lat": 35.582,
+   "lon": -111.632,
+   "tile": "h08v05",
+   "row": 530,
+   "col": 1105,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 31.81,
+     "n": 815,
+     "viewTime": 10.86
+    },
+    "night": {
+     "mean_C": 6.68,
+     "n": 808,
+     "viewTime": 21.98
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 33.29,
+     "n": 812,
+     "viewTime": 13.01
+    },
+    "night": {
+     "mean_C": 4.84,
+     "n": 794,
+     "viewTime": 1.91
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 35.582,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": 19.16,
+   "swingSurface_C": 28.46,
+   "coldSurface_C": -18.09,
+   "coldSurfaceStart": "2009-02-02",
+   "nightP5_C": -8.72,
+   "nComposites": 1656,
+   "validShare": 0.975,
+   "flags": [],
+   "note": null
+  },
+  "craters-of-the-moon": {
+   "lat": 43.462,
+   "lon": -113.563,
+   "tile": "h09v04",
+   "row": 784,
+   "col": 908,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 19.28,
+     "n": 787,
+     "viewTime": 10.89
+    },
+    "night": {
+     "mean_C": 0.35,
+     "n": 773,
+     "viewTime": 21.77
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 20.75,
+     "n": 770,
+     "viewTime": 12.88
+    },
+    "night": {
+     "mean_C": -2.3,
+     "n": 782,
+     "viewTime": 1.97
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 43.462,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": 9.52,
+   "swingSurface_C": 23.04,
+   "coldSurface_C": -27.63,
+   "coldSurfaceStart": "2008-01-25",
+   "nightP5_C": -19.17,
+   "nComposites": 1656,
+   "validShare": 0.94,
+   "flags": [],
+   "note": null
+  },
+  "ries-crater": {
+   "lat": 48.883,
+   "lon": 10.617,
+   "tile": "h18v04",
+   "row": 134,
+   "col": 837,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 18.84,
+     "n": 654,
+     "viewTime": 11.05
+    },
+    "night": {
+     "mean_C": 5.21,
+     "n": 689,
+     "viewTime": 21.64
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 19.61,
+     "n": 695,
+     "viewTime": 12.68
+    },
+    "night": {
+     "mean_C": 3.58,
+     "n": 691,
+     "viewTime": 2.03
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 48.883,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": 11.81,
+   "swingSurface_C": 16.03,
+   "coldSurface_C": -23.81,
+   "coldSurfaceStart": "2005-02-26",
+   "nightP5_C": -8.79,
+   "nComposites": 1656,
+   "validShare": 0.824,
+   "flags": [],
+   "note": null
+  },
+  "mistastin": {
+   "lat": 55.883,
+   "lon": -63.3,
+   "tile": "h14v03",
+   "row": 494,
+   "col": 539,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": -5.06,
+     "n": 708,
+     "viewTime": 11.0
+    },
+    "night": {
+     "mean_C": -10.28,
+     "n": 584,
+     "viewTime": 21.21
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": -4.12,
+     "n": 695,
+     "viewTime": 12.48
+    },
+    "night": {
+     "mean_C": -11.3,
+     "n": 621,
+     "viewTime": 2.11
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 55.883,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 1.0,
+   "landWater500m": [
+    "shallow inland water",
+    "shallow inland water",
+    "shallow inland water",
+    "shallow inland water"
+   ],
+   "meanSurface_C": -7.69,
+   "swingSurface_C": 7.18,
+   "coldSurface_C": -40.75,
+   "coldSurfaceStart": "2003-02-10",
+   "nightP5_C": -32.15,
+   "nComposites": 1656,
+   "validShare": 0.787,
+   "flags": [
+    "water"
+   ],
+   "note": "The 1 km pixel is mostly water in the MODIS land/water flag (4 of its 4 x 500 m sub-pixels are water): the values are lake/sea (or lake-ice) surface temperature, not ground."
+  },
+  "qaidam-dalangtan": {
+   "lat": 38.503,
+   "lon": 91.398,
+   "tile": "h25v05",
+   "row": 179,
+   "col": 183,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 22.76,
+     "n": 779,
+     "viewTime": 10.95
+    },
+    "night": {
+     "mean_C": -0.71,
+     "n": 699,
+     "viewTime": 21.89
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 24.67,
+     "n": 794,
+     "viewTime": 12.91
+    },
+    "night": {
+     "mean_C": -4.53,
+     "n": 748,
+     "viewTime": 2.01
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 38.503,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": 10.55,
+   "swingSurface_C": 29.2,
+   "coldSurface_C": -28.77,
+   "coldSurfaceStart": "2008-01-25",
+   "nightP5_C": -22.24,
+   "nComposites": 1656,
+   "validShare": 0.912,
+   "flags": [],
+   "note": null
+  },
+  "tso-kar-ladakh": {
+   "lat": 33.3,
+   "lon": 77.983,
+   "tile": "h24v05",
+   "row": 803,
+   "col": 621,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 11.72,
+     "n": 719,
+     "viewTime": 10.77
+    },
+    "night": {
+     "mean_C": -6.75,
+     "n": 765,
+     "viewTime": 22.04
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 11.81,
+     "n": 679,
+     "viewTime": 13.1
+    },
+    "night": {
+     "mean_C": -9.76,
+     "n": 711,
+     "viewTime": 1.88
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 33.3,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.25,
+   "landWater500m": [
+    "ocean coastline or lake shoreline",
+    "shallow inland water",
+    "ocean coastline or lake shoreline",
+    "ocean coastline or lake shoreline"
+   ],
+   "meanSurface_C": 1.76,
+   "swingSurface_C": 21.57,
+   "coldSurface_C": -41.85,
+   "coldSurfaceStart": "2013-02-02",
+   "nightP5_C": -29.54,
+   "nComposites": 1656,
+   "validShare": 0.868,
+   "flags": [],
+   "note": null
+  },
+  "pilbara-north-pole": {
+   "lat": -21.048,
+   "lon": 119.393,
+   "tile": "h29v11",
+   "row": 125,
+   "col": 171,
+   "terra": {
+    "composites": 828,
+    "day": {
+     "mean_C": 41.01,
+     "n": 752,
+     "viewTime": 10.27
+    },
+    "night": {
+     "mean_C": 25.32,
+     "n": 728,
+     "viewTime": 22.66
+    }
+   },
+   "aqua": {
+    "composites": 828,
+    "day": {
+     "mean_C": 47.21,
+     "n": 771,
+     "viewTime": 13.72
+    },
+    "night": {
+     "mean_C": 23.63,
+     "n": 734,
+     "viewTime": 1.31
+    }
+   },
+   "polarEvidence": {
+    "absLatitude": 21.048,
+    "monthsWithoutDayLST": [],
+    "monthsWithoutNightLST": []
+   },
+   "waterShare": 0.0,
+   "landWater500m": [
+    "land",
+    "land",
+    "land",
+    "land"
+   ],
+   "meanSurface_C": 34.29,
+   "swingSurface_C": 23.58,
+   "coldSurface_C": 11.21,
+   "coldSurfaceStart": "2006-01-17",
+   "nightP5_C": 14.6,
+   "nComposites": 1656,
+   "validShare": 0.901,
+   "flags": [],
+   "note": null
+  }
+ }
+}

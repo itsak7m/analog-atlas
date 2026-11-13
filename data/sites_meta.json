@@ -1,0 +1,1583 @@
+{
+  "about": "Curated description of each Earth site. Climate numbers are NOT stored here: scripts/build_data.py copies them from the raw NASA POWER responses in data/raw/power/<id>.json into data/sites.json. 'tests' lists what crews can test at the site. type 'tested' (proposed: false) is a real test or training done here, with its source link and a short quote from that page. type 'proposed' (proposed: true) is our own idea, not tested yet, with the 'basis' (pillar and evidence) it rests on. 'year' is null when the source gives none; 'pillar' is the pillar the test is about (null for crew life); 'note' says where the source is weaker (place, date or spelling). 'geology' gives the main rock ('primary') and other rocks ('secondary') used by the geology pillar. 'geology.sources' lists the sources that state a rock type, with an exact quote ('rocks' says which rock types each one supports; for the 5 Jordan sites one source is the IGME5000 map unit at the site's point). 'geology.unsourced' lists the rock types with no source yet, and 'geology.note' then says 'Rock type source still to be added'.",
+  "statusLegend": {
+    "nasa-analog": "NASA or ESA has used this place for analog fieldwork, tests or astronaut training (source given).",
+    "analog": "Used for analog missions, or used or proposed as an analog in published research (source given).",
+    "candidate": "Our proposal. The geology is documented, but no paper calls it a planetary analog yet."
+  },
+  "sites": [
+    {
+      "id": "wadi-rum",
+      "name": "Wadi Rum",
+      "country": "Jordan",
+      "jordan": true,
+      "lat": 29.58,
+      "lon": 35.42,
+      "status": "analog",
+      "analogFor": [
+        "mars"
+      ],
+      "terrain": "Red sandstone and granite desert",
+      "geology": {
+        "primary": "sandstone",
+        "secondary": [
+          "granite"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "sandstone"
+            ],
+            "label": "IGME5000 geological map, 1:5 million (BGR, 2005): unit 600023 at our point",
+            "url": "https://doi.org/10.25928/igme-5000",
+            "quote": "sandstone, siltstone",
+            "note": "Rock names of map unit 600023 (Cambrian - Ordovician) at our point, from the map's attribute table (data/raw/screening/geology/samples_jordan.json). A 1:5 million map does not show features smaller than a few km.",
+            "credit": "IGME5000, © BGR, Hannover, 2005, https://doi.org/10.25928/igme-5000, modified: reclassified to Analog Atlas rock ids"
+          }
+        ],
+        "unsourced": [
+          "granite"
+        ],
+        "note": "Rock type source still to be added for granite. The 1:5 million map lists only sandstone and siltstone at our point."
+      },
+      "why": "Red sandstone and granite desert. NASA Earth Observatory says its colours and textures closely match Mars, and the Jordan Space Research Initiative held its second Mars analog mission, PETRA-2, here in October 2025 (part of the Austrian Space Forum's World's Biggest Analog), after its first, PETRA-1.",
+      "sources": [
+        {
+          "label": "NASA Earth Observatory: Movie Mars on Earth",
+          "url": "https://science.nasa.gov/earth/earth-observatory/movie-mars-on-earth-148764/"
+        },
+        {
+          "label": "Austrian Space Forum: World's Biggest Analog 2025, PETRA-2 in Wadi Rum (picture of the day, days 4 and 9)",
+          "url": "https://oewf.org/en/?p=25286"
+        }
+      ],
+      "caveats": [],
+      "tests": [
+        {
+          "activity": "PETRA-2 analog mission in Wadi Rum, part of the Austrian Space Forum's World's Biggest Analog",
+          "who": "Jordan Space Research Initiative (JSRI) with the Austrian Space Forum (OeWF)",
+          "year": 2025,
+          "type": "tested",
+          "proposed": false,
+          "source": "Austrian Space Forum: World's Biggest Analog 2025, picture of the day (day 4)",
+          "url": "https://oewf.org/en/?p=25286",
+          "quote": "advancing psychological, environmental, and technological research",
+          "pillar": null
+        },
+        {
+          "activity": "Seven days of crew isolation inside the mission habitat (PETRA-2)",
+          "who": "Jordan Space Research Initiative (JSRI)",
+          "year": 2025,
+          "type": "tested",
+          "proposed": false,
+          "source": "Austrian Space Forum: World's Biggest Analog 2025, picture of the day (day 9)",
+          "url": "https://oewf.org/en/?p=25286",
+          "quote": "After seven days in isolation, the crew stepped out of their habitat",
+          "pillar": null
+        }
+      ]
+    },
+    {
+      "id": "harrat",
+      "name": "Harrat al-Shaam",
+      "country": "Jordan",
+      "jordan": true,
+      "lat": 32.2,
+      "lon": 37.13,
+      "status": "candidate",
+      "analogFor": [
+        "moon",
+        "mars"
+      ],
+      "terrain": "Black basalt desert (lava field) with lava tubes",
+      "geology": {
+        "primary": "basalt",
+        "secondary": [],
+        "sources": [
+          {
+            "rocks": [
+              "basalt"
+            ],
+            "label": "Kempe et al. 2006: lava caves of the Harrat al-Shaam basalt field",
+            "url": "https://vulcanospeleology.org/sym12/ISV12p11.pdf",
+            "quote": "The centre is formed by young alkali olivine basaltic lava flows"
+          },
+          {
+            "rocks": [
+              "basalt"
+            ],
+            "label": "IGME5000 geological map, 1:5 million (BGR, 2005): unit 601014 at our point",
+            "url": "https://doi.org/10.25928/igme-5000",
+            "quote": "basalt group",
+            "note": "Rock names of map unit 601014 (Quaternary) at our point, from the map's attribute table (data/raw/screening/geology/samples_jordan.json). A 1:5 million map does not show features smaller than a few km.",
+            "credit": "IGME5000, © BGR, Hannover, 2005, https://doi.org/10.25928/igme-5000, modified: reclassified to Analog Atlas rock ids"
+          }
+        ],
+        "unsourced": []
+      },
+      "why": "Black basalt desert. Basalt is the rock of the lunar maria, such as the Apollo 11 site, and of large parts of Mars. The field also holds 14 surveyed lava caves, including the 923.5 m long Al-Fahda Cave (surveyed in 2005). Lava tubes are proposed natural shelters for future bases on the Moon and Mars.",
+      "sources": [
+        {
+          "label": "Iqbal et al. 2019: geological mapping of the Apollo 11 site, a mare basalt (arXiv 2003.03292)",
+          "url": "https://arxiv.org/abs/2003.03292"
+        },
+        {
+          "label": "Kempe et al. 2006: lava caves of the Harrat al-Shaam basalt field",
+          "url": "https://vulcanospeleology.org/sym12/ISV12p11.pdf"
+        },
+        {
+          "label": "Sauro et al. 2020: lava tubes on Earth, the Moon and Mars",
+          "url": "https://doi.org/10.1016/j.earscirev.2020.103288"
+        }
+      ],
+      "caveats": [],
+      "tests": [
+        {
+          "activity": "Map a surveyed lava tube with laser scanners and test radio links, lights and sensors deep inside it, as practice for using lava tubes as natural shelters on the Moon and Mars",
+          "who": "Our proposal (Analog Atlas team)",
+          "year": null,
+          "type": "proposed",
+          "proposed": true,
+          "source": "Kempe et al. 2006: lava caves of the Harrat al-Shaam basalt field",
+          "url": "https://vulcanospeleology.org/sym12/ISV12p11.pdf",
+          "quote": "We have explored, surveyed and studied a total of 14 lava caves since September 2003.",
+          "pillar": "resources",
+          "basis": "Resources pillar: the 'shelter' tag (14 surveyed lava caves)."
+        },
+        {
+          "activity": "Rover driving and navigation tests across wide, gently sloping basalt lava plains",
+          "who": "Our proposal (Analog Atlas team)",
+          "year": null,
+          "type": "proposed",
+          "proposed": true,
+          "source": "Kempe et al. 2006: lava caves of the Harrat al-Shaam basalt field",
+          "url": "https://vulcanospeleology.org/sym12/ISV12p11.pdf",
+          "quote": "The centre is formed by young alkali olivine basaltic lava flows",
+          "pillar": "terrain",
+          "basis": "Terrain pillar: the gentle slopes in our terrain data for this site (kilometre scale; boulders and small rocks are not measured)."
+        },
+        {
+          "activity": "Geology training on basalt: describe and pick samples of dark lava rock, the same rock family as the Apollo 11 mare site",
+          "who": "Our proposal (Analog Atlas team)",
+          "year": null,
+          "type": "proposed",
+          "proposed": true,
+          "source": "Iqbal et al.: geological mapping of the Apollo 11 landing site (arXiv 2003.03292)",
+          "url": "https://arxiv.org/abs/2003.03292",
+          "quote": "the Group A, High-K (high potassium) young mare basalt",
+          "pillar": "geology",
+          "basis": "Geology pillar: Harrat al-Shaam is basalt (Kempe et al. 2006); the Apollo 11 site is mare basalt (this source)."
+        }
+      ]
+    },
+    {
+      "id": "atacama",
+      "name": "Atacama Desert",
+      "country": "Chile",
+      "jordan": false,
+      "lat": -24.08,
+      "lon": -70.0,
+      "status": "nasa-analog",
+      "analogFor": [
+        "mars"
+      ],
+      "terrain": "Hyper-arid desert with salt crusts",
+      "geology": {
+        "primary": "evaporite",
+        "secondary": [
+          "sandstone"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "evaporite"
+            ],
+            "label": "JGR Planets paper, doi 10.1029/2009JE003425 (source of our 'salts' tag)",
+            "url": "https://doi.org/10.1029/2009JE003425",
+            "quote": "perchlorate‐rich deposits in the Atacama desert are closest in abundance to perchlorate measured at NASA's Phoenix Lander site",
+            "note": "Names salt (perchlorate) deposits in the Atacama Desert in general, not at our point."
+          }
+        ],
+        "unsourced": [
+          "sandstone"
+        ],
+        "note": "Rock type source still to be added for sandstone."
+      },
+      "why": "One of the driest places on Earth. NASA tests life-detection drills here because of its dryness and intense UV.",
+      "sources": [
+        {
+          "label": "NASA Astrobiology: life-detection drill tested in the Atacama",
+          "url": "https://astrobiology.nasa.gov/news/nasa-tests-life-detection-drill-in-the-atacama-desert/"
+        }
+      ],
+      "caveats": [
+        "Longitude -70.00 lies exactly on a NASA POWER solar-grid boundary, so a tiny coordinate change can change the sunlight, UV and albedo values."
+      ],
+      "tests": [
+        {
+          "activity": "First ARADS field test: a Mars-prototype drill and robot arm fed soil to life-detection instruments",
+          "who": "NASA Ames (ARADS project) with Centro de Astrobiología, Spain",
+          "year": 2016,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA Astrobiology: life-detection drill tested in the Atacama",
+          "url": "https://astrobiology.nasa.gov/news/nasa-tests-life-detection-drill-in-the-atacama-desert/",
+          "quote": "a Mars-prototype drill; a sample transfer arm; the Signs of Life Detector (SOLID)",
+          "pillar": "geology",
+          "note": "Year from the NASA image article dated 7 March 2016 (https://www.nasa.gov/image-article/atacama-rover-astrobiology-drilling-studies-night-falls/), which says the project 'has just completed its first deployment'."
+        },
+        {
+          "activity": "Hands-off, automated drilling with the TRIDENT drill mounted on a rover",
+          "who": "NASA Ames (ARADS project) and Honeybee Robotics",
+          "year": null,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA NTRS: TRIDENT drill validation at Mars and lunar analog field sites (2024)",
+          "url": "https://ntrs.nasa.gov/citations/20240000585",
+          "quote": "drill control and fault recovery automation software enabled hands-off operations of a rover-mounted TRIDENT drill",
+          "pillar": "geology",
+          "note": "The abstract does not give the year of these ARADS tests."
+        },
+        {
+          "activity": "The self-driving Zoë rover mapped microbial life on a field expedition",
+          "who": "Carnegie Mellon University and SETI Institute (NASA-funded Life in the Atacama project)",
+          "year": 2005,
+          "type": "tested",
+          "proposed": false,
+          "source": "SETI Institute press release (2013): Zoë robot returns to the Atacama",
+          "url": "https://www.seti.org/news/zoe-robot-returns-to-chiles-atacama-desert-on-nasa-mission-to-search-for-subsurface-life/",
+          "quote": "became the first robot to map microbial life during a 2005 field expedition",
+          "pillar": "terrain",
+          "note": "'First robot' is the press release's own claim."
+        },
+        {
+          "activity": "Zoë rover returned with a 1 m drill to search for life under the surface",
+          "who": "Carnegie Mellon University and SETI Institute (NASA astrobiology mission)",
+          "year": 2013,
+          "type": "tested",
+          "proposed": false,
+          "source": "SETI Institute press release (2013): Zoë robot returns to the Atacama",
+          "url": "https://www.seti.org/news/zoe-robot-returns-to-chiles-atacama-desert-on-nasa-mission-to-search-for-subsurface-life/",
+          "quote": "This time, Zoë is equipped with a one-meter drill to search for subsurface life.",
+          "pillar": "geology"
+        }
+      ]
+    },
+    {
+      "id": "haughton",
+      "name": "Haughton Crater",
+      "country": "Canada",
+      "jordan": false,
+      "lat": 75.38,
+      "lon": -89.67,
+      "status": "nasa-analog",
+      "analogFor": [
+        "mars",
+        "moon"
+      ],
+      "terrain": "Impact crater in a polar desert (Devon Island)",
+      "geology": {
+        "primary": "carbonate",
+        "secondary": [
+          "impactite"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "carbonate"
+            ],
+            "label": "Meteoritics & Planetary Science (2005), doi 10.1111/j.1945-5100.2005.tb00149.x",
+            "url": "https://doi.org/10.1111/j.1945-5100.2005.tb00149.x",
+            "quote": "dolomitic rock (in the crater rim), limestone (wall), gypsum-rich carbonate (floor)"
+          },
+          {
+            "rocks": [
+              "impactite"
+            ],
+            "label": "SwRI internal research (2023): permafrost research at the Haughton-Mars station",
+            "url": "https://www.swri.org/what-we-do/internal-research-development/2023/earth-space/developing-the-swri-astrobiology-program-through-multiomics-spectroscopic-approaches-permafrost-research-the-haughton-mars-station-15-r6381",
+            "quote": "Permafrost associated ground ice was consistently encountered at ~60 cm depth in all permafrost polygon and impact breccia samples."
+          }
+        ],
+        "unsourced": []
+      },
+      "why": "Impact crater in the Devon Island polar desert, used by NASA as a Mars analog.",
+      "sources": [
+        {
+          "label": "NASA analog missions fact sheet (PDF)",
+          "url": "https://www.nasa.gov/wp-content/uploads/2015/06/541196main_analogfactsheet.pdf"
+        }
+      ],
+      "caveats": [],
+      "tests": [
+        {
+          "activity": "Haughton-Mars Project: spacewalk-style traverses, long-term high-data-rate links, robots, and rover and spacesuit engineering",
+          "who": "NASA, Mars Institute and SETI Institute",
+          "year": null,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA analog missions fact sheet (2011, PDF)",
+          "url": "https://www.nasa.gov/wp-content/uploads/2015/06/541196main_analogfactsheet.pdf",
+          "quote": "extravehicular activity traverses, long-term hi-data communication, complex robotic interaction, and on-board rover and suit engineering",
+          "pillar": "terrain",
+          "note": "The fact sheet (NF-2011-04-534-HQ, 2011) does not give years for these tests."
+        },
+        {
+          "activity": "TRIDENT drill tests in icy ground and impact rock, before lunar south pole missions",
+          "who": "NASA Ames and Honeybee Robotics",
+          "year": 2023,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA NTRS: TRIDENT drill validation at Mars and lunar analog field sites (2024)",
+          "url": "https://ntrs.nasa.gov/citations/20240000585",
+          "quote": "in August 2023 TRIDENT was brought to Haughton Crater, a field analog site in the Canadian Arctic",
+          "pillar": "resources",
+          "note": "The same abstract says TRIDENT was manifested for NASA's VIPER and PRIME-1 lunar south pole missions."
+        },
+        {
+          "activity": "Remotely assisted robot traverses, to test how to survey and choose a landing site",
+          "who": "NASA",
+          "year": null,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA NTRS: traverse planning experiments for future planetary surface exploration",
+          "url": "https://ntrs.nasa.gov/citations/20120008542",
+          "quote": "validate landing site survey and selection techniques during planetary surface exploration mission analog demonstration at Haughton Crater",
+          "pillar": "landing",
+          "note": "NTRS record dated 2012; the abstract does not give the field year."
+        },
+        {
+          "activity": "Astronaut geology training with an impact-crater research team",
+          "who": "Canadian Space Agency astronaut Jeremy Hansen",
+          "year": 2013,
+          "type": "tested",
+          "proposed": false,
+          "source": "Canadian Space Agency: training in geology",
+          "url": "https://www.asc-csa.gc.ca/eng/astronauts/about-the-job/space-mission-simulations/training-in-geology.asp",
+          "quote": "Study the Haughton crater",
+          "pillar": "geology",
+          "note": "CSA lists the dates as 16 to 25 July 2013, Devon Island."
+        }
+      ]
+    },
+    {
+      "id": "death-valley",
+      "name": "Death Valley",
+      "country": "USA",
+      "jordan": false,
+      "lat": 36.46,
+      "lon": -116.87,
+      "status": "nasa-analog",
+      "analogFor": [
+        "mars"
+      ],
+      "terrain": "Hot, dry basin with salt flats and alluvial fans",
+      "geology": {
+        "primary": "evaporite",
+        "secondary": [
+          "sandstone"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "evaporite"
+            ],
+            "label": "US National Park Service: Death Valley salt flats",
+            "url": "https://www.nps.gov/deva/learn/nature/salt-flats.htm",
+            "quote": "Sodium Chloride—better known as table salt—makes up the majority of salts on Badwater Basin.",
+            "note": "About the Badwater Basin salt flat, about 23.7 km from our point (Badwater coordinates in data/panoramas.json), not the point itself."
+          }
+        ],
+        "unsourced": [
+          "sandstone"
+        ],
+        "note": "Rock type source still to be added for sandstone."
+      },
+      "why": "Hot, dry basin that NASA names in this challenge as a known analog.",
+      "sources": [
+        {
+          "label": "NASA Space Apps 2026 challenge statement",
+          "url": "https://www.spaceappschallenge.org/2026/challenges/identify-earth-locations-that-analog-the-permanent-moon-base-locations-and-mars/"
+        }
+      ],
+      "caveats": [
+        "The NASA POWER grid cell (about 50 km) is centred at about 846 m, so it describes the surrounding ranges more than the valley floor."
+      ],
+      "tests": [
+        {
+          "activity": "Field work to prepare for the first Mars landings (Viking)",
+          "who": "NASA",
+          "year": "1970s",
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA JPL: NASA tests drones in Death Valley (2025)",
+          "url": "https://www.jpl.nasa.gov/news/nasa-tests-drones-in-death-valley-preps-for-martian-sands-and-skies/",
+          "quote": "NASA scientists and engineers have been going to Death Valley National Park since the 1970s",
+          "pillar": "terrain"
+        },
+        {
+          "activity": "Drive tests of a prototype Russian Mars 96 rover, with remote driving and self-driving tests",
+          "who": "International team (Russian rover groups with US partners)",
+          "year": 1992,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA NTRS: international testing of a Mars rover prototype",
+          "url": "https://ntrs.nasa.gov/citations/19940011839",
+          "quote": "evaluate rover performance over different Mars-like terrains",
+          "pillar": "terrain",
+          "note": "The tests were 'in and near Death Valley' in late May 1992."
+        },
+        {
+          "activity": "Test of Perseverance's precision landing system, flown in a helicopter over the park",
+          "who": "NASA JPL",
+          "year": null,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA JPL: NASA tests drones in Death Valley (2025)",
+          "url": "https://www.jpl.nasa.gov/news/nasa-tests-drones-in-death-valley-preps-for-martian-sands-and-skies/",
+          "quote": "tested the Perseverance rover’s precision landing system by flying a component of it in a piloted helicopter over the park",
+          "pillar": "landing",
+          "note": "The article does not give the year of this test."
+        },
+        {
+          "activity": "Drone flights over Mars Hill and sand dunes to improve navigation software for future Mars helicopters",
+          "who": "NASA JPL",
+          "year": 2025,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA JPL: NASA tests drones in Death Valley (2025)",
+          "url": "https://www.jpl.nasa.gov/news/nasa-tests-drones-in-death-valley-preps-for-martian-sands-and-skies/",
+          "quote": "They needed barren, featureless desert dunes to hone navigation software.",
+          "pillar": "terrain"
+        }
+      ]
+    },
+    {
+      "id": "dry-valleys",
+      "name": "McMurdo Dry Valleys",
+      "country": "Antarctica",
+      "jordan": false,
+      "lat": -77.47,
+      "lon": 161.8,
+      "status": "nasa-analog",
+      "analogFor": [
+        "mars"
+      ],
+      "terrain": "Ice-free polar desert",
+      "geology": {
+        "primary": "granite",
+        "secondary": [
+          "sandstone",
+          "basalt",
+          "ice"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "granite",
+              "sandstone"
+            ],
+            "label": "New Zealand Antarctic Soils Explorer, soil site 415 (Wright Valley, Bull Pass)",
+            "url": "https://antarctic-soils.landcareresearch.co.nz/trips/13/381/",
+            "quote": "Soil parent material: Granite, sandstone and dolerite sandy gravel till with accessions of a few other dyke rocks",
+            "note": "Soil site 415 (-77.4933, 161.858) is about 3 km from our point, in Bull Pass. The same page records 'granite clasts oxidised on upper surfaces and many disaggregated' at the surface and granite clasts in the profile. It describes the glacial till the ground is made of, not the bedrock below it."
+          }
+        ],
+        "unsourced": [
+          "basalt",
+          "ice"
+        ],
+        "note": "Rock type source still to be added for basalt and ice. The ice source we had (doi 10.1002/2014JF003415) is about Beacon Valley, about 50 km away, a different valley, so under the place rule it does not count here (removed 2026-11-03, as for the ice tag in data/resources.json)."
+      },
+      "why": "Ice-free polar desert, among the coldest and driest places on Earth. NASA Earth Observatory says it may be the most Mars-like landscape on Earth, and NASA's astrobiology program says it has long served as an analog site for Mars.",
+      "sources": [
+        {
+          "label": "NASA Earth Observatory: Martian Landscape, Antarctica",
+          "url": "https://science.nasa.gov/earth/earth-observatory/martian-landscape-antarctica-4420/"
+        },
+        {
+          "label": "NASA Astrobiology field sites",
+          "url": "https://astrobiology.nasa.gov/research-locations/"
+        }
+      ],
+      "caveats": [
+        "The NASA POWER surface albedo for this cell (0.56) is high for bare rock and soil, so the roughly 50 km cell probably includes glacier ice or snow around the ice-free valleys.",
+        "The 10 km terrain box around our point is mostly steep ground: median slope 14.16°, only 31.9% of the box under 10°, largest flat zone 2.0 km, relief 1,490 m (data/terrain.json). The Mars ice targets (Deuteronilus Mensae, Erebus Montes, Phoenix) are flat: median slope 0.17–0.52°, largest flat zone 9.5 km. So against them this site's terrain match is 0% and its landing match is 21% (2.0 ÷ 9.5 km). These two pillars describe the steep ground in the box, not the flat valley floors. We have not measured a point on a valley floor."
+      ],
+      "tests": [
+        {
+          "activity": "Drill tests in ice-cemented ground (University Valley) to collect samples from under the surface",
+          "who": "NASA ASTEP team led by Christopher McKay, NASA Ames",
+          "year": null,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA Astrobiology: field sites (University Valley)",
+          "url": "https://astrobiology.nasa.gov/research-locations/",
+          "quote": "This site has been used to test drilling equipment that could be used to collect sub-surface samples from these regions.",
+          "pillar": "resources",
+          "note": "University Valley is in the McMurdo Dry Valleys (same page). The page lists the team as 'ASTEP - Christopher McKay, NASA Ames Research Center (2008)'; it does not give the year of the drill tests."
+        },
+        {
+          "activity": "Tests of life-detection instruments",
+          "who": "NASA",
+          "year": null,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA Astrobiology: field sites (McMurdo Dry Valleys)",
+          "url": "https://astrobiology.nasa.gov/research-locations/",
+          "quote": "The McMurdo Dry Valleys have been used for testing life detection instruments since the early days of NASA.",
+          "pillar": "geology"
+        }
+      ]
+    },
+    {
+      "id": "holuhraun",
+      "name": "Holuhraun",
+      "country": "Iceland",
+      "jordan": false,
+      "lat": 64.85,
+      "lon": -16.83,
+      "status": "analog",
+      "analogFor": [
+        "mars"
+      ],
+      "terrain": "Young basalt lava field (2014–15 eruption)",
+      "geology": {
+        "primary": "basalt",
+        "secondary": [],
+        "sources": [
+          {
+            "rocks": [
+              "basalt"
+            ],
+            "label": "Pedersen et al. 2017, Journal of Volcanology and Geothermal Research, doi 10.1016/j.jvolgeores.2017.02.027",
+            "url": "https://doi.org/10.1016/j.jvolgeores.2017.02.027",
+            "quote": "Lava field evolution and emplacement dynamics of the 2014–2015 basaltic fissure eruption at Holuhraun, Iceland",
+            "note": "The quote is the paper title (checked on Crossref, 2026-10-23)."
+          }
+        ],
+        "unsourced": []
+      },
+      "why": "Young basalt lava field from the 2014–15 eruption. NASA-funded teams use it as a Mars analog for young volcanic plains and for life-detection tests.",
+      "sources": [
+        {
+          "label": "NASA NTRS: FELDSPAR fieldwork at Holuhraun (2018)",
+          "url": "https://ntrs.nasa.gov/citations/20190029583"
+        },
+        {
+          "label": "USGS: Holuhraun as a planetary analog for Elysium Planitia (2025)",
+          "url": "https://pubs.usgs.gov/publication/70275623"
+        }
+      ],
+      "caveats": [
+        "The NASA POWER surface albedo for this cell (0.63 for the year, still 0.47 in August) is far higher than dark basalt. The 1° solar grid cell around this point also covers part of the Vatnajökull ice cap just south of the lava field, plus seasonal snow."
+      ],
+      "tests": [
+        {
+          "activity": "FELDSPAR sampling expedition on the new lava field, with field tests for signs of microbial life (ATP)",
+          "who": "FELDSPAR team (NASA-funded)",
+          "year": 2018,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA NTRS: FELDSPAR fieldwork at Holuhraun (2018)",
+          "url": "https://ntrs.nasa.gov/citations/20190029583",
+          "quote": "In summer 2018, FELDSPAR conducted an analog sampling expedition to the Holuhraun volcano",
+          "pillar": "geology"
+        },
+        {
+          "activity": "Artemis II crew geology field training",
+          "who": "Artemis II crew",
+          "year": 2024,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA image: Artemis II crew geology training in Iceland",
+          "url": "https://www.nasa.gov/image-detail/amf-jsc2024e055261/",
+          "quote": "Artemis II Crew Geology Training in Iceland. Nautagil / Holohraun Science Activity.",
+          "pillar": "geology",
+          "note": "NASA's caption spells it 'Holohraun', dates the photo 1 August 2024 and gives the location as Drekagil, Iceland."
+        }
+      ]
+    },
+    {
+      "id": "rio-tinto",
+      "name": "Rio Tinto",
+      "country": "Spain",
+      "jordan": false,
+      "lat": 37.72,
+      "lon": -6.56,
+      "status": "nasa-analog",
+      "analogFor": [
+        "mars"
+      ],
+      "terrain": "Acidic, iron-rich river and mining district",
+      "geology": {
+        "primary": "acid-sulfate",
+        "secondary": [
+          "mudstone"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "acid-sulfate"
+            ],
+            "label": "NASA NTRS 20080026258",
+            "url": "https://ntrs.nasa.gov/citations/20080026258",
+            "quote": "Seasonal evaporation of river water drives precipitation of hydronium jarosite and schwertmannite.",
+            "note": "Jarosite and schwertmannite are iron sulfate minerals (our 'iron sulfates' rock type)."
+          }
+        ],
+        "unsourced": [
+          "mudstone"
+        ],
+        "note": "Rock type source still to be added for mudstone."
+      },
+      "why": "Acidic, iron-rich river studied for Mars-like chemistry. NASA's MARTE project drilled here to rehearse searching for life under the Martian surface.",
+      "sources": [
+        {
+          "label": "NASA Astrobiology: Red River Drills for Mars (MARTE)",
+          "url": "https://astrobiology.nasa.gov/news/red-river-drills-for-mars/"
+        },
+        {
+          "label": "NASA NTRS: MARTE simulated Mars drilling mission",
+          "url": "https://ntrs.nasa.gov/citations/20030111644"
+        }
+      ],
+      "caveats": [],
+      "tests": [
+        {
+          "activity": "MARTE deep drilling (150 m) to search for life underground",
+          "who": "NASA and Centro de Astrobiología, Spain (MARTE project)",
+          "year": 2003,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA Astrobiology: Red River Drills for Mars",
+          "url": "https://astrobiology.nasa.gov/news/red-river-drills-for-mars/",
+          "quote": "recently began drilling 150 meters (495 feet) into the ground near the source of the waters of the Rio Tinto",
+          "pillar": "geology"
+        },
+        {
+          "activity": "MARTE simulated Mars drilling mission: an automatic drill on a mock lander",
+          "who": "NASA Ames and partners (MARTE project)",
+          "year": 2005,
+          "type": "tested",
+          "proposed": false,
+          "source": "Stoker et al. 2008, Astrobiology: the 2005 MARTE robotic drilling experiment",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/19032053/",
+          "quote": "The mission used a fluidless, 10-axis, autonomous coring drill mounted on a simulated lander.",
+          "pillar": "geology"
+        },
+        {
+          "activity": "Remote science teams ran the drilling mission from afar, as for a real Mars mission",
+          "who": "NASA Ames and partners (MARTE project)",
+          "year": 2005,
+          "type": "tested",
+          "proposed": false,
+          "source": "Stoker et al. 2008, Astrobiology: the 2005 MARTE robotic drilling experiment",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/19032053/",
+          "quote": "Two remotely located science teams analyzed the remote sensing data and chose subsample locations.",
+          "pillar": null
+        },
+        {
+          "activity": "Drilling test with TRIDENT, the drill later planned for lunar south pole missions",
+          "who": "NASA Ames and Honeybee Robotics",
+          "year": 2017,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA NTRS: TRIDENT drill validation at Mars and lunar analog field sites (2024)",
+          "url": "https://ntrs.nasa.gov/citations/20240000585",
+          "quote": "TRIDENT Rio Tinto test data from 2017",
+          "pillar": "geology"
+        }
+      ]
+    },
+    {
+      "id": "mdrs",
+      "name": "Mars Desert Research Station",
+      "country": "Utah, USA",
+      "jordan": false,
+      "lat": 38.41,
+      "lon": -110.79,
+      "status": "analog",
+      "analogFor": [
+        "mars"
+      ],
+      "terrain": "Desert of red mudstone and sandstone",
+      "geology": {
+        "primary": "mudstone",
+        "secondary": [
+          "sandstone"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "mudstone"
+            ],
+            "label": "Clarke & Stoker 2011, International Journal of Astrobiology 10(3), doi 10.1017/S1473550411000048 (NASA NTRS 20110023235)",
+            "url": "https://ntrs.nasa.gov/citations/20110023235",
+            "quote": "In the immediate vicinity of MDRS the Brushy Basin Member forms a dissected plain of cracking clays",
+            "note": "Manuscript text on NASA NTRS (checked 2026-11-03). The paper calls the clay-rich layers 'floodplain shales' and 'floodplain clays'; our class 'Mudstone / lake mud' covers these clay rocks. Our point is MDRS itself."
+          },
+          {
+            "rocks": [
+              "sandstone"
+            ],
+            "label": "Clarke & Stoker 2011 (same paper)",
+            "url": "https://ntrs.nasa.gov/citations/20110023235",
+            "quote": "The resistant sandstones and conglomerates of the channels form cap rocks that protect the underlying floodplain clays from erosion.",
+            "note": "Same manuscript, about the exhumed channel ridges of the Brushy Basin Member near MDRS (checked 2026-11-03)."
+          }
+        ],
+        "unsourced": []
+      },
+      "why": "Simulated Mars habitat in the Utah desert, run by the Mars Society for analog crews.",
+      "sources": [
+        {
+          "label": "Mars Society: Mars Desert Research Station",
+          "url": "https://mdrs.marssociety.org/"
+        }
+      ],
+      "caveats": [],
+      "tests": [
+        {
+          "activity": "Simulated spacewalks (EVAs) in suits, with airlock and radio checks, during a two-week mission",
+          "who": "Purdue University student crew (Crew 272)",
+          "year": 2023,
+          "type": "tested",
+          "proposed": false,
+          "source": "Purdue University: students at the Mars Desert Research Station",
+          "url": "https://engineering.purdue.edu/AAE/spotlights/2023/2023-0421-mars-desert-research-station-purdue-crew",
+          "quote": "a strict pre-EVA procedure of donning bulky air-circulating EVA suits",
+          "pillar": "terrain"
+        },
+        {
+          "activity": "Drone flights for terrain scouting and mock rescue missions",
+          "who": "Purdue University student crew (Crew 272)",
+          "year": 2023,
+          "type": "tested",
+          "proposed": false,
+          "source": "Purdue University: students at the Mars Desert Research Station",
+          "url": "https://engineering.purdue.edu/AAE/spotlights/2023/2023-0421-mars-desert-research-station-purdue-crew",
+          "quote": "Mars-operable Skydio 2 drone for terrain scouting and mock search-and-rescue missions",
+          "pillar": "terrain"
+        },
+        {
+          "activity": "3D printing of replacement tools inside the habitat",
+          "who": "Purdue University student crew (Crew 272)",
+          "year": 2023,
+          "type": "tested",
+          "proposed": false,
+          "source": "Purdue University: students at the Mars Desert Research Station",
+          "url": "https://engineering.purdue.edu/AAE/spotlights/2023/2023-0421-mars-desert-research-station-purdue-crew",
+          "quote": "we 3D printed replacement tools",
+          "pillar": null
+        },
+        {
+          "activity": "Rock and soil sample analysis during a mission in the World's Biggest Analog",
+          "who": "MDRS Crew 319",
+          "year": 2025,
+          "type": "tested",
+          "proposed": false,
+          "source": "Austrian Space Forum: World's Biggest Analog 2025, picture of the day (day 7)",
+          "url": "https://oewf.org/en/?p=25286",
+          "quote": "analyzing rock and soil samples in the science lab",
+          "pillar": "geology"
+        }
+      ]
+    },
+    {
+      "id": "waqf-as-suwwan",
+      "name": "Waqf as Suwwan crater",
+      "country": "Jordan",
+      "jordan": true,
+      "lat": 31.05,
+      "lon": 36.8,
+      "status": "candidate",
+      "analogFor": [
+        "moon",
+        "mars"
+      ],
+      "terrain": "Impact crater (about 5.5 km) in limestone desert",
+      "geology": {
+        "primary": "carbonate",
+        "secondary": [
+          "impactite"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "carbonate"
+            ],
+            "label": "IGME5000 geological map, 1:5 million (BGR, 2005): unit 601002 at our point",
+            "url": "https://doi.org/10.25928/igme-5000",
+            "quote": "limestone, marl",
+            "note": "Rock names of map unit 601002 (Eocene) at our point, from the map's attribute table (data/raw/screening/geology/samples_jordan.json). A 1:5 million map does not show features smaller than a few km.",
+            "credit": "IGME5000, © BGR, Hannover, 2005, https://doi.org/10.25928/igme-5000, modified: reclassified to Analog Atlas rock ids"
+          },
+          {
+            "rocks": [
+              "carbonate"
+            ],
+            "label": "Salameh et al. 2008, Meteoritics & Planetary Science (open record)",
+            "url": "https://repository.arizona.edu/handle/10150/656483",
+            "quote": "Ten sites with shatter cone development in fine‐grained sandstone or limestone have been mapped"
+          }
+        ],
+        "unsourced": [
+          "impactite"
+        ],
+        "note": "Rock type source still to be added for impact breccia. The stored quotes name shatter cones, not impact breccia."
+      },
+      "why": "Jordan's only confirmed impact crater, with shatter cones and an exposed central uplift. Impact craters are the most common landform on the Moon and Mars.",
+      "sources": [
+        {
+          "label": "Earth Impact Database: Jebel Waqf as Suwwan (archived)",
+          "url": "https://web.archive.org/web/20241211013447/http://www.passc.net/EarthImpactDatabase/New%20website_05-2018/JebelWaqfasSuwwan.html"
+        },
+        {
+          "label": "Salameh et al. 2008, Meteoritics & Planetary Science (open record)",
+          "url": "https://repository.arizona.edu/handle/10150/656483"
+        }
+      ],
+      "caveats": [
+        "No paper calls it a planetary analog yet. NASA POWER gives the regional climate, not the crater floor."
+      ],
+      "tests": [
+        {
+          "activity": "Astronaut geology training on impact rocks: find and sample shatter cones and uplifted layers, as ESA does at the Ries crater and the Canadian Space Agency does at Mistastin",
+          "who": "Our proposal (Analog Atlas team)",
+          "year": null,
+          "type": "proposed",
+          "proposed": true,
+          "source": "Salameh et al. 2008, Meteoritics & Planetary Science (open record)",
+          "url": "https://repository.arizona.edu/handle/10150/656483",
+          "quote": "Ten sites with shatter cone development in fine‐grained sandstone or limestone have been mapped",
+          "pillar": "geology",
+          "basis": "Geology pillar: confirmed impact crater with shatter cones (this source). Nothing has been tested here yet.",
+          "note": "Quote checked against the abstract of doi 10.1111/j.1945-5100.2008.tb00636.x (Crossref record)."
+        },
+        {
+          "activity": "Moonwalk-style traverse practice from the crater rim to its centre, with route planning and sample stops",
+          "who": "Our proposal (Analog Atlas team)",
+          "year": null,
+          "type": "proposed",
+          "proposed": true,
+          "source": "Salameh et al. 2008, Meteoritics & Planetary Science (open record)",
+          "url": "https://repository.arizona.edu/handle/10150/656483",
+          "quote": "a prominent outer rim rising up to 60 m above the surrounding plain",
+          "pillar": "terrain",
+          "basis": "Terrain pillar: the gentle slopes in our terrain data for this site (kilometre scale; boulders and small rocks are not measured)."
+        }
+      ]
+    },
+    {
+      "id": "lisan-dead-sea",
+      "name": "Lisan Peninsula, Dead Sea",
+      "country": "Jordan",
+      "jordan": true,
+      "lat": 31.268,
+      "lon": 35.459,
+      "status": "analog",
+      "analogFor": [
+        "mars"
+      ],
+      "terrain": "Salt flats and evaporites over a salt dome",
+      "geology": {
+        "primary": "evaporite",
+        "secondary": [
+          "mudstone"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "evaporite"
+            ],
+            "label": "Al-Zoubi & ten Brink 2001, Marine and Petroleum Geology",
+            "url": "https://doi.org/10.1016/S0264-8172(01)00031-9",
+            "quote": "Salt diapirs in the Dead Sea basin and their relationship to Quaternary extensional tectonics",
+            "note": "The quote is the paper title."
+          },
+          {
+            "rocks": [
+              "mudstone"
+            ],
+            "label": "IGME5000 geological map, 1:5 million (BGR, 2005): unit 601062 at our point",
+            "url": "https://doi.org/10.25928/igme-5000",
+            "quote": "marl, sand, silt, gravel",
+            "note": "Rock names of map unit 601062 (Pliocene - Quaternary) at our point, from the map's attribute table (data/raw/screening/geology/samples_jordan.json). A 1:5 million map does not show features smaller than a few km. This map does not show the Lisan salt.",
+            "credit": "IGME5000, © BGR, Hannover, 2005, https://doi.org/10.25928/igme-5000, modified: reclassified to Analog Atlas rock ids"
+          }
+        ],
+        "unsourced": []
+      },
+      "why": "Salt flats beside very salty brine. NASA's Astrobiology Institute studied the Dead Sea as a possible analog of early Mars environments: slightly acidic and highly saline.",
+      "sources": [
+        {
+          "label": "NASA Astrobiology Institute 2008 report (Penn State team)",
+          "url": "https://astrobiology.nasa.gov/nai/annual-reports/2008/psu/molecular-signatures-of-life-on-the-edge-ddf-project/index.html"
+        },
+        {
+          "label": "Lisan Peninsula salt diapir, Marine and Petroleum Geology",
+          "url": "https://doi.org/10.1016/S0264-8172(01)00031-9"
+        }
+      ],
+      "caveats": [
+        "The NASA POWER grid cell mixes the lake with the high plateau: its elevation is 185 m, while the Dead Sea shore lies far below sea level. Real air pressure and temperature at the shore are higher than shown."
+      ],
+      "tests": [
+        {
+          "activity": "Search for chemical signs of life in very salty, slightly acidic Dead Sea water, as a possible analog of early Mars",
+          "who": "NASA Astrobiology Institute, Penn State team",
+          "year": "2007–2008",
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA Astrobiology Institute 2008 report (Penn State team)",
+          "url": "https://astrobiology.nasa.gov/nai/annual-reports/2008/psu/molecular-signatures-of-life-on-the-edge-ddf-project/index.html",
+          "quote": "We have used metagenomics, lipid analysis, and amino acid analysis.",
+          "pillar": "resources",
+          "note": "The report covers July 2007 to June 2008 and names the Dead Sea, not the Lisan Peninsula itself."
+        },
+        {
+          "activity": "Brine and salt-crust tests for instruments that sample salty water and look for life in it",
+          "who": "Our proposal (Analog Atlas team)",
+          "year": null,
+          "type": "proposed",
+          "proposed": true,
+          "source": "NASA Astrobiology Institute 2008 report (Penn State team)",
+          "url": "https://astrobiology.nasa.gov/nai/annual-reports/2008/psu/molecular-signatures-of-life-on-the-edge-ddf-project/index.html",
+          "quote": "slightly acidic and highly saline",
+          "pillar": "resources",
+          "basis": "Resources pillar: the 'salts' tag (this source)."
+        },
+        {
+          "activity": "Geology training on salt and mud layers pushed up by the Lisan salt dome",
+          "who": "Our proposal (Analog Atlas team)",
+          "year": null,
+          "type": "proposed",
+          "proposed": true,
+          "source": "Al-Zoubi & ten Brink 2001, Marine and Petroleum Geology",
+          "url": "https://doi.org/10.1016/S0264-8172(01)00031-9",
+          "quote": "Salt diapirs in the Dead Sea basin and their relationship to Quaternary extensional tectonics",
+          "pillar": "geology",
+          "basis": "Geology pillar: evaporite (salt) rock, from this source.",
+          "note": "The quote is the paper title."
+        }
+      ]
+    },
+    {
+      "id": "qa-al-jafr",
+      "name": "Qa' al-Jafr",
+      "country": "Jordan",
+      "jordan": true,
+      "lat": 30.313,
+      "lon": 36.328,
+      "status": "candidate",
+      "analogFor": [
+        "mars"
+      ],
+      "terrain": "Playa (dry mud lake) in a closed basin",
+      "geology": {
+        "primary": "mudstone",
+        "secondary": [
+          "evaporite"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "mudstone"
+            ],
+            "label": "IGME5000 geological map, 1:5 million (BGR, 2005): unit 600021 at our point",
+            "url": "https://doi.org/10.25928/igme-5000",
+            "quote": "marl",
+            "note": "Rock names of map unit 600021 (Quaternary) at our point, from the map's attribute table (data/raw/screening/geology/samples_jordan.json). A 1:5 million map does not show features smaller than a few km.",
+            "credit": "IGME5000, © BGR, Hannover, 2005, https://doi.org/10.25928/igme-5000, modified: reclassified to Analog Atlas rock ids"
+          }
+        ],
+        "unsourced": [
+          "evaporite"
+        ],
+        "note": "Rock type source still to be added for evaporite (salt). Our resources search found no documented gypsum or halite in this basin (data/resources.json), so this second rock needs checking."
+      },
+      "why": "Large closed-basin playa whose lake and pond sediments record past wet periods. Dry lake basins are common on Mars.",
+      "sources": [
+        {
+          "label": "Al-Jafr basin lake sediments, Quaternary International",
+          "url": "https://doi.org/10.1016/j.quaint.2014.12.041"
+        },
+        {
+          "label": "GeoNames: Qa' al Jafr",
+          "url": "https://www.geonames.org/248903/qa-al-jafr.html"
+        }
+      ],
+      "caveats": [
+        "No paper calls it a planetary analog yet."
+      ],
+      "tests": [
+        {
+          "activity": "Landing-zone survey practice and long, straight rover drives on a very flat dry lake bed",
+          "who": "Our proposal (Analog Atlas team)",
+          "year": null,
+          "type": "proposed",
+          "proposed": true,
+          "source": "ACOR photo archive: Qa'a Jafr dry lake bed (James A. Sauer, 1975-1981)",
+          "url": "https://archives.acorjordan.org/s/acor/item/96011",
+          "quote": "dry lake bed looking Northeast, close up of dried and cracked mud on surface",
+          "pillar": "landing",
+          "basis": "Landing-zone pillar: the very flat ground in our terrain data for this site (kilometre scale; boulders and small rocks are not measured).",
+          "note": "The quote is the photo title."
+        },
+        {
+          "activity": "Sampling practice in old lake sediments that record past wet periods, like the dry lake beds on Mars",
+          "who": "Our proposal (Analog Atlas team)",
+          "year": null,
+          "type": "proposed",
+          "proposed": true,
+          "source": "Mischke et al. 2015, Quaternary International",
+          "url": "https://doi.org/10.1016/j.quaint.2014.12.041",
+          "quote": "Palaeoenvironmental inferences from late Quaternary sediments of the Al Jafr Basin, Jordan",
+          "pillar": "geology",
+          "basis": "Geology pillar: mudstone (lake sediment), from this source. The evaporite listed as a second rock has no source yet.",
+          "note": "The quote is the paper title."
+        }
+      ]
+    },
+    {
+      "id": "sp-crater-sfvf",
+      "name": "SP Crater, San Francisco Volcanic Field",
+      "country": "Arizona, USA",
+      "jordan": false,
+      "lat": 35.582,
+      "lon": -111.632,
+      "status": "nasa-analog",
+      "analogFor": [
+        "moon"
+      ],
+      "terrain": "Basaltic cinder cone and lava flow",
+      "geology": {
+        "primary": "basalt",
+        "secondary": [],
+        "sources": [
+          {
+            "rocks": [
+              "basalt"
+            ],
+            "label": "Gullikson et al. 2021, USGS Open-File Report 2021-1072, doi 10.3133/ofr20211072",
+            "url": "https://doi.org/10.3133/ofr20211072",
+            "quote": "S P Mountain presents both major types of basaltic eruptions—explosive and effusive",
+            "note": "Introduction on the USGS page (checked 2026-11-03). S P Mountain is the USGS name for SP Crater, our point. Some other descriptions call its lava basaltic andesite (a little more silica than basalt); we keep the USGS wording."
+          }
+        ],
+        "unsourced": []
+      },
+      "why": "NASA practised Artemis moonwalks here in 2022, and the 2024 Artemis III field test was in the same volcanic field.",
+      "sources": [
+        {
+          "label": "NASA: Practicing our moonwalk",
+          "url": "https://www.nasa.gov/image-article/practicing-our-moonwalk/"
+        },
+        {
+          "label": "USGS: Artemis III mission tests in the San Francisco Volcanic Field",
+          "url": "https://www.usgs.gov/centers/astrogeology-science-center/news/artemis-iii-mission-tests-san-francisco-volcanic-field"
+        }
+      ],
+      "caveats": [],
+      "tests": [
+        {
+          "activity": "JETT3 simulated moonwalk with sample collection at SP Crater",
+          "who": "NASA Joint Extravehicular Activity Test Team (JETT)",
+          "year": 2022,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA: Practicing our moonwalk",
+          "url": "https://www.nasa.gov/image-article/practicing-our-moonwalk/",
+          "quote": "JETT3 was the third simulated moonwalk in preparation for future Artemis missions",
+          "pillar": "terrain"
+        },
+        {
+          "activity": "Week-long Artemis III field test: astronauts in mock spacesuits did four simulated moonwalks",
+          "who": "NASA astronauts Kate Rubins and Andre Douglas, guided by a team at NASA's Johnson Space Center in Houston",
+          "year": 2024,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA: Tests technology, practices Artemis moonwalks in Arizona desert",
+          "url": "https://www.nasa.gov/humans-in-space/nasa-tests-technology-practices-artemis-moonwalks-in-arizona-desert/",
+          "quote": "The test consists of four simulated moonwalks that follow operations planned for Artemis III and beyond",
+          "pillar": "terrain",
+          "note": "The 2024 test was in the San Francisco Volcanic Field near Flagstaff, not at SP Crater itself."
+        },
+        {
+          "activity": "Tests of a heads-up display and guide lights to help crews find their way back to the lander",
+          "who": "NASA",
+          "year": 2024,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA: Tests technology, practices Artemis moonwalks in Arizona desert",
+          "url": "https://www.nasa.gov/humans-in-space/nasa-tests-technology-practices-artemis-moonwalks-in-arizona-desert/",
+          "quote": "a heads-up display using augmented reality or lighting beacons that could help guide crew back to the lander",
+          "pillar": "terrain"
+        },
+        {
+          "activity": "Desert RATS field tests of robots, rovers, habitats and spacesuit equipment",
+          "who": "NASA Desert Research and Technology Studies (Desert RATS) team",
+          "year": null,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA analog missions fact sheet (2011, PDF)",
+          "url": "https://www.nasa.gov/wp-content/uploads/2015/06/541196main_analogfactsheet.pdf",
+          "quote": "evaluates technology, human-robotic systems and extravehicular equipment in the high desert near Flagstaff, Ariz.",
+          "pillar": "terrain",
+          "note": "The fact sheet says 'near Flagstaff'; it does not name SP Crater or give years."
+        }
+      ]
+    },
+    {
+      "id": "craters-of-the-moon",
+      "name": "Craters of the Moon",
+      "country": "Idaho, USA",
+      "jordan": false,
+      "lat": 43.462,
+      "lon": -113.563,
+      "status": "nasa-analog",
+      "analogFor": [
+        "moon",
+        "mars"
+      ],
+      "terrain": "Basalt lava fields and lava tubes",
+      "geology": {
+        "primary": "basalt",
+        "secondary": [],
+        "sources": [
+          {
+            "rocks": [
+              "basalt"
+            ],
+            "label": "Kuntz et al. 1986, GSA Bulletin (USGS Publications Warehouse), doi 10.1130/0016-7606(1986)97<579:CMTASV>2.0.CO;2",
+            "url": "https://pubs.usgs.gov/publication/70014843",
+            "quote": "Three latest Pleistocene to Holocene basaltic lava fields, Craters of the Moon, Kings Bowl, and Wapi, are located along the Great Rift.",
+            "note": "Abstract on the USGS page (checked 2026-10-23)."
+          }
+        ],
+        "unsourced": []
+      },
+      "why": "The Apollo 14 crew trained here in 1969, and it is a field site of NASA's BASALT Mars-analog project.",
+      "sources": [
+        {
+          "label": "US National Park Service: astronaut training",
+          "url": "https://www.nps.gov/crmo/learn/historyculture/space-exploration-research-and-astronaut-training.htm"
+        },
+        {
+          "label": "BASALT research program (Astrobiology, 2019)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6442300/"
+        }
+      ],
+      "caveats": [],
+      "tests": [
+        {
+          "activity": "Apollo 14 astronaut geology training on lava fields",
+          "who": "Apollo 14 crew and backups: Alan Shepard, Edgar Mitchell, Joe Engle, Eugene Cernan",
+          "year": 1969,
+          "type": "tested",
+          "proposed": false,
+          "source": "US National Park Service: astronaut training",
+          "url": "https://www.nps.gov/crmo/learn/historyculture/space-exploration-research-and-astronaut-training.htm",
+          "quote": "explored the lava landscape and learned the basics of volcanic geology",
+          "pillar": "geology"
+        },
+        {
+          "activity": "BASALT-1: first field test of how to do real science on simulated Mars spacewalks",
+          "who": "NASA BASALT team",
+          "year": 2016,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA: What is BASALT?",
+          "url": "https://www.nasa.gov/missions/analog-field-testing/what-is-basalt/",
+          "quote": "The first round of BASALT field tests, at Craters of the Moon National Monument and Preserve, in Idaho.",
+          "pillar": "geology"
+        },
+        {
+          "activity": "Ten simulated spacewalks run with Mars-like radio delays of 5 and 15 minutes",
+          "who": "NASA BASALT team",
+          "year": 2016,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA NTRS: BASALT-1 field deployment paper (PDF)",
+          "url": "https://ntrs.nasa.gov/api/citations/20170000363/downloads/20170000363.pdf",
+          "quote": "a series of 10 simulated extravehicular activities (EVAs) on volcanic flows in Idaho's Craters of the Moon (COTM) National Monument",
+          "pillar": "terrain"
+        }
+      ]
+    },
+    {
+      "id": "ries-crater",
+      "name": "Nördlinger Ries",
+      "country": "Germany",
+      "jordan": false,
+      "lat": 48.883,
+      "lon": 10.617,
+      "status": "nasa-analog",
+      "analogFor": [
+        "moon"
+      ],
+      "terrain": "Complex impact crater (about 24 km)",
+      "geology": {
+        "primary": "impactite",
+        "secondary": [
+          "carbonate",
+          "granite"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "impactite"
+            ],
+            "label": "von Engelhardt et al. 1995, Meteoritics, doi 10.1111/j.1945-5100.1995.tb01126.x",
+            "url": "https://doi.org/10.1111/j.1945-5100.1995.tb01126.x",
+            "quote": "The distribution and petrography of surficial suevite breccias of the Ries impact crater in Southern Germany are reviewed",
+            "note": "Abstract (via OpenAlex, checked 2026-10-23). It is about the Ries crater as a whole, not our exact point."
+          }
+        ],
+        "unsourced": [
+          "carbonate",
+          "granite"
+        ],
+        "note": "Rock type source still to be added for limestone / dolomite and granite."
+      },
+      "why": "Apollo 14 and 17 crews trained in this impact crater, and ESA uses it in its PANGAEA astronaut geology course.",
+      "sources": [
+        {
+          "label": "ESA: A geological puzzle (Ries, PANGAEA)",
+          "url": "https://www.esa.int/ESA_Multimedia/Images/2024/09/A_geological_puzzle"
+        },
+        {
+          "label": "Earth Impact Database: Ries (archived)",
+          "url": "https://web.archive.org/web/20251214103221/http://www.passc.net/EarthImpactDatabase/New%20website_05-2018/Ries.html"
+        }
+      ],
+      "caveats": [],
+      "tests": [
+        {
+          "activity": "Apollo astronaut geology training on impact rocks",
+          "who": "NASA, for the Apollo 14 and 17 astronauts",
+          "year": 1970,
+          "type": "tested",
+          "proposed": false,
+          "source": "UNESCO Global Geopark Ries: science",
+          "url": "https://en.geopark-ries.de/wissenschaft/",
+          "quote": "NASA conducted geological field training in the Ries Crater",
+          "pillar": "geology",
+          "note": "The page says August 1970."
+        },
+        {
+          "activity": "ESA PANGAEA geology course: astronauts read impact breccia and suevite rocks",
+          "who": "ESA (astronauts Rosemary Coogan, Arnaud Prost and JAXA's Norishige Kanai)",
+          "year": 2024,
+          "type": "tested",
+          "proposed": false,
+          "source": "ESA: A geological puzzle (Ries, PANGAEA)",
+          "url": "https://www.esa.int/ESA_Multimedia/Images/2024/09/A_geological_puzzle",
+          "quote": "the geological puzzle the astronauts must decipher, piece by piece, during ESA’s PANGAEA geology training",
+          "pillar": "geology"
+        },
+        {
+          "activity": "Earlier ESA astronaut geology field training",
+          "who": "European Space Agency astronauts",
+          "year": "2017, 2018, 2021",
+          "type": "tested",
+          "proposed": false,
+          "source": "UNESCO Global Geopark Ries: science",
+          "url": "https://en.geopark-ries.de/wissenschaft/",
+          "quote": "several geological field-training sessions (2017/2018/2021)",
+          "pillar": "geology"
+        }
+      ]
+    },
+    {
+      "id": "mistastin",
+      "name": "Mistastin crater",
+      "country": "Canada",
+      "jordan": false,
+      "lat": 55.883,
+      "lon": -63.3,
+      "status": "analog",
+      "analogFor": [
+        "moon"
+      ],
+      "terrain": "Impact crater (about 28 km) in anorthosite",
+      "geology": {
+        "primary": "anorthosite",
+        "secondary": [
+          "impactite",
+          "granite"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "anorthosite"
+            ],
+            "label": "Canadian Space Agency: training in geology",
+            "url": "https://www.asc-csa.gc.ca/eng/astronauts/about-the-job/space-mission-simulations/training-in-geology.asp",
+            "quote": "Sample a rock called anorthosite, which is rare on Earth but abundant on the Moon"
+          }
+        ],
+        "unsourced": [
+          "impactite",
+          "granite"
+        ],
+        "note": "Rock type source still to be added for impact breccia and granite."
+      },
+      "why": "An impact crater in anorthosite, the same kind of rock as the lunar highlands around the south pole. Astronauts do geology training here.",
+      "sources": [
+        {
+          "label": "Canadian Space Agency image: Mistastin crater",
+          "url": "https://www.asc-csa.gc.ca/eng/multimedia/search/image/18646"
+        },
+        {
+          "label": "Earth Impact Database: Mistastin (archived)",
+          "url": "https://web.archive.org/web/20240920095648/http://www.passc.net/EarthImpactDatabase/New%20website_05-2018/Mistastin.html"
+        }
+      ],
+      "caveats": [
+        "The crater centre holds a lake, so the NASA POWER cell includes water.",
+        "The 10 km terrain box is not at the pin: it is on the dry west side of the crater (centre 55.88, -63.5, the Discovery Hill side), because a box at the crater centre is mostly lake. Until 3 November 2026 Mistastin had no terrain score for that reason. See coordSource in data/terrain.json."
+      ],
+      "tests": [
+        {
+          "activity": "Two-week astronaut geology expedition: hiking the crater, collecting rock samples",
+          "who": "CSA astronaut Joshua Kutryk and NASA astronaut Matthew Dominick",
+          "year": 2021,
+          "type": "tested",
+          "proposed": false,
+          "source": "Canadian Space Agency: training in geology",
+          "url": "https://www.asc-csa.gc.ca/eng/astronauts/about-the-job/space-mission-simulations/training-in-geology.asp",
+          "quote": "collecting rock samples and practising their geology skills",
+          "pillar": "geology",
+          "note": "CSA lists the dates as 3 to 15 September 2021."
+        },
+        {
+          "activity": "Lunar geology training: astronauts sampled anorthosite, a rock that is rare on Earth but common on the Moon",
+          "who": "CSA astronauts Jeremy Hansen and Jenni Gibbons, NASA astronauts Christina Koch and Raja Chari",
+          "year": 2023,
+          "type": "tested",
+          "proposed": false,
+          "source": "Canadian Space Agency: training in geology",
+          "url": "https://www.asc-csa.gc.ca/eng/astronauts/about-the-job/space-mission-simulations/training-in-geology.asp",
+          "quote": "Sample a rock called anorthosite, which is rare on Earth but abundant on the Moon",
+          "pillar": "geology",
+          "note": "CSA lists the dates as 1 to 9 September 2023."
+        }
+      ]
+    },
+    {
+      "id": "qaidam-dalangtan",
+      "name": "Dalangtan playa, Qaidam Basin",
+      "country": "China",
+      "jordan": false,
+      "lat": 38.503,
+      "lon": 91.398,
+      "status": "analog",
+      "analogFor": [
+        "mars"
+      ],
+      "terrain": "Salt playa with wind-carved ridges in a cold high desert",
+      "geology": {
+        "primary": "evaporite",
+        "secondary": [
+          "mudstone"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "evaporite"
+            ],
+            "label": "Huang et al. 2018, PLOS ONE (Dalangtan)",
+            "url": "https://doi.org/10.1371/journal.pone.0200949",
+            "quote": "These samples are composed of salt minerals, minor silicate mineral fragments and clays."
+          }
+        ],
+        "unsourced": [
+          "mudstone"
+        ],
+        "note": "Rock type source still to be added for mudstone."
+      },
+      "why": "Proposed in published research as a Mars analog: cold, dry, high UV, and its salts record a change from wet to dry like early Mars.",
+      "sources": [
+        {
+          "label": "Qaidam Basin as a Mars analog, Earth-Science Reviews",
+          "url": "https://doi.org/10.1016/j.earscirev.2016.11.003"
+        },
+        {
+          "label": "Huang et al. 2018, PLOS ONE (Dalangtan)",
+          "url": "https://doi.org/10.1371/journal.pone.0200949"
+        }
+      ],
+      "caveats": [],
+      "tests": [
+        {
+          "activity": "Field sampling of microbes and salts in a dry salt lake, to learn where to look for life on Mars",
+          "who": "China University of Geosciences (Wuhan) and partners (Huang et al. 2018)",
+          "year": 2015,
+          "type": "tested",
+          "proposed": false,
+          "source": "Huang et al. 2018, PLOS ONE (Dalangtan)",
+          "url": "https://doi.org/10.1371/journal.pone.0200949",
+          "quote": "during the field trip (20th to 30th of June 2015)",
+          "pillar": "resources"
+        }
+      ]
+    },
+    {
+      "id": "tso-kar-ladakh",
+      "name": "Tso Kar basin, Ladakh",
+      "country": "India",
+      "jordan": false,
+      "lat": 33.3,
+      "lon": 77.983,
+      "status": "analog",
+      "analogFor": [
+        "mars"
+      ],
+      "terrain": "High-altitude salt lake basin with permafrost",
+      "geology": {
+        "primary": "evaporite",
+        "secondary": [
+          "mudstone",
+          "ice"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "ice",
+              "mudstone"
+            ],
+            "label": "Ladakh as a planetary analog, International Journal of Astrobiology",
+            "url": "https://doi.org/10.1017/S1473550419000119",
+            "quote": "The permafrost mound along the Tso-Kar palaeo-shoreline included cryo structures such as clear lenses of ice, in a matrix of dark grey icy mud",
+            "note": "Full text, 'Tso-Kar permafrost region': ice lenses in icy mud at the lake's old shoreline. Before 2026-10-26 the quote was from the abstract ('periglacial ice-mud and permafrost melt water environments in the Tso-Kar region')."
+          },
+          {
+            "rocks": [
+              "evaporite"
+            ],
+            "label": "Ladakh as a planetary analog, International Journal of Astrobiology",
+            "url": "https://doi.org/10.1017/S1473550419000119",
+            "quote": "Tso-Kar Lake shoreline with abundant salt deposits",
+            "note": "Full text, caption of Fig. 15(a): salt deposits at Tso Kar itself. Before 2026-10-26 the quote was from the HABIT test, which was at Khardung La, not at Tso Kar."
+          }
+        ],
+        "unsourced": []
+      },
+      "why": "High-altitude salt lake basin with permafrost, reviewed as a Mars analog. It has the lowest air pressure of all our sites.",
+      "sources": [
+        {
+          "label": "Ladakh as a planetary analog, International Journal of Astrobiology",
+          "url": "https://doi.org/10.1017/S1473550419000119"
+        }
+      ],
+      "caveats": [
+        "The NASA POWER cell is centred higher than the lake itself."
+      ],
+      "tests": [
+        {
+          "activity": "Tests of life-detection methods in brines, icy mud and permafrost melt water",
+          "who": "Ladakh pathfinding expedition team (Pandey et al. 2019)",
+          "year": 2016,
+          "type": "tested",
+          "proposed": false,
+          "source": "Ladakh as a planetary analog, International Journal of Astrobiology",
+          "url": "https://doi.org/10.1017/S1473550419000119",
+          "quote": "biomass measurements in brines, periglacial ice-mud and permafrost melt water environments in the Tso-Kar region",
+          "pillar": "resources"
+        },
+        {
+          "activity": "A mock-up of the ExoMars HABIT instrument measured how salts in the soil take up water from the air",
+          "who": "Ladakh pathfinding expedition team (Pandey et al. 2019)",
+          "year": 2016,
+          "type": "tested",
+          "proposed": false,
+          "source": "Ladakh as a planetary analog, International Journal of Astrobiology",
+          "url": "https://doi.org/10.1017/S1473550419000119",
+          "quote": "ExoMars Mission instrument mockup: HabitAbility: Brines, Irradiance and Temperature (HABIT)",
+          "pillar": "climate",
+          "note": "Not at Tso Kar itself: the paper's full text says the HABIT mock-up ran at Khardung La, a high pass in Ladakh ('Deliquescent melting of calcium chloride at Khardung La'). Listed as a test the same expedition made in the region."
+        },
+        {
+          "activity": "HOPE analog mission: two crew members for 10 days, testing health checks, surface work and sampling",
+          "who": "ISRO Human Space Flight Centre with an industry partner",
+          "year": 2025,
+          "type": "tested",
+          "proposed": false,
+          "source": "ISRO: Space analog mission in Tso Kar Valley, Ladakh",
+          "url": "https://www.isro.gov.in/Space_Analog_Mission.html",
+          "quote": "validate health-monitoring protocols, planetary surface operations, and refine sample collection and microbial analysis techniques",
+          "pillar": "climate",
+          "note": "ISRO says it chose Tso Kar for its high UV, low air pressure, cold and salty permafrost."
+        }
+      ]
+    },
+    {
+      "id": "pilbara-north-pole",
+      "name": "North Pole Dome, Pilbara",
+      "country": "Australia",
+      "jordan": false,
+      "lat": -21.048,
+      "lon": 119.393,
+      "status": "nasa-analog",
+      "analogFor": [
+        "mars"
+      ],
+      "terrain": "Ancient volcanic and hydrothermal rocks with stromatolites",
+      "geology": {
+        "primary": "basalt",
+        "secondary": [
+          "chert"
+        ],
+        "sources": [
+          {
+            "rocks": [
+              "basalt"
+            ],
+            "label": "Rasmussen & Muhling 2023, Goldschmidt 2023 abstracts, doi 10.7185/gold2023.19457",
+            "url": "https://doi.org/10.7185/gold2023.19457",
+            "quote": "Hydrothermal hydrocarbon generation in 3.5 Ga basalt-hosted seafloor vent systems, North Pole Dome, Pilbara Craton, Australia",
+            "note": "The quote is the abstract title (checked on Crossref, 2026-10-23)."
+          },
+          {
+            "rocks": [
+              "chert"
+            ],
+            "label": "Nijman et al. 1998, Precambrian Research, doi 10.1016/S0301-9268(97)00062-4",
+            "url": "https://doi.org/10.1016/S0301-9268(97)00062-4",
+            "quote": "Growth fault control of Early Archaean cherts, barite mounds and chert-barite veins, North Pole Dome, Eastern Pilbara, Western Australia",
+            "note": "The quote is the paper title (checked on Crossref, 2026-10-23)."
+          }
+        ],
+        "unsourced": []
+      },
+      "why": "Some of Earth's oldest signs of life are preserved here. The Mars 2020 and ExoMars teams held their first joint field training here in 2019.",
+      "sources": [
+        {
+          "label": "JPL: Scientists explore Outback as testbed for Mars",
+          "url": "https://www.jpl.nasa.gov/news/scientists-explore-outback-as-testbed-for-mars"
+        },
+        {
+          "label": "Dresser Formation as a Mars analogue (arXiv 1401.5201)",
+          "url": "https://arxiv.org/abs/1401.5201"
+        }
+      ],
+      "caveats": [],
+      "tests": [
+        {
+          "activity": "First joint field expedition of the Mars 2020 and ExoMars science teams, learning to spot fossil stromatolites",
+          "who": "NASA Mars 2020 and ESA-Roscosmos ExoMars science teams, led by Martin Van Kranendonk (UNSW)",
+          "year": 2019,
+          "type": "tested",
+          "proposed": false,
+          "source": "NASA: Mars science teams investigate ancient life in Australia",
+          "url": "https://www.nasa.gov/solar-system/mars-scientists-investigate-ancient-life-in-australia/",
+          "quote": "Among the science teams’ stops: a stromatolite cluster in a grouping of rock called the Dresser Formation",
+          "pillar": "geology",
+          "note": "The Dresser Formation is the North Pole Dome rock studied in arXiv 1401.5201 (site source)."
+        }
+      ]
+    }
+  ]
+}

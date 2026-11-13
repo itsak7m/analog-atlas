@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Deck backgrounds</title>
+<style>html, body { margin: 0; background: #070a12; overflow: hidden; } canvas { display: block; }</style>
+</head>
+<body>
+<canvas id="c" width="1920" height="1080"></canvas>
+<script type="module">
+// Slide backgrounds for the Analog Atlas deck (Team Cosmic Cats). ?s=1..7 draws one slide, 1920 x 1080.
+// Only pictures live here: every word on the slides is an editable text box made by build_deck.ps1.
+// The photo and screenshot positions match the text boxes in slides.json (1 pt there = 2 px here).
+import { makePixelCat } from '../pixelcat.js';
+const W = 1920, H = 1080;
+const cv = document.getElementById('c'), g = cv.getContext('2d');
+const { pixelCat, flyCat } = makePixelCat(g, W);
+const s = Number(new URLSearchParams(location.search).get('s') || 1);
+const img = (src) => new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+
+let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+function base() {
+  g.fillStyle = '#070a12'; g.fillRect(0, 0, W, H);
+  for (let i = 0; i < 260; i++) { g.globalAlpha = 0.25 + rnd() * 0.6; g.fillStyle = '#e6eeff'; const r = rnd() * 1.8 + 0.6; g.fillRect(rnd() * W, rnd() * H, r, r); }
+  g.globalAlpha = 1;
+}
+function rounded(x, y, w, h, r) { g.beginPath(); g.roundRect(x, y, w, h, r); }
+function cover(im, x, y, w, h, { zoom = 1, fx = 0.5, fy = 0.5, r = 0 } = {}) { // crop to fill the box, focus point (fx, fy) in the image
+  if (!im) return;
+  const k = Math.max(w / im.width, h / im.height) * zoom, sw = w / k, sh = h / k;
+  const sx = Math.min(im.width - sw, Math.max(0, fx * im.width - sw / 2)), sy = Math.min(im.height - sh, Math.max(0, fy * im.height - sh / 2));
+  g.save(); if (r) { rounded(x, y, w, h, r); g.clip(); } g.drawImage(im, sx, sy, sw, sh, x, y, w, h); g.restore();
+}
+function frame(x, y, w, h, r = 18) { g.save(); g.strokeStyle = 'rgba(255,255,255,0.14)'; g.lineWidth = 2; rounded(x, y, w, h, r); g.stroke(); g.restore(); }
+function device(im, cx, cy, w, glow = 'rgba(255,181,71,0.35)', crop = {}) { // app screenshot on a dark screen with a soft glow
+  if (!im) return;
+  const h = w * 9 / 16;
+  g.save(); g.shadowColor = glow; g.shadowBlur = 70; g.fillStyle = '#0b0f18'; rounded(cx - w / 2 - 12, cy - h / 2 - 12, w + 24, h + 24, 16); g.fill(); g.restore();
+  cover(im, cx - w / 2, cy - h / 2, w, h, { r: 8, ...crop });
+}
+function fadeLeft(x0, x1, a = 1) { const gr = g.createLinearGradient(x0, 0, x1, 0); gr.addColorStop(0, `rgba(7,10,18,${a})`); gr.addColorStop(1, 'rgba(7,10,18,0)'); g.fillStyle = gr; g.fillRect(0, 0, x1, H); g.fillStyle = `rgba(7,10,18,${a})`; g.fillRect(0, 0, x0, H); }
+function fadeTop(y0, y1) { const gr = g.createLinearGradient(0, y0, 0, y1); gr.addColorStop(0, 'rgba(7,10,18,1)'); gr.addColorStop(1, 'rgba(7,10,18,0.35)'); g.fillStyle = gr; g.fillRect(0, y0, W, y1 - y0); }
+function glow(x, y, r, col) { const gr = g.createRadialGradient(x, y, 10, x, y, r); gr.addColorStop(0, col); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.fillRect(0, 0, W, H); }
+
+const P = {
+  earth: '../shots/clean-earth.png', twin: '../shots/clean-twin.png', moonApp: '../shots/clean-moon.png', discover: '../shots/clean-discover.png',
+  apollo: '../../panoramas/apollo11-pan4.jpg', iceland: '../../panoramas/holuhraun-lava-field.jpg',
+  harrat: '../../panoramas/harrat-usaykhim.jpg', rum: '../../panoramas/wadi-rum-day.jpg',
+};
+const I = {}; await Promise.all(Object.entries(P).map(async ([k, v]) => { I[k] = await img(v); }));
+
+const SLIDES = {
+  1() { // title: the app's Earth on the right, our cat flying in
+    base(); cover(I.earth, 820, 0, 1100, 1080, { zoom: 1.0, fx: 0.52, fy: 0.5 }); fadeLeft(820, 1250);
+    glow(1500, 560, 700, 'rgba(255,181,71,0.10)');
+    flyCat(1250, 205, 7, 0.3);
+  },
+  2() { // problem: one is the Moon, one is Iceland
+    base();
+    cover(I.apollo, 1010, 150, 840, 370, { zoom: 2.6, fx: 0.2, fy: 0.6, r: 18 }); frame(1010, 150, 840, 370);
+    cover(I.iceland, 1010, 560, 840, 370, { zoom: 1.15, fx: 0.5, fy: 0.62, r: 18 }); frame(1010, 560, 840, 370);
+  },
+  3() { // solution: Twin view and the Moon in the app
+    base(); glow(1330, 470, 800, 'rgba(255,181,71,0.08)');
+    device(I.twin, 1330, 470, 1000, undefined, { zoom: 1.45, fy: 0.40 });
+    device(I.moonApp, 1560, 840, 480, 'rgba(92,225,230,0.35)');
+  },
+  4() { // five pillars: Harrat al-Shaam along the bottom
+    base(); cover(I.harrat, 0, 690, W, 390, { zoom: 1, fx: 0.5, fy: 0.62 }); fadeTop(690, 1080);
+  },
+  5() { // what we found: results on the left, Discover Jordan on the right
+    base(); device(I.discover, 1460, 625, 800);
+  },
+  6() { // field kit: Wadi Rum on the right, the cat plants its flag
+    base(); cover(I.rum, 1040, 0, 880, 1080, { zoom: 1.0, fx: 0.62, fy: 0.55 }); fadeLeft(1040, 1400);
+    g.save(); const gr = g.createRadialGradient(1560, 1010, 10, 1560, 1010, 230); gr.addColorStop(0, 'rgba(0,0,0,0.45)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.translate(0, 0); g.fillRect(1300, 950, 520, 120); g.restore();
+    pixelCat(1530, 1000, 10, 0.2, { walk: false, flag: 1 });
+  },
+  7() { // close
+    base(); glow(960, 520, 900, 'rgba(255,181,71,0.22)');
+    flyCat(1500, 150, 7, 0.55);
+  },
+};
+(SLIDES[s] || SLIDES[1])();
+document.title = 'ready';
+</script>
+</body>
+</html>

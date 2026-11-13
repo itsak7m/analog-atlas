@@ -1,0 +1,25 @@
+{
+ "runs": [
+  {
+   "started": "2026-10-10T15:10:37Z",
+   "finished": "2026-10-10T15:18:16Z",
+   "requests": {
+    "earth-search.aws.element84.com": {
+     "requests": 39,
+     "bytes": 49814454,
+     "errors": 0
+    },
+    "sentinel-cogs.s3.us-west-2.amazonaws.com": {
+     "requests": 815,
+     "bytes": 398124430,
+     "errors": 0
+    }
+   },
+   "sasTokenCalls": 0,
+   "dates": [
+    "2023-01-01",
+    "2024-12-31"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,363 @@
+{
+ "about": "NASA POWER regional climatology answers for the Jordan screening layer, saved unchanged. One request per parameter (the API allows one), sent one at a time. Written by scripts/screening_power.py; 'fetched' is the UTC time of the download.",
+ "endpoint": "https://power.larc.nasa.gov/api/temporal/climatology/regional",
+ "community": "RE",
+ "groups": {
+  "merra": {
+   "folder": "merra",
+   "box": {
+    "latitude-min": 28.9,
+    "latitude-max": 33.6,
+    "longitude-min": 34.9,
+    "longitude-max": 39.4
+   },
+   "parameters": [
+    "T2M",
+    "T2M_MAX",
+    "T2M_MIN",
+    "T2M_RANGE",
+    "RH2M",
+    "PRECTOTCORR",
+    "ALLSKY_SFC_UV_INDEX",
+    "ALLSKY_SFC_SW_DWN",
+    "WS2M",
+    "PS",
+    "TS",
+    "TS_MAX",
+    "TS_MIN",
+    "ALLSKY_SRF_ALB"
+   ]
+  },
+  "syn1deg": {
+   "folder": "syn1deg",
+   "box": {
+    "latitude-min": 28.9,
+    "latitude-max": 33.6,
+    "longitude-min": 34.4,
+    "longitude-max": 39.6
+   },
+   "parameters": [
+    "ALLSKY_SRF_ALB",
+    "ALLSKY_SFC_SW_DWN",
+    "ALLSKY_SFC_UV_INDEX"
+   ]
+  }
+ },
+ "requests": [
+  {
+   "group": "merra",
+   "parameter": "T2M",
+   "file": "merra/T2M.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.9&longitude-max=39.4&parameters=T2M&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:32:52Z",
+   "bytes": 22189,
+   "sha256": "d27bc52385de7daefd9c6b04072dae003e3ee90958ce295ff1e337402a3ce7cd",
+   "features": 80,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "MERRA2"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "merra",
+   "parameter": "T2M_MAX",
+   "file": "merra/T2M_MAX.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.9&longitude-max=39.4&parameters=T2M_MAX&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:32:56Z",
+   "bytes": 22702,
+   "sha256": "463aed13af4beb3d23007a425747f3637f35239266c1e833c355e2d255ae0c67",
+   "features": 80,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "MERRA2",
+    "POWER"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "merra",
+   "parameter": "T2M_MIN",
+   "file": "merra/T2M_MIN.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.9&longitude-max=39.4&parameters=T2M_MIN&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:33:00Z",
+   "bytes": 22410,
+   "sha256": "ef10129d8650cc0e3adebc5d440c739062a29a2c9d170e8259aa7db7c745a5b1",
+   "features": 80,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "MERRA2",
+    "POWER"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "merra",
+   "parameter": "T2M_RANGE",
+   "file": "merra/T2M_RANGE.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.9&longitude-max=39.4&parameters=T2M_RANGE&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:33:04Z",
+   "bytes": 22790,
+   "sha256": "c6dbcb6311511da80d35d2054abd2fe846800e94d10d8ea214b5baa4b40cf057",
+   "features": 80,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "MERRA2",
+    "POWER"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "merra",
+   "parameter": "RH2M",
+   "file": "merra/RH2M.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.9&longitude-max=39.4&parameters=RH2M&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:33:08Z",
+   "bytes": 22443,
+   "sha256": "c5067c95f0236d21d41162e90bb54c9bb45f6564858fe52ccdccd39e29d2b140",
+   "features": 80,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "MERRA2",
+    "POWER"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "merra",
+   "parameter": "PRECTOTCORR",
+   "file": "merra/PRECTOTCORR.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.9&longitude-max=39.4&parameters=PRECTOTCORR&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:33:12Z",
+   "bytes": 21850,
+   "sha256": "f7bc084c29d798c14a7e5f2cbcd26727915e30fe8e33680461a736c0dfeed615",
+   "features": 80,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "MERRA2"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "merra",
+   "parameter": "ALLSKY_SFC_UV_INDEX",
+   "file": "merra/ALLSKY_SFC_UV_INDEX.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.9&longitude-max=39.4&parameters=ALLSKY_SFC_UV_INDEX&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:33:15Z",
+   "bytes": 6041,
+   "sha256": "a7085b3ba98940dea272da420c4772eb803df90ea1811797b2f23dec583685b2",
+   "features": 20,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "SYN1DEG"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "merra",
+   "parameter": "ALLSKY_SFC_SW_DWN",
+   "file": "merra/ALLSKY_SFC_SW_DWN.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.9&longitude-max=39.4&parameters=ALLSKY_SFC_SW_DWN&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:33:19Z",
+   "bytes": 6527,
+   "sha256": "45ea8d24f567f1120220a9745b14c6afe828fb6f15a69dcb0bd37fd478d8d662",
+   "features": 20,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "SYN1DEG"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "merra",
+   "parameter": "WS2M",
+   "file": "merra/WS2M.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.9&longitude-max=39.4&parameters=WS2M&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:33:22Z",
+   "bytes": 21406,
+   "sha256": "9086e37abe2203a7f768373a8521f48f9c7218a21131d1580d73b42d554d1f23",
+   "features": 80,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "MERRA2",
+    "POWER"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "merra",
+   "parameter": "PS",
+   "file": "merra/PS.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.9&longitude-max=39.4&parameters=PS&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:33:26Z",
+   "bytes": 22310,
+   "sha256": "26d184795cef5105099f95811796d65d39fc065e58e88c26e9375299ba47222a",
+   "features": 80,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "MERRA2"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "merra",
+   "parameter": "TS",
+   "file": "merra/TS.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.9&longitude-max=39.4&parameters=TS&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:33:30Z",
+   "bytes": 22117,
+   "sha256": "d983b6a3ce3a3ced13a311a562ffb9ef1bbfab00c688ccc60c812a8a9a6ad96b",
+   "features": 80,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "MERRA2"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "merra",
+   "parameter": "TS_MAX",
+   "file": "merra/TS_MAX.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.9&longitude-max=39.4&parameters=TS_MAX&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:33:34Z",
+   "bytes": 22600,
+   "sha256": "63a187a537c60c4de48fcee645acc929715b37c26af4826646a68425ff36d7a5",
+   "features": 80,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "MERRA2",
+    "POWER"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "merra",
+   "parameter": "TS_MIN",
+   "file": "merra/TS_MIN.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.9&longitude-max=39.4&parameters=TS_MIN&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:33:38Z",
+   "bytes": 22375,
+   "sha256": "b43a1919da2ebc7ecc99b4d9cac6a2bf13b68684cb8fe35f58362d5f97c7d0c2",
+   "features": 80,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "MERRA2",
+    "POWER"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "merra",
+   "parameter": "ALLSKY_SRF_ALB",
+   "file": "merra/ALLSKY_SRF_ALB.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.9&longitude-max=39.4&parameters=ALLSKY_SRF_ALB&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:33:41Z",
+   "bytes": 5934,
+   "sha256": "0afc401a70636d8069c40766e8558817aa474ce18151dad66f68c7aaf2337965",
+   "features": 20,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "SYN1DEG",
+    "POWER"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "syn1deg",
+   "parameter": "ALLSKY_SRF_ALB",
+   "file": "syn1deg/ALLSKY_SRF_ALB.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.4&longitude-max=39.6&parameters=ALLSKY_SRF_ALB&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:34:13Z",
+   "bytes": 8632,
+   "sha256": "df193d2e34c86eaeaaae328de1a06dfa82a581d953a856cbeca9d0767697c5c5",
+   "features": 30,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "SYN1DEG",
+    "POWER"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "syn1deg",
+   "parameter": "ALLSKY_SFC_SW_DWN",
+   "file": "syn1deg/ALLSKY_SFC_SW_DWN.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.4&longitude-max=39.6&parameters=ALLSKY_SFC_SW_DWN&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:34:17Z",
+   "bytes": 9499,
+   "sha256": "3a6823140ca97da31671ffcb03c782ae20745cf9c5f1270c60f385f66b4f3169",
+   "features": 30,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "SYN1DEG"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  },
+  {
+   "group": "syn1deg",
+   "parameter": "ALLSKY_SFC_UV_INDEX",
+   "file": "syn1deg/ALLSKY_SFC_UV_INDEX.json",
+   "url": "https://power.larc.nasa.gov/api/temporal/climatology/regional?latitude-min=28.9&latitude-max=33.6&longitude-min=34.4&longitude-max=39.6&parameters=ALLSKY_SFC_UV_INDEX&community=RE&format=JSON",
+   "httpStatus": 200,
+   "fetched": "2026-10-10T10:34:20Z",
+   "bytes": 8783,
+   "sha256": "42e4ea62b387ec3537b92934e130ca76909726fdf5b584b2338dd295467d022e",
+   "features": 30,
+   "apiVersion": "v2.10.1",
+   "headerSources": [
+    "SYN1DEG"
+   ],
+   "headerStart": "20010101",
+   "headerEnd": "20251231",
+   "rangeLabel": "The requested parameters are retrieved from a pre-computed climatological period (January 2001 - December 2025)"
+  }
+ ]
+}

@@ -1,0 +1,8 @@
+{
+  "about": "Places where Google Street View shows real ground-level imagery. It is embedded with Google's own keyless Maps embed (the 'Embed a map' format); the imagery stays © Google and its contributors and is never copied. Checked on 2026-10-09 by loading each embed.",
+  "places": {
+    "haughton": { "lat": 75.4053052, "lon": -89.5999155, "heading": 328, "label": "View Hill, Haughton Crater (Google Street View, July 2018)" },
+    "mdrs": { "lat": 38.4063, "lon": -110.7918, "heading": 0, "label": "The Mars Desert Research Station (Street View photosphere, © Paolo Sartori)" },
+    "sp-crater-sfvf": { "lat": 35.582, "lon": -111.632, "heading": 0, "label": "SP Crater (Street View photosphere, © Ron Gray)" }
+  }
+}

@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analog Atlas Theme Previews</title>
+<link rel="stylesheet" href="../vendor/fonts/fonts.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,500;9..144,650&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Marcellus+SC&display=swap">
+<style>
+/* ---------- preview page (neutral) ---------- */
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: #0c0c0e; color: #e9e9ee; font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+.page { max-width: 1280px; margin: 0 auto; padding: 32px 16px 64px; }
+.page-head h1 { font-size: 26px; margin: 0 0 6px; letter-spacing: -.01em; }
+.page-head p { margin: 0; color: #a3a3ad; max-width: 880px; }
+.theme { margin-top: 52px; }
+.info { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 12px 36px; align-items: start; margin-bottom: 16px; }
+.info h2 { margin: 0; font-size: 22px; display: flex; align-items: center; gap: 10px; }
+.info h2 .tag { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: #26262c; font-size: 15px; }
+.info .mood { margin: 6px 0 0; color: #c9c9d2; }
+.info dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 14px; font-size: 13.5px; }
+.info dt { color: #8d8d98; }
+.info dd { margin: 0; }
+.swatches { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 12px 0 0; padding: 0; list-style: none; }
+.swatches li { display: flex; align-items: center; gap: 7px; font: 12px/1.2 ui-monospace, Consolas, monospace; color: #bdbdc7; }
+.swatches i { width: 18px; height: 18px; border-radius: 5px; border: 1px solid rgba(255,255,255,.18); flex: none; }
+.stage { position: relative; width: 100%; height: 0; overflow: hidden; border-radius: 14px; box-shadow: 0 24px 70px rgba(0,0,0,.55); }
+.page-foot { margin-top: 48px; color: #7d7d88; font-size: 12.5px; }
+@media (max-width: 760px) { .info { grid-template-columns: 1fr; } }
+
+/* ---------- mock screen: shared layout ---------- */
+.screen { position: absolute; top: 0; left: 0; width: 1200px; height: 675px; transform-origin: 0 0;
+  display: grid; grid-template-columns: 280px minmax(0, 1fr) 310px; grid-template-rows: 52px minmax(0, 1fr) 40px;
+  gap: 12px; padding: 14px; background: var(--bg); color: var(--text); font-family: var(--fb);
+  font-size: 13px; line-height: 1.4; overflow: hidden; isolation: isolate; }
+.screen > * { position: relative; z-index: 1; min-width: 0; }
+.screen > .bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.topbar { grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; padding: 0 14px; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand svg { width: 30px; height: 30px; flex: none; }
+.brand .name { font-family: var(--fd); font-size: 18px; line-height: 1.1; }
+.brand .sub { font-size: 10.5px; color: var(--muted); white-space: nowrap; }
+.worlds { display: flex; padding: 3px; gap: 2px; }
+.worlds span { padding: 5px 12px; font-size: 12px; color: var(--muted); }
+.worlds .on { color: var(--text); }
+.compare { display: flex; align-items: center; gap: 8px; padding: 6px 12px; font-size: 12px; white-space: nowrap; }
+.compare .lbl { color: var(--muted); }
+.compare .val { font-weight: 600; }
+.body-chip { font-size: 10.5px; padding: 2px 7px; }
+.compare .chev { color: var(--muted); }
+.spacer { flex: 1; }
+.btn { display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; font-size: 12px; white-space: nowrap; }
+.btn .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+.panel { display: flex; flex-direction: column; padding: 14px; }
+.rank .ph h3, .detail h3 { margin: 0; }
+.rank .ph p { margin: 3px 0 10px; font-size: 11px; color: var(--muted); }
+.rank ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.rank li { display: grid; grid-template-columns: 22px minmax(0, 1fr) 46px 34px; align-items: center; gap: 8px; padding: 6px 8px; }
+.rank .n { font-family: var(--fm); font-size: 11px; color: var(--muted); }
+.rank .nm { font-size: 12.5px; line-height: 1.2; }
+.rank .nm em { display: block; font-style: normal; font-size: 10.5px; color: var(--muted); }
+.rank .bar { height: 4px; background: var(--track); }
+.rank .bar i { display: block; height: 100%; background: var(--accent); }
+.rank .pc { font-family: var(--fm); font-size: 12px; text-align: right; }
+.globe-wrap { display: grid; place-items: center; }
+.orb { width: 420px; height: 420px; border-radius: 50%; }
+.orb canvas { width: 100%; height: 100%; display: block; border-radius: 50%; }
+.arcs { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.pins { position: absolute; inset: 0; pointer-events: none; }
+.pin { position: absolute; left: 0; top: 0; width: 10px; height: 10px; opacity: 0; will-change: transform; }
+.pin i { display: block; width: 10px; height: 10px; border-radius: 50%; background: var(--c);
+  box-shadow: 0 0 0 2px rgba(0,0,0,.35), 0 0 12px 3px var(--c); }
+.pin span { position: absolute; top: 50%; left: 15px; transform: translateY(-50%); white-space: nowrap; font-size: 11.5px; padding: 2px 8px; }
+.pin.l span { left: auto; right: 15px; }
+.pin b { font-family: var(--fm); font-weight: 500; margin-left: 5px; color: var(--c); }
+.hud { position: absolute; left: 0; right: 0; bottom: 4px; text-align: center; font-family: var(--fm); font-size: 11px; color: var(--muted); }
+.detail .kicker { align-self: flex-start; font-size: 10.5px; }
+.detail h3 { margin-top: 10px; font-size: 22px; line-height: 1.15; }
+.detail .loc { margin: 4px 0 12px; color: var(--muted); font-size: 11.5px; }
+.score { display: flex; align-items: center; gap: 12px; padding: 10px 12px; margin-bottom: 10px; }
+.score .big { font-family: var(--fm); font-size: 38px; line-height: 1; }
+.score .big small { font-size: 18px; margin-left: 1px; }
+.score .of { font-size: 11.5px; color: var(--muted); }
+.factors { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+.factors th { text-align: left; font-weight: 500; color: var(--muted); font-size: 10.5px; padding: 0 4px 6px 0; }
+.factors th:last-child, .factors td:last-child { text-align: right; padding-right: 0; }
+.factors td { padding: 6px 4px 6px 0; border-top: 1px solid var(--line); vertical-align: middle; }
+.factors td:nth-child(2), .factors td:nth-child(3), .factors td:last-child { font-family: var(--fm); white-space: nowrap; }
+.factors .m { display: inline-block; width: 28px; height: 4px; margin-right: 6px; vertical-align: middle; background: var(--track); }
+.factors .m i { display: block; height: 100%; background: var(--accent); }
+.actions { display: flex; gap: 8px; margin-top: auto; padding-top: 12px; }
+.src { margin: 10px 0 0; font-size: 10.5px; color: var(--muted); }
+.ticker { grid-column: 1 / -1; display: flex; align-items: center; gap: 22px; padding: 0 6px 0 14px; font-size: 12px; }
+.ticker .btn { padding: 5px 11px; }
+.ticker .state { font-size: 10.5px; padding: 3px 9px; }
+.ticker .rd { color: var(--muted); }
+.ticker .rd b { font-family: var(--fm); font-weight: 500; color: var(--text); margin-left: 6px; }
+.ticker .note { color: var(--muted); font-size: 11px; }
+.mars-mark { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.mars-mark i { width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 35% 32%, #f0a27a, #b4492a 55%, #4a1a10); box-shadow: 0 0 18px rgba(240,140,100,.45); }
+.mars-mark span { font-size: 11.5px; }
+
+/* ---------- Theme A: Mission Control ---------- */
+.theme-a { --bg: #05080f; --line: #1a2640; --track: #1a2640; --text: #e6edf7; --muted: #7f8ca6;
+  --accent: #ffb547; --live: #5ce1e6;
+  --fd: 'IBM Plex Sans Condensed', sans-serif; --fb: 'IBM Plex Sans', sans-serif; --fm: 'IBM Plex Mono', monospace; }
+.theme-a > .bg { background:
+  radial-gradient(ellipse at 50% 46%, rgba(40, 95, 170, .2), transparent 58%),
+  linear-gradient(rgba(92,225,230,.045) 1px, transparent 1px) 0 0 / 40px 40px,
+  linear-gradient(90deg, rgba(92,225,230,.045) 1px, transparent 1px) 0 0 / 40px 40px; }
+.theme-a .panel, .theme-a .topbar, .theme-a .ticker { background: linear-gradient(180deg, rgba(14,22,38,.94), rgba(8,13,23,.94)); border: 1px solid var(--line); }
+.theme-a .panel::before, .theme-a .panel::after { content: ''; position: absolute; width: 12px; height: 12px; border: 2px solid var(--accent); }
+.theme-a .panel::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.theme-a .panel::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+.theme-a .brand .name { text-transform: uppercase; letter-spacing: .2em; font-weight: 600; font-size: 16px; }
+.theme-a h3 { font-family: var(--fd); text-transform: uppercase; letter-spacing: .14em; font-size: 13px; font-weight: 600; color: var(--accent); }
+.theme-a .detail h3 { font-size: 23px; letter-spacing: .05em; color: var(--text); }
+.theme-a .worlds, .theme-a .compare { border: 1px solid var(--line); }
+.theme-a .worlds span { font-family: var(--fd); text-transform: uppercase; letter-spacing: .12em; }
+.theme-a .worlds .on { background: rgba(255,181,71,.12); color: var(--accent); box-shadow: inset 0 -2px 0 var(--accent); }
+.theme-a .body-chip { border: 1px solid #8a3b2a; color: #ff8a65; text-transform: uppercase; letter-spacing: .1em; font-family: var(--fd); }
+.theme-a .btn { border: 1px solid var(--line); font-family: var(--fd); text-transform: uppercase; letter-spacing: .1em; }
+.theme-a .btn.primary { background: var(--accent); color: #1a1205; border-color: var(--accent); font-weight: 600; }
+.theme-a .btn.kit .dot { background: var(--live); box-shadow: 0 0 8px var(--live); }
+.theme-a .rank li.sel { background: rgba(255,181,71,.08); box-shadow: inset 2px 0 0 var(--accent); }
+.theme-a .kicker { font-family: var(--fd); text-transform: uppercase; letter-spacing: .14em; color: var(--live); }
+.theme-a .score { border: 1px solid var(--line); background: rgba(255,181,71,.05); }
+.theme-a .score .big { color: var(--accent); }
+.theme-a .pin span { background: rgba(5,8,15,.78); border: 1px solid var(--line); font-family: var(--fd); letter-spacing: .04em; }
+.theme-a .ticker .state { border: 1px solid var(--live); color: var(--live); font-family: var(--fd); text-transform: uppercase; letter-spacing: .14em; }
+.theme-a .ticker .rd { font-family: var(--fd); text-transform: uppercase; letter-spacing: .1em; font-size: 11px; }
+.theme-a .ticker .rd b { color: var(--live); }
+.theme-a .orb { box-shadow: 0 0 0 1px rgba(120,190,255,.25), 0 0 54px 8px rgba(70,150,255,.24); }
+.theme-a .hud { color: var(--live); letter-spacing: .12em; }
+.theme-a .globe-wrap::before, .theme-a .globe-wrap::after { content: ''; position: absolute; left: 50%; top: 50%; background: rgba(92,225,230,.55); pointer-events: none; z-index: 2; }
+.theme-a .globe-wrap::before { width: 34px; height: 1px; transform: translate(-50%, -50%); box-shadow: -40px 0 0 rgba(92,225,230,.25), 40px 0 0 rgba(92,225,230,.25); }
+.theme-a .globe-wrap::after { width: 1px; height: 34px; transform: translate(-50%, -50%); }
+
+/* ---------- Theme B: Basalt & Sandstone ---------- */
+.theme-b { --bg: #13110f; --line: #342d26; --track: #342d26; --text: #f3e9dc; --muted: #a39383;
+  --accent: #e6ad5c; --red: #d9653f;
+  --fd: 'Fraunces', serif; --fb: 'Archivo', sans-serif; --fm: 'JetBrains Mono', monospace; }
+.theme-b > .bg { background: radial-gradient(ellipse at 50% 42%, rgba(217,101,63,.15), transparent 60%); }
+.theme-b > .bg::after { content: ''; position: absolute; inset: 0; background-image: var(--contours); background-size: 560px 560px; opacity: .09; }
+.theme-b .panel { background: #1b1815; border: 1px solid var(--line); border-radius: 12px; }
+.theme-b .topbar { border-bottom: 1px solid var(--line); }
+.theme-b .ticker { border-top: 1px solid var(--line); }
+.theme-b .brand .name { font-weight: 650; font-size: 21px; font-variation-settings: 'opsz' 72; }
+.theme-b h3 { font-family: var(--fd); font-weight: 650; font-size: 17px; font-variation-settings: 'opsz' 48; }
+.theme-b .detail h3 { font-size: 27px; }
+.theme-b .worlds, .theme-b .compare, .theme-b .btn { background: #1f1b17; border: 1px solid var(--line); border-radius: 999px; }
+.theme-b .worlds span { border-radius: 999px; }
+.theme-b .worlds .on { background: var(--red); color: #fff7ee; }
+.theme-b .body-chip { background: #5a2a1c; color: #ffcfb8; border-radius: 999px; }
+.theme-b .btn.primary { background: var(--accent); color: #23170a; border-color: transparent; font-weight: 600; }
+.theme-b .btn.kit .dot { background: var(--accent); }
+.theme-b .rank li { border-radius: 8px; }
+.theme-b .rank li.sel { background: #2a231d; box-shadow: inset 0 0 0 1px #4a3d31; }
+.theme-b .rank .bar, .theme-b .rank .bar i, .theme-b .factors .m, .theme-b .factors .m i { border-radius: 2px; }
+.theme-b .rank .bar i { background: linear-gradient(90deg, var(--red), var(--accent)); }
+.theme-b .kicker { border: 1px dashed var(--accent); color: var(--accent); padding: 3px 8px; border-radius: 4px; font-family: var(--fm); letter-spacing: .08em; text-transform: uppercase; transform: rotate(-1.5deg); }
+.theme-b .score { background: #231e19; border-radius: 10px; }
+.theme-b .score .big { color: var(--accent); }
+.theme-b .rock { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); margin: -4px 0 12px; }
+.theme-b .rock i { width: 12px; height: 12px; border-radius: 3px; background: #2b2b2e; box-shadow: inset 0 0 0 1px #55555c; }
+.theme-b .pin span { background: rgba(19,17,15,.84); border: 1px solid #4a3d31; border-radius: 6px; }
+.theme-b .ticker .state { background: #3a2a1a; color: var(--accent); border-radius: 999px; font-family: var(--fm); text-transform: uppercase; letter-spacing: .08em; }
+.theme-b .orb { box-shadow: 0 0 64px 10px rgba(230,150,80,.18), 0 0 0 1px rgba(230,173,92,.2); }
+
+/* ---------- Theme C: Petra Night ---------- */
+.theme-c { --bg: #070818; --line: rgba(242,195,107,.18); --track: rgba(255,255,255,.08); --text: #e9ebf7; --muted: #9097bd;
+  --accent: #f2c36b; --rose: #e8a598;
+  --fd: 'Marcellus SC', serif; --fb: 'Manrope', sans-serif; --fm: 'DM Mono', monospace; }
+.theme-c > .bg { background:
+  radial-gradient(ellipse at 72% 18%, rgba(120,90,210,.24), transparent 55%),
+  radial-gradient(ellipse at 18% 92%, rgba(232,165,152,.11), transparent 50%), #070818; }
+.theme-c .stars { position: absolute; left: 0; top: 0; width: 1px; height: 1px; border-radius: 50%; }
+.theme-c .panel { background: rgba(20,22,52,.55); backdrop-filter: blur(14px); border: 1px solid var(--line); border-radius: 18px; }
+.theme-c .topbar, .theme-c .ticker { background: rgba(20,22,52,.42); border: 1px solid var(--line); border-radius: 14px; backdrop-filter: blur(10px); }
+.theme-c .brand .name { font-size: 20px; letter-spacing: .06em; color: var(--accent); }
+.theme-c h3 { font-family: var(--fd); font-size: 17px; letter-spacing: .04em; font-weight: 400; }
+.theme-c .detail h3 { font-size: 27px; color: #fff; }
+.theme-c .worlds, .theme-c .compare, .theme-c .btn { border: 1px solid var(--line); border-radius: 999px; }
+.theme-c .worlds { background: rgba(255,255,255,.04); }
+.theme-c .worlds span { border-radius: 999px; }
+.theme-c .worlds .on { background: linear-gradient(180deg, rgba(242,195,107,.26), rgba(242,195,107,.08)); color: var(--accent); }
+.theme-c .body-chip { color: #ffb199; border: 1px solid rgba(255,140,110,.35); border-radius: 999px; }
+.theme-c .btn.primary { background: linear-gradient(180deg, #f6d38c, #e3ad4f); color: #1d1404; border: none; font-weight: 700; }
+.theme-c .btn.kit .dot { background: var(--rose); }
+.theme-c .rank li { border-radius: 10px; }
+.theme-c .rank li.sel { background: rgba(242,195,107,.08); box-shadow: inset 0 0 0 1px rgba(242,195,107,.3); }
+.theme-c .rank .bar, .theme-c .rank .bar i, .theme-c .factors .m, .theme-c .factors .m i { border-radius: 2px; }
+.theme-c .rank .bar i, .theme-c .factors .m i { background: linear-gradient(90deg, rgba(242,195,107,.35), var(--accent)); }
+.theme-c .kicker { color: var(--rose); font-family: var(--fd); letter-spacing: .12em; font-size: 12px; }
+.theme-c .score { border-radius: 12px; background: rgba(242,195,107,.06); }
+.theme-c .score .big { color: var(--accent); }
+.theme-c .pin span { background: rgba(7,8,24,.72); border: 1px solid var(--line); border-radius: 999px; }
+.theme-c .ticker .state { color: var(--rose); border: 1px solid rgba(232,165,152,.4); border-radius: 999px; }
+.theme-c .orb { box-shadow: 0 0 0 1px rgba(242,195,107,.35), 0 0 72px 12px rgba(120,100,255,.28); }
+.theme-c .mars-mark span { color: var(--rose); font-family: var(--fd); letter-spacing: .06em; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="page-head">
+    <h1>Analog Atlas · theme previews</h1>
+    <p>Early design draft, kept to show how the look was chosen (theme A became the app). It is not the app and it is not updated. The mock ranking uses the brief's section 6 reference climate match for Jezero (NASA POWER), for the brief's sites that are still in the app; Mauna Kea was later removed from the app. For current scores, open the app. Field-kit values are labelled <b>Simulated</b>. Nothing here can be clicked: this page only shows the look.</p>
+  </header>
+
+  <section class="theme" id="theme-a">
+    <div class="info">
+      <div>
+        <h2><span class="tag">A</span> Mission Control</h2>
+        <p class="mood">A NASA flight-control console at night: calm, exact, telemetry everywhere. Apollo-era amber numbers on a modern glass cockpit.</p>
+        <ul class="swatches">
+          <li><i style="background:#05080f"></i>#05080F void</li>
+          <li><i style="background:#0e1626"></i>#0E1626 panel</li>
+          <li><i style="background:#1a2640"></i>#1A2640 grid</li>
+          <li><i style="background:#ffb547"></i>#FFB547 telemetry amber</li>
+          <li><i style="background:#5ce1e6"></i>#5CE1E6 live cyan</li>
+          <li><i style="background:#e6edf7"></i>#E6EDF7 text</li>
+        </ul>
+      </div>
+      <dl>
+        <dt>Fonts</dt><dd>IBM Plex Sans Condensed (labels) · IBM Plex Sans (text) · IBM Plex Mono (numbers)</dd>
+        <dt>Signature</dt><dd>Corner brackets, navigation grid, uppercase telemetry labels. Amber = scores, cyan = live sensor data.</dd>
+        <dt>Fly-in</dt><dd>Altitude, latitude and longitude read-outs plus a horizon line while the camera descends.</dd>
+      </dl>
+    </div>
+    <div class="stage"><div class="screen" data-theme="a"></div></div>
+  </section>
+
+  <section class="theme" id="theme-b">
+    <div class="info">
+      <div>
+        <h2><span class="tag">B</span> Basalt &amp; Sandstone</h2>
+        <p class="mood">An expedition atlas and a geologist's field notebook: warm, tactile and rooted in Jordan's rocks. Black basalt, red Wadi Rum sandstone, ochre dust.</p>
+        <ul class="swatches">
+          <li><i style="background:#13110f"></i>#13110F basalt</li>
+          <li><i style="background:#1b1815"></i>#1B1815 panel</li>
+          <li><i style="background:#d9653f"></i>#D9653F Wadi Rum red</li>
+          <li><i style="background:#e6ad5c"></i>#E6AD5C ochre</li>
+          <li><i style="background:#a8a29e"></i>#A8A29E regolith</li>
+          <li><i style="background:#f3e9dc"></i>#F3E9DC paper</li>
+        </ul>
+      </div>
+      <dl>
+        <dt>Fonts</dt><dd>Fraunces (headings) · Archivo (text) · JetBrains Mono (numbers)</dd>
+        <dt>Signature</dt><dd>Topographic contour lines, specimen labels, stamped badges (CANDIDATE, NASA ANALOG), rock-type colour chips.</dd>
+        <dt>Fly-in</dt><dd>Field-note captions for elevation, rock type and slope as the ground comes closer.</dd>
+      </dl>
+    </div>
+    <div class="stage"><div class="screen" data-theme="b"></div></div>
+  </section>
+
+  <section class="theme" id="theme-c">
+    <div class="info">
+      <div>
+        <h2><span class="tag">C</span> Petra Night</h2>
+        <p class="mood">The night sky over Wadi Rum: deep indigo, starlight and gold. Cinematic and premium. Earth twins are joined to their Moon or Mars target by gold constellation lines.</p>
+        <ul class="swatches">
+          <li><i style="background:#070818"></i>#070818 night</li>
+          <li><i style="background:#16183a"></i>#16183A glass</li>
+          <li><i style="background:#f2c36b"></i>#F2C36B gold</li>
+          <li><i style="background:#e8a598"></i>#E8A598 Petra rose</li>
+          <li><i style="background:#9097bd"></i>#9097BD dusk</li>
+          <li><i style="background:#e9ebf7"></i>#E9EBF7 moonlight</li>
+        </ul>
+      </div>
+      <dl>
+        <dt>Fonts</dt><dd>Marcellus SC (headings, carved-stone feel) · Manrope (text) · DM Mono (numbers)</dd>
+        <dt>Signature</dt><dd>Star field, frosted-glass panels, gold arcs linking twins to the target, eight-point star mark.</dd>
+        <dt>Fly-in</dt><dd>Slow cinematic descent with gold title cards.</dd>
+      </dl>
+    </div>
+    <div class="stage"><div class="screen" data-theme="c"></div></div>
+  </section>
+
+  <p class="page-foot">Earth image: NASA Earth Observatory, Blue Marble Next Generation (Reto Stöckli), public domain, from the app's textures/earth.jpg. Fonts: IBM Plex from the app's vendor/fonts; the fonts of themes B and C come from Google Fonts and need the internet (all SIL Open Font License).</p>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  const D2R = Math.PI / 180;
+  const LAT0 = 18 * D2R;                 // view centre latitude (tilted to show Jordan)
+  const SPIN = 4 * D2R;                  // radians per second
+  const TEX_URL = '../textures/earth.jpg';     // NASA Blue Marble Next Generation (public domain), same file as the app
+  const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Jezero climate match (section 6 of the brief), rounded to whole percent.
+  const SITES = [
+    { id: 'dry-valleys', name: 'McMurdo Dry Valleys', country: 'Antarctica', lat: -77.47, lon: 161.80, s: 60 },
+    { id: 'mdrs', name: 'Mars Desert Research Station', country: 'Utah, USA', lat: 38.41, lon: -110.79, s: 57 },
+    { id: 'death-valley', name: 'Death Valley', country: 'USA', lat: 36.46, lon: -116.87, s: 57 },
+    { id: 'harrat', name: 'Harrat al-Shaam', country: 'Jordan', lat: 32.20, lon: 37.13, s: 57 },
+    { id: 'atacama', name: 'Atacama Desert', country: 'Chile', lat: -24.08, lon: -70.00, s: 57 },
+    { id: 'haughton', name: 'Haughton Crater', country: 'Canada', lat: 75.38, lon: -89.67, s: 56 },
+    { id: 'wadi-rum', name: 'Wadi Rum', country: 'Jordan', lat: 29.58, lon: 35.42, s: 55, side: 'l' },
+    { id: 'rio-tinto', name: 'Rio Tinto', country: 'Spain', lat: 37.72, lon: -6.56, s: 52 },
+    { id: 'holuhraun', name: 'Holuhraun', country: 'Iceland', lat: 64.85, lon: -16.83, s: 33 },
+  ];
+  // Harrat al-Shaam vs Jezero: NASA POWER values vs MEDA values, factor match in %.
+  const FACTORS = [
+    ['Mean temperature', '19.4 °C', '−55 °C', 26],
+    ['Daily swing', '15.4 °C', '60 °C', 55],
+    ['Coldest ground', '−6.7 °C', '−83 °C', 24],
+    ['Rainfall', '0.21 mm/d', '0', 93],
+    ['Albedo', '0.21', '0.14', 86],
+  ];
+
+  const THEMES = {
+    a: { tint: [0.95, 1.0, 1.06], ambient: 0.2, lo: [91, 107, 133], hi: [255, 181, 71], base: [40, 70, 110],
+         kicker: 'Selected site · candidate analog',
+         mark: '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="9" fill="none" stroke="#ffb547" stroke-width="1.6"/><ellipse cx="16" cy="16" rx="15" ry="5.5" fill="none" stroke="#5ce1e6" stroke-width="1.2" transform="rotate(-25 16 16)"/><circle cx="16" cy="16" r="2.2" fill="#ffb547"/></svg>' },
+    b: { tint: [1.08, 0.98, 0.86], ambient: 0.24, lo: [120, 106, 94], hi: [230, 173, 92], base: [90, 60, 40],
+         kicker: 'Specimen 04 · basalt · candidate',
+         mark: '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#2a211a" stroke="#4a3d31"/><path d="M5 22 L12 12 L16 17 L20 10 L27 22 Z" fill="#d9653f"/><path d="M5 22 H27" stroke="#e6ad5c" stroke-width="1.5"/></svg>' },
+    c: { tint: [0.86, 0.9, 1.12], ambient: 0.16, lo: [104, 110, 170], hi: [242, 195, 107], base: [40, 40, 90],
+         kicker: 'Candidate analog · Jordan',
+         mark: '<svg viewBox="0 0 32 32" aria-hidden="true"><g fill="none" stroke="#f2c36b" stroke-width="1.4"><rect x="8" y="8" width="16" height="16"/><rect x="8" y="8" width="16" height="16" transform="rotate(45 16 16)"/></g><circle cx="16" cy="16" r="2.4" fill="#f2c36b"/></svg>' },
+  };
+
+  const lerp = (a, b, t) => Math.round(a + (b - a) * t);
+  const rgb = (c) => `rgb(${c[0]},${c[1]},${c[2]})`;
+  const scoreColor = (theme, s) => {
+    const t = Math.max(0, Math.min(1, (s - 30) / 30));
+    const { lo, hi } = THEMES[theme];
+    return rgb([lerp(lo[0], hi[0], t), lerp(lo[1], hi[1], t), lerp(lo[2], hi[2], t)]);
+  };
+
+  function screenHTML(t) {
+    const T = THEMES[t];
+    const rows = SITES.map((s, i) => `<li class="${s.id === 'harrat' ? 'sel' : ''}"><span class="n">${String(i + 1).padStart(2, '0')}</span><span class="nm">${s.name}<em>${s.country}</em></span><span class="bar"><i style="width:${s.s}%"></i></span><span class="pc">${s.s}%</span></li>`).join('');
+    const facts = FACTORS.map((f) => `<tr><td>${f[0]}</td><td>${f[1]}</td><td>${f[2]}</td><td><span class="m"><i style="width:${f[3]}%"></i></span>${f[3]}%</td></tr>`).join('');
+    return `
+      <div class="bg"></div>
+      <header class="topbar">
+        <div class="brand">${T.mark}<div><div class="name">Analog Atlas</div><div class="sub">Places on Earth that behave like the Moon and Mars</div></div></div>
+        <div class="worlds"><span class="on">Earth</span><span>Moon</span><span>Mars</span></div>
+        <div class="compare"><span class="lbl">Compare with</span><span class="val">Jezero Crater</span><span class="body-chip">Mars</span><span class="chev">▾</span></div>
+        <div class="spacer"></div>
+        <span class="btn">Tune factors</span>
+        <span class="btn kit"><span class="dot"></span>Connect kit (USB)</span>
+      </header>
+      <aside class="panel rank">
+        <div class="ph"><h3>Earth twins of Jezero</h3><p>Climate match · NASA POWER 2001–2020</p></div>
+        <ol>${rows}</ol>
+      </aside>
+      <main class="globe-wrap">
+        <div class="orb"><canvas width="420" height="420"></canvas></div>
+        <svg class="arcs"></svg>
+        <div class="pins"></div>
+        ${t === 'c' ? '<div class="mars-mark" style="right:18px;top:8px"><span>Jezero Crater · Mars</span><i></i></div>' : ''}
+        <div class="hud"><span class="hud-view"></span></div>
+      </main>
+      <aside class="panel detail">
+        <span class="kicker">${T.kicker}</span>
+        <h3>Harrat al-Shaam</h3>
+        <p class="loc">Jordan · 32.20° N, 37.13° E · black basalt desert</p>
+        ${t === 'b' ? '<span class="rock"><i></i>Rock: basalt · lunar maria type</span>' : ''}
+        <div class="score"><span class="big">57<small>%</small></span><span class="of">climate match with<br>Jezero Crater, Mars</span></div>
+        <table class="factors"><thead><tr><th>Factor</th><th>Earth</th><th>Jezero</th><th>Match</th></tr></thead><tbody>${facts}</tbody></table>
+        <div class="actions"><span class="btn primary">Fly down</span><span class="btn">Stand here · 360°</span></div>
+        <p class="src">Sources: NASA POWER climatology · Perseverance MEDA</p>
+      </aside>
+      <footer class="ticker">
+        <span class="state">Simulated</span>
+        <span class="rd">Air<b>24.1 °C</b></span><span class="rd">Humidity<b>38 %</b></span><span class="rd">UV index<b>5.2</b></span><span class="rd">Ground<b>31.0 °C</b></span>
+        <span class="spacer"></span><span class="note">No device connected · values are simulated</span><span class="btn">Method &amp; data</span>
+      </footer>`;
+  }
+
+  // Deterministic random numbers so the decorations look the same on every load.
+  function rng(seed) { return () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296); }
+
+  function contourSVG() {
+    const r = rng(7);
+    let paths = '';
+    for (const [cx, cy] of [[160, 170], [420, 400], [470, 90]]) {
+      const ph1 = r() * 6, ph2 = r() * 6;
+      for (let k = 1; k <= 7; k++) {
+        const base = 22 * k;
+        let d = '';
+        for (let j = 0; j <= 72; j++) {
+          const a = (j / 72) * Math.PI * 2;
+          const rad = base * (1 + 0.13 * Math.sin(3 * a + ph1) + 0.07 * Math.sin(5 * a + ph2));
+          d += `${j ? 'L' : 'M'}${(cx + rad * Math.cos(a)).toFixed(1)} ${(cy + rad * Math.sin(a)).toFixed(1)}`;
+        }
+        paths += `<path d="${d}Z"/>`;
+      }
+    }
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="560" height="560" viewBox="0 0 560 560"><g fill="none" stroke="#f3e9dc" stroke-width="1">${paths}</g></svg>`;
+    return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  }
+
+  function starShadows() {
+    const r = rng(42);
+    const out = [];
+    for (let i = 0; i < 170; i++) {
+      const a = 0.25 + r() * 0.65;
+      const size = r() < 0.12 ? 1 : 0;
+      out.push(`${Math.round(r() * 1200)}px ${Math.round(r() * 675)}px 0 ${size}px rgba(235,232,255,${a.toFixed(2)})`);
+    }
+    return out.join(',');
+  }
+
+  // ---------- globe rendering: orthographic projection of an equirectangular image ----------
+  let tex = null;
+  function loadTexture() {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        const w = 1024, h = 512;
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        const g = c.getContext('2d', { willReadFrequently: true });
+        g.drawImage(img, 0, 0, w, h);
+        try { resolve({ w, h, data: g.getImageData(0, 0, w, h).data }); } catch (e) { resolve(null); }
+      };
+      img.onerror = () => resolve(null);
+      img.src = TEX_URL;
+    });
+  }
+
+  class Globe {
+    constructor(screen, theme) {
+      this.theme = theme;
+      this.canvas = screen.querySelector('canvas');
+      this.ctx = this.canvas.getContext('2d');
+      this.size = this.canvas.width;
+      this.R = this.size / 2;
+      this.img = this.ctx.createImageData(this.size, this.size);
+      this.wrap = screen.querySelector('.globe-wrap');
+      this.pinsEl = screen.querySelector('.pins');
+      this.arcs = screen.querySelector('.arcs');
+      this.hud = screen.querySelector('.hud-view');
+      this.lon0 = 36 * D2R;
+      this.visible = true;
+      this.acc = 0;
+      this.precompute();
+      this.makePins();
+    }
+    precompute() {
+      const { size, R } = this;
+      const T = THEMES[this.theme];
+      const sinP = Math.sin(LAT0), cosP = Math.cos(LAT0);
+      const L = [-0.55, 0.5, 0.67];
+      const n = Math.hypot(...L); L[0] /= n; L[1] /= n; L[2] /= n;
+      const idx = [], dlon = [], lat = [], shade = [], alpha = [];
+      for (let py = 0; py < size; py++) {
+        const y = (R - py - 0.5) / R;
+        for (let px = 0; px < size; px++) {
+          const x = (px + 0.5 - R) / R;
+          const r2 = x * x + y * y;
+          if (r2 >= 1) continue;
+          const z = Math.sqrt(1 - r2);
+          lat.push(Math.asin(z * sinP + y * cosP));
+          dlon.push(Math.atan2(x, z * cosP - y * sinP));
+          const lam = Math.max(0, x * L[0] + y * L[1] + z * L[2]);
+          shade.push(T.ambient + (1 - T.ambient) * Math.pow(lam, 0.85));
+          alpha.push(Math.min(1, (1 - Math.sqrt(r2)) * R * 1.2));
+          idx.push((py * size + px) * 4);
+        }
+      }
+      this.idx = Int32Array.from(idx);
+      this.dlon = Float32Array.from(dlon);
+      this.lat = Float32Array.from(lat);
+      this.shade = Float32Array.from(shade);
+      this.alpha = Float32Array.from(alpha);
+    }
+    render() {
+      const out = this.img.data;
+      const T = THEMES[this.theme];
+      const [tr, tg, tb] = T.tint;
+      const n = this.idx.length;
+      if (tex) {
+        const { w, h, data } = tex;
+        const k = 1 / (2 * Math.PI);
+        for (let i = 0; i < n; i++) {
+          let u = (this.lon0 + this.dlon[i] + Math.PI) * k;
+          u -= Math.floor(u);
+          const row = Math.min(h - 1, ((0.5 - this.lat[i] / Math.PI) * h) | 0);
+          const ti = (row * w + ((u * w) | 0)) * 4;
+          const s = this.shade[i], o = this.idx[i];
+          out[o] = data[ti] * s * tr;
+          out[o + 1] = data[ti + 1] * s * tg;
+          out[o + 2] = data[ti + 2] * s * tb;
+          out[o + 3] = 255 * this.alpha[i];
+        }
+      } else {
+        const [br, bg, bb] = T.base;
+        for (let i = 0; i < n; i++) {
+          const s = this.shade[i], o = this.idx[i];
+          out[o] = br * s * 2; out[o + 1] = bg * s * 2; out[o + 2] = bb * s * 2; out[o + 3] = 255 * this.alpha[i];
+        }
+      }
+      this.ctx.putImageData(this.img, 0, 0);
+      this.updatePins();
+    }
+    makePins() {
+      this.pins = SITES.map((s) => {
+        const el = document.createElement('div');
+        el.className = 'pin' + (s.side === 'l' ? ' l' : '');
+        el.style.setProperty('--c', scoreColor(this.theme, s.s));
+        el.innerHTML = `<i></i><span>${s.name}<b>${s.s}%</b></span>`;
+        this.pinsEl.appendChild(el);
+        return { s, el, phi: s.lat * D2R, lam: s.lon * D2R };
+      });
+    }
+    updatePins() {
+      const cx = this.wrap.clientWidth / 2, cy = this.wrap.clientHeight / 2, R = this.R;
+      const sinP = Math.sin(LAT0), cosP = Math.cos(LAT0);
+      const vis = [];
+      for (const p of this.pins) {
+        const d = p.lam - this.lon0;
+        const cosc = sinP * Math.sin(p.phi) + cosP * Math.cos(p.phi) * Math.cos(d);
+        if (cosc <= 0.03) { p.el.style.opacity = 0; continue; }
+        p.x = cx + R * Math.cos(p.phi) * Math.sin(d);
+        p.y = cy - R * (cosP * Math.sin(p.phi) - sinP * Math.cos(p.phi) * Math.cos(d));
+        p.cosc = cosc;
+        p.el.style.opacity = Math.min(1, cosc * 4).toFixed(2);
+        p.el.style.transform = `translate(${(p.x - 5).toFixed(1)}px, ${(p.y - 5).toFixed(1)}px)`;
+        vis.push(p);
+      }
+      if (this.theme === 'c') {
+        const mk = this.wrap.querySelector('.mars-mark'), dot = mk.querySelector('i');
+        const mx = mk.offsetLeft + dot.offsetLeft + dot.offsetWidth / 2, my = mk.offsetTop + dot.offsetTop + dot.offsetHeight / 2;
+        this.arcs.innerHTML = '<g fill="none" stroke="#f2c36b" stroke-width="1.2" stroke-dasharray="3 5">' +
+          vis.filter((p) => p.s.s >= 55).map((p) => {
+            const qx = (mx + p.x) / 2 + 30, qy = Math.min(my, p.y) - 30;
+            return `<path d="M${mx} ${my} Q${qx.toFixed(1)} ${qy.toFixed(1)} ${p.x.toFixed(1)} ${p.y.toFixed(1)}" stroke-opacity="${(Math.min(1, p.cosc * 3) * 0.75).toFixed(2)}"/>`;
+          }).join('') + '</g>';
+      }
+      if (this.hud) {
+        let lon = (this.lon0 / D2R) % 360;
+        if (lon > 180) lon -= 360;
+        if (lon < -180) lon += 360;
+        const ew = lon >= 0 ? 'E' : 'W';
+        const txt = `View centre ${(LAT0 / D2R).toFixed(1)}° N · ${Math.abs(lon).toFixed(1)}° ${ew}`;
+        this.hud.textContent = this.theme === 'a' ? txt.toUpperCase() : this.theme === 'b' ? txt : 'Drag to rotate · scroll to zoom';
+      }
+    }
+  }
+
+  // ---------- build the three screens ----------
+  const globes = [];
+  const contours = contourSVG();
+  const stars = starShadows();
+  document.querySelectorAll('.screen').forEach((el) => {
+    const t = el.dataset.theme;
+    el.classList.add('theme-' + t);
+    el.innerHTML = screenHTML(t);
+    if (t === 'b') el.style.setProperty('--contours', contours);
+    if (t === 'c') {
+      const s = document.createElement('div');
+      s.className = 'stars';
+      s.style.boxShadow = stars;
+      el.querySelector('.bg').appendChild(s);
+    }
+    const g = new Globe(el, t);
+    globes.push(g);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => { g.visible = entries[0].isIntersecting; }).observe(el.parentElement);
+    }
+  });
+
+  function fit() {
+    document.querySelectorAll('.stage').forEach((st) => {
+      const s = st.clientWidth / 1200;
+      st.style.height = (675 * s).toFixed(1) + 'px';
+      st.firstElementChild.style.transform = `scale(${s})`;
+    });
+  }
+  fit();
+  addEventListener('resize', fit);
+  globes.forEach((g) => g.render());
+
+  loadTexture().then((t) => {
+    tex = t;
+    globes.forEach((g) => g.render());
+    if (REDUCE) return;
+    let last = performance.now();
+    const frame = (now) => {
+      const dt = Math.min(0.1, (now - last) / 1000);
+      last = now;
+      for (const g of globes) {
+        if (!g.visible) continue;
+        g.lon0 -= dt * SPIN;             // surface moves west to east, like the real Earth
+        g.acc += dt;
+        if (g.acc >= 1 / 30) { g.acc = 0; g.render(); }
+      }
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  });
+})();
+</script>
+</body>
+</html>

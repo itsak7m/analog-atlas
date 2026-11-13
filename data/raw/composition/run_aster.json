@@ -1,0 +1,21 @@
+{
+ "runs": [
+  {
+   "started": "2026-10-10T15:10:51Z",
+   "finished": "2026-10-10T15:12:19Z",
+   "requests": {
+    "planetarycomputer.microsoft.com": {
+     "requests": 20,
+     "bytes": 143657,
+     "errors": 0
+    },
+    "astersa.blob.core.windows.net": {
+     "requests": 148,
+     "bytes": 54869603,
+     "errors": 0
+    }
+   },
+   "sasTokenCalls": 1
+  }
+ ]
+}

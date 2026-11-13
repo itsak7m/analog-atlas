@@ -1,0 +1,88 @@
+{
+ "about": "LOLA average illumination at the base-site pins (60 m pixel that holds the pin; 5x5 window range; the 120 m map as a cross-check). sun = share of time steps when any part of the Sun is above the local horizon; earth = the same for the Earth; nearest PSR = distance to the nearest permanently shadowed 60 m pixel (any size, and in a shadowed patch of at least 1 km2). Made by scripts/extract_illumination.py.",
+ "source": {
+  "label": "Mazarico et al. 2011, Icarus 211: Illumination conditions of the lunar polar regions using LOLA topography",
+  "url": "https://doi.org/10.1016/j.icarus.2010.10.030",
+  "data": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/extras/illumination/img",
+  "quote": "This data product is a map of the average illumination by the solar disc of the Lunar South Pole at a resolution of 60 m/pix by 60 m/pix, true at the pole in polar stereographic (spherical) projection. The calculations are based on the LOLA elevation map LDEM_85S_060M and are described in [MAZARICOETAL2011]. The values are continuous between 0 (permanent shadow) and 1, and indicate the percentage of timesteps where each pixel was sunlit (by any fraction of the solar disc). Note a scaling was applied to fit the data in the INT16 value range. This label describes an IMG file in the form of a binary resampling with pixel registration."
+ },
+ "fetched": "2026-10-23",
+ "points": {
+  "malapert": {
+   "sun": 0.684,
+   "sun_window": [
+    0.0,
+    0.7762
+   ],
+   "sun_120m": 0.6142,
+   "earth": 0.9074,
+   "earth_window": [
+    0.0,
+    1.0
+   ],
+   "psr_at_pin": false,
+   "nearest_psr_m": 143.8,
+   "nearest_psr_patch_km2": 0.011,
+   "nearest_psr_1km2_m": 13289.6,
+   "nearest_psr_1km2_patch_km2": 1.375,
+   "point_to_pixel_center_m": 25.7
+  },
+  "mons-mouton": {
+   "sun": 0.3159,
+   "sun_window": [
+    0.2138,
+    0.3469
+   ],
+   "sun_120m": 0.3393,
+   "earth": 0.6136,
+   "earth_window": [
+    0.5876,
+    0.6328
+   ],
+   "psr_at_pin": false,
+   "nearest_psr_m": 778.5,
+   "nearest_psr_patch_km2": 0.004,
+   "nearest_psr_1km2_m": 3128.8,
+   "nearest_psr_1km2_patch_km2": 3.611,
+   "point_to_pixel_center_m": 29.3
+  },
+  "shackleton-ridge": {
+   "sun": 0.3962,
+   "sun_window": [
+    0.2223,
+    0.6292
+   ],
+   "sun_120m": 0.4233,
+   "earth": 0.3301,
+   "earth_window": [
+    0.0,
+    0.5192
+   ],
+   "psr_at_pin": false,
+   "nearest_psr_m": 511.2,
+   "nearest_psr_patch_km2": 0.004,
+   "nearest_psr_1km2_m": 5864.3,
+   "nearest_psr_1km2_patch_km2": 1.883,
+   "point_to_pixel_center_m": 40.1
+  },
+  "southpole": {
+   "sun": 0.0,
+   "sun_window": [
+    0.0,
+    0.0
+   ],
+   "sun_120m": 0.0,
+   "earth": 0.0,
+   "earth_window": [
+    0.0,
+    0.0
+   ],
+   "psr_at_pin": true,
+   "nearest_psr_m": 23.5,
+   "nearest_psr_patch_km2": 233.528,
+   "nearest_psr_1km2_m": 23.5,
+   "nearest_psr_1km2_patch_km2": 233.528,
+   "point_to_pixel_center_m": 23.5
+  }
+ }
+}

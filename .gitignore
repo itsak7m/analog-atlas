@@ -1,0 +1,20 @@
+# Your own keys stay on your computer (copy config.example.js to config.js).
+/config.js
+.env
+/earthdata_token.txt
+
+# Python
+__pycache__/
+*.pyc
+
+# Firmware build output: large, and full of local paths. Rebuild it from the .ino files.
+firmware/**/build/
+
+# Editors and OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local tools and working notes (not part of the project)
+.claude/
+HANDOFF_PROMPT.md

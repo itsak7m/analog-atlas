@@ -1,0 +1,295 @@
+{
+  "about": "Resource tags for the resources pillar. Each tag has a source and an exact quote from it (abstract, page text or PDF text). A place with no tags was searched but no source was found. An Earth site with no tags scores 0 on this pillar; a target with no tags (Malapert, Mons Mouton, Shackleton connecting ridge) leaves the pillar out. The 'rules' say what each side of a tag must document; every regolith tag was checked against them on 2026-10-14 and again on 2026-10-23 (SP Crater's tag removed, the Shackleton floor tag re-sourced at the crater itself); the McMurdo Dry Valleys tags were checked against the place rule on 2026-10-26 (ice tag removed), and the Tso Kar tags the same day (both kept, with quotes about the lake itself from the same paper's full text); the Atacama salts quote names the Atacama Desert as a whole, not a feature at our point, and is still to be re-sourced; the other ice, shelter and salts tags are still to be re-checked against the rule. Checked 2026-10-09 (south-pole ice tag re-checked 2026-10-10). DOIs marked by publishers with a bot check load normally in a browser.",
+  "vocabulary": [
+    "ice",
+    "shelter",
+    "regolith",
+    "salts"
+  ],
+  "rules": {
+    "regolith": "Target: the source documents regolith (the loose layer of rock dust and soil) at the target itself. Earth site: the source documents the site's own material as a regolith simulant or as building material. A quote that only shows dust, rock or a nearby place does not count.",
+    "place": "All four tags (ice, shelter, regolith, salts): the source documents the resource at the place itself, that is at our point or in the named feature our point is in (its crater, cone, valley, lava field, mare, basin or park; so the Shackleton crater wall counts for the crater floor pin, and Mare Tranquillitatis for the pit). A different feature in the same region (another valley, cone or crater) is a nearby place and does not count, and a record at our point that says the opposite wins. Removed under this rule: SP Crater's regolith tag (2026-10-23) and the McMurdo Dry Valleys ice tag (2026-10-26); each place says why under notTagged."
+  },
+  "places": {
+    "jezero": {
+      "tags": {
+        "regolith": {
+          "url": "https://pubs.usgs.gov/publication/70240880",
+          "quote": "has identified three types of regolith: fine-grained, coarse-grained, and mixed-type",
+          "note": "Vaughan et al. 2023, JGR Planets, doi 10.1029/2022JE007437"
+        },
+        "salts": {
+          "url": "https://doi.org/10.1126/science.abo2196",
+          "quote": "Voids in these rocks contain sulfates and perchlorates, likely introduced by later near-surface brine evaporation."
+        }
+      }
+    },
+    "gale": {
+      "tags": {
+        "regolith": {
+          "url": "https://doi.org/10.1016/j.icarus.2018.08.019",
+          "quote": "global basaltic regolith on Mars, as represented by the Rocknest windblown deposit at Gale crater",
+          "note": "MGS-1 simulant paper (Cannon et al. 2019)"
+        },
+        "salts": {
+          "url": "https://doi.org/10.1002/2013JE004588",
+          "quote": "these fracture fills consist of calcium sulfate veins"
+        }
+      }
+    },
+    "phoenix": {
+      "tags": {
+        "ice": {
+          "url": "https://doi.org/10.1126/science.1172339",
+          "quote": "A shallow ice table was uncovered by the robotic arm… at depths of 5 to 18 centimeters."
+        },
+        "salts": {
+          "url": "https://doi.org/10.1126/science.1172339",
+          "quote": "contained CaCO(3), aqueous minerals, and salts up to several weight percent in the indurated surface soil"
+        },
+        "regolith": {
+          "url": "https://doi.org/10.1029/2009JE003437",
+          "quote": "A preliminary taxonomy of Phoenix soil particles, based on color, size, and shape, identifies the following particle types",
+          "note": "Goetz et al. 2010, JGR Planets (abstract): soils at the Phoenix landing site seen with the lander microscope (target rule met). The quote used before (about black grains) did not itself name the soil at the site."
+        }
+      }
+    },
+    "southpole": {
+      "tags": {
+        "ice": {
+          "url": "https://doi.org/10.1038/nature11216",
+          "quote": "The relatively brighter crater floor is most simply explained by decreased space weathering due to shadowing, but a one-micrometre-thick layer containing about 20 per cent surficial ice is an alternative possibility.",
+          "note": "Zuber et al. 2012 (Nature), about the Shackleton floor itself: ice is possible here, not proven. Ice was measured in another shadowed south-polar crater, Cabeus: 5.6 ± 2.9 % by mass at the LCROSS impact site (Colaprete et al. 2010, https://doi.org/10.1126/science.1186986)."
+        },
+        "regolith": {
+          "url": "https://doi.org/10.1029/2012GL052119",
+          "quote": "a result that is most consistent with a roughness effect due to less mature regolith present on the crater wall slopes",
+          "note": "Thomson et al. 2012, GRL (abstract): the first orbital radar (LRO Mini-RF) measurements of Shackleton crater itself (target rule met). The same abstract gives an upper limit of 5-10 wt% water ice 'in the uppermost meter of regolith'. The quote used before (Gawronska et al. 2020) was about polar regolith in general and did not name Shackleton."
+        }
+      }
+    },
+    "apollo11": {
+      "tags": {
+        "regolith": {
+          "url": "https://ntrs.nasa.gov/citations/19700065561",
+          "quote": "Origin of the lunar regolith at Tranquillity Base",
+          "note": "The quote is the paper title. It documents the regolith at Tranquillity Base, the landing site itself (target rule met); it does not say whether the regolith is good building material."
+        }
+      },
+      "notTagged": {
+        "shelter": "The Mare Tranquillitatis pit is about 370 km from the landing site (NASA, https://science.nasa.gov/solar-system/new-evidence-adds-to-findings-hinting-at-network-of-caves-on-moon/), too far to count for this site."
+      }
+    },
+    "apollo17": {
+      "tags": {
+        "regolith": {
+          "url": "https://ntrs.nasa.gov/citations/19930009598",
+          "quote": "Apollo 17 soil 78221 was examined for evidence of natural reduction",
+          "note": "Lunar resources: Oxygen from rocks and soil. Soil 78221 is a regolith sample from the Apollo 17 site (target rule met)."
+        }
+      }
+    },
+    "harrat": {
+      "tags": {
+        "shelter": {
+          "url": "https://vulcanospeleology.org/sym12/ISV12p11.pdf",
+          "quote": "We have explored, surveyed and studied a total of 14 lava caves since September 2003."
+        }
+      }
+    },
+    "atacama": {
+      "tags": {
+        "salts": {
+          "url": "https://doi.org/10.1029/2009JE003425",
+          "quote": "perchlorate‐rich deposits in the Atacama desert are closest in abundance to perchlorate measured at NASA's Phoenix Lander site"
+        }
+      }
+    },
+    "haughton": {
+      "tags": {
+        "ice": {
+          "url": "https://www.swri.org/what-we-do/internal-research-development/2023/earth-space/developing-the-swri-astrobiology-program-through-multiomics-spectroscopic-approaches-permafrost-research-the-haughton-mars-station-15-r6381",
+          "quote": "Permafrost associated ground ice was consistently encountered at ~60 cm depth in all permafrost polygon and impact breccia samples."
+        },
+        "salts": {
+          "url": "https://doi.org/10.1111/j.1945-5100.2005.tb00149.x",
+          "quote": "dolomitic rock (in the crater rim), limestone (wall), gypsum-rich carbonate (floor)"
+        }
+      }
+    },
+    "death-valley": {
+      "tags": {
+        "salts": {
+          "url": "https://www.nps.gov/deva/learn/nature/salt-flats.htm",
+          "quote": "Sodium Chloride—better known as table salt—makes up the majority of salts on Badwater Basin."
+        }
+      }
+    },
+    "dry-valleys": {
+      "tags": {
+        "salts": {
+          "url": "https://doi.org/10.1038/srep01166",
+          "quote": "CaCl(2) brines and chloride deposits in basins may provide clues to the origin of ancient chloride deposits on Mars",
+          "note": "Don Juan Pond, in Wright Valley, about 18 km from our point. Our point is at Bull Pass, on the north side of Wright Valley: the New Zealand Antarctic Soils Explorer gives the locality of the soil sites there as 'Wright Valley, Bull Pass' (https://antarctic-soils.landcareresearch.co.nz/trips/13/380/). Same valley, so the place rule is met."
+        }
+      },
+      "notTagged": {
+        "ice": "Removed on 2026-10-26 under the place rule. The source used before (doi 10.1002/2014JF003415) documents 'A massive ice body buried under several decimeters of dry regolith in Beacon Valley, Antarctica'. Beacon Valley is about 50 km from our point, a different valley, so it is a nearby place. Ground ice is also documented in Wright Valley from Lake Vanda westward (McLeod, Bockheim and Balks 2008, Geoderma, doi 10.1016/j.geoderma.2007.10.017: 'Ice-cemented permafrost at less than 70 cm depth is common'), but at our point the record says the opposite: the two soil sites at Bull Pass, about 3 km from our point, record their frozen ground (at 100 cm, and deeper than 96 cm) as 'Dry frozen', not ice-cemented (New Zealand Antarctic Soils Explorer, sites 414 and 415: https://antarctic-soils.landcareresearch.co.nz/trips/13/380/ and https://antarctic-soils.landcareresearch.co.nz/trips/13/381/). So no ice tag."
+      }
+    },
+    "rio-tinto": {
+      "tags": {
+        "salts": {
+          "url": "https://ntrs.nasa.gov/citations/20080026258",
+          "quote": "Seasonal evaporation of river water drives precipitation of hydronium jarosite and schwertmannite."
+        }
+      }
+    },
+    "lisan-dead-sea": {
+      "tags": {
+        "salts": {
+          "url": "https://astrobiology.nasa.gov/nai/annual-reports/2008/psu/molecular-signatures-of-life-on-the-edge-ddf-project/index.html",
+          "quote": "slightly acidic and highly saline"
+        }
+      }
+    },
+    "sp-crater-sfvf": {
+      "tags": {},
+      "notTagged": {
+        "regolith": "Removed on 2026-10-23 under the regolith rule: the source (NASA NTRS 20100036344, https://ntrs.nasa.gov/citations/20100036344) says 'the Johnson Space Center (JSC)-1 and -1A simulants are made from Merriam Crater, an ash cone volcano in the San Francisco Field'. Merriam Crater is about 40 km from SP Crater, so this is a nearby place, not SP Crater's own material. No source was found for SP Crater itself."
+      }
+    },
+    "craters-of-the-moon": {
+      "tags": {
+        "shelter": {
+          "url": "https://www.nps.gov/crmo/learn/nature/cave.htm",
+          "quote": "The vast majority of caves found within the park are lava tubes."
+        }
+      }
+    },
+    "qaidam-dalangtan": {
+      "tags": {
+        "salts": {
+          "url": "https://doi.org/10.1371/journal.pone.0200949",
+          "quote": "These samples are composed of salt minerals, minor silicate mineral fragments and clays."
+        }
+      }
+    },
+    "tso-kar-ladakh": {
+      "tags": {
+        "salts": {
+          "url": "https://doi.org/10.1017/S1473550419000119",
+          "quote": "Tso-Kar Lake is a fluctuating shallow (1–3 m depth) salt lake characterized by high salinity with hypersaline (>50‰) extremes",
+          "note": "Pandey et al. 2019, full text (section on Tso Kar). Re-checked against the place rule on 2026-10-26: the quote used before ('an interaction between the diurnal water cycle in the atmosphere and salts in the soil') came from the HABIT test at Khardung La, a mountain pass far from Tso Kar, so it was replaced by this quote about the lake itself. Our point is in the Tso Kar basin, about 1.6 km from the lake centre (33°18′N 78°00′E). Same tag, same score."
+        },
+        "ice": {
+          "url": "https://doi.org/10.1017/S1473550419000119",
+          "quote": "The permafrost mound along the Tso-Kar palaeo-shoreline included cryo structures such as clear lenses of ice, in a matrix of dark grey icy mud",
+          "note": "Pandey et al. 2019, full text ('Tso-Kar permafrost region'). Re-checked against the place rule on 2026-10-26: the quote used before named only 'the Tso-Kar region'; this one documents ground ice at the lake's old shoreline, in the basin our point is in. Same tag, same score."
+        }
+      }
+    },
+    "wadi-rum": {
+      "tags": {},
+      "note": "Searched; no source found for any tag."
+    },
+    "waqf-as-suwwan": {
+      "tags": {},
+      "note": "Searched; no source found for any tag."
+    },
+    "qa-al-jafr": {
+      "tags": {},
+      "note": "Searched; lake sediments are carbonate and clastic, no documented gypsum or halite in this basin."
+    },
+    "mdrs": {
+      "tags": {},
+      "note": "Searched; brick-printing only in crew journals, no peer-reviewed or NASA source."
+    },
+    "holuhraun": {
+      "tags": {},
+      "note": "Searched; no source found for any tag."
+    },
+    "ries-crater": {
+      "tags": {},
+      "note": "Searched; suevite is building stone but solid rock, not regolith."
+    },
+    "mistastin": {
+      "tags": {},
+      "note": "Searched; lunar highland simulants use other anorthosites, not Mistastin."
+    },
+    "pilbara-north-pole": {
+      "tags": {},
+      "note": "Searched; no source found for any tag."
+    },
+    "malapert": {
+      "tags": {},
+      "note": "Searched; no source for a resource tag at the Malapert summit itself. Regolith: Kring et al. 2025 (doi 10.1029/2024JE008905) names 'regolith physical properties' as a goal of planned moonwalks, not a finding at the summit; general south-polar statements do not count (the same rule as for the crater floor, whose tag has a Shackleton source). Ice: the nearest permanently shadowed ground is 144 m away (LOLA, data/illumination.json), but shadow is where ice can stay, not detected ice."
+    },
+    "mons-mouton": {
+      "tags": {},
+      "note": "Searched; no source documents a resource at this point itself. In 2023 NASA planned to send the VIPER rover to Mons Mouton to look for ice; that is a plan, not a finding. No source documents regolith at the pin (general south-polar statements do not count). The nearest permanently shadowed ground is 778 m away (LOLA, data/illumination.json), but shadow is not detected ice."
+    },
+    "shackleton-ridge": {
+      "tags": {},
+      "note": "Searched; no source documents a resource on the ridge itself. Possible ice on the shadowed Shackleton crater floor is a separate target. No source documents regolith at the pin (general south-polar statements do not count). The nearest permanently shadowed ground is 511 m away (LOLA, data/illumination.json), but shadow is not detected ice."
+    },
+    "deuteronilus": {
+      "tags": {
+        "ice": {
+          "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1044.pdf",
+          "quote": "it contains vast, readily accessible deposits of water ice in a setting of key scientific importance"
+        },
+        "regolith": {
+          "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1033.pdf",
+          "quote": "sublimation till, itself a major resource for construction and shelter"
+        }
+      },
+      "notTagged": {
+        "shelter": "The source means till as building and shielding material, not a natural cave or lava tube."
+      }
+    },
+    "erebus-montes": {
+      "tags": {
+        "ice": {
+          "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1011.pdf",
+          "quote": "a recent ice-exposing impact was identified within this EZ"
+        },
+        "regolith": {
+          "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1011.pdf",
+          "quote": "HiRISE images indicate that loose regolith is available for construction purposes."
+        }
+      }
+    },
+    "tranquillitatis-pit": {
+      "tags": {
+        "shelter": {
+          "url": "https://doi.org/10.1038/s41550-024-02302-y",
+          "quote": "This discovery suggests that the MTP is a promising site for a lunar base, as it offers shelter from the harsh surface environment and could support long-term human exploration of the Moon.",
+          "note": "Carrer et al. 2024, Nature Astronomy (abstract). The same abstract: radar reflections 'can be attributed to a subsurface cave conduit tens of metres long'."
+        },
+        "regolith": {
+          "url": "https://doi.org/10.1029/2025JE009427",
+          "quote": "We investigated the regolith parent rock (“protolith”) properties of Mare Tranquillitatis and Marius Hills on the Moon, utilizing lunar pit craters (“lua”) to contextualize observations of rock abundance and crater degradation.",
+          "note": "Costello et al. 2026, JGR Planets (abstract). It studies the regolith and its parent rock in Mare Tranquillitatis, using the pits (target rule met)."
+        }
+      },
+      "notTagged": {
+        "ice": "No source for water ice at the pit was found."
+      }
+    },
+    "arsia-skylight": {
+      "tags": {
+        "shelter": {
+          "url": "https://doi.org/10.1029/2007GL030709",
+          "quote": "Seven possible skylight entrances into Martian caves were observed on and around the flanks of Arsia Mons by the Mars Odyssey Thermal Emission Imaging System (THEMIS).",
+          "note": "Cushing et al. 2007, GRL (abstract, via OpenAlex). This pit is one of the seven ('Jeanne', MGC3 APC075). On why caves matter: 'Lava-tube caves, by their nature, can protect inhabitants from all of the hazards that humans would encounter on the surface.' (Cushing 2012, J. Cave Karst Stud., https://legacy.caves.org/pub/journal/PDF/V74/cave-74-01-33.pdf). A candidate only: the USGS catalogue says none can be verified as genuine caves from orbit."
+        }
+      },
+      "notTagged": {
+        "ice": "Cushing 2012 suggests caves near Arsia Mons could trap ice, but this is a hypothesis; no ice was detected here.",
+        "salts": "No source found.",
+        "regolith": "Not tagged under the regolith rule: the only source found is a HiRISE caption that calls the area a 'dusty lava plain'. Dust on lava is not documented regolith at the pit."
+      }
+    }
+  }
+}

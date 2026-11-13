@@ -1,0 +1,40 @@
+{
+ "runs": [
+  {
+   "started": "2026-10-10T15:05:43Z",
+   "finished": "2026-10-10T15:07:10Z",
+   "requests": {
+    "planetarycomputer.microsoft.com": {
+     "requests": 3,
+     "bytes": 35418,
+     "errors": 0
+    },
+    "modiseuwest.blob.core.windows.net": {
+     "requests": 456,
+     "bytes": 51511079,
+     "errors": 0
+    }
+   },
+   "sasTokenCalls": 1,
+   "ok": false
+  },
+  {
+   "started": "2026-10-10T15:07:37Z",
+   "finished": "2026-10-10T15:08:58Z",
+   "requests": {
+    "planetarycomputer.microsoft.com": {
+     "requests": 3,
+     "bytes": 35420,
+     "errors": 0
+    },
+    "modiseuwest.blob.core.windows.net": {
+     "requests": 456,
+     "bytes": 51511079,
+     "errors": 0
+    }
+   },
+   "sasTokenCalls": 1,
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,94 @@
+shape 540 1080 540 1080
+lat rows 0..2 89.83333333333333 89.5 89.16666666666667 last -89.83333333333334 lon first/last 0.16666666666666666 359.8333333333333
+{
+ "jeanne_25km": {
+  "nearest_pixel": {
+   "row": 286,
+   "col": 724,
+   "lat": -5.5,
+   "lonE": 241.5,
+   "dist_km": 6.6
+  },
+  "min_pixel_K": 144.31,
+  "min_within_25km": {
+   "n": 5,
+   "mean_K": 144.47,
+   "min_K": 143.8,
+   "max_K": 145.54
+  },
+  "max_pixel_K": 278.54,
+  "max_within_25km": {
+   "n": 5,
+   "mean_K": 277.08,
+   "min_K": 275.07,
+   "max_K": 279.82
+  },
+  "avg_pixel_K": 201.59,
+  "avg_within_25km": {
+   "n": 5,
+   "mean_K": 200.89,
+   "min_K": 199.56,
+   "max_K": 202.06
+  }
+ },
+ "jeanne_10km": {
+  "nearest_pixel": {
+   "row": 286,
+   "col": 724,
+   "lat": -5.5,
+   "lonE": 241.5,
+   "dist_km": 6.6
+  },
+  "min_pixel_K": 144.31,
+  "min_within_10km": {
+   "n": 1,
+   "mean_K": 144.31,
+   "min_K": 144.31,
+   "max_K": 144.31
+  },
+  "max_pixel_K": 278.54,
+  "max_within_10km": {
+   "n": 1,
+   "mean_K": 278.54,
+   "min_K": 278.54,
+   "max_K": 278.54
+  },
+  "avg_pixel_K": 201.59,
+  "avg_within_10km": {
+   "n": 1,
+   "mean_K": 201.59,
+   "min_K": 201.59,
+   "max_K": 201.59
+  }
+ },
+ "jezero_check": {
+  "nearest_pixel": {
+   "row": 214,
+   "col": 232,
+   "lat": 18.5,
+   "lonE": 77.5,
+   "dist_km": 4.5
+  },
+  "min_pixel_K": 184.51,
+  "min_within_25km": {
+   "n": 6,
+   "mean_K": 183.73,
+   "min_K": 178.12,
+   "max_K": 187.75
+  },
+  "max_pixel_K": 254.32,
+  "max_within_25km": {
+   "n": 6,
+   "mean_K": 254.7,
+   "min_K": 252.32,
+   "max_K": 256.81
+  },
+  "avg_pixel_K": 217.49,
+  "avg_within_25km": {
+   "n": 6,
+   "mean_K": 217.06,
+   "min_K": 216.26,
+   "max_K": 218.33
+  }
+ }
+}

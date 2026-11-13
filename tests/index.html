@@ -1,0 +1,1106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analog Atlas Tests</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; padding: 24px 16px; background: #05080f; color: #e6edf7; font: 14px/1.5 'Segoe UI', system-ui, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .sum { margin: 12px 0 18px; font-weight: 600; }
+  .pass { color: #7ee08f; } .fail { color: #ff6b5c; }
+  li { margin: 3px 0; font-family: Consolas, monospace; font-size: 13px; }
+  a { color: #5ce1e6; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Analog Atlas · scoring tests</h1>
+  <p>Runs in the browser with the real data files. Open via the local server: <a href="http://localhost:8080/tests/">http://localhost:8080/tests/</a></p>
+  <p class="sum" id="sum">Running…</p>
+  <ol id="out"></ol>
+</main>
+<script>
+  // If a data file or a module cannot load, say so instead of staying at "Running…".
+  const cannotStart = (err) => {
+    const sum = document.getElementById('sum');
+    if (sum.textContent !== 'Running…') return;
+    const n = 1;
+    sum.innerHTML = `<span class="fail">${n} of ${n} tests failed (tests could not start: ${String((err && err.message) || err).replace(/</g, '&lt;')})</span>`;
+  };
+  window.addEventListener('error', (e) => cannotStart(e.error || e.message));
+  window.addEventListener('unhandledrejection', (e) => cannotStart(e.reason));
+</script>
+<script type="module">
+import { CLIMATE_FACTORS, PILLARS, ROCK_LABEL, RESOURCES, FULL_MIN_PILLARS, STRICT_MIN_FACTORS, factorScore, climateBreakdown, scoreSite, rankSites, geologyMatch, terrainMatch, landingMatch, resourcesMatch, stability, pct, LST_FIELD, SUN_TILT, sunHeight, factorsFor, earthSource } from '../js/scoring.js';
+import { cellGap, scoreColor } from '../js/util.js';
+
+const out = document.getElementById('out');
+let passed = 0, failed = 0;
+const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+function test(name, fn) {
+  try { fn(); passed++; out.insertAdjacentHTML('beforeend', `<li class="pass">✓ ${esc(name)}</li>`); }
+  catch (e) { failed++; out.insertAdjacentHTML('beforeend', `<li class="fail">\u2717 ${esc(name)}: ${esc(e.message)}</li>`); } // \u2717 is the cross mark, written as an escape so a grep of the page source finds only real failures
+}
+const eq = (a, b, msg = '') => { if (a !== b) throw new Error(`${msg} expected ${JSON.stringify(b)}, got ${JSON.stringify(a)}`); };
+const near = (a, b, tol, msg = '') => { if (!(Math.abs(a - b) <= tol)) throw new Error(`${msg} expected ${b} ± ${tol}, got ${a}`); };
+const getJSON = async (path) => (await fetch(path, { cache: 'no-store' })).json();
+
+const sites = (await getJSON('../data/sites.json')).sites;
+const targetsDoc = await getJSON('../data/targets.json');
+const targets = targetsDoc.targets;
+const resDoc = await getJSON('../data/resources.json');
+const metaDoc = await getJSON('../data/sites_meta.json');
+const panoDoc = await getJSON('../data/panoramas.json');
+const streetDoc = await getJSON('../data/streetview.json');
+const assetsDoc = await getJSON('../data/assets.json');
+const terrain = (await getJSON('../data/terrain.json')).points;
+const shackleton = await getJSON('../data/raw/diviner/shackleton_floor_5x5_windows.json');
+// Raw Diviner windows of the permanent Moon base sites (scripts/extract_diviner.py).
+const baseWindows = Object.fromEntries(await Promise.all(['malapert', 'mons_mouton', 'shackleton_ridge'].map(async (p) => [p, await getJSON(`../data/raw/diviner/${p}_5x5_windows.json`)])));
+// LOLA illumination at the base-site pins (scripts/extract_illumination.py): summary and raw windows.
+const illum = await getJSON('../data/illumination.json');
+const illumRaw = Object.fromEntries(await Promise.all(['malapert', 'mons-mouton', 'shackleton-ridge', 'southpole'].map(async (p) => [p, await getJSON(`../data/raw/illumination/${p}_5x5_windows.json`)])));
+// topbar.js only defines things at import time; a dynamic import turns a broken module into a failed test.
+const topbar = await import('../js/ui/topbar.js').catch((err) => ({ importError: err }));
+const tags = Object.fromEntries(Object.entries(resDoc.places).map(([id, p]) => [id, Object.keys(p.tags)]));
+const fullOpts = { mode: 'full', terrain, resources: tags };
+const T = (id) => targets.find((t) => t.id === id);
+const S = (id) => sites.find((s) => s.id === id);
+// The original sites of the brief (Mauna Kea removed).
+const ORIGINAL_SITES = ['wadi-rum', 'harrat', 'atacama', 'haughton', 'death-valley', 'dry-valleys', 'holuhraun', 'rio-tinto', 'mdrs'];
+const original = sites.filter((s) => ORIGINAL_SITES.includes(s.id));
+
+test('factor score formula', () => {
+  eq(factorScore(10, 10, 100), 1);
+  eq(factorScore(0, 50, 100), 0.5);
+  eq(factorScore(0, 300, 100), 0, 'clamped at 0:');
+  eq(factorScore(null, 5, 1), null, 'null Earth value:');
+  eq(factorScore(5, null, 1), null, 'null target value:');
+});
+
+const expected = {
+  jezero: { 'dry-valleys': 60, harrat: 57, atacama: 57, 'death-valley': 57, mdrs: 57, haughton: 56, 'wadi-rum': 55, 'rio-tinto': 52, holuhraun: 33 },
+  southpole: { atacama: 51, harrat: 50, 'death-valley': 50, 'wadi-rum': 47 },
+  apollo11: { atacama: 44, harrat: 43, 'death-valley': 43, 'wadi-rum': 40 },
+};
+for (const [tid, map] of Object.entries(expected)) {
+  test(`reference percentages for ${tid} (section 6)`, () => {
+    for (const [sid, want] of Object.entries(map)) eq(pct(climateBreakdown(S(sid), T(tid)).score), want, `${sid}:`);
+  });
+}
+test('Jezero: Dry Valleys first, Holuhraun last (original sites; Mauna Kea removed)', () => {
+  const r = rankSites(original, T('jezero')).map((x) => x.site.id);
+  eq(r[0], 'dry-valleys'); eq(r[r.length - 1], 'holuhraun');
+});
+for (const tid of ['southpole', 'apollo11']) {
+  test(`${tid}: order Atacama, Harrat, Death Valley, Wadi Rum`, () => {
+    const r = rankSites(original, T(tid)).map((x) => x.site.id);
+    eq(r.slice(0, 4).join(','), 'atacama,harrat,death-valley,wadi-rum');
+  });
+}
+test('null target factors are left out (South Pole has no daily swing)', () => {
+  const b = climateBreakdown(S('harrat'), T('southpole'));
+  eq(b.rows.find((r) => r.factor.id === 'swing').score, null);
+  eq(b.rows.filter((r) => r.score != null).length, 4);
+});
+test('weights: zero weight removes a factor', () => {
+  const w = Object.fromEntries(CLIMATE_FACTORS.map((f) => [f.id, 1]));
+  w.albedo = 0;
+  const b = climateBreakdown(S('harrat'), T('jezero'), w);
+  const manual = b.rows.filter((r) => r.factor.id !== 'albedo').reduce((a, r) => a + r.score, 0) / 4;
+  near(b.score, manual, 1e-12);
+});
+test('geology: same rock = 1, related = 0.5, different = 0', () => {
+  eq(geologyMatch({ primary: 'basalt' }, { primary: 'basalt' }).score, 1);
+  eq(geologyMatch({ primary: 'sandstone' }, { primary: 'mudstone' }).score, 0.5);
+  eq(geologyMatch({ primary: 'granite', secondary: ['basalt'] }, { primary: 'basalt' }).score, 0.5);
+  eq(geologyMatch({ primary: 'evaporite' }, { primary: 'anorthosite' }).score, 0);
+});
+test('terrain: equal median slope = 1, 10° apart = 0', () => {
+  eq(terrainMatch({ median_slope_deg: 3 }, { median_slope_deg: 3 }).score, 1);
+  eq(terrainMatch({ median_slope_deg: 1 }, { median_slope_deg: 11 }).score, 0);
+});
+test('landing zone: a flat zone as large as the target scores 1, half as large 0.5', () => {
+  eq(landingMatch({ max_flat_square_km: 9.5 }, { max_flat_square_km: 9.5 }).score, 1);
+  eq(landingMatch({ max_flat_square_km: 2 }, { max_flat_square_km: 2 }).score, 1);
+  eq(landingMatch({ max_flat_square_km: 1 }, { max_flat_square_km: 2 }).score, 0.5);
+  eq(landingMatch({ max_flat_square_km: 9.5 }, { max_flat_square_km: 2 }).score, 1);
+});
+test('resources: share of target tags found at the site', () => {
+  eq(resourcesMatch(['regolith', 'shelter'], ['regolith', 'ice']).score, 0.5);
+  eq(resourcesMatch([], ['ice']).score, 0);
+});
+test('every resource tag has a source URL and a quote; every place is listed', () => {
+  const vocab = ['ice', 'shelter', 'regolith', 'salts'];
+  for (const p of [...sites, ...targets]) if (!resDoc.places[p.id]) throw new Error(`${p.id} missing in resources.json`);
+  for (const [id, p] of Object.entries(resDoc.places)) for (const [tag, src] of Object.entries(p.tags)) {
+    if (!vocab.includes(tag)) throw new Error(`${id}: unknown tag ${tag}`);
+    if (!/^https:\/\//.test(src.url || '') || !(src.quote || '').trim()) throw new Error(`${id}.${tag} has no source or quote`);
+  }
+});
+test('one regolith rule: a target quote documents regolith at the target, a site quote documents a simulant or building material', () => {
+  if (!(resDoc.rules?.regolith || '').trim()) throw new Error('resources.json has no regolith rule');
+  const siteIds = new Set(sites.map((s) => s.id));
+  for (const [id, p] of Object.entries(resDoc.places)) {
+    const src = p.tags.regolith;
+    if (!src) continue;
+    const words = siteIds.has(id) ? /simulant|construction|building/i : /regolith|soil|till/i;
+    if (!words.test(src.quote)) throw new Error(`${id}: the regolith quote does not meet the ${siteIds.has(id) ? 'site' : 'target'} rule`);
+  }
+  if (!resDoc.places['arsia-skylight'].notTagged?.regolith) throw new Error('arsia-skylight must say why it has no regolith tag');
+});
+test('stability check is repeatable (fixed seed)', () => {
+  const a = stability(sites, T('jezero'), {}, { runs: 200 });
+  const b = stability(sites, T('jezero'), {}, { runs: 200 });
+  eq(JSON.stringify(a.share), JSON.stringify(b.share));
+  const total = Object.values(a.share).reduce((x, y) => x + y, 0);
+  near(total, 3, 1e-9, 'top-3 shares sum to 3:');
+});
+test('every site has NASA POWER values and at least one source', () => {
+  for (const s of sites) {
+    for (const f of CLIMATE_FACTORS) if (s.power.annual[f.power] == null) throw new Error(`${s.id} misses ${f.power}`);
+    if (!s.sources.length) throw new Error(`${s.id} has no source`);
+  }
+});
+test('strict data: Gale albedo uses the measured 0.22, Gale mean is dropped', () => {
+  const b = climateBreakdown(S('wadi-rum'), T('gale'), undefined, undefined, true);
+  eq(b.rows.find((r) => r.factor.id === 'albedo').target, 0.22);
+  eq(b.rows.find((r) => r.factor.id === 'meanTemp').target, null);
+});
+test('strict data: the Shackleton floor uses LRO Diviner at the pin and can be scored', () => {
+  // Expected values come from the raw Diviner file: centre-pixel annual mean, and the colder of the seasonal minima.
+  const L = shackleton.layers;
+  near(T('southpole').lat, shackleton.point.lat, 1e-6, 'pin lat:'); near(T('southpole').lon, shackleton.point.lon, 1e-6, 'pin lon:');
+  const b = climateBreakdown(S('harrat'), T('southpole'), undefined, undefined, true);
+  const row = (id) => b.rows.find((r) => r.factor.id === id);
+  near(row('meanTemp').target, L.annual_mean.center_K - 273.15, 0.006, 'meanTemp:');
+  near(row('coldGround').target, Math.min(L.summer_min.center_K, L.winter_min.center_K) - 273.15, 0.006, 'coldGround:');
+  eq(row('meanTemp').source, 'diviner-polar', 'meanTemp source:');
+  eq(row('coldGround').source, 'diviner-polar', 'coldGround source:');
+  if (b.rows.filter((r) => r.target != null).length < STRICT_MIN_FACTORS || b.score == null) throw new Error('no strict score');
+});
+test('reference mode is unchanged by the strict entries', () => {
+  eq(pct(climateBreakdown(S('atacama'), T('southpole')).score), 51);
+});
+test('permanent Moon base sites: Malapert, Mons Mouton and the Shackleton ridge use LRO Diviner at the pin and are scored', () => {
+  // Expected values come from the raw Diviner files: annual mean, colder seasonal minimum, summer maximum minus summer minimum.
+  const BASE = { malapert: 'malapert', 'mons-mouton': 'mons_mouton', 'shackleton-ridge': 'shackleton_ridge' };
+  eq(targets.filter((t) => t.group === 'moon-base').map((t) => t.id).join(','), Object.keys(BASE).join(','), 'moon-base targets:');
+  for (const [tid, file] of Object.entries(BASE)) {
+    const t = T(tid);
+    const w = baseWindows[file];
+    const L = w.layers;
+    near(t.lat, w.point.lat, 1e-6, `${tid} pin lat:`); near(t.lon, ((w.point.lon + 180) % 360) - 180, 1e-6, `${tid} pin lon:`);
+    const v = (id) => t.values[id];
+    near(v('meanTemp').value, L.annual_mean.center_K - 273.15, 0.06, `${tid} meanTemp:`);
+    near(v('coldGround').value, Math.min(L.summer_min.center_K, L.winter_min.center_K) - 273.15, 0.06, `${tid} coldGround:`);
+    near(v('swing').value, L.summer_max.center_K - L.summer_min.center_K, 0.06, `${tid} swing:`);
+    for (const id of ['meanTemp', 'swing', 'coldGround']) eq(v(id).source, 'diviner-polar', `${tid} ${id} source:`);
+    eq(v('rain').value, 0, `${tid} rain:`); eq(v('albedo').value, null, `${tid} albedo (not measured):`);
+    eq(t.geology.primary, null, `${tid} rock type (not known):`);
+    eq((resDoc.places[tid] || {}).tags && Object.keys(resDoc.places[tid].tags).length, 0, `${tid} resource tags:`);
+    const top = rankSites(sites, t, fullOpts)[0];
+    eq(top.pillarsUsed, 3, `${tid} pillars:`); eq(top.targetGaps.join(','), 'geology,resources', `${tid} target gaps:`);
+    if (top.score == null) throw new Error(`${tid} has no full score`);
+  }
+});
+test('Sun height: the base sites use it, every other target leaves it out (same formula on both sides)', () => {
+  eq(SUN_TILT.earth, 23.44, 'Earth tilt:'); eq(SUN_TILT.moon, 1.54, 'Moon tilt:');
+  for (const t of targets) {
+    const v = t.values.sunHeight;
+    if (t.group !== 'moon-base') { eq(v, undefined, `${t.id} must not have sunHeight:`); eq(factorsFor(t).length, CLIMATE_FACTORS.length, `${t.id} factors:`); continue; }
+    near(v.value, 90 - Math.abs(t.lat) + SUN_TILT.moon, 0.006, `${t.id} sunHeight:`);
+    eq(v.source, 'moon-tilt', `${t.id} source:`);
+    eq(factorsFor(t).map((f) => f.id).join(','), [...CLIMATE_FACTORS.map((f) => f.id), 'sunHeight'].join(','), `${t.id} factors:`);
+  }
+  near(earthSource(S('haughton'), 'sunHeight').value, 90 - 75.38 + 23.44, 1e-9, 'Haughton:');
+  eq(earthSource(S('pilbara-north-pole'), 'sunHeight').value, 90, 'tropics cap at 90°:');
+  eq(sunHeight(null, 23.44), null, 'no latitude:');
+  const b = climateBreakdown(S('dry-valleys'), T('malapert'));
+  const row = b.rows.find((r) => r.factor.id === 'sunHeight');
+  eq(b.rows.length, CLIMATE_FACTORS.length + 1, 'rows:'); eq(row.earthFrom, 'latitude');
+  near(row.score, 1 - Math.abs(90 - 77.47 + 23.44 - T('malapert').values.sunHeight.value) / 90, 1e-9, 'Dry Valleys score:');
+  // Polar sites now lead the base-site climate match; the other targets keep their five factors.
+  eq(rankSites(sites, T('malapert'))[0].site.id, 'dry-valleys'); eq(rankSites(sites, T('mons-mouton'))[1].site.id, 'haughton');
+  eq(climateBreakdown(S('harrat'), T('jezero')).rows.length, CLIMATE_FACTORS.length, 'jezero rows:');
+});
+test('LOLA illumination: the pin values match the raw 60 m windows, and the crater floor check is in permanent shadow', () => {
+  for (const [id, p] of Object.entries(illum.points)) {
+    const g = illumRaw[id].grids['85s_060m'];
+    eq(p.sun, g.sun.center, `${id} sun:`); eq(p.earth, g.earth.center, `${id} earth:`);
+    eq(g.sun.window_5x5[2][2], g.sun.center, `${id} window centre:`);
+    if (p.point_to_pixel_center_m > 43) throw new Error(`${id}: pin is ${p.point_to_pixel_center_m} m from the pixel centre`);
+  }
+  eq(illum.points.southpole.psr_at_pin, true, 'Shackleton floor PSR:'); eq(illum.points.southpole.sun, 0, 'Shackleton floor sun:');
+  for (const id of ['malapert', 'mons-mouton', 'shackleton-ridge']) {
+    const facts = Object.fromEntries(T(id).facts.map((f) => [f.label, f]));
+    const pcText = (v) => `${String(+(v * 100).toFixed(1))} %`;
+    const p = illum.points[id];
+    if (!facts['Sunlight (LOLA)']?.text.includes(pcText(p.sun))) throw new Error(`${id}: the sunlight fact does not show ${pcText(p.sun)}`);
+    if (!facts['Earth in view (LOLA)']?.text.includes(pcText(p.earth))) throw new Error(`${id}: the Earth-in-view fact does not show ${pcText(p.earth)}`);
+    if (!facts['Nearest permanent shadow (LOLA)']) throw new Error(`${id}: no shadow fact`);
+    for (const f of ['Sunlight (LOLA)', 'Earth in view (LOLA)', 'Nearest permanent shadow (LOLA)']) eq(facts[f].source, 'lola-illumination', `${id} ${f} source:`);
+  }
+});
+test('regolith rule applied the same way: SP Crater (nearby simulant only) has no tag, the crater floor tag names Shackleton', () => {
+  eq(resDoc.places['sp-crater-sfvf'].tags.regolith, undefined, 'SP Crater tag:');
+  if (!resDoc.places['sp-crater-sfvf'].notTagged?.regolith) throw new Error('SP Crater must say why it has no regolith tag');
+  eq(resDoc.places.southpole.tags.regolith.url, 'https://doi.org/10.1029/2012GL052119', 'crater floor source:');
+  if (!/Shackleton/.test(resDoc.places.southpole.tags.regolith.note)) throw new Error('crater floor note must name Shackleton');
+  for (const id of ['malapert', 'mons-mouton', 'shackleton-ridge']) if (!/regolith/i.test(resDoc.places[id].note)) throw new Error(`${id} must say why it has no regolith tag`);
+  // No Earth site has a regolith tag now, so no site gains on that resource.
+  eq(sites.filter((s) => tags[s.id]?.includes('regolith')).length, 0, 'Earth sites with regolith:');
+});
+test('new measured targets: Apollo 17 and Phoenix are scored', () => {
+  if (climateBreakdown(S('harrat'), T('apollo17')).score == null) throw new Error('apollo17');
+  if (climateBreakdown(S('harrat'), T('phoenix')).score == null) throw new Error('phoenix');
+});
+test('every measured target value names a source', () => {
+  for (const t of targets) for (const [k, v] of Object.entries(t.values)) {
+    if (v.value != null && !v.source) throw new Error(`${t.id}.${k} has no source`);
+    if (v.strict && v.strict.value != null && !v.strict.source) throw new Error(`${t.id}.${k} strict value has no source`);
+  }
+});
+
+// ---------- full analog match: minimum pillars and data gaps ----------
+test('mean temperature factor is labelled "Mean temperature" (Earth air, target air or ground)', () => {
+  const f = CLIMATE_FACTORS.find((x) => x.id === 'meanTemp');
+  eq(f.label, 'Mean temperature'); eq(f.short, 'Mean temp'); eq(f.power, 'T2M');
+});
+test(`full match needs at least ${FULL_MIN_PILLARS} pillars (a site without terrain vs Malapert has only climate)`, () => {
+  eq(FULL_MIN_PILLARS, 3);
+  // Mistastin as it was until 3 Nov 2026, when its terrain box was the lake (terrainExclude).
+  const lake = { ...S('mistastin'), terrainExclude: 'test: box is mostly lake' };
+  const r = scoreSite(lake, T('malapert'), fullOpts);
+  eq(r.pillarsUsed, 1, 'pillars used:');
+  eq(r.score, null, 'score:');
+  eq(r.reason, 'few-pillars', 'reason:');
+  eq(r.targetGaps.join(','), 'geology,resources', 'target gaps:');
+  eq(r.siteGaps.join(','), 'terrain,landing', 'site gaps:');
+  if (r.climate.score == null) throw new Error('the climate part should still be there for the panel');
+  const ranked = rankSites(sites.map((s) => (s.id === 'mistastin' ? lake : s)), T('malapert'), fullOpts);
+  eq(ranked[ranked.length - 1].site.id, 'mistastin', 'unscored site goes last:');
+  eq(ranked[ranked.length - 1].score, null, 'and has no score:');
+});
+test('full match: all 5 pillars and no gaps for Harrat vs Jezero', () => {
+  const r = scoreSite(S('harrat'), T('jezero'), fullOpts);
+  eq(r.pillarsUsed, 5); eq(r.targetGaps.length, 0); eq(r.siteGaps.length, 0); eq(r.reason, null);
+  if (r.score == null) throw new Error('no score');
+});
+test('headline full-match results (README and pitch numbers) stay the same', () => {
+  const HEAD = {
+    // 2026-10-23: SP Crater lost its regolith tag (regolith rule) and the base sites gained the Sun height factor.
+    jezero: [['harrat', 71]], apollo17: [['harrat', 64], ['pilbara-north-pole', 63]], apollo11: [['harrat', 69], ['pilbara-north-pole', 67]],
+    malapert: [['dry-valleys', 62], ['wadi-rum', 45]], 'mons-mouton': [['rio-tinto', 69], ['atacama', 68]], 'shackleton-ridge': [['wadi-rum', 56]],
+    'tranquillitatis-pit': [['harrat', 75]], 'arsia-skylight': [['harrat', 88]],
+  };
+  for (const [tid, rows] of Object.entries(HEAD)) {
+    const r = rankSites(sites, T(tid), fullOpts);
+    rows.forEach(([sid, want], i) => { eq(r[i].site.id, sid, `${tid} #${i + 1}:`); eq(pct(r[i].score), want, `${tid} ${sid}:`); });
+  }
+});
+test('full match: target gaps name the pillars the target has no data for', () => {
+  const site = { id: 's', geology: { primary: 'basalt' }, power: S('harrat').power };
+  const target = { id: 't', values: T('jezero').values, geology: { primary: null } };
+  const r = scoreSite(site, target, { mode: 'full', terrain: { s: { median_slope_deg: 2, max_flat_square_km: 5 } }, resources: { s: ['ice'], t: [] } });
+  eq(r.targetGaps.join(','), 'terrain,landing,geology,resources');
+  eq(r.siteGaps.length, 0);
+  eq(r.pillarsUsed, 1); eq(r.score, null); eq(r.reason, 'few-pillars');
+});
+test('climate mode is unchanged: no pillar minimum', () => {
+  const r = scoreSite(S('mistastin'), T('malapert'), { ...fullOpts, mode: 'climate' });
+  eq(r.score, climateBreakdown(S('mistastin'), T('malapert')).score);
+  eq(r.reason, undefined);
+});
+test('landing zone: a target with no flat zone asks for nothing (scores 1)', () => {
+  eq(landingMatch({ max_flat_square_km: 3 }, { max_flat_square_km: 0 }).score, 1);
+  eq(landingMatch({ max_flat_square_km: null }, { max_flat_square_km: 0 }), null);
+});
+
+// ---------- data integrity ----------
+test('every source key used by a target (values, strict values, facts, geology) is listed in sources', () => {
+  const known = targetsDoc.sources;
+  const check = (id, where) => { if (id && !known[id]) throw new Error(`${where}: unknown source "${id}"`); };
+  for (const t of targets) {
+    for (const [k, v] of Object.entries(t.values)) { check(v.source, `${t.id}.${k}`); if (v.strict) check(v.strict.source, `${t.id}.${k} strict`); }
+    (t.facts || []).forEach((f, i) => { if (!f.source) throw new Error(`${t.id} fact ${i + 1} has no source`); check(f.source, `${t.id} fact ${i + 1}`); });
+    if (t.geology) check(t.geology.source, `${t.id} geology`);
+  }
+  for (const [id, s] of Object.entries(known)) if (!/^https?:\/\//.test(s.url || '') || !(s.label || '').trim()) throw new Error(`source ${id} has no label or link`);
+});
+test('every target is in a valid group, in the agreed order', () => {
+  if (topbar.importError) throw new Error(`topbar.js did not load: ${topbar.importError.message}`);
+  const ORDER = ['moon-base', 'moon-cave', 'moon-ice', 'moon-ref', 'mars-base', 'mars-cave', 'mars'];
+  const LABEL = {
+    'moon-base': 'Moon · permanent base sites (south pole)',
+    'moon-cave': 'Moon · cave shelter (lava-tube pit)',
+    'moon-ice': 'Moon · south-pole ice (shadowed crater floor)',
+    'mars-base': 'Mars · proposed human landing zones (NASA, 2015)',
+    'mars-cave': 'Mars · cave skylight (lava-flow pit)',
+    mars: 'Mars · lander site (measured reference)',
+    'moon-ref': 'Moon · Apollo sites (reference)',
+  };
+  const ids = topbar.TARGET_GROUPS.map((g) => g.id);
+  eq(ids.join(','), ORDER.filter((id) => ids.includes(id)).join(','), 'group order:');
+  for (const g of topbar.TARGET_GROUPS) eq(g.label, LABEL[g.id], `${g.id} label:`);
+  for (const t of targets) if (!ids.includes(t.group)) throw new Error(`${t.id} has group "${t.group}"`);
+  eq(T('malapert').group, 'moon-base'); eq(T('southpole').group, 'moon-ice');
+  eq(JSON.stringify(topbar.DEFAULT_TARGET), JSON.stringify({ moon: 'malapert', mars: 'jezero' }));
+  for (const [world, id] of Object.entries(topbar.DEFAULT_TARGET)) eq(T(id)?.body, world, `default ${world} target:`);
+});
+test('every rock id is known (ROCK_LABEL); only a target may have no main rock', () => {
+  for (const p of [...sites, ...targets]) {
+    const g = p.geology || {};
+    if (g.primary == null) { if (sites.includes(p)) throw new Error(`site ${p.id} has no main rock`); }
+    else if (!ROCK_LABEL[g.primary]) throw new Error(`${p.id}: unknown main rock "${g.primary}"`);
+    for (const r of g.secondary || []) if (!ROCK_LABEL[r]) throw new Error(`${p.id}: unknown rock "${r}"`);
+  }
+});
+test('resources, panoramas, Street View and terrain only name current sites and targets', () => {
+  const ids = new Set([...sites, ...targets].map((p) => p.id));
+  const bad = (list, where) => { const b = list.filter((id) => !ids.has(id)); if (b.length) throw new Error(`${where}: ${b.join(', ')}`); };
+  bad(Object.keys(resDoc.places), 'resources.json');
+  for (const key of ['panoramas', 'linkOuts', 'none']) bad((panoDoc[key] || []).map((p) => p.target), `panoramas.json ${key}`);
+  bad(Object.keys(streetDoc.places || {}), 'streetview.json');
+  bad(Object.keys(terrain), 'terrain.json');
+  const panoIds = (panoDoc.panoramas || []).map((p) => p.id);
+  if (new Set(panoIds).size !== panoIds.length) throw new Error('two panoramas share an id');
+  for (const [id, p] of Object.entries(resDoc.places)) for (const tag of Object.keys(p.tags)) if (!RESOURCES[tag]) throw new Error(`${id}: tag ${tag} is not in RESOURCES`);
+});
+test('every site and target has terrain with a median slope and a largest flat zone', () => {
+  for (const p of [...sites, ...targets]) {
+    const t = terrain[p.id];
+    if (!t || !Number.isFinite(t.median_slope_deg) || !Number.isFinite(t.max_flat_square_km)) throw new Error(`${p.id} has no terrain numbers`);
+  }
+});
+test('sites.json is rebuilt from sites_meta.json (every field copied by build_data.py)', () => {
+  eq(sites.length, metaDoc.sites.length, 'site count:');
+  for (const m of metaDoc.sites) {
+    const s = S(m.id);
+    if (!s) throw new Error(`${m.id} missing in sites.json`);
+    for (const [k, v] of Object.entries(m)) if (JSON.stringify(s[k]) !== JSON.stringify(v)) throw new Error(`${m.id}.${k} differs: run python -I scripts/build_data.py`);
+  }
+});
+test('every photo is listed in assets.json with the same credit, licence and size; every place has a real photo of its own', () => {
+  const files = Object.fromEntries((assetsDoc.files || []).map((f) => [f.path, f]));
+  for (const p of panoDoc.panoramas || []) {
+    const f = files[p.file];
+    if (!f || !/^[0-9a-f]{64}$/.test(f.sha256 || '')) throw new Error(`${p.file} is not in assets.json (with sha256)`);
+    eq(f.licence, p.licence, `${p.id} licence:`); eq(f.credit, p.credit, `${p.id} credit:`);
+    eq(f.width, p.width, `${p.id} width:`); eq(f.height, p.height, `${p.id} height:`);
+    if (p.kind === 'photo' && !/not 360°/.test(p.title || '')) throw new Error(`${p.id}: a flat photo's title must say "not 360°"`);
+  }
+  // The team's rule: no place without a photo. Street View or a link-out is extra, never instead of our own photo.
+  eq((panoDoc.none || []).length, 0, "places listed under 'none' (no photo):");
+  const withPhoto = new Set((panoDoc.panoramas || []).map((p) => p.target));
+  for (const p of [...sites, ...targets]) {
+    if (!withPhoto.has(p.id)) throw new Error(`${p.id} has no photo in panoramas.json`);
+  }
+});
+test('what crews can test here: real tests name their source, our ideas are marked as proposals', () => {
+  const PILLAR_IDS = [null, 'climate', 'terrain', 'landing', 'geology', 'resources'];
+  for (const s of sites) {
+    if (!Array.isArray(s.tests)) throw new Error(`${s.id} has no tests list`);
+    for (const e of s.tests) {
+      const where = `${s.id}: "${e.activity}"`;
+      if (!['tested', 'proposed'].includes(e.type) || e.proposed !== (e.type === 'proposed')) throw new Error(`${where}: type/proposed do not match`);
+      if (!/^https:\/\//.test(e.url || '') || !(e.source || '').trim() || !(e.quote || '').trim()) throw new Error(`${where}: needs a link, a source label and a quote`);
+      if (e.proposed && !(e.basis || '').trim()) throw new Error(`${where}: a proposal must say its basis`);
+      if (!e.proposed && !(e.who || '').trim()) throw new Error(`${where}: a real test must say who did it`);
+      if (!PILLAR_IDS.includes(e.pillar ?? null)) throw new Error(`${where}: unknown pillar ${e.pillar}`);
+    }
+  }
+});
+
+// ---------- field kit helpers (js/kit/kit.js) ----------
+// Small synthetic logs: test fixtures only, never shown to visitors. A dynamic import turns a broken module into a failed test.
+const kitMod = await import('../js/kit/kit.js').catch((err) => ({ importError: err }));
+const needKit = () => { if (kitMod.importError) throw new Error(`js/kit/kit.js did not load: ${kitMod.importError.message}`); return kitMod; };
+const HOUR = 3600e3;
+const T0 = Date.UTC(2026, 0, 15); // any fixed start time (whole seconds)
+// One row every 10 minutes from hour `from` up to (not including) hour `to`, minus the hours that `skip` drops.
+const synthLog = (from, to, skip = () => false) => {
+  const rows = [];
+  for (let m = from * 60; m < to * 60; m += 10) if (!skip(m / 60)) rows.push({ t: T0 + m * 60e3, air: 20 + 5 * Math.sin((2 * Math.PI * m) / 1440) });
+  return rows;
+};
+test('field kit: a log of exactly 24 h is one full day window', () => {
+  const { dayWindows } = needKit();
+  const w = dayWindows(synthLog(0, 24));
+  eq(w.length, 1, 'windows:');
+  eq(w[0].rows.length, 144, 'rows in the window:');
+  eq(w[0].full, true, 'full day:');
+  // One more row at exactly +24 h opens a second window, and that one is not a full day.
+  const w2 = dayWindows([...synthLog(0, 24), { t: T0 + 24 * HOUR, air: 20 }]);
+  eq(w2.length, 2, 'windows with a row at +24 h:');
+  eq(w2.filter((x) => x.full).length, 1, 'full windows with a row at +24 h:');
+});
+test('field kit: a gap of more than 1 h inside a window means it is not a full day', () => {
+  const { dayWindows } = needKit();
+  const gappy = dayWindows(synthLog(0, 24, (h) => h > 5 && h < 6.5)); // no rows between 5:00 and 6:30
+  eq(gappy.length, 1, 'windows:');
+  eq(gappy[0].gap, 1.5 * HOUR, 'largest gap (ms):');
+  eq(gappy[0].full, false, 'full day with a 1.5 h gap:');
+  eq(dayWindows(synthLog(0, 24, (h) => h > 5 && h < 6))[0].full, true, 'full day with a gap of exactly 1 h:');
+});
+test('field kit: est_unix times survive saving and loading the CSV, and stay marked as estimated', () => {
+  const { parseCsv, timeRows, logCsv } = needKit();
+  // Boot 1 had no kit clock; its start time was typed, so its times are estimates.
+  const typed = timeRows(parseCsv('unix,est_unix,boot,ms,air\n,,1,0,20.5\n,,1,600000,20.1\n'), { 1: T0 });
+  eq(typed.map((r) => r.how).join(), 'typed,typed', 'before saving:');
+  const back = timeRows(parseCsv(logCsv(typed)));
+  eq(back.map((r) => r.how).join(), 'file,file', 'after loading the saved CSV:');
+  eq(back[1].t, T0 + 600000, 'time of the second row:');
+  eq(back.every((r) => r.unix == null), true, 'the unix (kit clock) column stays empty:');
+  eq(timeRows(parseCsv(logCsv(back))).map((r) => r.how).join(), 'file,file', 'after a second save and load:');
+  // A kit-clock time in the unix column is used before est_unix.
+  eq(timeRows(parseCsv(`unix,est_unix,boot,ms,air\n${T0 / 1000},${T0 / 1000 + 5},2,0,19\n`))[0].how, 'clock', 'kit clock row:');
+});
+// ---------- Jordan screening (Discover Jordan: data/screening_jordan.json and js/screening.js) ----------
+// Every 10 km box is scored with the same scoreSite() as the sites. These tests rebuild what they need from the
+// raw box records, without js/screening.js, and compare. A dynamic import turns a broken module into failed tests.
+const scrMod = await import('../js/screening.js').catch((err) => ({ importError: err }));
+const scrDoc = await getJSON('../data/screening_jordan.json').catch((err) => ({ loadError: err }));
+const terrainDoc = await getJSON('../data/terrain.json');
+// Every raw file the screening file names must be on disk (HEAD requests: nothing big is downloaded).
+const rawStatus = {};
+if (!scrDoc.loadError) {
+  const files = [...(scrDoc.climate?.rawFiles || []), scrDoc.terrain?.rawFile, scrDoc.terrain?.tilesFile, scrDoc.geology?.rawFile, scrDoc.geology?.rockTable, scrDoc.boundary?.file].filter(Boolean);
+  for (const f of files) rawStatus[f] = await fetch(`../${f}`, { method: 'HEAD', cache: 'no-store' }).then((r) => r.status, () => 0);
+}
+const SCREEN_LABEL_TEXT = 'Screening candidate — found by data, not field-checked';
+const POWER_CITATION = "The data was obtained from National Aeronautics and Space Administration (NASA) Langley Research Center's Prediction Of Worldwide Energy Resources (POWER) project funded through the NASA Earth Science Division.";
+const IGME_CREDIT = 'IGME5000, © BGR, Hannover, 2005, https://doi.org/10.25928/igme-5000, modified: reclassified to Analog Atlas rock ids';
+// The grid of the design (section 0), computed here from its definition.
+const DLAT = (10000 / 6371008.8) * (180 / Math.PI); // 10 km of latitude
+const DLON = DLAT / Math.cos((31.28 * Math.PI) / 180); // 10 km of longitude at 31.28° N
+const SOUTH = 29.18;
+const WEST = 34.95;
+const KM_PER_DEG = (6371.0088 * Math.PI) / 180;
+const pad2 = (n) => String(n).padStart(2, '0');
+const boxIdAt = (lat, lon) => `jo-r${pad2(Math.floor((lat - SOUTH) / DLAT))}c${pad2(Math.floor((lon - WEST) / DLON))}`;
+const ALL_W = Object.fromEntries(CLIMATE_FACTORS.map((f) => [f.id, 1]));
+const ALL_P = Object.fromEntries(PILLARS.map((p) => [p.id, 1]));
+const appData = { sites, targets, terrain, resources: tags };
+const SETTINGS = targets.flatMap((t) => ['climate', 'full'].flatMap((mode) => [false, true].map((strict) => ({ targetId: t.id, mode, strict }))));
+const settingText = (s) => `${s.targetId} (${s.mode}${s.strict ? ', strict' : ''})`;
+const NEAR_8 = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
+
+function needScreening() {
+  if (scrMod.importError) throw new Error(`js/screening.js did not load: ${scrMod.importError.message}`);
+  if (scrDoc.loadError) throw new Error(`data/screening_jordan.json did not load (${scrDoc.loadError.message}): run python -I scripts/build_screening.py`);
+  return scrMod;
+}
+let prepared = null;
+const screening = () => { const m = needScreening(); if (!prepared) prepared = m.prepareScreening(scrDoc); return prepared; };
+let results = null;
+// scoreBoxes() for every target × {climate, full} × {strict off, on}, computed once and shared by the tests below.
+function allResults() {
+  if (!results) {
+    const m = needScreening();
+    results = SETTINGS.map((s) => ({ ...s, result: m.scoreBoxes({ screening: screening(), data: appData, weights: ALL_W, pillars: ALL_P, ...s }) }));
+  }
+  return results;
+}
+// A box shaped like a site, built by hand from its raw record (not with boxToSite): the MERRA-2 cell gives the
+// climate and the grid elevation, the 1° SYN1deg cell the sunlight values, as the POWER point API does for a site.
+function handSite(rec) {
+  const merra = scrDoc.climate.cells[rec.climate.merra];
+  const syn = scrDoc.climate.cells[rec.climate.syn];
+  return {
+    id: rec.id,
+    lat: rec.lat, // the base-site Sun height factor uses the latitude
+    power: { annual: { ...merra.annual, ...syn.annual }, gridElevation_m: merra.elev_m },
+    geology: { primary: rec.geology.primary, secondary: rec.geology.secondary },
+    terrainExclude: rec.terrainExclude,
+  };
+}
+let handTerrainMap = null;
+const handTerrain = () => handTerrainMap || (handTerrainMap = { ...terrain, ...Object.fromEntries(scrDoc.boxes.map((r) => [r.id, r.terrain])) });
+// Even-odd point in polygon, and the distance (km) from a point to the polygon edge, on a local flat projection.
+function inRing(ring, lon, lat) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    if ((yi > lat) !== (yj > lat) && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+function ringDistKm(ring, lon, lat) {
+  const kx = KM_PER_DEG * Math.cos((lat * Math.PI) / 180);
+  let best = Infinity;
+  for (let i = 1; i < ring.length; i++) {
+    const ax = (ring[i - 1][0] - lon) * kx, ay = (ring[i - 1][1] - lat) * KM_PER_DEG;
+    const dx = (ring[i][0] - lon) * kx - ax, dy = (ring[i][1] - lat) * KM_PER_DEG - ay;
+    const len = dx * dx + dy * dy;
+    const t = len ? Math.max(0, Math.min(1, -(ax * dx + ay * dy) / len)) : 0;
+    best = Math.min(best, Math.hypot(ax + t * dx, ay + t * dy));
+  }
+  return best;
+}
+
+const rk = await import('../js/ui/ranking.js').catch((e) => ({ importError: e }));
+test('ranking lists only strong twins (50 % or more) until "Show all", and keeps the selected site', () => {
+  if (rk.importError) throw new Error(`ranking.js did not load: ${rk.importError.message}`);
+  const row = (id, score) => ({ site: { id }, score });
+  const rows = [row('a', 0.81), row('b', 0.5), row('c', 0.49), row('d', 0.2), row('e', null)];
+  rk.setShowAllTwins(false);
+  eq(rk.TWIN_MIN_PCT, 50, 'line:');
+  eq(rk.visibleRows(rows).map((r) => r.site.id).join(), 'a,b', 'strong only:');
+  eq(rk.visibleRows(rows, 'd').map((r) => r.site.id).join(), 'a,b,d', 'selected site stays:');
+  // One or two strong twins: the next scored sites are listed in grey under "Weaker twins" (no unscored row).
+  eq(rk.weakPreview(rows).map((r) => r.site.id).join(), 'c,d', 'weaker twins:');
+  eq(rk.weakPreview([row('x', 0.9), row('y', 0.7), row('z', 0.6), row('w', 0.3)]).length, 0, 'three strong twins, no preview:');
+  eq(rk.weakPreview([row('x', 0.3), row('y', 0.2)]).length, 0, 'no strong twin, no preview:');
+  rk.setShowAllTwins(true);
+  eq(rk.visibleRows(rows).length, 5, 'show all:');
+  eq(rk.weakPreview(rows).length, 0, 'show all, no preview:');
+  rk.setShowAllTwins(false);
+});
+test('ranking basis: the panel can say when the ranking is bunched or rests on one pillar', () => {
+  if (rk.importError) throw new Error(`ranking.js did not load: ${rk.importError.message}`);
+  const basis = (tid, mode = 'full', pillars = ALL_P) => rk.rankingBasis(rankSites(sites, T(tid), { ...fullOpts, mode, pillars }), { mode, pillars });
+  const mm = basis('mons-mouton');
+  eq(mm.bunched, true, 'Mons Mouton bunched:'); eq(mm.lead, 'terrain', 'Mons Mouton lead:'); eq(mm.topN, 10);
+  eq(rk.basisText(mm), `Most sites score alike here (top 10 within ${mm.spreadPts} points): this ranking rests mainly on slope and the flat landing zone.`);
+  const ma = basis('malapert');
+  eq(ma.bunched, false, 'Malapert bunched:'); eq(rk.basisText(ma), 'This ranking rests mainly on slope.');
+  eq(basis('shackleton-ridge').bunched, true, 'ridge bunched:');
+  for (const tid of ['jezero', 'gale', 'arsia-skylight', 'apollo11', 'apollo17', 'southpole', 'phoenix']) eq(rk.basisText(basis(tid)), '', `${tid}:`);
+  eq(basis('jezero', 'climate'), null, 'climate mode:');
+  // A pillar set to x0 does not count: with terrain and landing off, Mons Mouton no longer rests on slope.
+  const off = basis('mons-mouton', 'full', { ...ALL_P, terrain: 0, landing: 0 });
+  if (off && off.lead === 'terrain') throw new Error('terrain at x0 still leads');
+  near(Object.values(mm.share).reduce((a, b) => a + b, 0), 1, 1e-9, 'shares add up:');
+});
+test('Earth pins: the #1 twin keeps its label, and a simulated field kit gives way to every site (Jezero)', () => {
+  if (rk.importError) throw new Error(`ranking.js did not load: ${rk.importError.message}`);
+  rk.setShowAllTwins(false);
+  const ranked = rankSites(sites, T('jezero'), fullOpts);
+  const kitSim = { source: 'sim', location: { lat: 31.95, lon: 35.91, label: 'Amman' } };
+  const items = rk.earthPinItems({ ranked, target: T('jezero'), kit: kitSim });
+  eq(items.filter((it) => it.keepLabel).map((it) => it.id).join(), 'harrat', 'keepLabel:');
+  const kitItem = items.find((it) => it.kind === 'kit');
+  if (!kitItem) throw new Error('no field kit pin');
+  eq(kitItem.priority, -1, 'simulated kit priority:');
+  const siteItems = items.filter((it) => it.kind === 'site');
+  if (!siteItems.length || siteItems.some((it) => !(kitItem.priority < it.priority))) throw new Error('the simulated kit is not below every site');
+  eq(rk.earthPinItems({ ranked, target: T('jezero'), kit: { ...kitSim, source: 'usb' } }).find((it) => it.kind === 'kit').priority, 0.95, 'live kit priority:');
+});
+test('permanent Moon base sites together: Haughton Crater is the only Earth site in the top 5 for all three', () => {
+  if (rk.importError) throw new Error(`ranking.js did not load: ${rk.importError.message}`);
+  const c = rk.baseConsensus({ sites, targets, terrain, resources: tags });
+  eq(c.steady.map((r) => r.site.id).join(), 'haughton', 'steady sites:');
+  eq(c.steady[0].ranks.join(), '3,3,4', 'Haughton ranks:');
+  eq(c.steady[0].pcts.join(), '42,66,53', 'Haughton %:');
+  eq(c.strong.length, 0, 'sites at 50% or more for all three:');
+  const text = rk.baseConsensusText(c);
+  if (!text.includes(`Haughton Crater is the only Earth site in the top ${rk.BASE_TOP_N}`)) throw new Error(`text: ${text}`);
+});
+test('place rule: the Dry Valleys have no ice tag (source 50 km away), and the Shackleton floor and Mars ice ranks move with it', () => {
+  const dv = resDoc.places['dry-valleys'];
+  if ('ice' in dv.tags) throw new Error('dry-valleys still has an ice tag');
+  if (!dv.notTagged || !dv.notTagged.ice) throw new Error('dry-valleys notTagged has no ice reason');
+  const sp = rankSites(sites, T('southpole'), fullOpts);
+  eq(sp[0].site.id, 'mistastin', 'Shackleton floor #1:');
+  for (const tid of ['deuteronilus', 'erebus-montes', 'phoenix']) {
+    const r = rankSites(sites, T(tid), fullOpts);
+    const ranks = rk.displayRanks(r);
+    eq(ranks[r.findIndex((x) => x.site.id === 'dry-valleys')], 18, `${tid} Dry Valleys rank:`);
+  }
+});
+const emitBoxes = await fetch('../data/screening_emit.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+test('EMIT minerals (display only): every Jordan box has a row in the declared column layout', () => {
+  if (!emitBoxes) throw new Error('data/screening_emit.json missing');
+  const ids = Object.keys(emitBoxes.boxes);
+  eq(ids.length, 886, 'boxes:');
+  for (const id of ids) { const row = emitBoxes.boxes[id]; if (!Array.isArray(row) || row.length !== emitBoxes.fields.length) throw new Error(`${id}: row does not match fields`); }
+  const g = emitBoxes.fields.indexOf('granule');
+  for (const id of ids) { const k = emitBoxes.boxes[id][g]; if (k != null && !emitBoxes.granules[k]) throw new Error(`${id}: unknown granule ${k}`); }
+});
+test('Jordan screening 1: every box scores exactly like a site built by hand from its record (every target × climate/full × strict off/on)', () => {
+  let n = 0;
+  for (const s of allResults()) {
+    const target = T(s.targetId);
+    const opts = { mode: s.mode, strict: s.strict, weights: ALL_W, pillars: ALL_P, terrain: handTerrain(), resources: tags };
+    eq(s.result.rows.length, scrDoc.boxes.length, `${settingText(s)} rows:`);
+    for (const rec of scrDoc.boxes) {
+      const want = scoreSite(handSite(rec), target, opts);
+      const row = s.result.byId.get(rec.id);
+      if (!row || row.score !== want.score) throw new Error(`${rec.id} vs ${settingText(s)}: expected ${want.score}, got ${row && row.score}`);
+      if (s.mode === 'full' && row.resources != null) throw new Error(`${rec.id} has a resources score`);
+      n += 1;
+    }
+  }
+  eq(n, scrDoc.boxes.length * targets.length * 4, 'comparisons:');
+});
+test('Jordan screening 2: the 5 Jordan controls equal sites.json and terrain.json, and score like the site without resources', () => {
+  needScreening();
+  const jordan = sites.filter((s) => s.jordan);
+  eq(Object.keys(scrDoc.controls).sort().join(','), jordan.map((s) => s.id).sort().join(','), 'controls:');
+  for (const site of jordan) {
+    const c = scrDoc.controls[site.id];
+    const merra = scrDoc.climate.cells[c.climate.merra];
+    const syn = scrDoc.climate.cells[c.climate.syn];
+    const annual = { ...merra.annual, ...syn.annual };
+    for (const f of CLIMATE_FACTORS) eq(annual[f.power], site.power.annual[f.power], `${site.id} ${f.power}:`);
+    eq(merra.elev_m, site.power.gridElevation_m, `${site.id} grid elevation:`);
+    for (const k of ['median_slope_deg', 'max_flat_square_km', 'centre_elev_m']) eq(c.terrain[k], terrain[site.id][k], `${site.id} ${k}:`);
+    eq(JSON.stringify(c.siteGeology), JSON.stringify({ primary: site.geology.primary, secondary: site.geology.secondary }), `${site.id} site geology:`);
+    eq(c.box, boxIdAt(site.lat, site.lon), `${site.id} box:`);
+    eq(scrDoc.boxes.find((b) => b.id === c.box)?.containsSite, site.id, `${site.id} containsSite of ${c.box}:`);
+    eq(c.lat, site.lat, `${site.id} lat:`);
+    const control = { id: `control-${site.id}`, lat: c.lat, power: { annual, gridElevation_m: merra.elev_m }, geology: c.siteGeology, terrainExclude: site.terrainExclude };
+    const withControl = { ...terrain, [control.id]: c.terrain };
+    for (const s of SETTINGS) {
+      const a = scoreSite(control, T(s.targetId), { mode: s.mode, strict: s.strict, terrain: withControl, resources: tags }).score;
+      const b = scoreSite(site, T(s.targetId), { mode: s.mode, strict: s.strict, terrain, resources: tags, pillars: { ...ALL_P, resources: 0 } }).score;
+      if (a !== b) throw new Error(`${site.id} vs ${settingText(s)}: control ${a}, site without resources ${b}`);
+    }
+  }
+  eq(scrDoc.boxes.filter((b) => b.containsSite).length, jordan.length, 'boxes that hold a site:');
+});
+test('Jordan screening 3: the grid covers Jordan (0.02° lattice), 860–910 boxes, ids match row and column, bounds equal the grid constants', () => {
+  const scr = screening();
+  const g = scrDoc.grid;
+  const boxes = scrDoc.boxes;
+  near(g.dlat, DLAT, 1e-12, 'dlat:'); near(g.dlon, DLON, 1e-12, 'dlon:'); eq(g.south, SOUTH, 'south:'); eq(g.west, WEST, 'west:');
+  if (boxes.length < 860 || boxes.length > 910) throw new Error(`${boxes.length} boxes`);
+  eq(new Set(boxes.map((b) => b.id)).size, boxes.length, 'unique ids:');
+  for (const rec of boxes) {
+    eq(rec.id, `jo-r${pad2(rec.row)}c${pad2(rec.col)}`, 'id:');
+    const b = scr.byId.get(rec.id).bounds;
+    near(b.s, SOUTH + rec.row * DLAT, 1e-9, `${rec.id} s:`); near(b.n, SOUTH + (rec.row + 1) * DLAT, 1e-9, `${rec.id} n:`);
+    near(b.w, WEST + rec.col * DLON, 1e-9, `${rec.id} w:`); near(b.e, WEST + (rec.col + 1) * DLON, 1e-9, `${rec.id} e:`);
+    near(rec.lat, SOUTH + (rec.row + 0.5) * DLAT, 5e-7, `${rec.id} centre lat:`); near(rec.lon, WEST + (rec.col + 0.5) * DLON, 5e-7, `${rec.id} centre lon:`);
+    if (!inRing(scrDoc.boundary.ring, rec.lon, rec.lat)) throw new Error(`${rec.id}: centre outside Jordan`);
+  }
+  // Every lattice point inside Jordan is in a kept box or within 14.2 km (one box diagonal) of the border.
+  const ring = scrDoc.boundary.ring;
+  const kept = new Set(boxes.map((b) => b.id));
+  const lons = ring.map((p) => p[0]);
+  const lats = ring.map((p) => p[1]);
+  let inside = 0;
+  let area = 0;
+  const misses = [];
+  for (let i = Math.ceil(Math.min(...lats) / 0.02); i * 0.02 <= Math.max(...lats); i++) {
+    for (let j = Math.ceil(Math.min(...lons) / 0.02); j * 0.02 <= Math.max(...lons); j++) {
+      const lat = i * 0.02;
+      const lon = j * 0.02;
+      if (!inRing(ring, lon, lat)) continue;
+      inside += 1;
+      area += (0.02 * KM_PER_DEG) ** 2 * Math.cos((lat * Math.PI) / 180);
+      if (!kept.has(boxIdAt(lat, lon)) && ringDistKm(ring, lon, lat) > 14.2) misses.push(`${lat.toFixed(2)},${lon.toFixed(2)}`);
+    }
+  }
+  eq(misses.length, 0, `lattice points far from a box (${misses.slice(0, 3).join(' ')}):`);
+  near(area / scrDoc.boundary.area_km2, 1, 0.01, `lattice area ${Math.round(area)} km² vs polygon:`);
+  if (inside < 20000) throw new Error(`only ${inside} lattice points inside`);
+});
+test('Jordan screening 4: every box has provenance (cells, raw files, 441 samples, map unit or reason); sources have URL and licence; exact label', () => {
+  const m = needScreening();
+  eq(scrDoc.label, SCREEN_LABEL_TEXT, 'label in the file:');
+  eq(m.SCREEN_LABEL, SCREEN_LABEL_TEXT, 'label in js/screening.js:');
+  const cells = scrDoc.climate.cells;
+  const raw = new Set(scrDoc.climate.rawFiles);
+  eq(Object.keys(rawStatus).length, raw.size + 5, 'raw files checked:');
+  for (const [file, status] of Object.entries(rawStatus)) if (status !== 200) throw new Error(`${file}: HTTP ${status}`);
+  for (const [key, c] of Object.entries(cells)) {
+    const dir = { 'MERRA-2': 'merra', 'CERES SYN1deg': 'syn1deg' }[c.grid];
+    if (!dir) throw new Error(`${key}: unknown grid ${c.grid}`);
+    for (const p of Object.keys(c.annual)) if (!raw.has(`data/raw/screening/power/${dir}/${p}.json`)) throw new Error(`${key}.${p}: its raw file is not listed`);
+  }
+  const units = scrDoc.geology.units;
+  for (const rec of scrDoc.boxes) {
+    const merra = cells[rec.climate.merra];
+    const syn = cells[rec.climate.syn];
+    if (merra?.grid !== 'MERRA-2' || syn?.grid !== 'CERES SYN1deg') throw new Error(`${rec.id}: climate cells ${rec.climate.merra}, ${rec.climate.syn} do not resolve`);
+    for (const c of [merra, syn]) if (!(rec.lat >= c.s && rec.lat <= c.n && rec.lon >= c.w && rec.lon <= c.e)) throw new Error(`${rec.id}: cell ${c.lat},${c.lon} does not hold the box centre`);
+    eq(rec.terrain.n_samples, 441, `${rec.id} samples:`);
+    const geo = rec.geology;
+    if (!units[geo.unit] && !(geo.why || '').trim()) throw new Error(`${rec.id}: unit ${geo.unit} is not in units and no reason is given`);
+    if (geo.primary == null && !(geo.why || '').trim()) throw new Error(`${rec.id}: no rock and no reason`);
+    if (geo.primary != null && geo.primary !== units[geo.unit]?.primary) throw new Error(`${rec.id}: rock ${geo.primary} is not the rock of unit ${geo.unit}`);
+    for (const r of [geo.primary, ...geo.secondary].filter(Boolean)) if (!ROCK_LABEL[r]) throw new Error(`${rec.id}: unknown rock ${r}`);
+  }
+  for (const s of scrDoc.sources) {
+    if (!/^https:\/\//.test(s.url || '') || !(s.licence || '').trim() || !/^https:\/\//.test(s.licenceUrl || '')) throw new Error(`source ${s.id} has no URL or licence`);
+  }
+  // Required credits and notices (design section 8).
+  const src = Object.fromEntries(scrDoc.sources.map((s) => [s.id, s]));
+  eq(src['nasa-power-climatology-regional']?.credit, POWER_CITATION, 'NASA POWER citation:');
+  const cop = src['copernicus-dem-glo90'] || {};
+  const earthCredit = terrainDoc.method.datasets.find((d) => d.body === 'earth').credit;
+  if (!cop.credit || !earthCredit.startsWith(cop.credit) || !/all rights reserved\.$/.test(cop.credit)) throw new Error(`Copernicus Art. 6(b) notice differs: ${cop.credit}`);
+  if (!/do not incur any liability for any use of the Copernicus WorldDEM/.test(cop.notice || '') || !/No official endorsement is implied/.test(cop.notice || '')) throw new Error('Copernicus Art. 6(c) notice or "no endorsement" is missing');
+  eq(src.igme5000?.credit, IGME_CREDIT, 'IGME5000 credit:');
+  eq(src['naturalearth-admin0-10m']?.licence, 'Public domain', 'Natural Earth licence:');
+});
+test('Jordan screening 5: sanity ranges (no -999 or NaN, T2M 10–30 °C, slopes 0–45°, known flags)', () => {
+  const m = needScreening();
+  const bad = [];
+  const walk = (v, path) => {
+    if (typeof v === 'number') { if (!Number.isFinite(v) || v <= -999) bad.push(`${path} = ${v}`); }
+    else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) walk(x, `${path}.${k}`);
+  };
+  walk(scrDoc.boxes, 'boxes'); walk(scrDoc.climate.cells, 'cells'); walk(scrDoc.controls, 'controls');
+  eq(bad.length, 0, `bad numbers (${bad.slice(0, 3).join('; ')}):`);
+  for (const [key, c] of Object.entries(scrDoc.climate.cells)) {
+    if (c.grid === 'MERRA-2' && !(c.annual.T2M >= 10 && c.annual.T2M <= 30)) throw new Error(`${key}: T2M ${c.annual.T2M} °C`);
+  }
+  for (const rec of scrDoc.boxes) {
+    const t = rec.terrain;
+    if (!(t.median_slope_deg >= 0 && t.median_slope_deg <= 45)) throw new Error(`${rec.id}: median slope ${t.median_slope_deg}°`);
+    if (!(rec.inJordan > 0 && rec.inJordan <= 1)) throw new Error(`${rec.id}: inJordan ${rec.inJordan}`);
+    for (const f of rec.flags) if (!m.FLAGS.includes(f) || !scrDoc.flagRules[f]) throw new Error(`${rec.id}: unknown flag ${f}`);
+    eq(new Set(rec.flags).size, rec.flags.length, `${rec.id} flags listed twice:`);
+    eq(rec.flags.includes('water'), !!rec.terrainExclude, `${rec.id} water flag vs terrainExclude:`);
+    eq(rec.flags.includes('border'), rec.inJordan < 1, `${rec.id} border flag:`);
+  }
+});
+test('Jordan screening 6: the ⚑ cellGap flag equals util.cellGap(…).flagged for every box', () => {
+  const m = needScreening();
+  const scr = screening();
+  const all = m.terrainAll(scr, appData);
+  let flagged = 0;
+  for (const box of scr.boxes) {
+    const q = cellGap(box, all);
+    if (!q) throw new Error(`${box.id}: no cell gap`);
+    eq(box.screen.flags.includes('cellGap'), q.flagged, `${box.id} cellGap flag:`);
+    near(q.gap, box.screen.cellGap_m, 0.0051, `${box.id} cellGap_m:`);
+    if (q.flagged) flagged += 1;
+  }
+  eq(flagged, scrDoc.counts.flags.cellGap, 'flagged boxes:');
+});
+test('Jordan screening 7: Top 10 rules (no water, site, ⚑ or incomplete box listed; fixed order; clusters touch and share the %)', () => {
+  const m = needScreening();
+  const all = m.terrainAll(screening(), appData);
+  for (const s of allResults()) {
+    const r = s.result;
+    const where = settingText(s);
+    for (const row of r.rows) {
+      const q = cellGap(row.box, all);
+      const missing = s.mode === 'full' && ['terrain', 'landing', 'geology'].some((p) => !row.targetGaps.includes(p) && row[p] == null);
+      const want = row.score != null && !row.rec.flags.includes('water') && !row.rec.containsSite && !(q && q.flagged) && !missing;
+      if (row.eligible !== want) throw new Error(`${where} ${row.id}: listed ${row.eligible}, expected ${want}`);
+    }
+    eq(r.listed.map((x) => x.id).join(), r.rows.filter((x) => x.eligible).map((x) => x.id).join(), `${where} listed rows:`);
+    for (let i = 1; i < r.listed.length; i++) if (r.listed[i].pct > r.listed[i - 1].pct) throw new Error(`${where}: list not sorted at ${r.listed[i].id}`);
+    for (let i = 1; i < r.rows.length; i++) if (m.compareRows(r.rows[i - 1], r.rows[i]) > 0) throw new Error(`${where}: order broken at ${r.rows[i].id}`);
+    // Clusters: listed boxes that touch (8 neighbours) and share the %; every listed box is in exactly one.
+    const at = new Map(r.listed.map((x) => [`${x.box.row},${x.box.col}`, x]));
+    const seen = new Set();
+    for (const c of r.clusters) {
+      const ids = new Set(c.members.map((x) => x.id));
+      eq(c.lead, c.members[0], `${where} cluster lead:`);
+      const reached = new Set([c.lead.id]);
+      const stack = [c.lead];
+      while (stack.length) {
+        const x = stack.pop();
+        if (x.pct !== c.pct || !x.eligible || seen.has(x.id)) throw new Error(`${where} ${x.id}: wrong cluster member`);
+        seen.add(x.id);
+        for (const [dr, dc] of NEAR_8) {
+          const y = at.get(`${x.box.row + dr},${x.box.col + dc}`);
+          if (!y || y.pct !== c.pct) continue;
+          if (!ids.has(y.id)) throw new Error(`${where} ${y.id} touches cluster ${c.index} at the same % but is not in it`);
+          if (!reached.has(y.id)) { reached.add(y.id); stack.push(y); }
+        }
+      }
+      eq(reached.size, ids.size, `${where} cluster ${c.index} is connected:`);
+    }
+    eq(seen.size, r.listed.length, `${where} boxes in clusters:`);
+    eq(r.top.length, Math.min(10, r.clusters.length), `${where} top:`);
+    r.top.forEach((c, i) => eq(c, r.clusters[i], `${where} top ${i}:`));
+  }
+  // The same data gives the same list, from scratch.
+  const again = m.scoreBoxes({ screening: m.prepareScreening(scrDoc), data: appData, weights: ALL_W, pillars: ALL_P, targetId: 'jezero', mode: 'full', strict: false });
+  const first = allResults().find((s) => s.targetId === 'jezero' && s.mode === 'full' && !s.strict).result;
+  eq(again.listed.map((x) => x.id).join(), first.listed.map((x) => x.id).join(), 'repeat order:');
+  eq(again.top.map((c) => `${c.lead.id}+${c.nearby}`).join(), first.top.map((c) => `${c.lead.id}+${c.nearby}`).join(), 'repeat top 10:');
+});
+test('Jordan screening 8: box colours use the pin colour scale, stretched to each target range', () => {
+  const m = needScreening();
+  for (const score of [null, 0, 0.3, 0.42, 0.5, 0.7, 0.89, 1]) for (const listed of [true, false]) eq(m.boxFill(score, listed).css, scoreColor(score), `score ${score}:`);
+  eq(m.boxFill(0.8, true).alpha, 0.55, 'listed alpha:'); eq(m.boxFill(0.8, false).alpha, 0.22, 'faded alpha:'); eq(m.boxFill(null).alpha, 0.12, 'no-score alpha:');
+  eq(m.boxFill(0.8, false, true).show, false, 'water hidden:');
+  // With a range, lo gets the grey-blue end (like 30 %) and hi the amber end (like 70 %).
+  const range = { lo: 0.40, hi: 0.52 };
+  eq(m.boxFill(0.40, true, false, range).css, scoreColor(0.3), 'range lo:');
+  eq(m.boxFill(0.52, true, false, range).css, scoreColor(0.7), 'range hi:');
+  eq(m.boxFill(0.46, true, false, range).css, scoreColor(0.5), 'range mid:');
+  for (const s of allResults()) {
+    const r = s.result.colourRange;
+    if (s.result.scored && !(r && r.hi - r.lo >= 0.04 - 1e-12)) throw new Error(`${settingText(s)}: colour range ${JSON.stringify(r)}`);
+    const best = Math.max(...s.result.listed.map((x) => x.score));
+    if (s.result.listed.length && r.hi - r.lo > 0.04 + 1e-12 && Math.abs(best - r.hi) > 1e-12) throw new Error(`${settingText(s)}: range top ${r.hi} is not the best listed box ${best}`);
+    for (const row of s.result.rows) if (row.fill.css !== scoreColor(m.stretchScore(row.score, r))) throw new Error(`${settingText(s)} ${row.id}: ${row.fill.css}`);
+  }
+});
+test('Jordan screening 9: rankSites still returns every hand-picked site (19) and no box', () => {
+  for (const t of targets) {
+    const r = rankSites(sites, t, fullOpts);
+    eq(r.length, 19, `${t.id} sites:`);
+    if (r.some((x) => x.site.id.startsWith('jo-') || x.site.kind === 'box')) throw new Error(`${t.id}: a box is in the site ranking`);
+  }
+  eq(sites.length, metaDoc.sites.length, 'sites.json after scoring the boxes:');
+  if (!scrDoc.loadError) {
+    const ids = new Set([...sites, ...targets].map((p) => p.id));
+    for (const b of scrDoc.boxes) if (ids.has(b.id)) throw new Error(`box id ${b.id} is also a site or target id`);
+  }
+});
+
+// ---------- Earth temperature source: air 2 m (NASA POWER, default) or ground surface (MODIS, data/lst.json) ----------
+const lstDoc = await getJSON('../data/lst.json').catch((err) => ({ loadError: err }));
+const scrLstDoc = await getJSON('../data/screening_lst.json').catch((err) => ({ loadError: err }));
+const compDoc = await getJSON('../data/composition.json').catch((err) => ({ loadError: err }));
+const needLst = () => { if (lstDoc.loadError || !lstDoc.places) throw new Error('data/lst.json did not load'); };
+// The sites as data.js gives them to the app: with .lst attached.
+const lstSites = sites.map((s) => ({ ...s, lst: (lstDoc.places || {})[s.id] || null }));
+const LS = (id) => lstSites.find((s) => s.id === id);
+const TEMP_IDS = Object.keys(LST_FIELD);
+const handPower = { annual: { T2M: 99, T2M_RANGE: 99, TS_MIN: 99, PRECTOTCORR: 0.1, ALLSKY_SRF_ALB: 0.3 }, gridElevation_m: 0 };
+
+test('Earth temperature: air is the default and gives the same scores as before (sites with MODIS data attached)', () => {
+  needLst();
+  eq(LST_FIELD.meanTemp, 'meanSurface_C'); eq(LST_FIELD.swing, 'swingSurface_C'); eq(LST_FIELD.coldGround, 'coldSurface_C');
+  for (const [sid, tid] of [['harrat', 'jezero'], ['wadi-rum', 'apollo17'], ['atacama', 'gale'], ['mistastin', 'malapert'], ['haughton', 'tranquillitatis-pit'], ['dry-valleys', 'arsia-skylight']]) {
+    for (const opts of [{}, fullOpts, { ...fullOpts, strict: true }]) {
+      const before = scoreSite(S(sid), T(tid), opts).score;
+      eq(scoreSite(LS(sid), T(tid), opts).score, before, `${sid} vs ${tid} default:`);
+      eq(scoreSite(LS(sid), T(tid), { ...opts, earthTemp: 'air' }).score, before, `${sid} vs ${tid} air:`);
+    }
+    eq(climateBreakdown(LS(sid), T(tid), undefined, undefined, false, 'air').score, climateBreakdown(S(sid), T(tid)).score, `${sid} breakdown:`);
+  }
+  for (const [sid, want] of Object.entries(expected.jezero)) eq(pct(climateBreakdown(LS(sid), T('jezero')).score), want, `reference ${sid}:`);
+  const a = rankSites(lstSites, T('jezero'), fullOpts).map((r) => `${r.site.id}:${r.score}`).join();
+  const b = rankSites(sites, T('jezero'), fullOpts).map((r) => `${r.site.id}:${r.score}`).join();
+  eq(a, b, 'full ranking:');
+});
+test('Earth temperature: surface mode uses the MODIS values for the 3 temperatures; rain and albedo stay NASA POWER', () => {
+  const site = { id: 'hand', power: handPower, lst: { meanSurface_C: -20, swingSurface_C: 50, coldSurface_C: -60, flags: [] } };
+  const b = climateBreakdown(site, T('jezero'), undefined, undefined, false, 'surface');
+  const row = (id) => b.rows.find((r) => r.factor.id === id);
+  eq(row('meanTemp').earth, -20); eq(row('swing').earth, 50); eq(row('coldGround').earth, -60);
+  eq(row('rain').earth, 0.1); eq(row('albedo').earth, 0.3);
+  for (const id of TEMP_IDS) eq(row(id).earthFrom, 'modis', `${id} source:`);
+  eq(row('rain').earthFrom, 'power'); eq(row('albedo').earthFrom, 'power');
+  const manual = b.rows.reduce((s, r) => s + factorScore(r.earth, r.target, r.factor.R), 0) / 5;
+  near(b.score, manual, 1e-12, 'score:');
+  eq(scoreSite(site, T('jezero'), { earthTemp: 'surface' }).score, b.score, 'scoreSite passes earthTemp:');
+  // A real site: the values come from data/lst.json.
+  needLst();
+  const h = climateBreakdown(LS('harrat'), T('jezero'), undefined, undefined, false, 'surface');
+  eq(h.rows.find((r) => r.factor.id === 'meanTemp').earth, lstDoc.places.harrat.meanSurface_C, 'harrat mean:');
+  if (h.score === climateBreakdown(LS('harrat'), T('jezero')).score) throw new Error('surface mode gave the same harrat score as air');
+  // The field kit's live values still win.
+  eq(climateBreakdown(site, T('jezero'), undefined, { meanTemp: 5 }, false, 'surface').rows[0].earth, 5, 'kit override:');
+});
+test('Earth temperature: water or polar MODIS pixels give "not measured" factors with a reason (surface mode)', () => {
+  const water = { id: 'w', power: handPower, lst: { meanSurface_C: 5, swingSurface_C: 3, coldSurface_C: -1, flags: ['water'] } };
+  const bw = climateBreakdown(water, T('jezero'), undefined, undefined, false, 'surface');
+  for (const id of TEMP_IDS) {
+    const r = bw.rows.find((x) => x.factor.id === id);
+    eq(r.earth, null, `water ${id}:`); eq(r.score, null, `water ${id} score:`);
+    if (!r.earthWhy) throw new Error(`water ${id} has no reason`);
+  }
+  eq(bw.rows.filter((r) => r.score != null).length, 2, 'water: rain and albedo left:');
+  const polar = { id: 'p', power: handPower, lst: { meanSurface_C: null, swingSurface_C: null, coldSurface_C: -40, flags: ['polar'] } };
+  const bp = climateBreakdown(polar, T('jezero'), undefined, undefined, false, 'surface');
+  eq(bp.rows.find((r) => r.factor.id === 'meanTemp').earth, null); eq(bp.rows.find((r) => r.factor.id === 'swing').earth, null);
+  eq(bp.rows.find((r) => r.factor.id === 'coldGround').earth, -40);
+  if (!/polar/.test(bp.rows[0].earthWhy)) throw new Error('polar reason missing');
+  const none = climateBreakdown({ id: 'n', power: handPower }, T('jezero'), undefined, undefined, false, 'surface');
+  eq(none.rows.filter((r) => r.score != null).length, 2, 'no lst: rain and albedo only:');
+  // The real data: Mistastin is water, Haughton and the Dry Valleys are polar.
+  needLst();
+  const m = climateBreakdown(LS('mistastin'), T('jezero'), undefined, undefined, false, 'surface');
+  eq(m.rows.filter((r) => TEMP_IDS.includes(r.factor.id) && r.earth != null).length, 0, 'mistastin temps:');
+  for (const id of ['haughton', 'dry-valleys']) {
+    const r = climateBreakdown(LS(id), T('jezero'), undefined, undefined, false, 'surface').rows;
+    eq(r.find((x) => x.factor.id === 'meanTemp').earth, null, `${id} mean:`);
+    eq(r.find((x) => x.factor.id === 'coldGround').earth, lstDoc.places[id].coldSurface_C, `${id} coldest:`);
+  }
+});
+test('every site has a MODIS surface-temperature entry; every null value is explained by a flag or a note', () => {
+  needLst();
+  for (const s of sites) {
+    const p = lstDoc.places[s.id];
+    if (!p) throw new Error(`${s.id} is not in data/lst.json`);
+    for (const k of Object.values(LST_FIELD)) {
+      const v = p[k];
+      if (v == null) { if (!(p.flags || []).length || !(p.note || '').trim()) throw new Error(`${s.id}.${k} is null without a flag and a note`); continue; }
+      if (!Number.isFinite(v) || v < -90 || v > 80) throw new Error(`${s.id}.${k} = ${v} is out of range`);
+    }
+    if (p.coldSurface_C != null && !/^\d{4}-\d{2}-\d{2}$/.test(p.coldSurfaceStart || '')) throw new Error(`${s.id} has no date for its coldest night`);
+  }
+  if (!(lstDoc.product?.dois || []).length) throw new Error('no DOI in data/lst.json');
+});
+test('Discover boxes in surface mode score exactly like a site built by hand with the box MODIS values (sample of boxes)', () => {
+  const m = needScreening();
+  if (scrLstDoc.loadError || !scrLstDoc.boxes) throw new Error('data/screening_lst.json did not load');
+  const scr = m.prepareScreening(scrDoc, scrLstDoc);
+  const sample = scrDoc.boxes.filter((rec, i) => i % 17 === 0 || (scrLstDoc.boxes[rec.id]?.flags || []).includes('water'));
+  let n = 0;
+  let differs = 0;
+  for (const tid of ['jezero', 'apollo17', 'malapert', 'gale']) for (const mode of ['climate', 'full']) {
+    const surface = m.scoreBoxes({ screening: scr, data: appData, weights: ALL_W, pillars: ALL_P, targetId: tid, mode, strict: false, earthTemp: 'surface' });
+    const air = m.scoreBoxes({ screening: scr, data: appData, weights: ALL_W, pillars: ALL_P, targetId: tid, mode, strict: false, earthTemp: 'air' });
+    if (surface === air || surface.key === air.key) throw new Error('the cache key does not include earthTemp');
+    eq(surface.earthTemp, 'surface');
+    const opts = { mode, strict: false, weights: ALL_W, pillars: ALL_P, terrain: handTerrain(), resources: tags, earthTemp: 'surface' };
+    for (const rec of sample) {
+      const want = scoreSite({ ...handSite(rec), lst: scrLstDoc.boxes[rec.id] || null }, T(tid), opts).score;
+      const row = surface.byId.get(rec.id);
+      if (row.score !== want) throw new Error(`${rec.id} vs ${tid} (${mode}, surface): expected ${want}, got ${row.score}`);
+      if (row.score !== air.byId.get(rec.id).score) differs += 1;
+      n += 1;
+    }
+  }
+  if (!differs) throw new Error('surface mode changed no box score');
+  if (n < 400) throw new Error(`only ${n} comparisons`);
+  for (const rec of scrDoc.boxes) if (!scrLstDoc.boxes[rec.id]) throw new Error(`${rec.id} is not in data/screening_lst.json`);
+});
+test('surface composition covers all 19 sites, each with a reading or a flag, and stays out of the score', () => {
+  if (compDoc.loadError || !compDoc.places) throw new Error('data/composition.json did not load');
+  eq(Object.keys(compDoc.places).sort().join(), sites.map((s) => s.id).sort().join(), 'sites:');
+  for (const [id, p] of Object.entries(compDoc.places)) {
+    if (!(p.reading || '').trim() && !(p.flags || []).length) throw new Error(`${id} has neither a reading nor a flag`);
+    for (const f of p.flags || []) if (!(f.why || '').trim()) throw new Error(`${id} flag ${f.id} has no reason`);
+  }
+  for (const s of sites.filter((x) => x.jordan)) if (!compDoc.places[s.id].jordanCheck?.verdict) throw new Error(`${s.id} has no Jordan check`);
+  if (!/never used in any score/i.test(compDoc.rules?.displayOnly || '')) throw new Error('display-only rule missing');
+  // Scoring never reads composition: a site with and without it scores the same.
+  const withComp = { ...S('harrat'), composition: compDoc.places.harrat };
+  eq(scoreSite(withComp, T('jezero'), fullOpts).score, scoreSite(S('harrat'), T('jezero'), fullOpts).score, 'composition is not scored:');
+});
+
+// Earth 3D terrain (js/globe/globe.js loadEarthTerrain): while Cesium World Terrain loads, and after it fails (no internet,
+// slow Wi-Fi, a token Cesium ion does not accept), the smooth globe with its NASA pictures must stay on screen.
+// The test page has no 3D, so a tiny stand-in for the Cesium global lets globe.js load; the real Cesium is never used here.
+if (!window.Cesium) window.Cesium = { Math: { toRadians: (d) => (d * Math.PI) / 180, toDegrees: (r) => (r * 180) / Math.PI } };
+const globeMod = await import('../js/globe/globe.js').catch((e) => ({ importError: e }));
+async function terrainCase(answer, { wait = true, switched = false } = {}) {
+  if (globeMod.importError) return { importError: globeMod.importError };
+  const flat = { name: 'smooth globe' };
+  const viewer = { scene: { terrainProvider: flat } };
+  const status = [];
+  const g = Object.create(globeMod.Globe.prototype);
+  if (typeof g.loadEarthTerrain !== 'function') return { importError: new Error('Globe has no loadEarthTerrain()') };
+  Object.assign(g, { viewer, has3D: false, onStatus: (st) => status.push(st) });
+  const saved = window.Cesium.CesiumTerrainProvider;
+  window.Cesium.CesiumTerrainProvider = { fromIonAssetId: () => answer };
+  let ready;
+  try { ready = g.loadEarthTerrain(viewer); } finally { window.Cesium.CesiumTerrainProvider = saved; }
+  const during = viewer.scene.terrainProvider;
+  if (switched) g.viewer = { scene: {} }; // the visitor switched to the Moon or Mars meanwhile
+  const ok = wait ? await ready : null;
+  return { flat, viewer, during, status, ok, has3D: g.has3D };
+}
+const terrainFail = await terrainCase(Promise.reject(new Error('offline')));
+const terrainSlow = await terrainCase(new Promise(() => {}), { wait: false });
+const worldTerrain = { name: 'Cesium World Terrain' };
+const terrainOk = await terrainCase(Promise.resolve(worldTerrain));
+const terrainLate = await terrainCase(Promise.resolve(worldTerrain), { switched: true });
+test('Earth: when 3D terrain cannot load (offline, slow Wi-Fi, token refused) the globe and its pictures stay, and the app is told', () => {
+  if (globeMod.importError) throw new Error(`js/globe/globe.js did not load: ${globeMod.importError.message}`);
+  if (terrainOk.importError) throw terrainOk.importError;
+  for (const [name, c] of Object.entries({ failed: terrainFail, slow: terrainSlow, ok: terrainOk })) {
+    if (c.during !== c.flat) throw new Error(`${name}: the globe lost its terrain provider while 3D terrain was loading`);
+  }
+  if (terrainFail.viewer.scene.terrainProvider !== terrainFail.flat) throw new Error('failed: the smooth globe was not kept');
+  eq(terrainFail.ok, false, 'failed: terrainReady');
+  eq(terrainFail.has3D, false, 'failed: has3D');
+  if (!terrainFail.status.some((st) => st.body === 'earth' && st.ion === false)) throw new Error('failed: no ion:false status for the banner and the 3D button');
+  eq(terrainSlow.has3D, false, 'slow: has3D');
+  if (terrainOk.viewer.scene.terrainProvider !== worldTerrain) throw new Error('ok: World Terrain was not used');
+  eq(terrainOk.ok, true, 'ok: terrainReady');
+  eq(terrainOk.has3D, true, 'ok: has3D');
+  if (!terrainOk.status.some((st) => st.terrain === true)) throw new Error('ok: no terrain:true status');
+  if (terrainLate.viewer.scene.terrainProvider !== terrainLate.flat) throw new Error('switched world: an old viewer got the terrain');
+  eq(terrainLate.ok, false, 'switched world: terrainReady');
+});
+const cfg = await import('../js/config.js').catch((e) => ({ importError: e }));
+test('?no3d turns 3D off for one visit (config.js), even with a token', () => {
+  if (cfg.importError) throw new Error(`js/config.js did not load: ${cfg.importError.message}`);
+  if (!('NO_3D' in cfg)) throw new Error('config.js has no NO_3D');
+  eq(cfg.NO_3D, /[?&]no3d\b/.test(location.search), 'NO_3D follows the address:');
+  if (cfg.NO_3D && cfg.HAS_ION) throw new Error('HAS_ION must be false with ?no3d');
+});
+
+// The docs repeat counts and the short-answer percentages by hand (README.md, JUDGE_GUIDE_AR.md, the deck's
+// pitch/deck/slides.json). This last test recomputes them from the data, so a change in the data cannot leave them stale.
+const docText = await Promise.all(['../README.md', '../JUDGE_GUIDE_AR.md', '../pitch/deck/slides.json']
+  .map((p) => fetch(p, { cache: 'no-store' }).then((r) => (r.ok ? r.text() : null)).catch(() => null)));
+test('docs agree with the data: test count, site/target/box counts and the short-answer percentages (README, Arabic guide, deck)', () => {
+  const [readme, guide, deckText] = docText;
+  if (!readme || !guide || !deckText) throw new Error('README.md, JUDGE_GUIDE_AR.md or pitch/deck/slides.json could not be read');
+  const deck = JSON.parse(deckText);
+  const deckWords = deck.slides.flatMap((s) => [s.notes || '', ...(s.items || []).map((it) => it.text || '')]).join('\n');
+  const bad = [];
+  const same = (where, got, want) => { if (String(got) !== String(want)) bad.push(`${where}: ${got} (data: ${want})`); };
+  // Counts. This is the last test, so the total is every test so far plus this one.
+  const total = passed + failed + 1;
+  for (const m of readme.matchAll(/All (\d+) tests passed|\((\d+) tests[,)]|(\d+) tests\)/g)) same(`README "${m[0]}"`, m[1] || m[2] || m[3], total);
+  for (const m of guide.matchAll(/(\d+) اختباراً آلياً|All (\d+) tests passed/g)) same(`Arabic guide "${m[0]}"`, m[1] || m[2], total);
+  for (const m of deckWords.matchAll(/ranks (\d+) Earth/g)) same(`deck "${m[0]}"`, m[1], sites.length);
+  for (const m of deckWords.matchAll(/one of (\d+) targets/g)) same(`deck "${m[0]}"`, m[1], targets.length);
+  if (scrDoc?.boxes) for (const m of deckWords.matchAll(/(\d+) boxes of 10/g)) same(`deck "${m[0]}"`, m[1], scrDoc.boxes.length);
+  // The short-answer tables: the top 3 percentages and the "read with care" counts of every target row.
+  const rankOf = (id) => rankSites(sites, T(id), fullOpts);
+  const dedup = (a) => a.filter((v, i) => i === 0 || v !== a[i - 1]).join(',');
+  const rowsOf = (text) => text.split(/\r?\n/).filter((l) => l.startsWith('|')).map((l) => l.split('|').map((c) => c.trim()));
+  const tables = [
+    ['README', readme, { 'Malapert Massif': 'malapert', 'Mons Mouton': 'mons-mouton', 'Shackleton connecting ridge': 'shackleton-ridge', 'Shackleton crater floor': 'southpole', 'Jezero Crater': 'jezero', 'Gale Crater': 'gale', 'Deuteronilus Mensae': 'deuteronilus', 'Erebus Montes': 'erebus-montes', 'Phoenix (lander)': 'phoenix', 'Mare Tranquillitatis pit (Moon)': 'tranquillitatis-pit', 'Arsia Mons skylight (Mars)': 'arsia-skylight', 'Apollo 11': 'apollo11', 'Apollo 17': 'apollo17' }],
+    ['Arabic guide', guide, { Malapert: 'malapert', 'Mons Mouton': 'mons-mouton', 'حافة Shackleton': 'shackleton-ridge', 'قاع فوهة Shackleton': 'southpole', Jezero: 'jezero', Gale: 'gale', 'Deuteronilus Mensae': 'deuteronilus', 'Erebus Montes': 'erebus-montes', Phoenix: 'phoenix', 'كهف القمر (Tranquillitatis)': 'tranquillitatis-pit', 'كهف المريخ (Arsia Mons)': 'arsia-skylight', 'Apollo 11': 'apollo11', 'Apollo 17': 'apollo17' }],
+  ];
+  for (const [name, text, labels] of tables) {
+    const rows = rowsOf(text);
+    for (const [label, id] of Object.entries(labels)) {
+      const row = rows.find((c) => c[2] === label);
+      if (!row) { bad.push(`${name}: no short-answer row "${label}"`); continue; }
+      const r = rankOf(id);
+      const p = r.map((x) => (x.score == null ? null : pct(x.score)));
+      const where = `${name} ${label}`;
+      same(`${where} top 3`, dedup([...row[3].matchAll(/(\d+) ?%/g)].map((m) => +m[1])), dedup(p.slice(0, 3)));
+      const n50 = p.filter((v) => v != null && v >= 50).length;
+      const care = row[4] || '';
+      let m;
+      if ((m = care.match(/(\d+) of (\d+) sites reach 50 %|(\d+) من (\d+) موقعاً تصل إلى 50%/))) same(`${where} reach 50 %`, `${m[1] || m[3]} of ${m[2] || m[4]}`, `${n50} of ${sites.length}`);
+      if (/Only 1 site reaches 50 %|موقع واحد فقط يصل إلى 50%/.test(care)) same(`${where} reach 50 %`, 1, n50);
+      if (/No site reaches 50 %|لا يصل أي موقع إلى 50%/.test(care)) same(`${where} reach 50 %`, 0, n50);
+      if ((m = care.match(/top 10 lie within (\d+) points|أول 10 مواقع ضمن (\d+) نقاط/))) same(`${where} top 10 spread`, m[1] || m[2], p[0] - p[9]);
+      if ((m = care.match(/top 3 lie within (\d+) points/))) same(`${where} top 3 spread`, m[1], p[0] - p[2]);
+      if (/الثلاثة الأوائل ضمن نقطتين/.test(care)) same(`${where} top 3 spread`, 2, p[0] - p[2]);
+    }
+    // The "all 3 base sites together" row: Haughton's percentages for Malapert, Mons Mouton and the ridge.
+    const c = rk.baseConsensus({ sites, targets, terrain, resources: tags });
+    const row = rows.find((cells) => /All 3 base sites together|مواقع القاعدة الثلاثة معاً/.test(cells[2] || ''));
+    if (!row) bad.push(`${name}: no "all 3 base sites" row`);
+    else same(`${name} all 3 base sites`, [...row[3].matchAll(/(\d+) ?%/g)].map((m) => m[1]).join(','), c.steady[0]?.pcts.join(','));
+  }
+  // The deck's "What we found" rows: each % is the named site's score for each target in the row.
+  const deckRows = {
+    'MARS · JEZERO CRATER': ['harrat', ['jezero']],
+    'MOON + MARS · CAVE SKYLIGHTS': ['harrat', ['tranquillitatis-pit', 'arsia-skylight']],
+    'MARS · GALE CRATER + PHOENIX': ['qaidam-dalangtan', ['gale', 'phoenix']],
+    'MOON · APOLLO 11 + APOLLO 17': ['harrat', ['apollo11', 'apollo17']],
+    'MARS · ICE-RICH LANDING ZONES': ['tso-kar-ladakh', ['deuteronilus', 'erebus-montes']],
+    'MOON · ALL 3 PERMANENT BASE SITES': ['haughton', ['malapert', 'mons-mouton', 'shackleton-ridge']],
+  };
+  const items = deck.slides.flatMap((s) => s.items || []).filter((it) => it.type === 'row');
+  for (const [tag, [siteId, ids]] of Object.entries(deckRows)) {
+    const it = items.find((x) => x.tag === tag);
+    if (!it) { bad.push(`deck: no row "${tag}"`); continue; }
+    same(`deck ${tag}`, [...it.pct.matchAll(/\d+/g)].join(','), ids.map((id) => pct(rankOf(id).find((x) => x.site.id === siteId).score)).join(','));
+  }
+  if (bad.length) throw new Error(`${bad.length} stale: ${bad.join('; ')}`);
+});
+
+document.getElementById('sum').innerHTML = failed ? `<span class="fail">${failed} of ${passed + failed} tests failed</span>` : `<span class="pass">All ${passed} tests passed</span>`;
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+{
+ "jeanne_25km": {
+  "pixel": {
+   "line0": 764,
+   "sample0": 491,
+   "lat": -5.5625,
+   "lon": -118.5625,
+   "albedo": 0.2813
+  },
+  "within_25km": {
+   "n": 36,
+   "mean": 0.2788,
+   "median": 0.2802,
+   "min": 0.2711,
+   "max": 0.2874
+  }
+ },
+ "jeanne_10km": {
+  "pixel": {
+   "line0": 764,
+   "sample0": 491,
+   "lat": -5.5625,
+   "lon": -118.5625,
+   "albedo": 0.2813
+  },
+  "within_10km": {
+   "n": 5,
+   "mean": 0.2802,
+   "median": 0.2802,
+   "min": 0.2772,
+   "max": 0.2823
+  }
+ },
+ "deuteronilus_check": {
+  "pixel": {
+   "line0": 407,
+   "sample0": 1625,
+   "lat": 39.0625,
+   "lon": 23.1875,
+   "albedo": 0.1314
+  },
+  "within_25km": {
+   "n": 44,
+   "mean": 0.135,
+   "median": 0.1324,
+   "min": 0.1232,
+   "max": 0.1803
+  }
+ }
+}

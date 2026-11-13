@@ -1,0 +1,227 @@
+MIT License
+
+Copyright (c) 2026 The Analog Atlas team (NASA Space Apps Challenge 2026, Amman)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+-------------------------------------------------------------------------------
+WHAT THIS LICENCE COVERS
+
+This MIT licence covers the code written for Analog Atlas: index.html, css/,
+js/, scripts/, tests/, design/, serve.py, start.bat, config.example.js,
+firmware/, the helper scripts in data/raw/mars_ez_extract/, and the pitch
+code (pitch/promo.html, pitch/pixelcat.js, pitch/fix_webm.py,
+pitch/deck/backgrounds.html and pitch/deck/build_deck.ps1).
+
+The team-written data files (data/*.json) are shared under the same MIT terms.
+The numbers in them are not ours: each value names the source it comes from
+(NASA POWER, mission papers, NASA fact sheets and others). When you reuse a
+value, cite that source.
+
+It does NOT cover the third-party files below. They keep their own licences.
+
+-------------------------------------------------------------------------------
+THIRD-PARTY FILES IN THIS FOLDER
+
+- vendor/cesium/      CesiumJS, Apache License 2.0 (see vendor/cesium/LICENSE.md)
+- vendor/pannellum/   Pannellum 2.5.7 by Matthew Petroff, MIT
+                      (see vendor/pannellum/LICENSE)
+- vendor/fonts/       IBM Plex Sans, IBM Plex Sans Condensed and IBM Plex Mono,
+                      Copyright 2017 IBM Corp., SIL Open Font License 1.1
+                      (see vendor/fonts/OFL.txt)
+- data/raw/           values from public data services, saved by our scripts
+                      without changing the numbers: NASA POWER answers,
+                      elevation samples from Open-Meteo (Copernicus DEM) and
+                      NASA Solar System Treks, and pixel values read from the
+                      LRO Diviner polar maps (Diviner team, UCLA). This
+                      includes data/raw/removed/ (sites taken out of the app).
+                      The team's own notes there (mars_ez_research.json,
+                      removed/README.txt, removed/terrain_summary.json,
+                      moonbase/README.txt, moonbase/sources.json)
+                      follow the data/*.json rule above. moonbase/sources.json
+                      holds short exact quotes from the NASA and USGS pages it
+                      links, kept as evidence for the values.
+
+Satellite data measured from orbit (the "Measured from orbit" card and the
+"Ground surface" temperature switch). Our files hold numbers derived from them;
+when you reuse those numbers, keep these credits:
+- data/lst.json, data/screening_lst.json, data/raw/lst/
+                      NASA MODIS MOD21A2 (Terra) and MYD21A2 (Aqua) v061 land
+                      surface temperature, NASA LP DAAC
+                      (doi:10.5067/MODIS/MOD21A2.061,
+                      doi:10.5067/MODIS/MYD21A2.061). CC0: NASA-led mission
+                      data, per the NASA Earthdata data use guidance
+                      (https://www.earthdata.nasa.gov/engage/open-data-services-software-policies/data-use-guidance).
+- data/composition.json, data/screening_composition.json, data/raw/composition/
+                      MODIS MOD21A2 v061 band-29 emissivity (as above, CC0).
+                      Copernicus Sentinel-2 L2A surface reflectance
+                      (doi:10.5270/S2_-742ikth), free, full and open under the
+                      Copernicus Sentinel data legal notice:
+                      "Contains modified Copernicus Sentinel data 2023-2024".
+                      ASTER L1T v003 (NASA/METI/AIST/Japan Spacesystems and
+                      U.S./Japan ASTER Science Team; NASA LP DAAC;
+                      doi:10.5067/ASTER/AST_L1T.003), openly shared without
+                      restriction under the EOSDIS Data Use and Citation
+                      Guidance (its NASA Earthdata catalog page).
+- data/emit.json      NASA EMIT L2B minerals and L2A masks, NASA LP DAAC
+                      (doi:10.5067/EMIT/EMITL2BMIN.001, .002;
+                      doi:10.5067/EMIT/EMITL2AMASK.002, .003). CC0 as above.
+
+Map and elevation data for Discover Jordan (data/screening_jordan.json,
+data/raw/screening/) and for the Jordan rock-type sources in
+data/sites_meta.json. When you reuse these values, keep these credits:
+- IGME5000 geological map: "IGME5000, © BGR, Hannover, 2005,
+                      https://doi.org/10.25928/igme-5000, modified:
+                      reclassified to Analog Atlas rock ids". Licence: GeoNutzV
+                      (German federal licence for geodata),
+                      https://sg.geodatenzentrum.de/web_public/gdz/lizenz/geonutzv.pdf
+- Copernicus DEM GLO-90 (2021 release): "Produced using Copernicus
+                      WorldDEM-90 (c) DLR e.V. 2010-2014 and (c) Airbus Defence
+                      and Space GmbH 2014-2018 provided under COPERNICUS by the
+                      European Union and ESA; all rights reserved."
+- Natural Earth 1:10m Admin 0 - Countries (Jordan's border): public domain.
+
+Globe pictures (textures/), all public domain:
+- earth.jpg   NASA Earth Observatory, Blue Marble Next Generation (Reto Stöckli)
+- moon.jpg    NASA Scientific Visualization Studio, CGI Moon Kit (Ernie Wright);
+              LRO LROC WAC colour mosaic, NASA/GSFC/Arizona State University
+- mars.jpg    NASA/JPL/USGS Astrogeology Science Center, Viking MDIM 2.1
+              (colorization by NASA Ames)
+The Earth and Mars pictures were made smaller and the Moon picture was saved
+as JPEG; data/assets.json gives the details.
+
+Photos and panoramas (panoramas/). The photographer, source page and
+licence of each photo are also in data/panoramas.json and are shown in the app
+next to the photo. Unless a line says otherwise, the file is used unchanged
+(for many Wikimedia Commons files, the smaller copy that Commons itself serves).
+data/assets.json lists how each file was processed.
+
+  Public domain (NASA, NASA/JPL):
+  - apollo11-pan4.jpg            NASA / Neil Armstrong; panorama assembly by
+                                 Yuri Krasilnikov (Apollo Lunar Surface Journal)
+  - apollo17-lm-pan.jpg          NASA / Harrison H. Schmitt; panorama assembly
+                                 by NASA Johnson Space Center. Cropped to one
+                                 full turn (the end repeated the start).
+  - jezero-pia24264.jpg          NASA/JPL-Caltech/MSSS/ASU (made smaller)
+  - gale-pia23623.jpg            NASA/JPL-Caltech/MSSS (made smaller)
+  - phoenix-pia13804.jpg         NASA/JPL-Caltech/University of Arizona/
+                                 Texas A&M University (made smaller)
+  - holuhraun-lava-field.jpg     NASA Johnson Space Center / Robert Markowitz
+  - haughton-crater-edge.jpg     NASA Haughton-Mars Project
+  - pilbara-mars2020-stromatolites-pia23551.jpg  NASA/JPL-Caltech (PIA23551)
+
+  Public domain, photos taken from orbit (made by the team from NASA Planetary
+  Data System products; LROC's terms say PDS data products "are in the public
+  domain", and HiRISE says its images "are within the public domain"):
+  - malapert-lroc-nac-roi-mosaic.jpg  NASA/GSFC/Arizona State University (LRO
+                                 LROC NAC mosaic NAC_ROI_MALAPERTLO1, NASA PDS).
+                                 Made smaller and cut to the area with data.
+  - deuteronilus-hirise-esp_057389_2195.jpg  NASA/JPL-Caltech/UArizona (MRO
+                                 HiRISE ESP_057389_2195). Cropped.
+  - erebus-montes-hirise-esp_045093_2195.jpg  NASA/JPL-Caltech/UArizona (MRO
+                                 HiRISE ESP_045093_2195). Cropped.
+  - tranquillitatis-pit-lroc-m126710873r.jpg  NASA/GSFC/Arizona State University
+                                 (LRO LROC NAC M126710873R, NASA PDS). Stretched to
+                                 square pixels and turned so north is up.
+  - arsia-skylight-hirise-psp_003647_1745.jpg  NASA/JPL-Caltech/UArizona (MRO
+                                 HiRISE PSP_003647_1745, the HiRISE team's close-up).
+  - shackleton-floor-lroc-nac-psr-mosaic.jpg  NASA/GSFC/Arizona State University
+                                 (LRO LROC NAC south pole PSR mosaic
+                                 NAC_POLE_PSR_SOUTH_STRETCH, NASA PDS). Cut around the
+                                 crater and made smaller.
+  - mons-mouton-lroc-nac-roi-mosaic.jpg  NASA/GSFC/Arizona State University/
+                                 Intuitive Machines (LRO LROC NAC mosaic
+                                 NAC_ROI_MOUTNPLTLO1, NASA PDS). Cut around the
+                                 target point.
+  - shackleton-ridge-lroc-nac-pole-mosaic.jpg  NASA/GSFC/Arizona State University
+                                 (LRO LROC NAC south pole mosaic NAC_POLE_P892S2250,
+                                 NASA PDS). Cut around the target point.
+
+  Public domain, photos taken from orbit by Landsat (USGS: there are no
+  restrictions on Landsat data; USGS asks that the source is named):
+  - mistastin-landsat8-oli-2017254.jpg  NASA Earth Observatory image by Lauren
+                                 Dauphin, using Landsat data from the U.S.
+                                 Geological Survey. Cropped.
+  - qa-al-jafr-landsat9-20260911.jpg  Landsat 9 image courtesy of the U.S.
+                                 Geological Survey (scene LC09_L2SP_173039_20260911,
+                                 shown with Microsoft Planetary Computer's true-colour
+                                 settings, so the colours are adjusted for viewing).
+
+  CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/):
+  - wadi-rum-day.jpg             Hansueli Krapf / Wikimedia Commons
+  - sp-crater-inside.jpg         TalynBigfoot / Wikimedia Commons
+
+  CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/):
+  - harrat-usaykhim.jpg          Mohammad hajeer / Wikimedia Commons
+                                 (Visual Jordan Archive Project)
+  - ries-wemdinger-ried.jpg      Dozemode / Wikimedia Commons
+  - qaidam-yardangs-mangya.jpg   Liuxingy / Wikimedia Commons
+
+  CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/):
+  - atacama-armazones.jpg        ESO/S. Brunier (ESO asks for this credit to be
+                                 shown clearly)
+  - rio-tinto-pena-de-hierro.jpg David Perez (DPC) / Wikimedia Commons
+
+  CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/):
+  - lisan-ghawr-al-mazraa-badlands.jpg  Adeeb Atwan, via Panoramio /
+                                 Wikimedia Commons
+
+  CC BY 2.5 (https://creativecommons.org/licenses/by/2.5/):
+  - mdrs-hab-photo.jpg           McKay Salisbury / Wikimedia Commons
+
+  CC BY 2.0 (https://creativecommons.org/licenses/by/2.0/):
+  - death-valley.jpg             Meisam Fathi Salmi (Always Shooting),
+                                 via Flickr / Wikimedia Commons
+  - dry-valleys-wright.jpg       Pierre Roudier, via Flickr / Wikimedia Commons
+  - tso-kar-lake.jpg             McKay Savage, via Flickr / Wikimedia Commons
+
+  CC BY-SA 2.0 (https://creativecommons.org/licenses/by-sa/2.0/):
+  - craters-of-the-moon-big-craters-spatter-cones.jpg  Doug Kerr, via Flickr /
+                                 Wikimedia Commons
+
+  Attribution required (Wikimedia Commons template "Bild-by"):
+  - waqf-as-suwwan-uplift.jpg    Martin Schmieder, Stuttgart / Wikimedia Commons
+
+If you share or reuse a CC BY or CC BY-SA photo, keep the credit and the
+licence name, and say if you changed it. If you change a CC BY-SA photo, share
+your changed version under the same licence.
+
+Pitch material (pitch/): the deck (AnalogAtlas_CosmicCats.pptx, deck/bg/,
+deck/preview/) and the promo videos (analog-atlas-pitch-promo30.webm,
+analog-atlas-pitch-promo60.webm) use photos from panoramas/ that we changed:
+cropped, darkened or colour-graded, with drawings added. Their credits are on
+the slides and on the video end card. Some of these photos are CC BY-SA
+(wadi-rum-day.jpg, harrat-usaykhim.jpg, qaidam-yardangs-mangya.jpg,
+craters-of-the-moon-big-craters-spatter-cones.jpg), so if you share the deck
+or a video, keep the credits and share it under CC BY-SA 4.0. The app
+screenshots (pitch/shots/ and the deck) also show map imagery streamed at run
+time (NASA GIBS, NASA Solar System Treks, Cesium ion); see the last section.
+
+-------------------------------------------------------------------------------
+SHOWN IN THE APP BUT NOT STORED IN THIS FOLDER
+
+- Google Street View views (places listed in data/streetview.json) are shown
+  live through Google's own Maps embed. The imagery is (c) Google and its
+  contributors (some views are photospheres by named people, credited in the
+  app). It is never copied into this folder, and its use follows Google's
+  terms.
+- 3D tiles, terrain and imagery streamed at run time (Cesium ion: Cesium World
+  Terrain, Bing Maps imagery, Cesium Moon and Cesium Mars; NASA GIBS; NASA
+  Solar System Treks) are not part of this repository and follow their
+  providers' terms. The app shows their credits on screen.

@@ -1,0 +1,30 @@
+{
+ "about": "The data/terrain.json entry for Mauna Kea, saved here when the site was removed (2026-10-10). Computed by scripts/compute_terrain.py from terrain/mauna-kea.json in this folder.",
+ "points": {
+  "mauna-kea": {
+   "body": "earth",
+   "lat": 19.82,
+   "lon": -155.47,
+   "median_slope_deg": 9.1,
+   "mean_slope_deg": 9.89,
+   "p90_slope_deg": 15.05,
+   "pct_lt_8": 35.2,
+   "pct_lt_10": 57.9,
+   "pct_lt_15": 89.5,
+   "max_flat_square_km": 3.0,
+   "relief_m": 1569.0,
+   "centre_elev_m": 4169.0,
+   "elev_datum": "m above the EGM2008 geoid (Copernicus DEM; horizontal datum WGS84-G1150)",
+   "n_samples": 441,
+   "flat_water_suspect": false,
+   "dataset": "copernicus-dem-glo90@open-meteo",
+   "notes": "",
+   "name": "Mauna Kea",
+   "kind": "site",
+   "coordSource": "team site list",
+   "n_slope_cells": 361,
+   "max_identical_pct": 1.1,
+   "fetched": "2026-10-09T15:47:48Z"
+  }
+ }
+}

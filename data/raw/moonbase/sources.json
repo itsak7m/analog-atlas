@@ -1,0 +1,119 @@
+{
+ "about": "Research record for the two south-pole base-site targets added on 2026-10-14 (mons-mouton, shackleton-ridge) and for the regolith tag rule (VAL9). Every quote below was checked by script to appear in the page or abstract fetched on that date. Temperatures: scripts/extract_diviner.py (data/diviner_malapert.json, base_points; raw windows in data/raw/diviner/). Terrain: scripts/compute_terrain.py with NASA Moon Trek (data/terrain.json; raw responses in data/raw/terrain/mons-mouton.json and shackleton-ridge.json).",
+ "sources": [
+  {
+   "key": "mons-mouton-usgs",
+   "url": "https://planetarynames.wr.usgs.gov/Feature/16070",
+   "fetched": "2026-10-14",
+   "usedFor": "mons-mouton pin (lat -84.60, lon 31.00) and the 130 km size",
+   "quotes": [
+    "Center Latitude -84.60 °",
+    "Center Longitude 31.00 °",
+    "Diameter 130.00 km",
+    "Coordinate System Planetographic, +East, -180 - 180"
+   ]
+  },
+  {
+   "key": "ridge-tower",
+   "url": "https://ntrs.nasa.gov/citations/20240009936",
+   "fetched": "2026-10-14",
+   "file": "https://ntrs.nasa.gov/api/citations/20240009936/downloads/TDEA%20TSPD%20Tall%20Tower%20Lunar%20Thermal%20Analysis%20v3.pdf",
+   "usedFor": "shackleton-ridge pin (lat -89.46752, lon -138.012788), the 1,937.83 m height and the 'Why here' fact",
+   "quotes": [
+    "Analyzed Shackleton Connecting Ridge (-89.46752, -138.012788 with elevation of 1937.83 meters)",
+    "Specific coordinates chosen to match available average seasonal surface temperature flight data from LRO",
+    "TLT is a 50-meter-tall tower constructed on the lunar surface near the south pole.",
+    "The tower’s height at this location on the moon allows for extended durations of incident solar flux which can be used to generate power via photovoltaic arrays."
+   ]
+  },
+  {
+   "key": "artemis3-regions-2022",
+   "url": "https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/",
+   "fetched": "2026-10-14",
+   "usedFor": "Connecting Ridge in the 2022 list of 13 regions; region size 15 x 15 km",
+   "quotes": [
+    "NASA identified the following candidate regions for an Artemis III lunar landing:",
+    "Peak Near Shackleton Connecting Ridge Connecting Ridge Extension de Gerlache Rim 1",
+    "Each region is approximately 9.3 by 9.3 miles (15 by 15 kilometers)."
+   ]
+  },
+  {
+   "key": "artemis3-regions",
+   "url": "https://ntrs.nasa.gov/citations/20250011660",
+   "fetched": "2026-10-14",
+   "usedFor": "Mons Mouton and Mons Mouton Plateau in the 2024 list of 9; removed regions not unsuitable",
+   "quotes": [
+    "Peak near Cabeus B, Haworth, Malapert Massif, Mons Mouton Plateau, Mons Mouton, Nobile Rim 1, Nobile Rim 2, de Gerlache Rim 2, and Slater Plain",
+    "does not imply that removed regions are unsuitable for future exploration"
+   ]
+  },
+  {
+   "key": "lro-ridge-traverse",
+   "url": "https://ntrs.nasa.gov/citations/20160012274",
+   "fetched": "2026-10-14",
+   "usedFor": "shackleton-ridge 'Sunlight (model)' fact",
+   "quotes": [
+    "we identified a traverse that would keep the rover illuminated for 94.43% of the year between 1 January 2021 and 31 December 2021",
+    "the rover would move a total of 22.11 km",
+    "explore a variety of targets along the connecting ridge between Shackleton and de Gerlache craters"
+   ]
+  },
+  {
+   "key": "viper-2023",
+   "url": "https://ntrs.nasa.gov/citations/20230004239",
+   "fetched": "2026-10-14",
+   "usedFor": "mons-mouton 'Rover plan (2023)' fact and its resources note",
+   "quotes": [
+    "VIPER is scheduled to land on Mons Mouton near the lunar South Pole in late 2024.",
+    "primary mission goal is to characterize the distribution of water and volatiles across a range of thermal environments"
+   ]
+  },
+  {
+   "key": "malapert-geology",
+   "url": "https://doi.org/10.1029/2025JE009127",
+   "fetched": "2026-10-14",
+   "note": "Wueller et al. 2025, JGR Planets; abstract via OpenAlex. Same paper as the University of Münster record used for Malapert.",
+   "usedFor": "mons-mouton 'Origin' fact and geology note (rock type not known)",
+   "quotes": [
+    "Mons Mouton and Mons Malapert are interpreted as remnant massifs of the South Pole‐Aitken (SPA) basin rim.",
+    "Crater size‐frequency distribution measurements of impact craters on Mons Mouton yield a formation age of 4.26 Ga",
+    "Mons Mouton and Mons Malapert are covered by hundreds of meters of post‐SPA ejecta.",
+    "massif lithologies and SPA ejecta blankets are not exposed at the surface"
+   ]
+  },
+  {
+   "key": "phoenix-regolith (data/resources.json)",
+   "url": "https://doi.org/10.1029/2009JE003437",
+   "fetched": "2026-10-14",
+   "note": "Goetz et al. 2010, JGR Planets; abstract via OpenAlex. New quote for the Phoenix regolith tag (VAL9 rule).",
+   "quotes": [
+    "A preliminary taxonomy of Phoenix soil particles, based on color, size, and shape, identifies the following particle types"
+   ]
+  }
+ ],
+ "terrainPoints": [
+  {
+   "id": "mons-mouton",
+   "body": "moon",
+   "name": "Mons Mouton (south pole)",
+   "lat": -84.6,
+   "lon": 31.0,
+   "kind": "target",
+   "coordSource": "USGS Gazetteer of Planetary Nomenclature, Mons Mouton (Feature 16070): centre -84.60, 31.00, https://planetarynames.wr.usgs.gov/Feature/16070"
+  },
+  {
+   "id": "shackleton-ridge",
+   "body": "moon",
+   "name": "Shackleton connecting ridge (south pole)",
+   "lat": -89.46752,
+   "lon": -138.012788,
+   "kind": "target",
+   "coordSource": "NASA NTRS 20240009936 (NASA Langley, Tall Lunar Tower thermal analysis, 2024): Shackleton Connecting Ridge (-89.46752, -138.012788), https://ntrs.nasa.gov/citations/20240009936"
+  }
+ ],
+ "checks": {
+  "ridge_height": "LOLA (Moon Trek, 128 ppd, bilinear) at the ridge pin: see data/terrain.json shackleton-ridge.centre_elev_m; NTRS gives 1937.83 m.",
+  "ridge_pixel": "The NTRS ridge point is 0.1 m from the centre of a 240 m Diviner polar map pixel (data/diviner_malapert.json points_detail.shackleton_ridge), as the NTRS slide says the point was chosen to match LRO temperature data.",
+  "ascii_crosscheck": "The UCLA server (luna1.diviner.ucla.edu) did not answer on 2026-10-14, so the new pixels are listed in validation.ascii_table_crosscheck.not_checked. The rasters are the same files (same byte sizes) and the Malapert and Shackleton floor pixels give the same values as on 2026-10-09."
+ }
+}

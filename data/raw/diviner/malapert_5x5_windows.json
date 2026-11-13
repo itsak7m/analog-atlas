@@ -1,0 +1,534 @@
+{
+ "point": {
+  "lat": -85.964,
+  "lon": 357.681,
+  "source": "Kring et al. 2025, JGR Planets, doi:10.1029/2024JE008905 (NASA notional Artemis landing site, Malapert Massif summit)"
+ },
+ "x_m": -4954.13,
+ "y_m": 122335.4,
+ "layers": {
+  "summer_avg": {
+   "row": 756,
+   "col": 1245,
+   "pixel_center_latlon": [
+    -85.96115,
+    357.6421
+   ],
+   "point_to_pixel_center_m": 119.8,
+   "center_K": 155.48,
+   "window_5x5": {
+    "rows": [
+     754,
+     758
+    ],
+    "cols": [
+     1243,
+     1247
+    ],
+    "values_K": [
+     [
+      150.8,
+      153.47,
+      148.03,
+      142.5,
+      138.23
+     ],
+     [
+      149.16,
+      154.81,
+      147.15,
+      139.59,
+      137.15
+     ],
+     [
+      150.51,
+      160.81,
+      155.48,
+      143.94,
+      138.62
+     ],
+     [
+      155.39,
+      162.76,
+      162.88,
+      156.49,
+      149.33
+     ],
+     [
+      162.53,
+      166.6,
+      167.06,
+      162.05,
+      161.06
+     ]
+    ],
+    "stats_K": {
+     "n": 25,
+     "mean": 152.66,
+     "min": 137.15,
+     "max": 167.06,
+     "std": 9.05
+    }
+   }
+  },
+  "summer_min": {
+   "row": 756,
+   "col": 1245,
+   "pixel_center_latlon": [
+    -85.96115,
+    357.6421
+   ],
+   "point_to_pixel_center_m": 119.8,
+   "center_K": 57.92,
+   "window_5x5": {
+    "rows": [
+     754,
+     758
+    ],
+    "cols": [
+     1243,
+     1247
+    ],
+    "values_K": [
+     [
+      71.76,
+      73.37,
+      73.5,
+      73.35,
+      73.7
+     ],
+     [
+      66.95,
+      67.87,
+      68.53,
+      69.73,
+      71.79
+     ],
+     [
+      60.19,
+      59.87,
+      57.92,
+      64.78,
+      67.91
+     ],
+     [
+      56.07,
+      60.4,
+      60.78,
+      61.72,
+      62.23
+     ],
+     [
+      68.61,
+      69.95,
+      66.89,
+      62.94,
+      64.51
+     ]
+    ],
+    "stats_K": {
+     "n": 25,
+     "mean": 66.21,
+     "min": 56.07,
+     "max": 73.7,
+     "std": 5.22
+    }
+   }
+  },
+  "summer_max": {
+   "row": 756,
+   "col": 1245,
+   "pixel_center_latlon": [
+    -85.96115,
+    357.6421
+   ],
+   "point_to_pixel_center_m": 119.8,
+   "center_K": 259.25,
+   "window_5x5": {
+    "rows": [
+     754,
+     758
+    ],
+    "cols": [
+     1243,
+     1247
+    ],
+    "values_K": [
+     [
+      274.58,
+      283.19,
+      282.69,
+      279.94,
+      277.38
+     ],
+     [
+      255.16,
+      269.05,
+      275.03,
+      277.15,
+      276.5
+     ],
+     [
+      230.45,
+      237.54,
+      259.25,
+      266.4,
+      269.28
+     ],
+     [
+      216.0,
+      202.53,
+      218.62,
+      237.51,
+      250.88
+     ],
+     [
+      202.71,
+      209.45,
+      214.44,
+      210.2,
+      212.7
+     ]
+    ],
+    "stats_K": {
+     "n": 25,
+     "mean": 247.55,
+     "min": 202.53,
+     "max": 283.19,
+     "std": 28.75
+    }
+   }
+  },
+  "winter_avg": {
+   "row": 756,
+   "col": 1245,
+   "pixel_center_latlon": [
+    -85.96115,
+    357.6421
+   ],
+   "point_to_pixel_center_m": 119.8,
+   "center_K": 144.94,
+   "window_5x5": {
+    "rows": [
+     754,
+     758
+    ],
+    "cols": [
+     1243,
+     1247
+    ],
+    "values_K": [
+     [
+      162.38,
+      168.96,
+      170.03,
+      170.8,
+      166.31
+     ],
+     [
+      147.44,
+      155.88,
+      161.28,
+      162.84,
+      162.09
+     ],
+     [
+      128.58,
+      135.15,
+      144.94,
+      145.85,
+      147.44
+     ],
+     [
+      110.0,
+      110.41,
+      113.79,
+      118.42,
+      126.83
+     ],
+     [
+      94.71,
+      94.65,
+      91.81,
+      90.0,
+      99.54
+     ]
+    ],
+    "stats_K": {
+     "n": 25,
+     "mean": 135.2,
+     "min": 90.0,
+     "max": 170.8,
+     "std": 27.58
+    }
+   }
+  },
+  "winter_min": {
+   "row": 756,
+   "col": 1245,
+   "pixel_center_latlon": [
+    -85.96115,
+    357.6421
+   ],
+   "point_to_pixel_center_m": 119.8,
+   "center_K": 56.6,
+   "window_5x5": {
+    "rows": [
+     754,
+     758
+    ],
+    "cols": [
+     1243,
+     1247
+    ],
+    "values_K": [
+     [
+      69.8,
+      72.15,
+      72.29,
+      73.35,
+      74.8
+     ],
+     [
+      62.0,
+      63.55,
+      66.0,
+      68.48,
+      70.1
+     ],
+     [
+      55.89,
+      60.77,
+      56.6,
+      60.78,
+      57.8
+     ],
+     [
+      54.01,
+      53.84,
+      51.79,
+      53.63,
+      54.01
+     ],
+     [
+      55.06,
+      51.21,
+      48.51,
+      53.17,
+      54.53
+     ]
+    ],
+    "stats_K": {
+     "n": 25,
+     "mean": 60.57,
+     "min": 48.51,
+     "max": 74.8,
+     "std": 7.93
+    }
+   }
+  },
+  "winter_max": {
+   "row": 756,
+   "col": 1245,
+   "pixel_center_latlon": [
+    -85.96115,
+    357.6421
+   ],
+   "point_to_pixel_center_m": 119.8,
+   "center_K": 232.3,
+   "window_5x5": {
+    "rows": [
+     754,
+     758
+    ],
+    "cols": [
+     1243,
+     1247
+    ],
+    "values_K": [
+     [
+      261.82,
+      276.48,
+      273.73,
+      274.32,
+      271.33
+     ],
+     [
+      239.01,
+      244.54,
+      265.82,
+      262.12,
+      266.62
+     ],
+     [
+      223.04,
+      212.83,
+      232.3,
+      247.52,
+      258.43
+     ],
+     [
+      201.37,
+      184.01,
+      179.64,
+      209.54,
+      227.41
+     ],
+     [
+      167.86,
+      175.41,
+      187.03,
+      184.18,
+      177.77
+     ]
+    ],
+    "stats_K": {
+     "n": 25,
+     "mean": 228.17,
+     "min": 167.86,
+     "max": 276.48,
+     "std": 36.6
+    }
+   }
+  },
+  "annual_mean": {
+   "row": 756,
+   "col": 1245,
+   "pixel_center_latlon": [
+    -85.96115,
+    357.6421
+   ],
+   "point_to_pixel_center_m": 119.8,
+   "center_K": 154.28,
+   "window_5x5": {
+    "rows": [
+     754,
+     758
+    ],
+    "cols": [
+     1243,
+     1247
+    ],
+    "values_K": [
+     [
+      159.3,
+      161.58,
+      160.56,
+      158.2,
+      154.86
+     ],
+     [
+      149.4,
+      157.19,
+      157.3,
+      154.75,
+      152.85
+     ],
+     [
+      139.67,
+      150.82,
+      154.28,
+      150.01,
+      149.1
+     ],
+     [
+      130.68,
+      139.19,
+      143.2,
+      142.01,
+      144.48
+     ],
+     [
+      126.28,
+      131.58,
+      131.92,
+      129.67,
+      135.87
+     ]
+    ],
+    "stats_K": {
+     "n": 25,
+     "mean": 146.59,
+     "min": 126.28,
+     "max": 161.58,
+     "std": 10.71
+    }
+   }
+  },
+  "annual_max_smoothed": {
+   "row": 756,
+   "col": 1245,
+   "pixel_center_latlon": [
+    -85.96115,
+    357.6421
+   ],
+   "point_to_pixel_center_m": 119.8,
+   "center_K": 259.36,
+   "window_5x5": {
+    "rows": [
+     754,
+     758
+    ],
+    "cols": [
+     1243,
+     1247
+    ],
+    "values_K": [
+     [
+      274.7,
+      281.44,
+      281.42,
+      280.53,
+      276.97
+     ],
+     [
+      257.31,
+      268.61,
+      274.26,
+      277.88,
+      276.85
+     ],
+     [
+      232.1,
+      243.54,
+      259.36,
+      266.03,
+      269.27
+     ],
+     [
+      213.32,
+      203.53,
+      221.99,
+      239.13,
+      252.69
+     ],
+     [
+      204.63,
+      214.76,
+      215.45,
+      212.74,
+      217.2
+     ]
+    ],
+    "stats_K": {
+     "n": 25,
+     "mean": 248.63,
+     "min": 203.53,
+     "max": 281.44,
+     "std": 27.67
+    }
+   }
+  }
+ },
+ "files": {
+  "summer_avg": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_avg-float.tif",
+  "summer_min": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_min-float.tif",
+  "summer_max": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_max-float.tif",
+  "winter_avg": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_avg-float.tif",
+  "winter_min": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_min-float.tif",
+  "winter_max": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_max-float.tif",
+  "annual_mean": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/24x6_240m/additional_maps/polar_south_80_Tmean.grd",
+  "annual_max_smoothed": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/24x6_240m/additional_maps/polar_south_80_Tmax.grd"
+ },
+ "note": "5x5 windows of the 240 m Diviner polar maps; row index increases southward in map (top-down) order; values in K; null = no data"
+}

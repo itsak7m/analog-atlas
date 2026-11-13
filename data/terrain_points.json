@@ -1,0 +1,290 @@
+[
+  {
+    "id": "wadi-rum",
+    "body": "earth",
+    "name": "Wadi Rum",
+    "lat": 29.58,
+    "lon": 35.42,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "harrat",
+    "body": "earth",
+    "name": "Harrat al-Shaam",
+    "lat": 32.2,
+    "lon": 37.13,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "atacama",
+    "body": "earth",
+    "name": "Atacama Desert",
+    "lat": -24.08,
+    "lon": -70.0,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "haughton",
+    "body": "earth",
+    "name": "Haughton Crater",
+    "lat": 75.38,
+    "lon": -89.67,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "death-valley",
+    "body": "earth",
+    "name": "Death Valley",
+    "lat": 36.46,
+    "lon": -116.87,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "dry-valleys",
+    "body": "earth",
+    "name": "McMurdo Dry Valleys",
+    "lat": -77.47,
+    "lon": 161.8,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "holuhraun",
+    "body": "earth",
+    "name": "Holuhraun",
+    "lat": 64.85,
+    "lon": -16.83,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "rio-tinto",
+    "body": "earth",
+    "name": "Rio Tinto",
+    "lat": 37.72,
+    "lon": -6.56,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "mdrs",
+    "body": "earth",
+    "name": "Mars Desert Research Station",
+    "lat": 38.41,
+    "lon": -110.79,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "waqf-as-suwwan",
+    "body": "earth",
+    "name": "Waqf as Suwwan crater",
+    "lat": 31.05,
+    "lon": 36.8,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "lisan-dead-sea",
+    "body": "earth",
+    "name": "Lisan Peninsula, Dead Sea",
+    "lat": 31.268,
+    "lon": 35.459,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "qa-al-jafr",
+    "body": "earth",
+    "name": "Qa' al-Jafr",
+    "lat": 30.313,
+    "lon": 36.328,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "sp-crater-sfvf",
+    "body": "earth",
+    "name": "SP Crater, San Francisco Volcanic Field",
+    "lat": 35.582,
+    "lon": -111.632,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "craters-of-the-moon",
+    "body": "earth",
+    "name": "Craters of the Moon",
+    "lat": 43.462,
+    "lon": -113.563,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "ries-crater",
+    "body": "earth",
+    "name": "Nördlinger Ries",
+    "lat": 48.883,
+    "lon": 10.617,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "mistastin",
+    "body": "earth",
+    "name": "Mistastin crater",
+    "lat": 55.88,
+    "lon": -63.5,
+    "kind": "site",
+    "coordSource": "team choice (2026-11-03): the crater centre (55.883, -63.3) is the lake, so the box is on the dry west side of the crater, the side of Discovery Hill, 'a particularly distinctive butte on the west side of the lake' with the thickest impact melt (Marion 2009, MSc thesis, Memorial University, https://hdl.handle.net/20.500.14783/3169). Its east edge reaches the west shore; about 12.5 km west of the crater centre, so the box spans the crater floor and the west rim (crater about 28 km wide)."
+  },
+  {
+    "id": "qaidam-dalangtan",
+    "body": "earth",
+    "name": "Dalangtan playa, Qaidam Basin",
+    "lat": 38.503,
+    "lon": 91.398,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "tso-kar-ladakh",
+    "body": "earth",
+    "name": "Tso Kar basin, Ladakh",
+    "lat": 33.3,
+    "lon": 77.983,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "pilbara-north-pole",
+    "body": "earth",
+    "name": "North Pole Dome, Pilbara",
+    "lat": -21.048,
+    "lon": 119.393,
+    "kind": "site",
+    "coordSource": "team site list"
+  },
+  {
+    "id": "jezero",
+    "body": "mars",
+    "name": "Jezero Crater (Perseverance)",
+    "lat": 18.44,
+    "lon": 77.45,
+    "kind": "target",
+    "coordSource": "team target list (Perseverance landing site)"
+  },
+  {
+    "id": "gale",
+    "body": "mars",
+    "name": "Gale Crater (Curiosity)",
+    "lat": -4.5895,
+    "lon": 137.4417,
+    "kind": "target",
+    "coordSource": "team target list (Curiosity landing site, Bradbury Landing)"
+  },
+  {
+    "id": "southpole",
+    "body": "moon",
+    "name": "Shackleton crater floor (south pole)",
+    "lat": -89.67,
+    "lon": 129.78,
+    "kind": "target",
+    "coordSource": "Shackleton crater centre, USGS Gazetteer of Planetary Nomenclature"
+  },
+  {
+    "id": "apollo11",
+    "body": "moon",
+    "name": "Apollo 11 site, Mare Tranquillitatis",
+    "lat": 0.674,
+    "lon": 23.473,
+    "kind": "target",
+    "coordSource": "team target list (Apollo 11 landing site)"
+  },
+  {
+    "id": "apollo17",
+    "body": "moon",
+    "name": "Apollo 17 site, Taurus-Littrow",
+    "lat": 20.1923,
+    "lon": 30.7655,
+    "kind": "target",
+    "coordSource": "NASA NSSDC lunar landing sites (Apollo 17 instrument site), https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_sites.html"
+  },
+  {
+    "id": "phoenix",
+    "body": "mars",
+    "name": "Phoenix landing site, Vastitas Borealis",
+    "lat": 68.22,
+    "lon": -125.75,
+    "kind": "target",
+    "coordSource": "Golombek et al. 2017, Space Science Reviews, doi 10.1007/s11214-016-0321-9 (68.22 N, 234.25 E)"
+  },
+  {
+    "id": "malapert",
+    "body": "moon",
+    "name": "Malapert Massif (south pole)",
+    "lat": -85.964,
+    "lon": -2.319,
+    "kind": "target",
+    "coordSource": "Malapert summit point used for the Diviner extraction"
+  },
+  {
+    "id": "deuteronilus",
+    "body": "mars",
+    "name": "Deuteronilus Mensae EZ",
+    "lat": 39.11,
+    "lon": 23.199,
+    "kind": "target",
+    "coordSource": "Head et al. 2015, EZ workshop abstract 1033"
+  },
+  {
+    "id": "erebus-montes",
+    "body": "mars",
+    "name": "Erebus Montes EZ (Arcadia Planitia)",
+    "lat": 39.0,
+    "lon": -167.9,
+    "kind": "target",
+    "coordSource": "Viola, McEwen & Dundas 2015, EZ workshop abstract 1011"
+  },
+  {
+    "id": "tranquillitatis-pit",
+    "body": "moon",
+    "name": "Mare Tranquillitatis pit (cave skylight)",
+    "lat": 8.3355,
+    "lon": 33.222,
+    "kind": "target",
+    "coordSource": "LROC Lunar Pit Atlas, Mare Tranquillitatis Pit (lat 8.3355, long 33.222), https://lroc.im-ldi.com/atlases/pits/3; same in Carrer et al. 2024, Nature Astronomy, Fig. 1 (8.3355° N, 33.222° E)"
+  },
+  {
+    "id": "arsia-skylight",
+    "body": "mars",
+    "name": "Arsia Mons cave skylight ('Jeanne')",
+    "lat": -5.5332,
+    "lon": -118.6069,
+    "kind": "target",
+    "coordSource": "USGS Mars Global Cave Candidate Catalog (MGC3, PDS doi 10.17189/1519222), APC075 'APC ~ Jeanne' (241.3931 E, -5.5332); HiRISE PSP_003647_1745 is centred at -5.532, 241.396 E"
+  },
+  {
+    "id": "mons-mouton",
+    "body": "moon",
+    "name": "Mons Mouton (south pole)",
+    "lat": -84.6,
+    "lon": 31.0,
+    "kind": "target",
+    "coordSource": "USGS Gazetteer of Planetary Nomenclature, Mons Mouton (Feature 16070): centre -84.60, 31.00, https://planetarynames.wr.usgs.gov/Feature/16070"
+  },
+  {
+    "id": "shackleton-ridge",
+    "body": "moon",
+    "name": "Shackleton connecting ridge (south pole)",
+    "lat": -89.46752,
+    "lon": -138.012788,
+    "kind": "target",
+    "coordSource": "NASA NTRS 20240009936 (NASA Langley, Tall Lunar Tower thermal analysis, 2024): Shackleton Connecting Ridge (-89.46752, -138.012788), https://ntrs.nasa.gov/citations/20240009936"
+  }
+]

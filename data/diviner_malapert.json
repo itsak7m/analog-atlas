@@ -1,0 +1,3209 @@
+{
+  "source": {
+    "dataset": "LRO Diviner Lunar Radiometer Level-4 polar temperature maps (UCLA Diviner team, J.-P. Williams)",
+    "references": [
+      "Williams, J.-P. et al. (2019) Seasonal polar temperatures on the Moon, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028",
+      "Schorghofer, N. & Williams, J.-P. (2020) Mapping of ice storage processes on the Moon with time-dependent temperatures, PSJ 1, 54, doi:10.3847/PSJ/abb6ff"
+    ],
+    "doi": "10.17189/1520651",
+    "doi_note": "PDS dataset DOI resolves to LRO-L-DLRE-4-RDR-V1.0 (Diviner RDR). The binned polar cumulative tables behind these maps are in PDS4 bundle urn:nasa:pds:lro_diviner_derived1, collection data_derived_pcp (https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_pcp/). The gridded min/avg/max maps used here are the team's derived maps distributed by UCLA (https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/), not separately PDS-archived.",
+    "files": {
+      "summer_avg": {
+        "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_avg-float.tif",
+        "description": "Williams+2019: south-polar SUMMER (subsolar lat < 0) diurnal-average bolometric T",
+        "bytes": 25686193
+      },
+      "summer_min": {
+        "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_min-float.tif",
+        "description": "Williams+2019: south-polar SUMMER minimum bolometric T",
+        "bytes": 25686193
+      },
+      "summer_max": {
+        "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_max-float.tif",
+        "description": "Williams+2019: south-polar SUMMER maximum bolometric T",
+        "bytes": 25686193
+      },
+      "winter_avg": {
+        "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_avg-float.tif",
+        "description": "Williams+2019: south-polar WINTER (subsolar lat > 0) diurnal-average bolometric T",
+        "bytes": 25686193
+      },
+      "winter_min": {
+        "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_min-float.tif",
+        "description": "Williams+2019: south-polar WINTER minimum bolometric T",
+        "bytes": 25686193
+      },
+      "winter_max": {
+        "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_max-float.tif",
+        "description": "Williams+2019: south-polar WINTER maximum bolometric T",
+        "bytes": 25686193
+      },
+      "annual_mean": {
+        "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/24x6_240m/additional_maps/polar_south_80_Tmean.grd",
+        "description": "Schorghofer & Williams 2020: mean T averaged over ecliptic (Ls) and subsolar longitudes",
+        "bytes": 25705152
+      },
+      "annual_max_smoothed": {
+        "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/24x6_240m/additional_maps/polar_south_80_Tmax.grd",
+        "description": "Schorghofer & Williams 2020: maximum T after Fourier smoothing (all seasons)",
+        "bytes": 25705152
+      }
+    },
+    "ascii_crosscheck_files": {
+      "summer_avg": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_avg.txt",
+      "summer_min": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_min.txt",
+      "summer_max": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_max.txt",
+      "winter_avg": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_avg.txt",
+      "winter_min": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_min.txt",
+      "winter_max": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_max.txt"
+    },
+    "product_version": "Williams+2019 maps: Diviner nadir RDR 2009-07-05..2019-02-17, GeoTIFF export 2023-02-07 (grids created 2019-11-04); 24x6 Tmean/Tmax: RDR 2009-07-05..2020-03-15, grids 2021-11-13; PDS PCP labels: PRODUCT_VERSION_ID 1, calibration software 4.0",
+    "resolution": "240.036 m/pixel (polar stereographic, true scale at the pole), 2533x2533 grid, 80-90 S",
+    "projection": "South polar stereographic on a sphere R=1737.4 km, latitude of origin -90, central meridian 0, scale factor 1 at pole, false E/N 0; x = 2R tan(pi/4+lat/2) sin(lon), y = 2R tan(pi/4+lat/2) cos(lon); GeoTIFF PixelIsArea, UL corner (-304005.54 m, +304005.54 m); planetocentric lat, east lon",
+    "units": "Kelvin (float32), no scaling factor; nodata = NaN (GeoTIFF GDAL_NODATA 'nan', netCDF NaN)",
+    "georef": {
+      "summer_avg": {
+        "format": "GeoTIFF float32, uncompressed",
+        "size": [
+          2533,
+          2533
+        ],
+        "pixel_size_m": [
+          240.03595736281088,
+          240.03595736281088
+        ],
+        "upper_left_corner_m": [
+          -304005.54,
+          304005.54
+        ],
+        "nodata": "nan",
+        "geokeys": {
+          "GTModelType": 1,
+          "GTRasterType": 1,
+          "SemiMajorAxis_m": 1737400.0,
+          "SemiMinorAxis_m": 1737400.0,
+          "ProjCoordTrans(15=PolarStereographic)": 15,
+          "ProjNatOriginLat": -90.0,
+          "FalseEasting": 0.0,
+          "FalseNorthing": 0.0,
+          "ScaleAtNatOrigin": 1.0,
+          "StraightVertPoleLong": 0.0
+        }
+      },
+      "summer_min": {
+        "format": "GeoTIFF float32, uncompressed",
+        "size": [
+          2533,
+          2533
+        ],
+        "pixel_size_m": [
+          240.03595736281088,
+          240.03595736281088
+        ],
+        "upper_left_corner_m": [
+          -304005.54,
+          304005.54
+        ],
+        "nodata": "nan",
+        "geokeys": {
+          "GTModelType": 1,
+          "GTRasterType": 1,
+          "SemiMajorAxis_m": 1737400.0,
+          "SemiMinorAxis_m": 1737400.0,
+          "ProjCoordTrans(15=PolarStereographic)": 15,
+          "ProjNatOriginLat": -90.0,
+          "FalseEasting": 0.0,
+          "FalseNorthing": 0.0,
+          "ScaleAtNatOrigin": 1.0,
+          "StraightVertPoleLong": 0.0
+        }
+      },
+      "summer_max": {
+        "format": "GeoTIFF float32, uncompressed",
+        "size": [
+          2533,
+          2533
+        ],
+        "pixel_size_m": [
+          240.03595736281088,
+          240.03595736281088
+        ],
+        "upper_left_corner_m": [
+          -304005.54,
+          304005.54
+        ],
+        "nodata": "nan",
+        "geokeys": {
+          "GTModelType": 1,
+          "GTRasterType": 1,
+          "SemiMajorAxis_m": 1737400.0,
+          "SemiMinorAxis_m": 1737400.0,
+          "ProjCoordTrans(15=PolarStereographic)": 15,
+          "ProjNatOriginLat": -90.0,
+          "FalseEasting": 0.0,
+          "FalseNorthing": 0.0,
+          "ScaleAtNatOrigin": 1.0,
+          "StraightVertPoleLong": 0.0
+        }
+      },
+      "winter_avg": {
+        "format": "GeoTIFF float32, uncompressed",
+        "size": [
+          2533,
+          2533
+        ],
+        "pixel_size_m": [
+          240.03595736281088,
+          240.03595736281088
+        ],
+        "upper_left_corner_m": [
+          -304005.54,
+          304005.54
+        ],
+        "nodata": "nan",
+        "geokeys": {
+          "GTModelType": 1,
+          "GTRasterType": 1,
+          "SemiMajorAxis_m": 1737400.0,
+          "SemiMinorAxis_m": 1737400.0,
+          "ProjCoordTrans(15=PolarStereographic)": 15,
+          "ProjNatOriginLat": -90.0,
+          "FalseEasting": 0.0,
+          "FalseNorthing": 0.0,
+          "ScaleAtNatOrigin": 1.0,
+          "StraightVertPoleLong": 0.0
+        }
+      },
+      "winter_min": {
+        "format": "GeoTIFF float32, uncompressed",
+        "size": [
+          2533,
+          2533
+        ],
+        "pixel_size_m": [
+          240.03595736281088,
+          240.03595736281088
+        ],
+        "upper_left_corner_m": [
+          -304005.54,
+          304005.54
+        ],
+        "nodata": "nan",
+        "geokeys": {
+          "GTModelType": 1,
+          "GTRasterType": 1,
+          "SemiMajorAxis_m": 1737400.0,
+          "SemiMinorAxis_m": 1737400.0,
+          "ProjCoordTrans(15=PolarStereographic)": 15,
+          "ProjNatOriginLat": -90.0,
+          "FalseEasting": 0.0,
+          "FalseNorthing": 0.0,
+          "ScaleAtNatOrigin": 1.0,
+          "StraightVertPoleLong": 0.0
+        }
+      },
+      "winter_max": {
+        "format": "GeoTIFF float32, uncompressed",
+        "size": [
+          2533,
+          2533
+        ],
+        "pixel_size_m": [
+          240.03595736281088,
+          240.03595736281088
+        ],
+        "upper_left_corner_m": [
+          -304005.54,
+          304005.54
+        ],
+        "nodata": "nan",
+        "geokeys": {
+          "GTModelType": 1,
+          "GTRasterType": 1,
+          "SemiMajorAxis_m": 1737400.0,
+          "SemiMinorAxis_m": 1737400.0,
+          "ProjCoordTrans(15=PolarStereographic)": 15,
+          "ProjNatOriginLat": -90.0,
+          "FalseEasting": 0.0,
+          "FalseNorthing": 0.0,
+          "ScaleAtNatOrigin": 1.0,
+          "StraightVertPoleLong": 0.0
+        }
+      },
+      "annual_mean": {
+        "format": "GMT netCDF-3 classic grid (x, y pixel centres normalised by R=1737.4 km)",
+        "size": [
+          2533,
+          2533
+        ],
+        "pixel_size_m": [
+          240.03595749798663,
+          240.03595749798663
+        ],
+        "x_range_norm": [
+          -0.17490820892854325,
+          0.17490820892854325
+        ],
+        "y_range_norm": [
+          -0.17490820892854325,
+          0.17490820892854325
+        ],
+        "row0_is": "south (y increasing)",
+        "global_attributes": {
+          "node_offset": [
+            1
+          ],
+          "title": "polar_south_80_24x6"
+        },
+        "z_attributes": {
+          "valid_range": [
+            29.1129207611084,
+            190.11619567871094
+          ]
+        }
+      },
+      "annual_max_smoothed": {
+        "format": "GMT netCDF-3 classic grid (x, y pixel centres normalised by R=1737.4 km)",
+        "size": [
+          2533,
+          2533
+        ],
+        "pixel_size_m": [
+          240.03595749798663,
+          240.03595749798663
+        ],
+        "x_range_norm": [
+          -0.17490820892854325,
+          0.17490820892854325
+        ],
+        "y_range_norm": [
+          -0.17490820892854325,
+          0.17490820892854325
+        ],
+        "row0_is": "south (y increasing)",
+        "global_attributes": {
+          "node_offset": [
+            1
+          ],
+          "title": "polar_south_80_24x6"
+        },
+        "z_attributes": {
+          "valid_range": [
+            41.91171646118164,
+            335.04522705078125
+          ]
+        }
+      }
+    }
+  },
+  "point": {
+    "lat": -85.964,
+    "lon": 357.681,
+    "lon_signed": -2.319,
+    "coordSource": "Kring et al. 2025, JGR Planets, doi:10.1029/2024JE008905 (NASA notional Artemis landing site, Malapert Massif summit)",
+    "x_m": -4954.13,
+    "y_m": 122335.4
+  },
+  "values": {
+    "mean_K": 154.28,
+    "mean_C": -118.87,
+    "mean_source": "annual_mean layer (Schorghofer & Williams 2020 Tmean: average over 24 subsolar longitudes x 6 Ls seasons, Diviner 2009-07-05..2020-03-15)",
+    "mean_of_summer_and_winter_avg_K": 150.21,
+    "min_K": 56.6,
+    "min_C": -216.55,
+    "min_source": "min(summer_min, winter_min) of Williams et al. 2019 seasonal maps",
+    "max_K": 259.25,
+    "max_C": -13.9,
+    "max_source": "max(summer_max, winter_max) of Williams et al. 2019 seasonal maps",
+    "max_fourier_smoothed_K": 259.36,
+    "summer_range_K": 201.33,
+    "summer_range_source": "summer_max - summer_min of Williams et al. 2019 seasonal maps (the 'daily swing' value of the base-site targets)",
+    "summer_avg_K": 155.48,
+    "summer_min_K": 57.92,
+    "summer_max_K": 259.25,
+    "winter_avg_K": 144.94,
+    "winter_min_K": 56.6,
+    "winter_max_K": 232.3,
+    "albedo": null,
+    "albedo_note": "No albedo layer exists in the Diviner polar temperature product set (Williams 2019 / Schorghofer & Williams 2020 / PDS PCP & PRP); not extracted.",
+    "pixel": {
+      "row": 756,
+      "col": 1245,
+      "grid": "2533 x 2533, row 0 = top (+y, toward lon 0), col 0 = left (-x, toward lon 270E)",
+      "pixel_center_latlon": [
+        -85.96115,
+        357.6421
+      ],
+      "point_to_pixel_center_m": 119.8
+    },
+    "window_5x5_stats_K": {
+      "summer_avg": {
+        "n": 25,
+        "mean": 152.66,
+        "min": 137.15,
+        "max": 167.06,
+        "std": 9.05
+      },
+      "summer_min": {
+        "n": 25,
+        "mean": 66.21,
+        "min": 56.07,
+        "max": 73.7,
+        "std": 5.22
+      },
+      "summer_max": {
+        "n": 25,
+        "mean": 247.55,
+        "min": 202.53,
+        "max": 283.19,
+        "std": 28.75
+      },
+      "winter_avg": {
+        "n": 25,
+        "mean": 135.2,
+        "min": 90.0,
+        "max": 170.8,
+        "std": 27.58
+      },
+      "winter_min": {
+        "n": 25,
+        "mean": 60.57,
+        "min": 48.51,
+        "max": 74.8,
+        "std": 7.93
+      },
+      "winter_max": {
+        "n": 25,
+        "mean": 228.17,
+        "min": 167.86,
+        "max": 276.48,
+        "std": 36.6
+      },
+      "annual_mean": {
+        "n": 25,
+        "mean": 146.59,
+        "min": 126.28,
+        "max": 161.58,
+        "std": 10.71
+      },
+      "annual_max_smoothed": {
+        "n": 25,
+        "mean": 248.63,
+        "min": 203.53,
+        "max": 281.44,
+        "std": 27.67
+      }
+    }
+  },
+  "base_points": {
+    "malapert": {
+      "point": {
+        "lat": -85.964,
+        "lon": 357.681,
+        "lon_signed": -2.319,
+        "coordSource": "Kring et al. 2025, JGR Planets, doi:10.1029/2024JE008905 (NASA notional Artemis landing site, Malapert Massif summit)",
+        "x_m": -4954.13,
+        "y_m": 122335.4
+      },
+      "values": {
+        "mean_K": 154.28,
+        "mean_C": -118.87,
+        "mean_source": "annual_mean layer (Schorghofer & Williams 2020 Tmean: average over 24 subsolar longitudes x 6 Ls seasons, Diviner 2009-07-05..2020-03-15)",
+        "mean_of_summer_and_winter_avg_K": 150.21,
+        "min_K": 56.6,
+        "min_C": -216.55,
+        "min_source": "min(summer_min, winter_min) of Williams et al. 2019 seasonal maps",
+        "max_K": 259.25,
+        "max_C": -13.9,
+        "max_source": "max(summer_max, winter_max) of Williams et al. 2019 seasonal maps",
+        "max_fourier_smoothed_K": 259.36,
+        "summer_range_K": 201.33,
+        "summer_range_source": "summer_max - summer_min of Williams et al. 2019 seasonal maps (the 'daily swing' value of the base-site targets)",
+        "summer_avg_K": 155.48,
+        "summer_min_K": 57.92,
+        "summer_max_K": 259.25,
+        "winter_avg_K": 144.94,
+        "winter_min_K": 56.6,
+        "winter_max_K": 232.3,
+        "albedo": null,
+        "albedo_note": "No albedo layer exists in the Diviner polar temperature product set (Williams 2019 / Schorghofer & Williams 2020 / PDS PCP & PRP); not extracted.",
+        "pixel": {
+          "row": 756,
+          "col": 1245,
+          "grid": "2533 x 2533, row 0 = top (+y, toward lon 0), col 0 = left (-x, toward lon 270E)",
+          "pixel_center_latlon": [
+            -85.96115,
+            357.6421
+          ],
+          "point_to_pixel_center_m": 119.8
+        },
+        "window_5x5_stats_K": {
+          "summer_avg": {
+            "n": 25,
+            "mean": 152.66,
+            "min": 137.15,
+            "max": 167.06,
+            "std": 9.05
+          },
+          "summer_min": {
+            "n": 25,
+            "mean": 66.21,
+            "min": 56.07,
+            "max": 73.7,
+            "std": 5.22
+          },
+          "summer_max": {
+            "n": 25,
+            "mean": 247.55,
+            "min": 202.53,
+            "max": 283.19,
+            "std": 28.75
+          },
+          "winter_avg": {
+            "n": 25,
+            "mean": 135.2,
+            "min": 90.0,
+            "max": 170.8,
+            "std": 27.58
+          },
+          "winter_min": {
+            "n": 25,
+            "mean": 60.57,
+            "min": 48.51,
+            "max": 74.8,
+            "std": 7.93
+          },
+          "winter_max": {
+            "n": 25,
+            "mean": 228.17,
+            "min": 167.86,
+            "max": 276.48,
+            "std": 36.6
+          },
+          "annual_mean": {
+            "n": 25,
+            "mean": 146.59,
+            "min": 126.28,
+            "max": 161.58,
+            "std": 10.71
+          },
+          "annual_max_smoothed": {
+            "n": 25,
+            "mean": 248.63,
+            "min": 203.53,
+            "max": 281.44,
+            "std": 27.67
+          }
+        }
+      }
+    },
+    "mons_mouton": {
+      "point": {
+        "lat": -84.6,
+        "lon": 31.0,
+        "lon_signed": 31.0,
+        "coordSource": "USGS Gazetteer of Planetary Nomenclature, Mons Mouton (Feature 16070): center latitude -84.60, center longitude 31.00 (planetographic, +East)",
+        "x_m": 84397.95,
+        "y_m": 140461.78
+      },
+      "values": {
+        "mean_K": 119.32,
+        "mean_C": -153.83,
+        "mean_source": "annual_mean layer (Schorghofer & Williams 2020 Tmean: average over 24 subsolar longitudes x 6 Ls seasons, Diviner 2009-07-05..2020-03-15)",
+        "mean_of_summer_and_winter_avg_K": 117.78,
+        "min_K": 57.57,
+        "min_C": -215.58,
+        "min_source": "min(summer_min, winter_min) of Williams et al. 2019 seasonal maps",
+        "max_K": 244.6,
+        "max_C": -28.55,
+        "max_source": "max(summer_max, winter_max) of Williams et al. 2019 seasonal maps",
+        "max_fourier_smoothed_K": 248.71,
+        "summer_range_K": 187.03,
+        "summer_range_source": "summer_max - summer_min of Williams et al. 2019 seasonal maps (the 'daily swing' value of the base-site targets)",
+        "summer_avg_K": 126.27,
+        "summer_min_K": 57.57,
+        "summer_max_K": 244.6,
+        "winter_avg_K": 109.3,
+        "winter_min_K": 58.52,
+        "winter_max_K": 231.71,
+        "albedo": null,
+        "albedo_note": "No albedo layer exists in the Diviner polar temperature product set (Williams 2019 / Schorghofer & Williams 2020 / PDS PCP & PRP); not extracted.",
+        "pixel": {
+          "row": 681,
+          "col": 1618,
+          "grid": "2533 x 2533, row 0 = top (+y, toward lon 0), col 0 = left (-x, toward lon 270E)",
+          "pixel_center_latlon": [
+            -84.59954,
+            31.0357
+          ],
+          "point_to_pixel_center_m": 102.9
+        },
+        "window_5x5_stats_K": {
+          "summer_avg": {
+            "n": 25,
+            "mean": 121.38,
+            "min": 102.64,
+            "max": 136.46,
+            "std": 9.71
+          },
+          "summer_min": {
+            "n": 25,
+            "mean": 57.52,
+            "min": 45.26,
+            "max": 67.6,
+            "std": 7.46
+          },
+          "summer_max": {
+            "n": 25,
+            "mean": 236.75,
+            "min": 202.83,
+            "max": 251.57,
+            "std": 12.61
+          },
+          "winter_avg": {
+            "n": 25,
+            "mean": 103.83,
+            "min": 65.97,
+            "max": 135.68,
+            "std": 22.93
+          },
+          "winter_min": {
+            "n": 25,
+            "mean": 56.18,
+            "min": 45.69,
+            "max": 66.35,
+            "std": 6.88
+          },
+          "winter_max": {
+            "n": 25,
+            "mean": 218.18,
+            "min": 144.18,
+            "max": 243.44,
+            "std": 26.0
+          },
+          "annual_mean": {
+            "n": 25,
+            "mean": 112.65,
+            "min": 86.89,
+            "max": 135.4,
+            "std": 15.32
+          },
+          "annual_max_smoothed": {
+            "n": 25,
+            "mean": 237.86,
+            "min": 201.63,
+            "max": 251.99,
+            "std": 13.43
+          }
+        }
+      }
+    },
+    "shackleton_ridge": {
+      "point": {
+        "lat": -89.46752,
+        "lon": 221.987212,
+        "lon_signed": -138.012788,
+        "coordSource": "NASA NTRS 20240009936 (Grier et al. 2024, NASA Langley, Tall Lunar Tower thermal analysis): 'Shackleton Connecting Ridge (-89.46752, -138.012788 with elevation of 1937.83 meters)'",
+        "x_m": -10801.57,
+        "y_m": -12001.74
+      },
+      "values": {
+        "mean_K": 142.03,
+        "mean_C": -131.12,
+        "mean_source": "annual_mean layer (Schorghofer & Williams 2020 Tmean: average over 24 subsolar longitudes x 6 Ls seasons, Diviner 2009-07-05..2020-03-15)",
+        "mean_of_summer_and_winter_avg_K": 146.5,
+        "min_K": 65.53,
+        "min_C": -207.62,
+        "min_source": "min(summer_min, winter_min) of Williams et al. 2019 seasonal maps",
+        "max_K": 236.14,
+        "max_C": -37.01,
+        "max_source": "max(summer_max, winter_max) of Williams et al. 2019 seasonal maps",
+        "max_fourier_smoothed_K": 233.25,
+        "summer_range_K": 146.24,
+        "summer_range_source": "summer_max - summer_min of Williams et al. 2019 seasonal maps (the 'daily swing' value of the base-site targets)",
+        "summer_avg_K": 169.95,
+        "summer_min_K": 89.9,
+        "summer_max_K": 236.14,
+        "winter_avg_K": 123.06,
+        "winter_min_K": 65.53,
+        "winter_max_K": 211.44,
+        "albedo": null,
+        "albedo_note": "No albedo layer exists in the Diviner polar temperature product set (Williams 2019 / Schorghofer & Williams 2020 / PDS PCP & PRP); not extracted.",
+        "pixel": {
+          "row": 1316,
+          "col": 1221,
+          "grid": "2533 x 2533, row 0 = top (+y, toward lon 0), col 0 = left (-x, toward lon 270E)",
+          "pixel_center_latlon": [
+            -89.46752,
+            221.9872
+          ],
+          "point_to_pixel_center_m": 0.1
+        },
+        "window_5x5_stats_K": {
+          "summer_avg": {
+            "n": 25,
+            "mean": 167.75,
+            "min": 143.22,
+            "max": 188.92,
+            "std": 12.8
+          },
+          "summer_min": {
+            "n": 25,
+            "mean": 87.95,
+            "min": 71.11,
+            "max": 123.45,
+            "std": 12.2
+          },
+          "summer_max": {
+            "n": 25,
+            "mean": 234.38,
+            "min": 212.41,
+            "max": 248.86,
+            "std": 9.68
+          },
+          "winter_avg": {
+            "n": 25,
+            "mean": 126.34,
+            "min": 110.99,
+            "max": 143.27,
+            "std": 7.88
+          },
+          "winter_min": {
+            "n": 25,
+            "mean": 62.2,
+            "min": 57.15,
+            "max": 67.51,
+            "std": 2.35
+          },
+          "winter_max": {
+            "n": 25,
+            "mean": 216.41,
+            "min": 181.34,
+            "max": 240.53,
+            "std": 16.63
+          },
+          "annual_mean": {
+            "n": 25,
+            "mean": 141.19,
+            "min": 121.25,
+            "max": 154.56,
+            "std": 8.05
+          },
+          "annual_max_smoothed": {
+            "n": 25,
+            "mean": 231.81,
+            "min": 210.05,
+            "max": 248.88,
+            "std": 9.6
+          }
+        }
+      }
+    }
+  },
+  "method": "Lat/lon converted to south polar stereographic x,y with the products' own documented projection (sphere 1737.4 km, k0=1 at pole). GeoTIFF row = floor((ymax - y)/240.036), col = floor((x - xmin)/240.036); for the netCDF .grd maps the pixel is located by its own x/y centre arrays (y stored south-to-north, flipped). Centre pixel = pixel containing the point; a 5x5 window (1.2 x 1.2 km) is read around it. Values are bolometric brightness temperatures (Diviner channels 3-9), no scaling. Annual min/max combine the Williams+2019 summer and winter min/max maps; annual mean is the Schorghofer & Williams 2020 Tmean map. All values are point/pixel measurements on a 240 m grid; diurnal/seasonal averages, not a single epoch.",
+  "points_detail": {
+    "malapert": {
+      "lat": -85.964,
+      "lon_east": 357.681,
+      "x_m": -4954.13,
+      "y_m": 122335.4,
+      "layers": {
+        "summer_avg": {
+          "row": 756,
+          "col": 1245,
+          "pixel_center_latlon": [
+            -85.96115,
+            357.6421
+          ],
+          "point_to_pixel_center_m": 119.8,
+          "center_K": 155.48,
+          "window_5x5": {
+            "rows": [
+              754,
+              758
+            ],
+            "cols": [
+              1243,
+              1247
+            ],
+            "values_K": [
+              [
+                150.8,
+                153.47,
+                148.03,
+                142.5,
+                138.23
+              ],
+              [
+                149.16,
+                154.81,
+                147.15,
+                139.59,
+                137.15
+              ],
+              [
+                150.51,
+                160.81,
+                155.48,
+                143.94,
+                138.62
+              ],
+              [
+                155.39,
+                162.76,
+                162.88,
+                156.49,
+                149.33
+              ],
+              [
+                162.53,
+                166.6,
+                167.06,
+                162.05,
+                161.06
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 152.66,
+              "min": 137.15,
+              "max": 167.06,
+              "std": 9.05
+            }
+          }
+        },
+        "summer_min": {
+          "row": 756,
+          "col": 1245,
+          "pixel_center_latlon": [
+            -85.96115,
+            357.6421
+          ],
+          "point_to_pixel_center_m": 119.8,
+          "center_K": 57.92,
+          "window_5x5": {
+            "rows": [
+              754,
+              758
+            ],
+            "cols": [
+              1243,
+              1247
+            ],
+            "values_K": [
+              [
+                71.76,
+                73.37,
+                73.5,
+                73.35,
+                73.7
+              ],
+              [
+                66.95,
+                67.87,
+                68.53,
+                69.73,
+                71.79
+              ],
+              [
+                60.19,
+                59.87,
+                57.92,
+                64.78,
+                67.91
+              ],
+              [
+                56.07,
+                60.4,
+                60.78,
+                61.72,
+                62.23
+              ],
+              [
+                68.61,
+                69.95,
+                66.89,
+                62.94,
+                64.51
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 66.21,
+              "min": 56.07,
+              "max": 73.7,
+              "std": 5.22
+            }
+          }
+        },
+        "summer_max": {
+          "row": 756,
+          "col": 1245,
+          "pixel_center_latlon": [
+            -85.96115,
+            357.6421
+          ],
+          "point_to_pixel_center_m": 119.8,
+          "center_K": 259.25,
+          "window_5x5": {
+            "rows": [
+              754,
+              758
+            ],
+            "cols": [
+              1243,
+              1247
+            ],
+            "values_K": [
+              [
+                274.58,
+                283.19,
+                282.69,
+                279.94,
+                277.38
+              ],
+              [
+                255.16,
+                269.05,
+                275.03,
+                277.15,
+                276.5
+              ],
+              [
+                230.45,
+                237.54,
+                259.25,
+                266.4,
+                269.28
+              ],
+              [
+                216.0,
+                202.53,
+                218.62,
+                237.51,
+                250.88
+              ],
+              [
+                202.71,
+                209.45,
+                214.44,
+                210.2,
+                212.7
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 247.55,
+              "min": 202.53,
+              "max": 283.19,
+              "std": 28.75
+            }
+          }
+        },
+        "winter_avg": {
+          "row": 756,
+          "col": 1245,
+          "pixel_center_latlon": [
+            -85.96115,
+            357.6421
+          ],
+          "point_to_pixel_center_m": 119.8,
+          "center_K": 144.94,
+          "window_5x5": {
+            "rows": [
+              754,
+              758
+            ],
+            "cols": [
+              1243,
+              1247
+            ],
+            "values_K": [
+              [
+                162.38,
+                168.96,
+                170.03,
+                170.8,
+                166.31
+              ],
+              [
+                147.44,
+                155.88,
+                161.28,
+                162.84,
+                162.09
+              ],
+              [
+                128.58,
+                135.15,
+                144.94,
+                145.85,
+                147.44
+              ],
+              [
+                110.0,
+                110.41,
+                113.79,
+                118.42,
+                126.83
+              ],
+              [
+                94.71,
+                94.65,
+                91.81,
+                90.0,
+                99.54
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 135.2,
+              "min": 90.0,
+              "max": 170.8,
+              "std": 27.58
+            }
+          }
+        },
+        "winter_min": {
+          "row": 756,
+          "col": 1245,
+          "pixel_center_latlon": [
+            -85.96115,
+            357.6421
+          ],
+          "point_to_pixel_center_m": 119.8,
+          "center_K": 56.6,
+          "window_5x5": {
+            "rows": [
+              754,
+              758
+            ],
+            "cols": [
+              1243,
+              1247
+            ],
+            "values_K": [
+              [
+                69.8,
+                72.15,
+                72.29,
+                73.35,
+                74.8
+              ],
+              [
+                62.0,
+                63.55,
+                66.0,
+                68.48,
+                70.1
+              ],
+              [
+                55.89,
+                60.77,
+                56.6,
+                60.78,
+                57.8
+              ],
+              [
+                54.01,
+                53.84,
+                51.79,
+                53.63,
+                54.01
+              ],
+              [
+                55.06,
+                51.21,
+                48.51,
+                53.17,
+                54.53
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 60.57,
+              "min": 48.51,
+              "max": 74.8,
+              "std": 7.93
+            }
+          }
+        },
+        "winter_max": {
+          "row": 756,
+          "col": 1245,
+          "pixel_center_latlon": [
+            -85.96115,
+            357.6421
+          ],
+          "point_to_pixel_center_m": 119.8,
+          "center_K": 232.3,
+          "window_5x5": {
+            "rows": [
+              754,
+              758
+            ],
+            "cols": [
+              1243,
+              1247
+            ],
+            "values_K": [
+              [
+                261.82,
+                276.48,
+                273.73,
+                274.32,
+                271.33
+              ],
+              [
+                239.01,
+                244.54,
+                265.82,
+                262.12,
+                266.62
+              ],
+              [
+                223.04,
+                212.83,
+                232.3,
+                247.52,
+                258.43
+              ],
+              [
+                201.37,
+                184.01,
+                179.64,
+                209.54,
+                227.41
+              ],
+              [
+                167.86,
+                175.41,
+                187.03,
+                184.18,
+                177.77
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 228.17,
+              "min": 167.86,
+              "max": 276.48,
+              "std": 36.6
+            }
+          }
+        },
+        "annual_mean": {
+          "row": 756,
+          "col": 1245,
+          "pixel_center_latlon": [
+            -85.96115,
+            357.6421
+          ],
+          "point_to_pixel_center_m": 119.8,
+          "center_K": 154.28,
+          "window_5x5": {
+            "rows": [
+              754,
+              758
+            ],
+            "cols": [
+              1243,
+              1247
+            ],
+            "values_K": [
+              [
+                159.3,
+                161.58,
+                160.56,
+                158.2,
+                154.86
+              ],
+              [
+                149.4,
+                157.19,
+                157.3,
+                154.75,
+                152.85
+              ],
+              [
+                139.67,
+                150.82,
+                154.28,
+                150.01,
+                149.1
+              ],
+              [
+                130.68,
+                139.19,
+                143.2,
+                142.01,
+                144.48
+              ],
+              [
+                126.28,
+                131.58,
+                131.92,
+                129.67,
+                135.87
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 146.59,
+              "min": 126.28,
+              "max": 161.58,
+              "std": 10.71
+            }
+          }
+        },
+        "annual_max_smoothed": {
+          "row": 756,
+          "col": 1245,
+          "pixel_center_latlon": [
+            -85.96115,
+            357.6421
+          ],
+          "point_to_pixel_center_m": 119.8,
+          "center_K": 259.36,
+          "window_5x5": {
+            "rows": [
+              754,
+              758
+            ],
+            "cols": [
+              1243,
+              1247
+            ],
+            "values_K": [
+              [
+                274.7,
+                281.44,
+                281.42,
+                280.53,
+                276.97
+              ],
+              [
+                257.31,
+                268.61,
+                274.26,
+                277.88,
+                276.85
+              ],
+              [
+                232.1,
+                243.54,
+                259.36,
+                266.03,
+                269.27
+              ],
+              [
+                213.32,
+                203.53,
+                221.99,
+                239.13,
+                252.69
+              ],
+              [
+                204.63,
+                214.76,
+                215.45,
+                212.74,
+                217.2
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 248.63,
+              "min": 203.53,
+              "max": 281.44,
+              "std": 27.67
+            }
+          }
+        }
+      }
+    },
+    "shackleton_floor": {
+      "lat": -89.67,
+      "lon_east": 129.78,
+      "x_m": 7690.24,
+      "y_m": -6402.72,
+      "layers": {
+        "summer_avg": {
+          "row": 1293,
+          "col": 1298,
+          "pixel_center_latlon": [
+            -89.66857,
+            130.156
+          ],
+          "point_to_pixel_center_m": 78.8,
+          "center_K": 74.11,
+          "window_5x5": {
+            "rows": [
+              1291,
+              1295
+            ],
+            "cols": [
+              1296,
+              1300
+            ],
+            "values_K": [
+              [
+                74.31,
+                73.74,
+                73.14,
+                73.81,
+                73.97
+              ],
+              [
+                73.69,
+                73.05,
+                73.98,
+                73.91,
+                74.23
+              ],
+              [
+                73.56,
+                73.32,
+                74.11,
+                73.7,
+                74.0
+              ],
+              [
+                73.68,
+                73.64,
+                73.61,
+                74.34,
+                73.97
+              ],
+              [
+                73.84,
+                74.9,
+                75.49,
+                75.51,
+                73.36
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 73.95,
+              "min": 73.05,
+              "max": 75.51,
+              "std": 0.6
+            }
+          }
+        },
+        "summer_min": {
+          "row": 1293,
+          "col": 1298,
+          "pixel_center_latlon": [
+            -89.66857,
+            130.156
+          ],
+          "point_to_pixel_center_m": 78.8,
+          "center_K": 45.09,
+          "window_5x5": {
+            "rows": [
+              1291,
+              1295
+            ],
+            "cols": [
+              1296,
+              1300
+            ],
+            "values_K": [
+              [
+                43.57,
+                40.35,
+                42.79,
+                42.94,
+                43.87
+              ],
+              [
+                42.39,
+                44.99,
+                42.13,
+                46.22,
+                42.69
+              ],
+              [
+                45.19,
+                42.15,
+                45.09,
+                44.79,
+                46.23
+              ],
+              [
+                43.27,
+                44.57,
+                42.15,
+                41.12,
+                44.66
+              ],
+              [
+                43.02,
+                43.61,
+                46.64,
+                43.88,
+                42.81
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 43.65,
+              "min": 40.35,
+              "max": 46.64,
+              "std": 1.56
+            }
+          }
+        },
+        "summer_max": {
+          "row": 1293,
+          "col": 1298,
+          "pixel_center_latlon": [
+            -89.66857,
+            130.156
+          ],
+          "point_to_pixel_center_m": 78.8,
+          "center_K": 95.03,
+          "window_5x5": {
+            "rows": [
+              1291,
+              1295
+            ],
+            "cols": [
+              1296,
+              1300
+            ],
+            "values_K": [
+              [
+                96.22,
+                95.42,
+                96.26,
+                97.88,
+                95.11
+              ],
+              [
+                96.37,
+                95.07,
+                96.38,
+                97.5,
+                96.44
+              ],
+              [
+                94.93,
+                96.58,
+                95.03,
+                96.72,
+                95.65
+              ],
+              [
+                94.54,
+                95.72,
+                96.03,
+                94.83,
+                93.45
+              ],
+              [
+                95.35,
+                95.38,
+                97.14,
+                97.63,
+                94.01
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 95.83,
+              "min": 93.45,
+              "max": 97.88,
+              "std": 1.09
+            }
+          }
+        },
+        "winter_avg": {
+          "row": 1293,
+          "col": 1298,
+          "pixel_center_latlon": [
+            -89.66857,
+            130.156
+          ],
+          "point_to_pixel_center_m": 78.8,
+          "center_K": 49.66,
+          "window_5x5": {
+            "rows": [
+              1291,
+              1295
+            ],
+            "cols": [
+              1296,
+              1300
+            ],
+            "values_K": [
+              [
+                49.35,
+                49.41,
+                49.08,
+                49.85,
+                48.96
+              ],
+              [
+                48.88,
+                49.41,
+                49.43,
+                49.33,
+                49.66
+              ],
+              [
+                49.75,
+                49.38,
+                49.66,
+                49.39,
+                49.83
+              ],
+              [
+                48.81,
+                48.93,
+                49.82,
+                49.77,
+                49.76
+              ],
+              [
+                49.22,
+                50.05,
+                50.12,
+                50.57,
+                50.35
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 49.55,
+              "min": 48.81,
+              "max": 50.57,
+              "std": 0.44
+            }
+          }
+        },
+        "winter_min": {
+          "row": 1293,
+          "col": 1298,
+          "pixel_center_latlon": [
+            -89.66857,
+            130.156
+          ],
+          "point_to_pixel_center_m": 78.8,
+          "center_K": 40.32,
+          "window_5x5": {
+            "rows": [
+              1291,
+              1295
+            ],
+            "cols": [
+              1296,
+              1300
+            ],
+            "values_K": [
+              [
+                34.72,
+                38.23,
+                34.52,
+                37.91,
+                31.0
+              ],
+              [
+                37.71,
+                37.17,
+                38.32,
+                30.05,
+                35.21
+              ],
+              [
+                32.34,
+                38.41,
+                40.32,
+                38.58,
+                34.72
+              ],
+              [
+                37.8,
+                32.24,
+                35.88,
+                37.3,
+                38.58
+              ],
+              [
+                38.75,
+                37.13,
+                40.66,
+                37.71,
+                41.64
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 36.68,
+              "min": 30.05,
+              "max": 41.64,
+              "std": 2.89
+            }
+          }
+        },
+        "winter_max": {
+          "row": 1293,
+          "col": 1298,
+          "pixel_center_latlon": [
+            -89.66857,
+            130.156
+          ],
+          "point_to_pixel_center_m": 78.8,
+          "center_K": 74.74,
+          "window_5x5": {
+            "rows": [
+              1291,
+              1295
+            ],
+            "cols": [
+              1296,
+              1300
+            ],
+            "values_K": [
+              [
+                71.27,
+                64.79,
+                67.15,
+                71.0,
+                67.29
+              ],
+              [
+                67.56,
+                66.33,
+                67.54,
+                67.72,
+                68.28
+              ],
+              [
+                65.8,
+                66.31,
+                74.74,
+                69.29,
+                67.46
+              ],
+              [
+                65.39,
+                66.31,
+                68.32,
+                68.5,
+                69.12
+              ],
+              [
+                67.03,
+                64.8,
+                67.22,
+                67.73,
+                69.84
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 67.87,
+              "min": 64.79,
+              "max": 74.74,
+              "std": 2.15
+            }
+          }
+        },
+        "annual_mean": {
+          "row": 1293,
+          "col": 1298,
+          "pixel_center_latlon": [
+            -89.66857,
+            130.156
+          ],
+          "point_to_pixel_center_m": 78.8,
+          "center_K": 59.2,
+          "window_5x5": {
+            "rows": [
+              1291,
+              1295
+            ],
+            "cols": [
+              1296,
+              1300
+            ],
+            "values_K": [
+              [
+                58.51,
+                58.8,
+                59.12,
+                59.08,
+                59.28
+              ],
+              [
+                58.3,
+                59.04,
+                59.05,
+                59.42,
+                59.53
+              ],
+              [
+                58.72,
+                58.85,
+                59.2,
+                59.18,
+                59.75
+              ],
+              [
+                58.23,
+                58.86,
+                59.02,
+                59.12,
+                59.32
+              ],
+              [
+                58.32,
+                59.27,
+                59.83,
+                59.45,
+                59.57
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 59.07,
+              "min": 58.23,
+              "max": 59.83,
+              "std": 0.42
+            }
+          }
+        },
+        "annual_max_smoothed": {
+          "row": 1293,
+          "col": 1298,
+          "pixel_center_latlon": [
+            -89.66857,
+            130.156
+          ],
+          "point_to_pixel_center_m": 78.8,
+          "center_K": 97.16,
+          "window_5x5": {
+            "rows": [
+              1291,
+              1295
+            ],
+            "cols": [
+              1296,
+              1300
+            ],
+            "values_K": [
+              [
+                96.36,
+                97.02,
+                96.58,
+                97.36,
+                95.48
+              ],
+              [
+                96.12,
+                96.37,
+                97.81,
+                96.99,
+                97.55
+              ],
+              [
+                95.13,
+                97.32,
+                97.16,
+                97.22,
+                97.19
+              ],
+              [
+                94.69,
+                98.2,
+                99.05,
+                98.27,
+                97.98
+              ],
+              [
+                96.31,
+                97.4,
+                98.39,
+                98.52,
+                97.05
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 97.1,
+              "min": 94.69,
+              "max": 99.05,
+              "std": 1.04
+            }
+          }
+        }
+      }
+    },
+    "mons_mouton": {
+      "lat": -84.6,
+      "lon_east": 31.0,
+      "x_m": 84397.95,
+      "y_m": 140461.78,
+      "layers": {
+        "summer_avg": {
+          "row": 681,
+          "col": 1618,
+          "pixel_center_latlon": [
+            -84.59954,
+            31.0357
+          ],
+          "point_to_pixel_center_m": 102.9,
+          "center_K": 126.27,
+          "window_5x5": {
+            "rows": [
+              679,
+              683
+            ],
+            "cols": [
+              1616,
+              1620
+            ],
+            "values_K": [
+              [
+                107.17,
+                106.27,
+                104.61,
+                103.51,
+                102.64
+              ],
+              [
+                119.75,
+                117.69,
+                118.74,
+                118.76,
+                118.81
+              ],
+              [
+                119.91,
+                125.54,
+                126.27,
+                127.82,
+                127.53
+              ],
+              [
+                118.85,
+                126.27,
+                128.5,
+                130.38,
+                132.31
+              ],
+              [
+                123.08,
+                127.91,
+                132.22,
+                133.38,
+                136.46
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 121.38,
+              "min": 102.64,
+              "max": 136.46,
+              "std": 9.71
+            }
+          }
+        },
+        "summer_min": {
+          "row": 681,
+          "col": 1618,
+          "pixel_center_latlon": [
+            -84.59954,
+            31.0357
+          ],
+          "point_to_pixel_center_m": 102.9,
+          "center_K": 57.57,
+          "window_5x5": {
+            "rows": [
+              679,
+              683
+            ],
+            "cols": [
+              1616,
+              1620
+            ],
+            "values_K": [
+              [
+                48.12,
+                48.62,
+                47.38,
+                45.28,
+                45.26
+              ],
+              [
+                53.03,
+                53.52,
+                50.1,
+                52.26,
+                48.29
+              ],
+              [
+                57.34,
+                60.82,
+                57.57,
+                61.41,
+                60.95
+              ],
+              [
+                59.75,
+                64.54,
+                64.36,
+                66.59,
+                66.61
+              ],
+              [
+                62.69,
+                64.01,
+                65.27,
+                67.6,
+                66.72
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 57.52,
+              "min": 45.26,
+              "max": 67.6,
+              "std": 7.46
+            }
+          }
+        },
+        "summer_max": {
+          "row": 681,
+          "col": 1618,
+          "pixel_center_latlon": [
+            -84.59954,
+            31.0357
+          ],
+          "point_to_pixel_center_m": 102.9,
+          "center_K": 244.6,
+          "window_5x5": {
+            "rows": [
+              679,
+              683
+            ],
+            "cols": [
+              1616,
+              1620
+            ],
+            "values_K": [
+              [
+                225.67,
+                219.92,
+                221.57,
+                214.74,
+                202.83
+              ],
+              [
+                229.71,
+                232.16,
+                233.39,
+                231.44,
+                228.12
+              ],
+              [
+                232.12,
+                239.25,
+                244.6,
+                246.41,
+                243.38
+              ],
+              [
+                236.5,
+                245.98,
+                248.64,
+                249.89,
+                246.53
+              ],
+              [
+                244.8,
+                249.06,
+                251.47,
+                251.57,
+                248.88
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 236.75,
+              "min": 202.83,
+              "max": 251.57,
+              "std": 12.61
+            }
+          }
+        },
+        "winter_avg": {
+          "row": 681,
+          "col": 1618,
+          "pixel_center_latlon": [
+            -84.59954,
+            31.0357
+          ],
+          "point_to_pixel_center_m": 102.9,
+          "center_K": 109.3,
+          "window_5x5": {
+            "rows": [
+              679,
+              683
+            ],
+            "cols": [
+              1616,
+              1620
+            ],
+            "values_K": [
+              [
+                65.97,
+                67.58,
+                70.7,
+                76.47,
+                81.58
+              ],
+              [
+                79.0,
+                81.91,
+                85.6,
+                92.66,
+                99.26
+              ],
+              [
+                90.31,
+                100.44,
+                109.3,
+                116.7,
+                122.11
+              ],
+              [
+                102.95,
+                115.97,
+                125.9,
+                131.14,
+                134.43
+              ],
+              [
+                117.24,
+                126.29,
+                132.73,
+                133.85,
+                135.68
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 103.83,
+              "min": 65.97,
+              "max": 135.68,
+              "std": 22.93
+            }
+          }
+        },
+        "winter_min": {
+          "row": 681,
+          "col": 1618,
+          "pixel_center_latlon": [
+            -84.59954,
+            31.0357
+          ],
+          "point_to_pixel_center_m": 102.9,
+          "center_K": 58.52,
+          "window_5x5": {
+            "rows": [
+              679,
+              683
+            ],
+            "cols": [
+              1616,
+              1620
+            ],
+            "values_K": [
+              [
+                46.8,
+                46.21,
+                45.96,
+                45.69,
+                46.1
+              ],
+              [
+                51.07,
+                51.2,
+                52.3,
+                53.11,
+                51.66
+              ],
+              [
+                53.78,
+                55.87,
+                58.52,
+                59.56,
+                60.23
+              ],
+              [
+                56.32,
+                56.82,
+                64.36,
+                64.1,
+                65.35
+              ],
+              [
+                60.18,
+                61.36,
+                65.28,
+                66.2,
+                66.35
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 56.18,
+              "min": 45.69,
+              "max": 66.35,
+              "std": 6.88
+            }
+          }
+        },
+        "winter_max": {
+          "row": 681,
+          "col": 1618,
+          "pixel_center_latlon": [
+            -84.59954,
+            31.0357
+          ],
+          "point_to_pixel_center_m": 102.9,
+          "center_K": 231.71,
+          "window_5x5": {
+            "rows": [
+              679,
+              683
+            ],
+            "cols": [
+              1616,
+              1620
+            ],
+            "values_K": [
+              [
+                144.18,
+                162.77,
+                183.92,
+                203.74,
+                199.57
+              ],
+              [
+                197.55,
+                193.27,
+                212.71,
+                226.23,
+                226.63
+              ],
+              [
+                204.44,
+                216.77,
+                231.71,
+                239.38,
+                237.39
+              ],
+              [
+                219.36,
+                229.93,
+                243.44,
+                241.77,
+                237.76
+              ],
+              [
+                236.06,
+                240.48,
+                241.92,
+                242.7,
+                240.88
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 218.18,
+              "min": 144.18,
+              "max": 243.44,
+              "std": 26.0
+            }
+          }
+        },
+        "annual_mean": {
+          "row": 681,
+          "col": 1618,
+          "pixel_center_latlon": [
+            -84.59954,
+            31.0357
+          ],
+          "point_to_pixel_center_m": 102.9,
+          "center_K": 119.32,
+          "window_5x5": {
+            "rows": [
+              679,
+              683
+            ],
+            "cols": [
+              1616,
+              1620
+            ],
+            "values_K": [
+              [
+                86.96,
+                86.89,
+                88.48,
+                90.94,
+                93.07
+              ],
+              [
+                98.99,
+                100.5,
+                104.05,
+                107.96,
+                110.53
+              ],
+              [
+                106.99,
+                112.86,
+                119.32,
+                123.06,
+                125.45
+              ],
+              [
+                110.5,
+                120.89,
+                126.77,
+                129.78,
+                131.65
+              ],
+              [
+                117.86,
+                124.81,
+                129.73,
+                132.91,
+                135.4
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 112.65,
+              "min": 86.89,
+              "max": 135.4,
+              "std": 15.32
+            }
+          }
+        },
+        "annual_max_smoothed": {
+          "row": 681,
+          "col": 1618,
+          "pixel_center_latlon": [
+            -84.59954,
+            31.0357
+          ],
+          "point_to_pixel_center_m": 102.9,
+          "center_K": 248.71,
+          "window_5x5": {
+            "rows": [
+              679,
+              683
+            ],
+            "cols": [
+              1616,
+              1620
+            ],
+            "values_K": [
+              [
+                223.46,
+                226.33,
+                220.13,
+                212.21,
+                201.63
+              ],
+              [
+                229.95,
+                239.16,
+                234.52,
+                230.02,
+                222.76
+              ],
+              [
+                237.19,
+                247.26,
+                248.71,
+                244.19,
+                240.72
+              ],
+              [
+                242.84,
+                249.14,
+                251.21,
+                248.4,
+                246.42
+              ],
+              [
+                250.27,
+                251.99,
+                249.72,
+                249.51,
+                248.78
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 237.86,
+              "min": 201.63,
+              "max": 251.99,
+              "std": 13.43
+            }
+          }
+        }
+      }
+    },
+    "shackleton_ridge": {
+      "lat": -89.46752,
+      "lon_east": 221.987212,
+      "x_m": -10801.57,
+      "y_m": -12001.74,
+      "layers": {
+        "summer_avg": {
+          "row": 1316,
+          "col": 1221,
+          "pixel_center_latlon": [
+            -89.46752,
+            221.9872
+          ],
+          "point_to_pixel_center_m": 0.1,
+          "center_K": 169.95,
+          "window_5x5": {
+            "rows": [
+              1314,
+              1318
+            ],
+            "cols": [
+              1219,
+              1223
+            ],
+            "values_K": [
+              [
+                163.94,
+                173.58,
+                180.6,
+                178.83,
+                188.92
+              ],
+              [
+                168.84,
+                178.16,
+                184.25,
+                177.99,
+                178.62
+              ],
+              [
+                175.05,
+                173.35,
+                169.95,
+                160.91,
+                161.3
+              ],
+              [
+                180.16,
+                168.92,
+                154.36,
+                146.24,
+                152.0
+              ],
+              [
+                174.65,
+                164.06,
+                152.01,
+                143.81,
+                143.22
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 167.75,
+              "min": 143.22,
+              "max": 188.92,
+              "std": 12.8
+            }
+          }
+        },
+        "summer_min": {
+          "row": 1316,
+          "col": 1221,
+          "pixel_center_latlon": [
+            -89.46752,
+            221.9872
+          ],
+          "point_to_pixel_center_m": 0.1,
+          "center_K": 89.9,
+          "window_5x5": {
+            "rows": [
+              1314,
+              1318
+            ],
+            "cols": [
+              1219,
+              1223
+            ],
+            "values_K": [
+              [
+                83.43,
+                85.74,
+                91.22,
+                99.72,
+                79.73
+              ],
+              [
+                87.19,
+                102.48,
+                123.45,
+                88.27,
+                80.86
+              ],
+              [
+                104.86,
+                86.18,
+                89.9,
+                76.21,
+                79.93
+              ],
+              [
+                113.51,
+                84.41,
+                77.68,
+                77.89,
+                77.58
+              ],
+              [
+                93.99,
+                85.03,
+                79.73,
+                78.65,
+                71.11
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 87.95,
+              "min": 71.11,
+              "max": 123.45,
+              "std": 12.2
+            }
+          }
+        },
+        "summer_max": {
+          "row": 1316,
+          "col": 1221,
+          "pixel_center_latlon": [
+            -89.46752,
+            221.9872
+          ],
+          "point_to_pixel_center_m": 0.1,
+          "center_K": 236.14,
+          "window_5x5": {
+            "rows": [
+              1314,
+              1318
+            ],
+            "cols": [
+              1219,
+              1223
+            ],
+            "values_K": [
+              [
+                248.86,
+                242.63,
+                237.06,
+                226.05,
+                227.93
+              ],
+              [
+                237.76,
+                224.55,
+                224.17,
+                241.35,
+                241.28
+              ],
+              [
+                221.97,
+                218.29,
+                236.14,
+                243.62,
+                241.41
+              ],
+              [
+                212.41,
+                235.58,
+                248.51,
+                230.3,
+                240.77
+              ],
+              [
+                229.8,
+                245.72,
+                241.99,
+                223.19,
+                238.22
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 234.38,
+              "min": 212.41,
+              "max": 248.86,
+              "std": 9.68
+            }
+          }
+        },
+        "winter_avg": {
+          "row": 1316,
+          "col": 1221,
+          "pixel_center_latlon": [
+            -89.46752,
+            221.9872
+          ],
+          "point_to_pixel_center_m": 0.1,
+          "center_K": 123.06,
+          "window_5x5": {
+            "rows": [
+              1314,
+              1318
+            ],
+            "cols": [
+              1219,
+              1223
+            ],
+            "values_K": [
+              [
+                138.58,
+                134.64,
+                131.26,
+                124.57,
+                143.27
+              ],
+              [
+                129.76,
+                130.78,
+                125.62,
+                116.74,
+                128.62
+              ],
+              [
+                130.53,
+                128.19,
+                123.06,
+                111.65,
+                119.53
+              ],
+              [
+                135.49,
+                128.96,
+                125.22,
+                113.25,
+                123.28
+              ],
+              [
+                133.38,
+                126.89,
+                122.33,
+                110.99,
+                121.76
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 126.34,
+              "min": 110.99,
+              "max": 143.27,
+              "std": 7.88
+            }
+          }
+        },
+        "winter_min": {
+          "row": 1316,
+          "col": 1221,
+          "pixel_center_latlon": [
+            -89.46752,
+            221.9872
+          ],
+          "point_to_pixel_center_m": 0.1,
+          "center_K": 65.53,
+          "window_5x5": {
+            "rows": [
+              1314,
+              1318
+            ],
+            "cols": [
+              1219,
+              1223
+            ],
+            "values_K": [
+              [
+                63.97,
+                58.33,
+                61.96,
+                60.91,
+                61.89
+              ],
+              [
+                59.35,
+                62.23,
+                65.84,
+                67.51,
+                58.84
+              ],
+              [
+                59.3,
+                62.03,
+                65.53,
+                61.66,
+                64.31
+              ],
+              [
+                62.56,
+                64.49,
+                57.15,
+                62.27,
+                62.13
+              ],
+              [
+                61.93,
+                62.34,
+                63.19,
+                62.79,
+                62.58
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 62.2,
+              "min": 57.15,
+              "max": 67.51,
+              "std": 2.35
+            }
+          }
+        },
+        "winter_max": {
+          "row": 1316,
+          "col": 1221,
+          "pixel_center_latlon": [
+            -89.46752,
+            221.9872
+          ],
+          "point_to_pixel_center_m": 0.1,
+          "center_K": 211.44,
+          "window_5x5": {
+            "rows": [
+              1314,
+              1318
+            ],
+            "cols": [
+              1219,
+              1223
+            ],
+            "values_K": [
+              [
+                240.53,
+                230.34,
+                219.14,
+                206.12,
+                216.12
+              ],
+              [
+                229.57,
+                207.95,
+                186.43,
+                181.34,
+                203.65
+              ],
+              [
+                206.73,
+                181.55,
+                211.44,
+                215.46,
+                222.06
+              ],
+              [
+                200.6,
+                225.32,
+                238.7,
+                220.97,
+                229.73
+              ],
+              [
+                222.65,
+                237.0,
+                238.63,
+                211.1,
+                226.99
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 216.41,
+              "min": 181.34,
+              "max": 240.53,
+              "std": 16.63
+            }
+          }
+        },
+        "annual_mean": {
+          "row": 1316,
+          "col": 1221,
+          "pixel_center_latlon": [
+            -89.46752,
+            221.9872
+          ],
+          "point_to_pixel_center_m": 0.1,
+          "center_K": 142.03,
+          "window_5x5": {
+            "rows": [
+              1314,
+              1318
+            ],
+            "cols": [
+              1219,
+              1223
+            ],
+            "values_K": [
+              [
+                148.34,
+                147.97,
+                144.51,
+                139.24,
+                154.56
+              ],
+              [
+                144.24,
+                147.39,
+                147.02,
+                140.77,
+                145.37
+              ],
+              [
+                146.75,
+                146.05,
+                142.03,
+                135.29,
+                139.79
+              ],
+              [
+                150.62,
+                141.97,
+                135.87,
+                128.72,
+                133.67
+              ],
+              [
+                149.74,
+                141.27,
+                132.14,
+                121.25,
+                125.28
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 141.19,
+              "min": 121.25,
+              "max": 154.56,
+              "std": 8.05
+            }
+          }
+        },
+        "annual_max_smoothed": {
+          "row": 1316,
+          "col": 1221,
+          "pixel_center_latlon": [
+            -89.46752,
+            221.9872
+          ],
+          "point_to_pixel_center_m": 0.1,
+          "center_K": 233.25,
+          "window_5x5": {
+            "rows": [
+              1314,
+              1318
+            ],
+            "cols": [
+              1219,
+              1223
+            ],
+            "values_K": [
+              [
+                248.88,
+                241.13,
+                234.24,
+                226.64,
+                221.8
+              ],
+              [
+                234.82,
+                221.11,
+                227.37,
+                239.87,
+                236.51
+              ],
+              [
+                218.31,
+                214.65,
+                233.25,
+                240.89,
+                240.12
+              ],
+              [
+                210.05,
+                233.83,
+                243.49,
+                232.43,
+                236.07
+              ],
+              [
+                229.9,
+                242.87,
+                237.4,
+                220.2,
+                229.53
+              ]
+            ],
+            "stats_K": {
+              "n": 25,
+              "mean": 231.81,
+              "min": 210.05,
+              "max": 248.88,
+              "std": 9.6
+            }
+          }
+        }
+      }
+    }
+  },
+  "validation": {
+    "orientation_test_shackleton": {
+      "results": {
+        "correct": {
+          "summer_max_center_K": 95.03,
+          "summer_max_5x5_max_K": 97.88
+        },
+        "mirror_x(lon->-lon)": {
+          "summer_max_center_K": 220.34,
+          "summer_max_5x5_max_K": 239.43
+        },
+        "mirror_y(lon->180-lon)": {
+          "summer_max_center_K": 265.77,
+          "summer_max_5x5_max_K": 268.76
+        },
+        "rotate_180": {
+          "summer_max_center_K": 104.32,
+          "summer_max_5x5_max_K": 216.47
+        }
+      },
+      "pass": true,
+      "criterion": "only the documented convention puts a cold (<110 K max) 5x5 window on the Shackleton floor"
+    },
+    "zonal_season_label_check": {
+      "zonal_mean_K": {
+        "-82.0": {
+          "summer_avg": 125.87,
+          "winter_avg": 117.34
+        },
+        "-86.0": {
+          "summer_avg": 110.56,
+          "winter_avg": 96.64
+        },
+        "-88.0": {
+          "summer_avg": 92.53,
+          "winter_avg": 67.93
+        }
+      },
+      "pass": true,
+      "criterion": "south 'summer' (subsolar lat < 0) warmer than 'winter' zonally"
+    },
+    "shackleton_floor": {
+      "point": [
+        -89.67,
+        129.78
+      ],
+      "center_K": {
+        "summer_avg": 74.11,
+        "summer_min": 45.09,
+        "summer_max": 95.03,
+        "winter_avg": 49.66,
+        "winter_min": 40.32,
+        "winter_max": 74.74,
+        "annual_mean": 59.2,
+        "annual_max_smoothed": 97.16
+      },
+      "window_5x5_stats_K": {
+        "summer_avg": {
+          "n": 25,
+          "mean": 73.95,
+          "min": 73.05,
+          "max": 75.51,
+          "std": 0.6
+        },
+        "summer_min": {
+          "n": 25,
+          "mean": 43.65,
+          "min": 40.35,
+          "max": 46.64,
+          "std": 1.56
+        },
+        "summer_max": {
+          "n": 25,
+          "mean": 95.83,
+          "min": 93.45,
+          "max": 97.88,
+          "std": 1.09
+        },
+        "winter_avg": {
+          "n": 25,
+          "mean": 49.55,
+          "min": 48.81,
+          "max": 50.57,
+          "std": 0.44
+        },
+        "winter_min": {
+          "n": 25,
+          "mean": 36.68,
+          "min": 30.05,
+          "max": 41.64,
+          "std": 2.89
+        },
+        "winter_max": {
+          "n": 25,
+          "mean": 67.87,
+          "min": 64.79,
+          "max": 74.74,
+          "std": 2.15
+        },
+        "annual_mean": {
+          "n": 25,
+          "mean": 59.07,
+          "min": 58.23,
+          "max": 59.83,
+          "std": 0.42
+        },
+        "annual_max_smoothed": {
+          "n": 25,
+          "mean": 97.1,
+          "min": 94.69,
+          "max": 99.05,
+          "std": 1.04
+        }
+      },
+      "criterion": "all layers < 110 K (permanently shadowed crater floor)",
+      "pass": true
+    },
+    "malapert_vs_published": {
+      "published": "~180 K summer, ~130 K winter (Wueller et al. 2025 citing Williams et al. 2019)",
+      "summer_avg_K": 155.48,
+      "winter_avg_K": 144.94,
+      "summer_avg_window_mean_K": 152.66,
+      "winter_avg_window_mean_K": 135.2,
+      "criterion": "|summer_avg-180| <= 15 K and |winter_avg-130| <= 15 K",
+      "pass": false,
+      "neighbourhood_stats_K": {
+        "summer_avg": {
+          "5x5": {
+            "box_km": 1.2,
+            "n": 25,
+            "min": 137.15,
+            "p10": 138.62,
+            "median": 153.47,
+            "p90": 162.88,
+            "max": 167.06
+          },
+          "11x11": {
+            "box_km": 2.64,
+            "n": 121,
+            "min": 118.06,
+            "p10": 134.29,
+            "median": 149.38,
+            "p90": 169.49,
+            "max": 177.48
+          },
+          "21x21": {
+            "box_km": 5.04,
+            "n": 441,
+            "min": 117.51,
+            "p10": 131.46,
+            "median": 156.15,
+            "p90": 175.6,
+            "max": 184.39
+          },
+          "41x41": {
+            "box_km": 9.84,
+            "n": 1681,
+            "min": 111.45,
+            "p10": 138.11,
+            "median": 158.88,
+            "p90": 181.04,
+            "max": 189.42
+          }
+        },
+        "winter_avg": {
+          "5x5": {
+            "box_km": 1.2,
+            "n": 25,
+            "min": 90.0,
+            "p10": 94.65,
+            "median": 144.94,
+            "p90": 168.96,
+            "max": 170.8
+          },
+          "11x11": {
+            "box_km": 2.64,
+            "n": 121,
+            "min": 87.91,
+            "p10": 91.28,
+            "median": 135.44,
+            "p90": 172.94,
+            "max": 178.56
+          },
+          "21x21": {
+            "box_km": 5.04,
+            "n": 441,
+            "min": 87.19,
+            "p10": 93.14,
+            "median": 135.44,
+            "p90": 183.44,
+            "max": 189.42
+          },
+          "41x41": {
+            "box_km": 9.84,
+            "n": 1681,
+            "min": 69.0,
+            "p10": 89.31,
+            "median": 128.78,
+            "p90": 187.35,
+            "max": 194.23
+          }
+        }
+      },
+      "interpretation": "The centre-pixel summer average (~155 K) is ~25 K below the quoted ~180 K, while the winter average (~145 K) is ~15 K above ~130 K. This is NOT a georeferencing error: the authors' own ASCII tables give the identical temperatures for this pixel and place its centre (clat/clon) within 0.1 m of ours, the Shackleton floor is cold only under the documented orientation, and zonal means show the season labels are right. The summit sits on a ridge crest with very steep temperature gradients (5x5 window: summer avg 137-167 K, winter avg 90-171 K); the pole-facing flank 0.5-1 km away is ~165-177 K in summer and ~90 K in winter; over a ~10 km box the summer-avg 90th percentile is ~181 K and the winter-avg median ~129 K. The quoted 180/130 K are therefore most likely rounded massif-scale / sun-facing-slope values rather than the value of the single 240 m summit pixel. The full text of Wueller et al. 2025 (doi:10.1029/2025JE009127) could not be retrieved (HTTP 403) to confirm which statistic/area they quote."
+    },
+    "tif_vs_grd_same_pixel": true,
+    "tif_vs_grd_same_pixel_base_points": {
+      "malapert": true,
+      "mons_mouton": true,
+      "shackleton_ridge": true
+    },
+    "ridge_point_on_pixel_centre": {
+      "point_to_pixel_center_m": 0.1,
+      "criterion": "NTRS 20240009936 says its ridge point was chosen to match LRO seasonal temperature data; if our grid is right, the point falls on one of our pixel centres (< 1 m)",
+      "pass": true
+    },
+    "ascii_table_crosscheck": {
+      "description": "Same pixel looked up (HTTP range requests) in the authors' ASCII tables, which carry their own pixel-centre clon/clat; tbol must equal the GeoTIFF value and the authors' pixel centre must equal ours. 'pass' covers the pixels that were looked up; 'not_checked' lists those that could not be (server not reachable).",
+      "pass": true,
+      "not_checked": [
+        "mons_mouton/summer_avg",
+        "mons_mouton/summer_min",
+        "mons_mouton/summer_max",
+        "mons_mouton/winter_avg",
+        "mons_mouton/winter_min",
+        "mons_mouton/winter_max",
+        "shackleton_ridge/summer_avg",
+        "shackleton_ridge/summer_min",
+        "shackleton_ridge/summer_max",
+        "shackleton_ridge/winter_avg",
+        "shackleton_ridge/winter_min",
+        "shackleton_ridge/winter_max"
+      ],
+      "checks": {
+        "malapert/summer_avg": {
+          "found": true,
+          "x_norm": -0.002901,
+          "y_norm": 0.070461,
+          "clon": -2.357906,
+          "clat": -85.961154,
+          "tbol_K": 155.480255,
+          "line_index": 1265155,
+          "line_bytes": 58,
+          "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_avg.txt",
+          "tif_center_K": 155.48,
+          "abs_diff_K": 0.0003,
+          "authors_pixel_center_to_point_m": 119.8,
+          "authors_vs_our_pixel_center_m": 0.12,
+          "reused_from_run": "2026-10-09",
+          "reuse_reason": "UCLA server not reachable in this run: URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "malapert/summer_min": {
+          "found": true,
+          "x_norm": -0.002901,
+          "y_norm": 0.070461,
+          "clon": -2.357906,
+          "clat": -85.961154,
+          "tbol_K": 57.920628,
+          "line_index": 1265155,
+          "line_bytes": 58,
+          "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_min.txt",
+          "tif_center_K": 57.92,
+          "abs_diff_K": 0.0006,
+          "authors_pixel_center_to_point_m": 119.8,
+          "authors_vs_our_pixel_center_m": 0.12,
+          "reused_from_run": "2026-10-09",
+          "reuse_reason": "UCLA server not reachable in this run: URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "malapert/summer_max": {
+          "found": true,
+          "x_norm": -0.002901,
+          "y_norm": 0.070461,
+          "clon": -2.357906,
+          "clat": -85.961154,
+          "tbol_K": 259.249878,
+          "line_index": 1265155,
+          "line_bytes": 58,
+          "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_max.txt",
+          "tif_center_K": 259.25,
+          "abs_diff_K": 0.0001,
+          "authors_pixel_center_to_point_m": 119.8,
+          "authors_vs_our_pixel_center_m": 0.12,
+          "reused_from_run": "2026-10-09",
+          "reuse_reason": "UCLA server not reachable in this run: URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "malapert/winter_avg": {
+          "found": true,
+          "x_norm": -0.002901,
+          "y_norm": 0.070461,
+          "clon": -2.357906,
+          "clat": -85.961154,
+          "tbol_K": 144.943619,
+          "line_index": 1265125,
+          "line_bytes": 58,
+          "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_avg.txt",
+          "tif_center_K": 144.94,
+          "abs_diff_K": 0.0036,
+          "authors_pixel_center_to_point_m": 119.8,
+          "authors_vs_our_pixel_center_m": 0.12,
+          "reused_from_run": "2026-10-09",
+          "reuse_reason": "UCLA server not reachable in this run: URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "malapert/winter_min": {
+          "found": true,
+          "x_norm": -0.002901,
+          "y_norm": 0.070461,
+          "clon": -2.357906,
+          "clat": -85.961154,
+          "tbol_K": 56.602097,
+          "line_index": 1265125,
+          "line_bytes": 58,
+          "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_min.txt",
+          "tif_center_K": 56.6,
+          "abs_diff_K": 0.0021,
+          "authors_pixel_center_to_point_m": 119.8,
+          "authors_vs_our_pixel_center_m": 0.12,
+          "reused_from_run": "2026-10-09",
+          "reuse_reason": "UCLA server not reachable in this run: URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "malapert/winter_max": {
+          "found": true,
+          "x_norm": -0.002901,
+          "y_norm": 0.070461,
+          "clon": -2.357906,
+          "clat": -85.961154,
+          "tbol_K": 232.297714,
+          "line_index": 1265125,
+          "line_bytes": 58,
+          "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_winter_max.txt",
+          "tif_center_K": 232.3,
+          "abs_diff_K": 0.0023,
+          "authors_pixel_center_to_point_m": 119.8,
+          "authors_vs_our_pixel_center_m": 0.12,
+          "reused_from_run": "2026-10-09",
+          "reuse_reason": "UCLA server not reachable in this run: URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "mons_mouton/summer_avg": {
+          "found": false,
+          "error": "URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "mons_mouton/summer_min": {
+          "found": false,
+          "error": "URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "mons_mouton/summer_max": {
+          "found": false,
+          "error": "URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "mons_mouton/winter_avg": {
+          "found": false,
+          "error": "URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "mons_mouton/winter_min": {
+          "found": false,
+          "error": "URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "mons_mouton/winter_max": {
+          "found": false,
+          "error": "URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "shackleton_ridge/summer_avg": {
+          "found": false,
+          "error": "URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "shackleton_ridge/summer_min": {
+          "found": false,
+          "error": "URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "shackleton_ridge/summer_max": {
+          "found": false,
+          "error": "URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "shackleton_ridge/winter_avg": {
+          "found": false,
+          "error": "URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "shackleton_ridge/winter_min": {
+          "found": false,
+          "error": "URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "shackleton_ridge/winter_max": {
+          "found": false,
+          "error": "URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "shackleton_floor/summer_avg": {
+          "found": true,
+          "x_norm": 0.004421,
+          "y_norm": -0.00373,
+          "clon": 130.156,
+          "clat": -89.668572,
+          "tbol_K": 74.109459,
+          "line_index": 2590127,
+          "line_bytes": 58,
+          "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_avg.txt",
+          "tif_center_K": 74.11,
+          "abs_diff_K": 0.0005,
+          "authors_pixel_center_to_point_m": 78.8,
+          "authors_vs_our_pixel_center_m": 0.06,
+          "reused_from_run": "2026-10-09",
+          "reuse_reason": "UCLA server not reachable in this run: URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        },
+        "shackleton_floor/summer_max": {
+          "found": true,
+          "x_norm": 0.004421,
+          "y_norm": -0.00373,
+          "clon": 130.156,
+          "clat": -89.668572,
+          "tbol_K": 95.029221,
+          "line_index": 2590127,
+          "line_bytes": 58,
+          "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/additional_maps/polar_south_80_summer_max.txt",
+          "tif_center_K": 95.03,
+          "abs_diff_K": 0.0008,
+          "authors_pixel_center_to_point_m": 78.8,
+          "authors_vs_our_pixel_center_m": 0.06,
+          "reused_from_run": "2026-10-09",
+          "reuse_reason": "UCLA server not reachable in this run: URLError(TimeoutError('_ssl.c:993: The handshake operation timed out'))"
+        }
+      }
+    },
+    "projection_roundtrip_m": 0.025889
+  },
+  "fetched": "2026-10-14"
+}

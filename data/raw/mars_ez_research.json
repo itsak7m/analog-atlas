@@ -1,0 +1,768 @@
+{
+  "about": "Research notes for adding NASA human-mission Exploration Zones (EZs) as Mars base-candidate targets. Compiled 2026-10-09/10. Values are orbital measurements extracted from official datasets (MRO MCS surface-temperature maps on Harvard Dataverse; MGS TES albedo map on PDS Geosciences). No model output (e.g. Mars Climate Database) is used. 'measured': false means not measured. Not yet merged into targets.json.",
+  "workshop": {
+    "name": "First Landing Site/Exploration Zone Workshop for Human Missions to the Surface of Mars",
+    "dates": "27-30 October 2015, Lunar and Planetary Institute, Houston",
+    "urls": [
+      "https://www.nasa.gov/journeytomars/mars-exploration-zones",
+      "https://ntrs.nasa.gov/citations/20160001040",
+      "https://ntrs.nasa.gov/api/citations/20170002903/downloads/20170002903.pdf"
+    ],
+    "quotes": [
+      {
+        "url": "https://ntrs.nasa.gov/api/citations/20160001040/downloads/20160001040.pdf",
+        "quote": "In response to this call for proposals, 47 EZs were accepted for presentation from among all of the submissions received.",
+        "source": "Bussey & Hoffman (2016), Human Mars Landing Site and Impacts on Mars Surface Operations, IEEE Aerospace 2016 (NTRS 20160001040)"
+      },
+      {
+        "url": "https://ntrs.nasa.gov/api/citations/20160002370/downloads/20160002370.pdf",
+        "quote": "Forty-five individuals or teams proposed 47 EZs",
+        "source": "NASA IEEE Aerospace 2016 presentation slides (NTRS 20160002370)"
+      },
+      {
+        "url": "https://ntrs.nasa.gov/api/citations/20160001040/downloads/20160001040.pdf",
+        "quote": "has these characteristics: (a) located between +/- 50 degrees latitude, (b) less than +2 kilometers altitude",
+        "source": "Bussey & Hoffman 2016, call-for-proposals criteria"
+      },
+      {
+        "url": "https://ntrs.nasa.gov/api/citations/20170002903/downloads/20170002903.pdf",
+        "quote": "held on 27-30 October 2015, discussed 47 proposals for EZs and ROIs",
+        "source": "Hoffman, Human Mars mission overview and dust storm impacts on site selection (NTRS 20170002903)"
+      }
+    ],
+    "officialList": {
+      "source": "Bussey & Hoffman 2016 (NTRS 20160001040), Appendix D 'Summary of proposed EZ and ROI locations and key characteristics' (pp. 19-20). Map: https://www.nasa.gov/sites/default/files/atoms/files/exploration-zone-map-v10.pdf (not opened).",
+      "note": "Appendix D lists 47 rows (author, landing site, abstract no., map no. [column printed as 'Longitude' but it holds map numbers 1-44], latitude). Text extracted with pdftotext -raw. The table has duplicated rows (e.g. Hamilton/Ausonia Cavus 1045 twice) and typos ('Erberus Montes', 'Copericus Crater', 'Vallis Marineris'), reproduced as printed. Abstract URLs follow the workshop's pattern; only 1011, 1020, 1033, 1034, 1044, 1053 were opened.",
+      "entries": [
+        {
+          "author": "Ackiss",
+          "landingSite": "Huygens Crater",
+          "abstract": 1032,
+          "latitude": "13.5S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1032.pdf"
+        },
+        {
+          "author": "Barker",
+          "landingSite": "Phlegra Dorsa",
+          "abstract": 1002,
+          "latitude": "39N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1002.pdf"
+        },
+        {
+          "author": "Boatwright",
+          "landingSite": "Southern Nectaris Fossae",
+          "abstract": 1005,
+          "latitude": "29S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1005.pdf"
+        },
+        {
+          "author": "Calef",
+          "landingSite": "Gale Crater",
+          "abstract": 1020,
+          "latitude": "4.5S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1020.pdf"
+        },
+        {
+          "author": "Clarke",
+          "landingSite": "Endeavour Crater",
+          "abstract": 1057,
+          "latitude": "3S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1057.pdf"
+        },
+        {
+          "author": "Clifford",
+          "landingSite": "Eastern Valles Marineris",
+          "abstract": 1054,
+          "latitude": "4S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1054.pdf"
+        },
+        {
+          "author": "Cohen",
+          "landingSite": "Meridiani Planum",
+          "abstract": 1030,
+          "latitude": "0.5N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1030.pdf"
+        },
+        {
+          "author": "Davila",
+          "landingSite": "Hebrus Valles",
+          "abstract": 1012,
+          "latitude": "20N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1012.pdf"
+        },
+        {
+          "author": "Farrell",
+          "landingSite": "Chryse - Viking",
+          "abstract": 1019,
+          "latitude": "22.5N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1019.pdf"
+        },
+        {
+          "author": "Gallegos",
+          "landingSite": "Mesopotamia",
+          "abstract": 1035,
+          "latitude": "35.5S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1035.pdf"
+        },
+        {
+          "author": "Gallegos",
+          "landingSite": "Protonilus Mensae",
+          "abstract": 1053,
+          "latitude": "42N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1053.pdf"
+        },
+        {
+          "author": "Gallegos",
+          "landingSite": "Tempe Terra",
+          "abstract": 1056,
+          "latitude": "42N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1056.pdf"
+        },
+        {
+          "author": "Gupta",
+          "landingSite": "Hypanis",
+          "abstract": 1051,
+          "latitude": "12N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1051.pdf"
+        },
+        {
+          "author": "Hamilton",
+          "landingSite": "Ausonia Cavus",
+          "abstract": 1045,
+          "latitude": "32S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1045.pdf"
+        },
+        {
+          "author": "Hamilton",
+          "landingSite": "Kasei Valles",
+          "abstract": 1045,
+          "latitude": "25N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1045.pdf"
+        },
+        {
+          "author": "Hamilton",
+          "landingSite": "Ausonia Cavus",
+          "abstract": 1045,
+          "latitude": "32S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1045.pdf"
+        },
+        {
+          "author": "Head",
+          "landingSite": "Deuteronilus Mensae",
+          "abstract": 1033,
+          "latitude": "39N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1033.pdf"
+        },
+        {
+          "author": "Hill",
+          "landingSite": "Noachis Terra",
+          "abstract": 1021,
+          "latitude": "37S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1021.pdf"
+        },
+        {
+          "author": "Horgan",
+          "landingSite": "Mawrth Vallis",
+          "abstract": 1009,
+          "latitude": "24.5N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1009.pdf"
+        },
+        {
+          "author": "Kerber",
+          "landingSite": "Apollinaris Sulci",
+          "abstract": 1043,
+          "latitude": "12.5S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1043.pdf"
+        },
+        {
+          "author": "Kochemasov",
+          "landingSite": "Vallis Marineris Mouth",
+          "abstract": 1006,
+          "latitude": "20N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1006.pdf"
+        },
+        {
+          "author": "Laine",
+          "landingSite": "Newton Crater",
+          "abstract": 1015,
+          "latitude": "40.5S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1015.pdf"
+        },
+        {
+          "author": "Lee",
+          "landingSite": "Noctis Landing",
+          "abstract": 1050,
+          "latitude": "6.5S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1050.pdf"
+        },
+        {
+          "author": "Levy",
+          "landingSite": "Hellas Rim",
+          "abstract": 1037,
+          "latitude": "39S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1037.pdf"
+        },
+        {
+          "author": "Longo",
+          "landingSite": "Gusev Crater",
+          "abstract": 1008,
+          "latitude": "14.5S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1008.pdf"
+        },
+        {
+          "author": "Lynch",
+          "landingSite": "Columbus Crater",
+          "abstract": 1041,
+          "latitude": "29S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1041.pdf"
+        },
+        {
+          "author": "Mangold",
+          "landingSite": "Ismenius Cavus",
+          "abstract": 1027,
+          "latitude": "33.5N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1027.pdf"
+        },
+        {
+          "author": "Markle",
+          "landingSite": "Nili Fossae",
+          "abstract": 1010,
+          "latitude": "22N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1010.pdf"
+        },
+        {
+          "author": "McEwen",
+          "landingSite": "Melas Chasma",
+          "abstract": 1007,
+          "latitude": "12S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1007.pdf"
+        },
+        {
+          "author": "Michalski",
+          "landingSite": "McLaughlin Crater",
+          "abstract": 1025,
+          "latitude": "22N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1025.pdf"
+        },
+        {
+          "author": "Mitchell",
+          "landingSite": "Equatorial Vallis Marineris",
+          "abstract": 1023,
+          "latitude": "19S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1023.pdf"
+        },
+        {
+          "author": "Mojarro",
+          "landingSite": "Coprates Chasma",
+          "abstract": 1036,
+          "latitude": "11.5S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1036.pdf"
+        },
+        {
+          "author": "Montano",
+          "landingSite": "Gale Crater",
+          "abstract": 1040,
+          "latitude": "4.5S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1040.pdf"
+        },
+        {
+          "author": "Mustard",
+          "landingSite": "Jezero Crater",
+          "abstract": 1034,
+          "latitude": "17.5N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1034.pdf"
+        },
+        {
+          "author": "Ori",
+          "landingSite": "Firsoff Crater",
+          "abstract": 1026,
+          "latitude": "0N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1026.pdf"
+        },
+        {
+          "author": "Plaut",
+          "landingSite": "Deuteronilus Mensae",
+          "abstract": 1044,
+          "latitude": "41N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1044.pdf"
+        },
+        {
+          "author": "Rice",
+          "landingSite": "Eastern Hellas",
+          "abstract": 1038,
+          "latitude": "40S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1038.pdf"
+        },
+        {
+          "author": "Rice",
+          "landingSite": "Apollinaris Sulci",
+          "abstract": 1046,
+          "latitude": "13S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1046.pdf"
+        },
+        {
+          "author": "Sibille",
+          "landingSite": "Aram Chaos",
+          "abstract": 1048,
+          "latitude": "2.5N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1048.pdf"
+        },
+        {
+          "author": "Skinner",
+          "landingSite": "Hadriacus Palus",
+          "abstract": 1052,
+          "latitude": "27S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1052.pdf"
+        },
+        {
+          "author": "Stillman",
+          "landingSite": "Hale Crater",
+          "abstract": 1028,
+          "latitude": "36S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1028.pdf"
+        },
+        {
+          "author": "Viola",
+          "landingSite": "Erberus Montes",
+          "abstract": 1011,
+          "latitude": "39N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1011.pdf"
+        },
+        {
+          "author": "Viola",
+          "landingSite": "Acheron Fossae",
+          "abstract": 1011,
+          "latitude": "40N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1011.pdf"
+        },
+        {
+          "author": "Westenberg",
+          "landingSite": "Copericus Crater",
+          "abstract": 1029,
+          "latitude": "49S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1029.pdf"
+        },
+        {
+          "author": "Wilkinson",
+          "landingSite": "Sinus Meridiani",
+          "abstract": 1042,
+          "latitude": "2S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1042.pdf"
+        },
+        {
+          "author": "Wright",
+          "landingSite": "Cerberus",
+          "abstract": 1017,
+          "latitude": "10N",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1017.pdf"
+        },
+        {
+          "author": "Yun",
+          "landingSite": "Gale Crater",
+          "abstract": 1022,
+          "latitude": "4.5S",
+          "abstractUrl": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1022.pdf"
+        }
+      ]
+    },
+    "laterShortlist": {
+      "officialNasaShortlist": "none found",
+      "note": "No second EZ workshop (2017) and no official NASA EZ down-select was found on nasa.gov / NTRS. The 2016 NASA slides (NTRS 20160002370) list workshop findings only. The closest later NASA-funded prioritisation is the SWIM project (JPL subcontract to PSI), which favours Arcadia and Deuteronilus Mensae for accessible ice; JPL's 2019 'treasure map' release names Arcadia Planitia.",
+      "swim": {
+        "url": "https://pubs.usgs.gov/publication/70226786",
+        "doi": "10.1038/s41550-020-01290-z",
+        "citation": "Morgan et al. 2021, Nature Astronomy 5, 230-236, 'Availability of subsurface water-ice resources in the northern mid-latitudes of Mars'",
+        "quote": "our composite ice-consistency maps indicate that the broad plains of Arcadia and the extensive glacial networks across Deuteronilus Mensae match the greatest number of remote-sensing criteria for accessible ice-rich, subsurface material situated equatorwards of the contemporary ice-stability zone."
+      },
+      "jplTreasureMap": {
+        "url": "https://www.jpl.nasa.gov/news/nasas-treasure-map-for-water-ice-on-mars",
+        "date": "2019-12-10",
+        "quote": "A large portion of a region called Arcadia Planitia is the most tempting target in the northern hemisphere."
+      }
+    }
+  },
+  "existingTargetsAsEZ": {
+    "jezero": {
+      "proposedAsEZ": true,
+      "abstract": 1034,
+      "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1034.pdf",
+      "authors": "Mustard, Goudge, Bramble, Ehlmann, Head, Dickson, Fassett, Cannon",
+      "title": "Jezero Crater Watershed, Isidis Basin, Sulfate Deposits and Syrtis Major: A Compelling Exploration Zone for Human Exploration",
+      "quote": "The center of the Exploration Zone is 17.747° N 77.037° E.",
+      "alsoNasa": {
+        "url": "https://ntrs.nasa.gov/api/citations/20160001040/downloads/20160001040.pdf",
+        "quote": "One hypothetical EZ, an area centered on Jezero Crater (drawn from a previous study by the Human Exploration of Mars - Scientific Analysis Group, or HEM-SAG), is used to illustrate how this concept of operations will be implemented"
+      }
+    },
+    "gale": {
+      "proposedAsEZ": true,
+      "abstracts": [
+        1020,
+        1040,
+        1022
+      ],
+      "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1020.pdf",
+      "authors": "Calef, Archer, Clark, Day, Goetz, Lasue, Martin-Torres, Zorzano Mier",
+      "title": "Assessing Gale Crater as a landing site for the first human mission to Mars",
+      "quote": "Our proposed landing site is located at the center of the final MSL landing ellipse at 137.4019° longitude and -4.5965° latitude",
+      "note": "Appendix D of NTRS 20160001040 lists three Gale proposals: Calef (1020), Montano (1040), Yun (1022). Only 1020 was opened."
+    },
+    "phoenix": {
+      "proposedAsEZ": false,
+      "note": "Phoenix (68.22 N) and Vastitas Borealis are outside the workshop's latitude limit, and no Vastitas Borealis EZ appears in Appendix D (northernmost entries are Tempe Terra / Protonilus Mensae at 42N).",
+      "url": "https://ntrs.nasa.gov/api/citations/20160002370/downloads/20160002370.pdf",
+      "quote": "Preliminary latitude boundaries set at +/- 50 degrees"
+    }
+  },
+  "candidates": [
+    {
+      "id": "deuteronilus-ez",
+      "name": "Deuteronilus Mensae Exploration Zone",
+      "lat": 39.11,
+      "lon": 23.199,
+      "lonNote": "east longitude, already within -180..180 for terrain_points.json",
+      "ezSource": {
+        "abstract": 1033,
+        "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1033.pdf",
+        "authors": "Head, Dickson, Mustard, Milliken, Scott, Johnson, Marchant, Levy, Kinch, Hvidberg, Forget, Boucher, Mikucki, Fastook, Klaus",
+        "title": "Mars Human Science Exploration and Resource Utilization: The Dichotomy Boundary Deuteronilus Mensae Exploration Zone",
+        "quote": "The Dichotomy Boundary Deuteronilus Mensae (DBDM) Exploration Zone (EZ) (39.11° N, 23.199° E)"
+      },
+      "secondEzSameRegion": {
+        "abstract": 1044,
+        "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1044.pdf",
+        "authors": "J. J. Plaut (JPL)",
+        "quote": "The proposed EZ meets the provided engineering constraints: latitude 39-43 deg. N, longitude 20-24 deg. E",
+        "note": "Centre not stated; the box midpoint would be 41 N, 22 E (derived, not stated)."
+      },
+      "whyChosen": "Two independent EZ proposals at the 2015 workshop (Head et al.; Plaut), radar-confirmed nearly pure ice in lobate debris aprons, and one of the two regions favoured by the later NASA-funded SWIM ice mapping (Morgan et al. 2021).",
+      "values": {
+        "meanTemp": {
+          "value": -65.9,
+          "unit": "°C",
+          "measured": true,
+          "kind": "orbital measurement (MRO Mars Climate Sounder, channel B1, 32 µm), surface/ground temperature, not air",
+          "url": "https://doi.org/10.7910/DVN/YCNFQL",
+          "paper": "https://doi.org/10.1016/j.icarus.2023.115851",
+          "quote": "MCS Channel B1 average surface temperature map. See text, this map is close but not equivalent to a true annual average surface temperature map.",
+          "quoteSource": "Readme.txt / file description of Figure_13.map in the Dataverse dataset",
+          "extraction": "Figure_13.map (1080x540, K, 999.99 = no data), analytic 1/3-degree grid lat=90-(row+0.5)/3, lonE=(col+0.5)/3. Mean of the 7 pixels within 25 km of (39.11, 23.199 E) = 207.24 K. Nearest pixel (row 152, col 69) = 207.98 K (-65.2 °C). Within 100 km (whole EZ): mean 206.95 K (-66.2 °C), range 202.86-211.18 K.",
+          "note": "Average of MCS surface observations, which MRO makes near 3 AM and 3 PM local time (sun-synchronous orbit), so it only approximates the true diurnal/annual mean. It is a ground temperature; the app's Jezero/Gale meanTemp values are air temperatures. Cross-check: the same map gives -55.7 °C at Jezero (MEDA air mean -55 °C) and -54.7 °C at Gale."
+        },
+        "swing": {
+          "value": null,
+          "unit": "°C",
+          "measured": false,
+          "url": null,
+          "quote": null,
+          "note": "Not measured. No source gives a measured daily range for this EZ. MCS maximum minus minimum surface temperature (max 258.26 K (-14.9 °C) minus min 164.83 K, 25-km means) = 93.4 K, but that is the range between the warmest afternoon (~3 PM) and coldest night (~3 AM) observations over all seasons, NOT a daily swing; do not use it as 'swing'.",
+          "contextOnly": {
+            "maxSurfaceTemp_K": 258.26,
+            "maxSurfaceTemp_C": -14.9,
+            "source": "https://doi.org/10.7910/DVN/YCNFQL",
+            "quote": "MCS Channel B1 maximum surface temperature map.",
+            "extraction": "Figure_11.map, mean of pixels within 25 km; nearest pixel 257.51 K"
+          }
+        },
+        "coldGround": {
+          "value": -108.3,
+          "unit": "°C",
+          "measured": true,
+          "kind": "orbital measurement (MRO MCS channel B1), coldest surface temperature observed",
+          "url": "https://doi.org/10.7910/DVN/YCNFQL",
+          "paper": "https://doi.org/10.1016/j.icarus.2023.115851",
+          "quote": "MCS Channel B1 minimum surface temperature map.",
+          "quoteSource": "Readme.txt / file description of Figure_08.map",
+          "extraction": "Figure_08.map, same grid. Mean of the 7 pixels within 25 km = 164.83 K; coldest pixel within 25 km 161.84 K (-111.3 °C). Nearest pixel = 166.87 K (-106.3 °C). Within 100 km: mean 161.65 K, range 155.3-168.5 K.",
+          "note": "Minimum over the multi-year MCS record at ~20 km pixel scale. MCS sees the night side near 3 AM, not at the pre-dawn minimum, so the true coldest ground temperature is probably somewhat lower. The dataset also documents that 32 µm brightness temperatures underestimate temperature when emissivity < 1 (Figure_06.tab)."
+        },
+        "rain": {
+          "value": 0,
+          "unit": "mm",
+          "measured": false,
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html",
+          "quote": null,
+          "note": "Physical constraint, not a measurement: same convention and source key ('mars-factsheet') as the existing Mars targets; the app's measuredFactors() counts rain for Moon/Mars."
+        },
+        "albedo": {
+          "value": 0.14,
+          "unit": "fraction 0-1",
+          "measured": true,
+          "kind": "orbital measurement (MGS Thermal Emission Spectrometer visible/near-IR bolometer)",
+          "url": "https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-special-v1/global_albedo_8ppd.img",
+          "label": "https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-special-v1/global_albedo_8ppd.lbl",
+          "page": "https://pds-geosciences.wustl.edu/missions/mgs/tesspecial.html",
+          "quote": "The VISIR data have been reduced to Lambert albedo values and gridded at 8 pixels/degree (Christensen et al. 2001).",
+          "quoteSource": "https://pds-geosciences.wustl.edu/missions/mgs/tesspecial.html",
+          "extraction": "PDS3 image GLOBAL_ALBEDO_8PPD.IMG (1440 lines x 2880 samples, PC_REAL 32-bit little-endian, simple cylindrical, -180..180 E, LINE_PROJECTION_OFFSET 720.5, SAMPLE_PROJECTION_OFFSET 1440.5, 8 px/deg; sha256 47ee17fc9aca6aa9fd5d49e383c1acc366d4cb31cab4635bc823bc27a33283c7). Mean of the 44 pixels within 25 km = 0.135. Nearest pixel line 407 / sample 1625 (39.0625 N, 23.1875 E) = 0.1314. Within 100 km: mean 0.2014, median 0.2089, range 0.1212-0.2558 (738 px); the EZ centre sits on a darker crater floor than the EZ average.",
+          "note": "Label DESCRIPTION: 'TES-derived bolometric albedo'. Not corrected for atmosphere; built from clear-condition observations. Cross-check with the same extraction: Jezero 0.17 (app strict value 0.15), Gale 0.23, Phoenix 0.20."
+        }
+      },
+      "measuredCount": {
+        "trulyMeasured": [
+          "meanTemp",
+          "coldGround",
+          "albedo"
+        ],
+        "notMeasured": [
+          "swing"
+        ],
+        "rainConvention": "0 (counted by the app)",
+        "appMeasuredFactors": 4
+      },
+      "geology": {
+        "primary": "ice",
+        "secondary": [],
+        "source": {
+          "url": "https://doi.org/10.1029/2008GL036379",
+          "citation": "Plaut et al. 2009, GRL 36, L02203, 'Radar evidence for ice in lobate debris aprons in the mid-northern latitudes of Mars' (abstract via OpenAlex)",
+          "quote": "lobate debris aprons found in Deuteronilus Mensae in the mid‐northern latitudes of Mars are composed predominantly of water ice"
+        },
+        "note": "The landing/habitation site itself is on Hesperian plains of uncertain origin ('floor is HNps (smooth plains); LDA is Ada (debris aprons)', abstract 1033; 'Hesperian age plains terrain, which while of uncertain origin', abstract 1044). No measured rock type for the plains was found, so no secondary rock type is given. Abstract 1033 mentions 'basaltic talus in LDA' only as a science question."
+      },
+      "resources": {
+        "ice": {
+          "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1044.pdf",
+          "quote": "it contains vast, readily accessible deposits of water ice in a setting of key scientific importance",
+          "note": "Supported by SHARAD radar (Plaut et al. 2009) and SWIM (Morgan et al. 2021)."
+        },
+        "shelter": {
+          "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1033.pdf",
+          "quote": "lying below less than 10-15 meters of sublimation till, itself a major resource for construction and shelter",
+          "note": "Shelter here means building/shielding material (till), not a natural cave."
+        },
+        "regolith": {
+          "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1033.pdf",
+          "quote": "sublimation till, itself a major resource for construction and shelter"
+        },
+        "salts": null
+      },
+      "terrainPoint": {
+        "id": "deuteronilus-ez",
+        "body": "mars",
+        "name": "Deuteronilus Mensae EZ",
+        "lat": 39.11,
+        "lon": 23.199,
+        "kind": "target",
+        "coordSource": "Head et al. 2015, EZ workshop abstract 1033"
+      }
+    },
+    {
+      "id": "erebus-montes-ez",
+      "name": "Erebus Montes Exploration Zone (Arcadia Planitia)",
+      "lat": 39.0,
+      "lon": -167.9,
+      "lonNote": "abstract gives 192.1° E; converted to -167.9 for the -180..180 convention",
+      "ezSource": {
+        "abstract": 1011,
+        "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1011.pdf",
+        "authors": "D. Viola, A. S. McEwen, C. M. Dundas",
+        "title": "Mid-latitude Martian ice as a target for human exploration, astrobiology, and in-situ resource utilization",
+        "quote": "Erebus Montes: This proposed site is centered near 192.1°E, 39.0°N",
+        "regionQuote": "We propose two Exploration Zones (EZ) in the northern mid-latitudes of Mars in the vicinity of Arcadia and Amazonis Planitiae."
+      },
+      "whyChosen": "The only 2015 EZ inside the Arcadia excess-ice sheet (Bramson et al. 2015 study area 38-50 N, 180-225 E), and Arcadia is the region named by both SWIM (Morgan et al. 2021) and JPL's 2019 ice 'treasure map'. Low elevation (-3.98 or -3.15 km for Viola's two sites; the abstract does not say which is which).",
+      "values": {
+        "meanTemp": {
+          "value": -70.8,
+          "unit": "°C",
+          "measured": true,
+          "kind": "orbital measurement (MRO Mars Climate Sounder, channel B1, 32 µm), surface/ground temperature, not air",
+          "url": "https://doi.org/10.7910/DVN/YCNFQL",
+          "paper": "https://doi.org/10.1016/j.icarus.2023.115851",
+          "quote": "MCS Channel B1 average surface temperature map. See text, this map is close but not equivalent to a true annual average surface temperature map.",
+          "quoteSource": "Readme.txt / file description of Figure_13.map in the Dataverse dataset",
+          "extraction": "Figure_13.map (1080x540, K, 999.99 = no data), analytic 1/3-degree grid lat=90-(row+0.5)/3, lonE=(col+0.5)/3. Mean of the 6 pixels within 25 km of (39.0, 192.1 E) = 202.34 K. Nearest pixel (row 152, col 576) = 200.41 K (-72.7 °C). Within 100 km (whole EZ): mean 203.02 K (-70.1 °C), range 199.49-206.15 K.",
+          "note": "Average of MCS surface observations, which MRO makes near 3 AM and 3 PM local time (sun-synchronous orbit), so it only approximates the true diurnal/annual mean. It is a ground temperature; the app's Jezero/Gale meanTemp values are air temperatures. Cross-check: the same map gives -55.7 °C at Jezero (MEDA air mean -55 °C) and -54.7 °C at Gale."
+        },
+        "swing": {
+          "value": null,
+          "unit": "°C",
+          "measured": false,
+          "url": null,
+          "quote": null,
+          "note": "Not measured. No source gives a measured daily range for this EZ. MCS maximum minus minimum surface temperature (max 256.54 K (-16.6 °C) minus min 156.38 K, 25-km means) = 100.2 K, but that is the range between the warmest afternoon (~3 PM) and coldest night (~3 AM) observations over all seasons, NOT a daily swing; do not use it as 'swing'.",
+          "contextOnly": {
+            "maxSurfaceTemp_K": 256.54,
+            "maxSurfaceTemp_C": -16.6,
+            "source": "https://doi.org/10.7910/DVN/YCNFQL",
+            "quote": "MCS Channel B1 maximum surface temperature map.",
+            "extraction": "Figure_11.map, mean of pixels within 25 km; nearest pixel 256.58 K"
+          }
+        },
+        "coldGround": {
+          "value": -116.8,
+          "unit": "°C",
+          "measured": true,
+          "kind": "orbital measurement (MRO MCS channel B1), coldest surface temperature observed",
+          "url": "https://doi.org/10.7910/DVN/YCNFQL",
+          "paper": "https://doi.org/10.1016/j.icarus.2023.115851",
+          "quote": "MCS Channel B1 minimum surface temperature map.",
+          "quoteSource": "Readme.txt / file description of Figure_08.map",
+          "extraction": "Figure_08.map, same grid. Mean of the 6 pixels within 25 km = 156.38 K; coldest pixel within 25 km 155.11 K (-118.0 °C). Nearest pixel = 156.33 K (-116.8 °C). Within 100 km: mean 157.08 K, range 152.99-163.28 K.",
+          "note": "Minimum over the multi-year MCS record at ~20 km pixel scale. MCS sees the night side near 3 AM, not at the pre-dawn minimum, so the true coldest ground temperature is probably somewhat lower. The dataset also documents that 32 µm brightness temperatures underestimate temperature when emissivity < 1 (Figure_06.tab)."
+        },
+        "rain": {
+          "value": 0,
+          "unit": "mm",
+          "measured": false,
+          "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html",
+          "quote": null,
+          "note": "Physical constraint, not a measurement: same convention and source key ('mars-factsheet') as the existing Mars targets; the app's measuredFactors() counts rain for Moon/Mars."
+        },
+        "albedo": {
+          "value": 0.24,
+          "unit": "fraction 0-1",
+          "measured": true,
+          "kind": "orbital measurement (MGS Thermal Emission Spectrometer visible/near-IR bolometer)",
+          "url": "https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-special-v1/global_albedo_8ppd.img",
+          "label": "https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-special-v1/global_albedo_8ppd.lbl",
+          "page": "https://pds-geosciences.wustl.edu/missions/mgs/tesspecial.html",
+          "quote": "The VISIR data have been reduced to Lambert albedo values and gridded at 8 pixels/degree (Christensen et al. 2001).",
+          "quoteSource": "https://pds-geosciences.wustl.edu/missions/mgs/tesspecial.html",
+          "extraction": "PDS3 image GLOBAL_ALBEDO_8PPD.IMG (1440 lines x 2880 samples, PC_REAL 32-bit little-endian, simple cylindrical, -180..180 E, LINE_PROJECTION_OFFSET 720.5, SAMPLE_PROJECTION_OFFSET 1440.5, 8 px/deg; sha256 47ee17fc9aca6aa9fd5d49e383c1acc366d4cb31cab4635bc823bc27a33283c7). Mean of the 44 pixels within 25 km = 0.244. Nearest pixel line 408 / sample 96 (38.9375 N, -167.9375 E) = 0.2445. Within 100 km: mean 0.2452, median 0.2445, range 0.2374-0.2629 (732 px).",
+          "note": "Label DESCRIPTION: 'TES-derived bolometric albedo'. Not corrected for atmosphere; built from clear-condition observations. Cross-check with the same extraction: Jezero 0.17 (app strict value 0.15), Gale 0.23, Phoenix 0.20."
+        }
+      },
+      "measuredCount": {
+        "trulyMeasured": [
+          "meanTemp",
+          "coldGround",
+          "albedo"
+        ],
+        "notMeasured": [
+          "swing"
+        ],
+        "rainConvention": "0 (counted by the app)",
+        "appMeasuredFactors": 4
+      },
+      "geology": {
+        "primary": "ice",
+        "secondary": [
+          "basalt"
+        ],
+        "source": {
+          "url": "https://arxiv.org/abs/1509.03210",
+          "doi": "10.1002/2015GL064844",
+          "citation": "Bramson et al. 2015, GRL 42, 'Widespread excess ice in Arcadia Planitia, Mars'",
+          "quote": "Our results indicate a widespread, decameters-thick layer that is excess water ice",
+          "studyArea": "CTX images 'within the region between 180°-225°E and 38-50°N' (contains the EZ centre 192.1 E, 39.0 N)"
+        },
+        "secondarySource": {
+          "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1011.pdf",
+          "quote": "The central landing site is located within Amazonian lava flows",
+          "note": "'basalt' is an inference from 'lava flows'; the abstract does not name the composition, and notes the region is dusty, which hides composition from orbit."
+        }
+      },
+      "resources": {
+        "ice": {
+          "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1011.pdf",
+          "quote": "a recent ice-exposing impact was identified within this EZ",
+          "note": "Also: Bramson et al. 2015 (decameters-thick excess ice); SWIM (Morgan et al. 2021)."
+        },
+        "regolith": {
+          "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1011.pdf",
+          "quote": "HiRISE images indicate that loose regolith is available for construction purposes."
+        },
+        "shelter": null,
+        "salts": null
+      },
+      "terrainPoint": {
+        "id": "erebus-montes-ez",
+        "body": "mars",
+        "name": "Erebus Montes EZ (Arcadia Planitia)",
+        "lat": 39.0,
+        "lon": -167.9,
+        "kind": "target",
+        "coordSource": "Viola, McEwen & Dundas 2015, EZ workshop abstract 1011"
+      }
+    }
+  ],
+  "alternatesNotChosen": [
+    {
+      "name": "Protonilus Mensae EZ",
+      "abstract": 1053,
+      "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1053.pdf",
+      "quote": "The proposed EZ (48.062E, 42.187N) is in the Protonilus Mensae region of Mars",
+      "note": "Ice-rich fretted terrain (ROI 1), but a single proposal and not singled out by SWIM. The same MCS/TES extraction can be run if wanted."
+    },
+    {
+      "name": "Acheron Fossae EZ",
+      "abstract": 1011,
+      "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1011.pdf",
+      "quote": "Acheron Fossae: This proposed site is centered near 220.6°E, 39.8°N",
+      "note": "Viola's second site; dustier (thermal inertia 60-90 vs 120-130 for Erebus Montes per the abstract)."
+    }
+  ],
+  "datasets": {
+    "mcs": {
+      "doi": "10.7910/DVN/YCNFQL",
+      "url": "https://doi.org/10.7910/DVN/YCNFQL",
+      "license": "CC0 1.0 (Dataverse record)",
+      "files": {
+        "Figure_08.map": "https://dataverse.harvard.edu/api/access/datafile/7436180",
+        "Figure_11.map": "https://dataverse.harvard.edu/api/access/datafile/7436182",
+        "Figure_13.map": "https://dataverse.harvard.edu/api/access/datafile/7436200",
+        "Readme.txt": "https://dataverse.harvard.edu/api/access/datafile/7436203"
+      },
+      "sha256": {
+        "Figure_08.map": "12d3b4f75947c1b99955062fb542c62e5eb1b6b3145407f1946e9cdea7553fdd",
+        "Figure_11.map": "66cdc3f123b30492f289385017642315b88e01dcd8a5e59c639ef17044e547b6",
+        "Figure_13.map": "6764d6534299733a736bbae516048ac654dc8b5dc26f7a2257fdb1b32603fcbb"
+      },
+      "paper": {
+        "doi": "10.1016/j.icarus.2023.115851",
+        "citation": "Piqueux, Kass, Kleinböhl, Slipski, Hayne, McCleese, Schofield, Heavens (2024), Mars thermal inertia and surface temperatures by the Mars Climate Sounder, Icarus 419, 115851",
+        "quote": "Over the last 16 years, the Mars Climate Sounder (MCS) onboard the Mars Reconnaissance Orbiter (MRO) has acquired a large body of surface observations at visible and thermal infrared wavelengths.",
+        "quoteSource": "abstract via OpenAlex (publisher page returned 403, not bypassed)"
+      },
+      "gridNote": "Maps are 1080 x 540 ASCII floats. The supplied Latitude_SC/Longitude_SC backplanes have only 539 rows (one short of the maps) and odd signs near the equator, so the extraction uses the analytic grid lat=90-(row+0.5)/3, lonE=(col+0.5)/3. Valid data span rows 10-530 nearly symmetrically, which supports this grid.",
+      "localTime": {
+        "url": "https://ntrs.nasa.gov/citations/20170007082",
+        "quote": "sun -synchronous (approximately 3 am -pm ), primary science orbit",
+        "note": "Quoted verbatim (spacing as in the record) from the NTRS abstract of Johnston, The Mars Reconnaissance Orbiter Mission: 10 Years of Exploration from Mars Orbit; MCS surface temperatures are therefore ~3 AM / ~3 PM samples."
+      },
+      "crossCheck": {
+        "jezero": {
+          "avg_K": 217.49,
+          "avg_C": -55.7,
+          "min_K": 184.51,
+          "max_K": 254.32
+        },
+        "gale": {
+          "avg_K": 218.44,
+          "avg_C": -54.7,
+          "min_K": 185.37,
+          "max_K": 263.68
+        },
+        "phoenix": {
+          "avg_K": 175.84,
+          "min_K": 139.74,
+          "max_K": 243.44
+        },
+        "note": "Nearest-pixel values. The Jezero average (-55.7 °C, ground) is close to the MEDA air mean in targets.json (-55 °C). We found no published yearly mean for Gale (targets.json uses the Mars-wide -59 °C), so the Gale value is not checked against a site measurement. These values are a cross-check only; they are not used in targets.json."
+      }
+    },
+    "tesAlbedo": {
+      "url": "https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-special-v1/global_albedo_8ppd.img",
+      "label": "https://pds-geosciences.wustl.edu/mgs/mgs-m-tes-special-v1/global_albedo_8ppd.lbl",
+      "page": "https://pds-geosciences.wustl.edu/missions/mgs/tesspecial.html",
+      "citation": "Christensen et al. 2001, JGR 106, 23823-23872",
+      "sha256": "47ee17fc9aca6aa9fd5d49e383c1acc366d4cb31cab4635bc823bc27a33283c7"
+    },
+    "scripts": [
+      "data/raw/mars_ez_extract/mcs_extract.py",
+      "data/raw/mars_ez_extract/tes_albedo.py"
+    ],
+    "reproduce": [
+      "python -I data/raw/mars_ez_extract/mcs_extract.py <mcs_dir> '{\"deuteronilus-ez\":[39.11,23.199,25],\"erebus-montes-ez\":[39.0,192.1,25]}'",
+      "python -I data/raw/mars_ez_extract/tes_albedo.py <global_albedo_8ppd.img> '{\"deuteronilus-ez\":[39.11,23.199,25],\"erebus-montes-ez\":[39.0,-167.9,25]}'"
+    ],
+    "notUsed": "Mars Climate Database (model): not used. No THEMIS or TES temperature retrievals were processed for these points."
+  },
+  "accessNotes": [
+    "https://www.hou.usra.edu/meetings/explorationzone2015/ (landing page) returned 403 to the fetch tool; the individual abstract PDFs were retrievable.",
+    "ScienceDirect page for Piqueux et al. returned 403; abstract taken from OpenAlex instead.",
+    "wufs.wustl.edu (PSIDA 2018 abstract 6018) returned 403; not used."
+  ]
+}

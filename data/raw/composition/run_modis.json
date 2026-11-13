@@ -1,0 +1,60 @@
+{
+ "runs": [
+  {
+   "started": "2026-10-10T15:09:08Z",
+   "finished": "2026-10-10T15:09:50Z",
+   "requests": {
+    "planetarycomputer.microsoft.com": {
+     "requests": 17,
+     "bytes": 478794,
+     "errors": 0
+    },
+    "modiseuwest.blob.core.windows.net": {
+     "requests": 254,
+     "bytes": 19489648,
+     "errors": 0
+    }
+   },
+   "sasTokenCalls": 2,
+   "years": [
+    2020,
+    2020
+   ],
+   "stride": 23,
+   "sites": true,
+   "boxes": true,
+   "compositeReads": 30,
+   "MB": 19.5,
+   "failed": [],
+   "seconds": 41.9
+  },
+  {
+   "started": "2026-10-10T15:09:59Z",
+   "finished": "2026-10-10T15:48:08Z",
+   "requests": {
+    "planetarycomputer.microsoft.com": {
+     "requests": 17,
+     "bytes": 1425487,
+     "errors": 0
+    },
+    "modiseuwest.blob.core.windows.net": {
+     "requests": 17614,
+     "bytes": 1348884734,
+     "errors": 0
+    }
+   },
+   "sasTokenCalls": 2,
+   "years": [
+    2018,
+    2020
+   ],
+   "stride": 1,
+   "sites": true,
+   "boxes": true,
+   "compositeReads": 2070,
+   "MB": 1348.9,
+   "failed": [],
+   "seconds": 2289.4
+  }
+ ]
+}

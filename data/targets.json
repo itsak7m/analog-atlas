@@ -1,0 +1,1542 @@
+{
+  "about": "Moon and Mars target sites. A value is null when it was not measured; null factors are left out of the score. Every value names its source (see the sources list at the end). 'value' is the reference value. For jezero, gale, southpole and apollo11 it is the value in the team's brief (used by the reference rankings in section 6); for the other targets it comes from the team's own sourced research. Where that value is not a measurement at the site itself, 'strict' holds what the site measurements alone support (null if nothing site-specific was found). Checked against the sources on 2026-10-09 and 2026-10-10.",
+  "targets": [
+    {
+      "id": "jezero",
+      "body": "mars",
+      "group": "mars-base",
+      "name": "Jezero Crater",
+      "mission": "Perseverance rover (NASA, landed 2021)",
+      "lat": 18.44,
+      "lon": 77.45,
+      "values": {
+        "meanTemp": {
+          "value": -55,
+          "source": "meda-press",
+          "note": "Mean near-surface air temperature measured by MEDA over the first 250 sols (northern spring and summer), not a full Mars year."
+        },
+        "swing": {
+          "value": 60,
+          "source": "meda-blog",
+          "note": "Daily air range, about -83 to -23 °C (JPL's first report: high -22 °C, low -83 °C)."
+        },
+        "coldGround": {
+          "value": -83,
+          "source": "meda-blog",
+          "note": "Air temperature (MEDA), not ground: NASA describes -83 °C as a typical pre-dawn air value, not the lowest ever measured. This is the brief's value; Strict data leaves it out because no ground minimum is given in our sources.",
+          "strict": {
+            "value": null,
+            "source": null,
+            "note": "The lowest ground temperature measured at Jezero is not given in our sources."
+          }
+        },
+        "rain": {
+          "value": 0,
+          "source": "mars-factsheet",
+          "note": "No liquid rain: the air pressure is too low for liquid water to last."
+        },
+        "albedo": {
+          "value": 0.14,
+          "source": "meda-albedo",
+          "note": "From the team's source list (INTA record of MEDA albedo). That link could not be reached on 2026-10-09 to re-check the number.",
+          "strict": {
+            "value": 0.15,
+            "source": "meda-albedo-paper",
+            "note": "Albedo of the Jezero landing area from orbit, reported with MEDA results; rover readings near noon were 0.09-0.16."
+          }
+        }
+      },
+      "facts": [
+        {
+          "label": "Exploration Zone",
+          "text": "Also proposed at NASA's 2015 workshop as a zone for the first human landing (centre 17.747° N, 77.037° E)",
+          "source": "ez-1034"
+        },
+        {
+          "label": "Air temperature",
+          "text": "-23 to -83 °C",
+          "source": "meda-blog"
+        },
+        {
+          "label": "Air pressure",
+          "text": "718 Pa (about 0.72 kPa) in MEDA's first weather report",
+          "source": "jpl-jezero-weather"
+        },
+        {
+          "label": "Humidity",
+          "text": "up to 29 % relative humidity",
+          "source": "meda-250sols"
+        },
+        {
+          "label": "Sunlight",
+          "text": "43 % of Earth's, at the top of the atmosphere",
+          "source": "mars-factsheet"
+        },
+        {
+          "label": "UV (model)",
+          "text": "UV-B + UV-C about 7 times Earth's (no ozone layer); this comes from a model, not a measurement",
+          "source": "mars-uv"
+        },
+        {
+          "label": "Geology",
+          "text": "River delta over an igneous floor: Séítah (olivine-rich rock that settled out of magma) and Máaz (mostly basaltic lava flows)",
+          "source": "jezero-geology"
+        }
+      ],
+      "geology": {
+        "primary": "basalt",
+        "secondary": [
+          "mudstone",
+          "sandstone",
+          "carbonate"
+        ],
+        "source": "jezero-geology"
+      }
+    },
+    {
+      "id": "gale",
+      "body": "mars",
+      "group": "mars-base",
+      "name": "Gale Crater",
+      "mission": "Curiosity rover (NASA, landed 2012)",
+      "lat": -4.5895,
+      "lon": 137.4417,
+      "values": {
+        "meanTemp": {
+          "value": -59,
+          "source": "mars-factsheet",
+          "note": "This is the Mars-wide 'average temperature' (about 214 K) from the NASA fact sheet, not a Gale measurement. The fact sheet lists it under the atmosphere but does not say if it is air or ground temperature. We found no published yearly mean for Gale.",
+          "strict": {
+            "value": null,
+            "source": null,
+            "note": "We found no published yearly mean air temperature for Gale."
+          }
+        },
+        "swing": {
+          "value": 60,
+          "source": "rems-temps",
+          "note": "Midpoint of the 45-75 °C daily air range measured by REMS (air at 1.6 m).",
+          "strict": {
+            "value": null,
+            "source": null,
+            "note": "REMS measured a range (45-75 °C), not one typical value."
+          }
+        },
+        "coldGround": {
+          "value": -100,
+          "source": "rems-temps",
+          "note": "Coldest ground temperature measured by REMS (about 173 K at Dingo Gap, sol 534)."
+        },
+        "rain": {
+          "value": 0,
+          "source": "rems-humidity-albedo",
+          "note": "No fog or rain recorded."
+        },
+        "albedo": {
+          "value": 0.2,
+          "source": "rems-humidity-albedo",
+          "note": "Midpoint of the 0.1-0.3 range along the rover's route.",
+          "strict": {
+            "value": 0.22,
+            "source": "golombek-2017",
+            "note": "Albedo of the landing spot measured from orbit."
+          }
+        }
+      },
+      "facts": [
+        {
+          "label": "Exploration Zone",
+          "text": "Also proposed three times at NASA's 2015 workshop as a zone for the first human landing",
+          "source": "ez-1020"
+        },
+        {
+          "label": "Map pin",
+          "text": "Curiosity's landing point, 4.5895° S, 137.4417° E (from its descent camera images)",
+          "source": "curiosity-landing"
+        },
+        {
+          "label": "Ground temperature",
+          "text": "+16 to -100 °C (extremes)",
+          "source": "rems-temps"
+        },
+        {
+          "label": "Humidity",
+          "text": "below 10 % in summer, about 70 % on winter nights",
+          "source": "rems-humidity-albedo"
+        },
+        {
+          "label": "Weather",
+          "text": "no fog or rain recorded",
+          "source": "rems-humidity-albedo"
+        },
+        {
+          "label": "UV (measured)",
+          "text": "UV flux fell from about 22 to 15 W/m² during a local dust storm (around sol 90)",
+          "source": "rems-uv"
+        },
+        {
+          "label": "Geology",
+          "text": "Murray formation: mudstone laid down in a lake, at the foot of Mount Sharp",
+          "source": "gale-geology"
+        }
+      ],
+      "geology": {
+        "primary": "mudstone",
+        "secondary": [
+          "sandstone",
+          "evaporite"
+        ],
+        "source": "gale-geology"
+      }
+    },
+    {
+      "id": "deuteronilus",
+      "body": "mars",
+      "group": "mars-base",
+      "name": "Deuteronilus Mensae (human landing zone)",
+      "mission": "Proposed human Exploration Zone (NASA workshop, 2015)",
+      "lat": 39.11,
+      "lon": 23.199,
+      "values": {
+        "meanTemp": {
+          "value": -65.9,
+          "source": "mcs-surface-temps",
+          "note": "Average ground temperature from orbit (MRO Mars Climate Sounder, 25 km around the centre). Seen near 3 AM and 3 PM only, so close to but not exactly a true average; ground, not air (the same map gives -55.7 °C at Jezero, where the rover measured -55 °C air)."
+        },
+        "swing": {
+          "value": null,
+          "source": null,
+          "note": "Not measured: no measured daily range for this zone. Orbit maps give only the warmest afternoon and coldest night over all seasons (warmest -14.9 °C)."
+        },
+        "coldGround": {
+          "value": -108.3,
+          "source": "mcs-surface-temps",
+          "note": "Coldest ground temperature seen by Mars Climate Sounder (25 km mean, near 3 AM). The true pre-dawn minimum is probably a little colder."
+        },
+        "rain": {
+          "value": 0,
+          "source": "mars-factsheet",
+          "note": "No liquid rain on Mars."
+        },
+        "albedo": {
+          "value": 0.14,
+          "source": "tes-albedo",
+          "note": "MGS TES Lambert albedo, mean within 25 km of the centre (not corrected for the atmosphere)."
+        }
+      },
+      "facts": [
+        {
+          "label": "Exploration Zone",
+          "text": "Proposed twice at NASA's 2015 workshop for the first human landing (39.11° N, 23.199° E)",
+          "source": "ez-1033"
+        },
+        {
+          "label": "Water ice",
+          "text": "Radar shows the debris aprons are made mostly of water ice",
+          "source": "plaut-2009"
+        },
+        {
+          "label": "Ice cover",
+          "text": "The ice lies under less than 10-15 m of rocky till",
+          "source": "ez-1033"
+        },
+        {
+          "label": "Ice mapping",
+          "text": "One of the two regions that best match the criteria for accessible subsurface ice (SWIM project)",
+          "source": "swim-2021"
+        },
+        {
+          "label": "Ground",
+          "text": "Landing plains of uncertain origin next to the ice-rich aprons",
+          "source": "ez-1044"
+        }
+      ],
+      "geology": {
+        "primary": "ice",
+        "secondary": [],
+        "source": "plaut-2009"
+      }
+    },
+    {
+      "id": "erebus-montes",
+      "body": "mars",
+      "group": "mars-base",
+      "name": "Erebus Montes, Arcadia Planitia (human landing zone)",
+      "mission": "Proposed human Exploration Zone (NASA workshop, 2015)",
+      "lat": 39.0,
+      "lon": -167.9,
+      "values": {
+        "meanTemp": {
+          "value": -70.8,
+          "source": "mcs-surface-temps",
+          "note": "Average ground temperature from orbit (MRO Mars Climate Sounder, 25 km around the centre). Seen near 3 AM and 3 PM only, so close to but not exactly a true average; ground, not air (the same map gives -55.7 °C at Jezero, where the rover measured -55 °C air)."
+        },
+        "swing": {
+          "value": null,
+          "source": null,
+          "note": "Not measured: no measured daily range for this zone. Orbit maps give only the warmest afternoon and coldest night over all seasons (warmest -16.6 °C)."
+        },
+        "coldGround": {
+          "value": -116.8,
+          "source": "mcs-surface-temps",
+          "note": "Coldest ground temperature seen by Mars Climate Sounder (25 km mean, near 3 AM). The true pre-dawn minimum is probably a little colder."
+        },
+        "rain": {
+          "value": 0,
+          "source": "mars-factsheet",
+          "note": "No liquid rain on Mars."
+        },
+        "albedo": {
+          "value": 0.24,
+          "source": "tes-albedo",
+          "note": "MGS TES Lambert albedo, mean within 25 km of the centre (not corrected for the atmosphere)."
+        }
+      },
+      "facts": [
+        {
+          "label": "Exploration Zone",
+          "text": "Proposed at NASA's 2015 workshop for the first human landing (39.0° N, 192.1° E)",
+          "source": "ez-1011"
+        },
+        {
+          "label": "Water ice",
+          "text": "Widespread excess ground ice in Arcadia Planitia; fresh impacts have exposed ice",
+          "source": "bramson-2015"
+        },
+        {
+          "label": "Ice mapping",
+          "text": "Arcadia's broad plains are one of the two best regions for accessible subsurface ice (SWIM project)",
+          "source": "swim-2021"
+        },
+        {
+          "label": "Rock type",
+          "text": "Ice-rich ground over Amazonian lava flows (basalt is inferred, not measured)",
+          "source": "ez-1011"
+        }
+      ],
+      "geology": {
+        "primary": "ice",
+        "secondary": [
+          "basalt"
+        ],
+        "source": "bramson-2015"
+      }
+    },
+    {
+      "id": "arsia-skylight",
+      "body": "mars",
+      "group": "mars-cave",
+      "name": "Arsia Mons cave skylight ('Jeanne')",
+      "mission": "Candidate cave entrance seen from orbit (Mars Odyssey THEMIS, MRO HiRISE); no landing yet",
+      "lat": -5.5332,
+      "lon": -118.6069,
+      "values": {
+        "meanTemp": {
+          "value": -72.3,
+          "source": "mcs-surface-temps",
+          "note": "Average ground temperature from orbit (MRO Mars Climate Sounder, 25 km around the skylight). Seen near 3 AM and 3 PM only, so close to but not exactly a true average; ground, not air. It describes the dusty lava plain around the skylight, not the inside of the cave."
+        },
+        "swing": {
+          "value": null,
+          "source": null,
+          "note": "Not measured: no measured daily range here. Orbit maps give only the warmest afternoon and coldest night over all seasons (warmest +3.9 °C)."
+        },
+        "coldGround": {
+          "value": -128.7,
+          "source": "mcs-surface-temps",
+          "note": "Coldest ground temperature seen by Mars Climate Sounder (144.5 K, 25 km mean, near 3 AM). The true pre-dawn minimum is probably a little colder."
+        },
+        "rain": {
+          "value": 0,
+          "source": "mars-factsheet",
+          "note": "No liquid rain on Mars."
+        },
+        "albedo": {
+          "value": 0.28,
+          "source": "tes-albedo",
+          "note": "MGS TES Lambert albedo, mean within 25 km of the skylight (not corrected for the atmosphere); a bright, dusty surface."
+        }
+      },
+      "facts": [
+        {
+          "label": "Map pin",
+          "text": "Cave-entrance candidate APC075 ('Jeanne'), 5.5332° S, 241.3931° E (USGS Mars cave catalogue); the HiRISE image of it is centred at 5.532° S, 241.396° E",
+          "source": "mgc3"
+        },
+        {
+          "label": "Pit size",
+          "text": "About 165 m across and more than 245 m deep, with an overhanging rim of unknown extent (measured from orbital images and shadows)",
+          "source": "mgc3"
+        },
+        {
+          "label": "No floor seen",
+          "text": "HiRISE sees no detail in the shadow and cannot see the walls: they are vertical or, more likely, overhanging",
+          "source": "hirise-jeanne"
+        },
+        {
+          "label": "Thermal behaviour (published)",
+          "text": "Floors of these deep pits are warmer at night and change much less between day and night than the ground around them (THEMIS)",
+          "source": "cushing-2015"
+        },
+        {
+          "label": "Warmest ground",
+          "text": "+3.9 °C (277.1 K), the warmest afternoon value in the Mars Climate Sounder maps (25 km mean, about 3 PM)",
+          "source": "mcs-surface-temps"
+        },
+        {
+          "label": "Seven sisters",
+          "text": "One of seven candidate cave skylights found on the flanks of Arsia Mons with Mars Odyssey's THEMIS camera (reported 2007)",
+          "source": "cushing-2007"
+        },
+        {
+          "label": "Height",
+          "text": "About 10.0 km above the Mars datum (MOLA elevation at the pin)",
+          "source": "mola-trek"
+        },
+        {
+          "label": "Landing",
+          "text": "The discoverers note that the air at these heights is too thin for a lander to slow down and steer onto such a small target",
+          "source": "cushing-lpsc-2007"
+        },
+        {
+          "label": "Protection",
+          "text": "Lava-tube caves would shield people from dust storms, micrometeoroids and radiation, and keep temperatures steadier than the surface",
+          "source": "cushing-2012"
+        },
+        {
+          "label": "Surface",
+          "text": "A very dark hole in an otherwise bright, dusty lava plain north-east of Arsia Mons",
+          "source": "hirise-jeanne"
+        },
+        {
+          "label": "Lava flows",
+          "text": "Lava flows around Arsia Mons look very much like Hawaiian lava flows (THEMIS image of flows south of the volcano)",
+          "source": "arsia-lava-flows"
+        },
+        {
+          "label": "Rock type",
+          "text": "Lava of a Tharsis shield volcano; NASA says such lava is most likely basalt. Inferred, not measured: dust hides the rock",
+          "source": "tharsis-basalt"
+        }
+      ],
+      "geology": {
+        "primary": "basalt",
+        "secondary": [],
+        "note": "Inferred, not measured: shield-volcano lava under dust.",
+        "source": "tharsis-basalt"
+      }
+    },
+    {
+      "id": "malapert",
+      "body": "moon",
+      "group": "moon-base",
+      "name": "Malapert Massif (south pole)",
+      "mission": "Artemis landing region (NASA)",
+      "lat": -85.964,
+      "lon": -2.319,
+      "values": {
+        "meanTemp": {
+          "value": -118.9,
+          "source": "diviner-polar",
+          "note": "Surface temperature (the Moon has no air): annual mean 154.3 K in the 240 m Diviner pixel at the summit (Schorghofer & Williams 2020 map of Diviner bolometric brightness temperature). Within 1.2 km the mean ranges 126-162 K."
+        },
+        "swing": {
+          "value": 201.3,
+          "source": "diviner-polar",
+          "note": "Highest minus lowest temperature in the southern summer season (259.25 K - 57.92 K), the closest Diviner value to a day-night range. A lunar day lasts about 29.5 Earth days."
+        },
+        "coldGround": {
+          "value": -216.6,
+          "source": "diviner-polar",
+          "note": "Lowest temperature in the Diviner maps at this pixel (56.6 K, winter)."
+        },
+        "rain": {
+          "value": 0,
+          "source": "moon-factsheet",
+          "note": "No atmosphere."
+        },
+        "albedo": {
+          "value": null,
+          "source": null,
+          "note": "Diviner polar maps have no albedo layer; not measured."
+        },
+        "sunHeight": {
+          "value": 5.58,
+          "source": "moon-tilt",
+          "note": "Computed, not measured: the highest the Sun gets above a flat horizon in a year is 90° - 85.964° (latitude) + 1.54° (Moon tilt) = 5.58°. For each Earth site the app uses the same formula with the Earth tilt of 23.44° (NASA Earth fact sheet). This low Sun is why high ground here gets long sunlight."
+        }
+      },
+      "facts": [
+        {
+          "label": "Hottest",
+          "text": "259.3 K (-13.9 °C), southern summer",
+          "source": "diviner-polar"
+        },
+        {
+          "label": "Winter average",
+          "text": "144.9 K (-128.2 °C); summer average 155.5 K (-117.7 °C)",
+          "source": "diviner-polar"
+        },
+        {
+          "label": "Data",
+          "text": "LRO Diviner, 2009-2020, 240 m pixels; the pixel centre is 120 m from the point. Values change by tens of kelvin within a few pixels on this ridge.",
+          "source": "diviner-polar"
+        },
+        {
+          "label": "Origin",
+          "text": "Interpreted as a remnant massif of the South Pole-Aitken basin rim, covered by hundreds of metres of later ejecta; the rock type is not known",
+          "source": "malapert-geology"
+        },
+        {
+          "label": "Landing regions",
+          "text": "One of the regions identified for the first Artemis crewed landing",
+          "source": "artemis3-regions"
+        },
+        {
+          "label": "Sunlight (LOLA)",
+          "text": "In sunlight 68.4 % of the time at the pin (0-77.6 % within about 120 m). A model from LOLA heights, not a measurement. Every Earth site in our list has the Sun up 50.5-51.7 % of the year (computed from latitude), so this share does not separate them and is not used in the score",
+          "source": "lola-illumination"
+        },
+        {
+          "label": "Earth in view (LOLA)",
+          "text": "Earth is above the horizon 90.7 % of the time at the pin (0-100 % within about 120 m); direct radio contact needs this",
+          "source": "lola-illumination"
+        },
+        {
+          "label": "Nearest permanent shadow (LOLA)",
+          "text": "144 m to the nearest permanently shadowed 60 m pixel; 13.3 km to a shadowed patch of 1 km² or more. Ice can stay in such cold shadows, but ice is not measured there",
+          "source": "lola-illumination"
+        },
+        {
+          "label": "Landing rule",
+          "text": "NASA's key Artemis III landing requirement: ground sloping less than 10° over 100 m",
+          "source": "artemis-landing-slope"
+        },
+        {
+          "label": "Mountain",
+          "text": "Mons Malapert is about 67 km across (name adopted by the IAU in 2024)",
+          "source": "malapert-usgs"
+        },
+        {
+          "label": "Air pressure",
+          "text": "about zero (3 × 10^-15 bar)",
+          "source": "moon-factsheet"
+        }
+      ],
+      "geology": {
+        "primary": null,
+        "secondary": [],
+        "note": "Rock type not known: covered by later ejecta.",
+        "source": "malapert-geology"
+      }
+    },
+    {
+      "id": "mons-mouton",
+      "body": "moon",
+      "group": "moon-base",
+      "name": "Mons Mouton (south pole)",
+      "mission": "Artemis III candidate regions Mons Mouton and Mons Mouton Plateau (NASA, 2024)",
+      "lat": -84.6,
+      "lon": 31.0,
+      "values": {
+        "meanTemp": {
+          "value": -153.83,
+          "source": "diviner-polar",
+          "note": "Surface temperature (the Moon has no air): annual mean 119.32 K in the 240 m Diviner pixel at the pin (Schorghofer & Williams 2020 map of Diviner bolometric brightness temperature). Within 1.2 km the mean ranges 86.89-135.4 K."
+        },
+        "swing": {
+          "value": 187.03,
+          "source": "diviner-polar",
+          "note": "Highest minus lowest temperature in the southern summer season (244.6 K - 57.57 K), the closest Diviner value to a day-night range. A lunar day lasts about 29.5 Earth days."
+        },
+        "coldGround": {
+          "value": -215.58,
+          "source": "diviner-polar",
+          "note": "Lowest temperature in the Diviner maps at this pixel (57.57 K, summer)."
+        },
+        "rain": {
+          "value": 0,
+          "source": "moon-factsheet",
+          "note": "No atmosphere."
+        },
+        "albedo": {
+          "value": null,
+          "source": null,
+          "note": "Diviner polar maps have no albedo layer; not measured."
+        },
+        "sunHeight": {
+          "value": 6.94,
+          "source": "moon-tilt",
+          "note": "Computed, not measured: the highest the Sun gets above a flat horizon in a year is 90° - 84.6° (latitude) + 1.54° (Moon tilt) = 6.94°. For each Earth site the app uses the same formula with the Earth tilt of 23.44° (NASA Earth fact sheet). This low Sun is why high ground here gets long sunlight."
+        }
+      },
+      "facts": [
+        {
+          "label": "Map pin",
+          "text": "Centre of Mons Mouton in the USGS Gazetteer, 84.60° S, 31.00° E; the mountain is about 130 km across. The pin is not a NASA landing-site point",
+          "source": "mons-mouton-usgs"
+        },
+        {
+          "label": "Landing regions",
+          "text": "Mons Mouton and Mons Mouton Plateau are two of the nine Artemis III candidate landing regions in NASA's 2024 update",
+          "source": "artemis3-regions"
+        },
+        {
+          "label": "Sunlight (LOLA)",
+          "text": "In sunlight 31.6 % of the time at the pin (21.4-34.7 % within about 120 m). A model from LOLA heights, not a measurement. Every Earth site in our list has the Sun up 50.5-51.7 % of the year (computed from latitude), so this share does not separate them and is not used in the score",
+          "source": "lola-illumination"
+        },
+        {
+          "label": "Earth in view (LOLA)",
+          "text": "Earth is above the horizon 61.4 % of the time at the pin (58.8-63.3 % within about 120 m); direct radio contact needs this",
+          "source": "lola-illumination"
+        },
+        {
+          "label": "Nearest permanent shadow (LOLA)",
+          "text": "778 m to the nearest permanently shadowed 60 m pixel; 3.1 km to a shadowed patch of 1 km² or more. Ice can stay in such cold shadows, but ice is not measured there",
+          "source": "lola-illumination"
+        },
+        {
+          "label": "Region size",
+          "text": "In NASA's 2022 list each candidate region is about 15 × 15 km, much smaller than the 130 km mountain",
+          "source": "artemis3-regions-2022"
+        },
+        {
+          "label": "Hottest",
+          "text": "244.6 K (-28.55 °C), southern summer",
+          "source": "diviner-polar"
+        },
+        {
+          "label": "Winter average",
+          "text": "109.3 K (-163.85 °C); summer average 126.27 K (-146.88 °C)",
+          "source": "diviner-polar"
+        },
+        {
+          "label": "Data",
+          "text": "LRO Diviner, 2009-2020, 240 m pixels; the pixel centre is 103 m from the point. Within 1.2 km the annual mean ranges 86.89-135.4 K.",
+          "source": "diviner-polar"
+        },
+        {
+          "label": "Origin",
+          "text": "Interpreted as a remnant massif of the South Pole-Aitken basin rim, covered by hundreds of metres of later ejecta; crater counts on it give a formation age of 4.26 billion years; the rock type is not known",
+          "source": "malapert-geology"
+        },
+        {
+          "label": "Rover plan (2023)",
+          "text": "In 2023, NASA planned to land its VIPER rover, which looks for water ice, on Mons Mouton",
+          "source": "viper-2023"
+        },
+        {
+          "label": "Landing rule",
+          "text": "NASA's key Artemis III landing requirement: ground sloping less than 10° over 100 m",
+          "source": "artemis-landing-slope"
+        },
+        {
+          "label": "Air pressure",
+          "text": "about zero (3 × 10^-15 bar)",
+          "source": "moon-factsheet"
+        }
+      ],
+      "geology": {
+        "primary": null,
+        "secondary": [],
+        "note": "Rock type not known: covered by later ejecta.",
+        "source": "malapert-geology"
+      }
+    },
+    {
+      "id": "shackleton-ridge",
+      "body": "moon",
+      "group": "moon-base",
+      "name": "Shackleton connecting ridge (south pole)",
+      "mission": "Sunlit ridge between Shackleton and de Gerlache craters (Artemis III candidate region in NASA's 2022 list)",
+      "lat": -89.46752,
+      "lon": -138.012788,
+      "values": {
+        "meanTemp": {
+          "value": -131.12,
+          "source": "diviner-polar",
+          "note": "Surface temperature (the Moon has no air): annual mean 142.03 K in the 240 m Diviner pixel at the pin (Schorghofer & Williams 2020 map of Diviner bolometric brightness temperature). Within 1.2 km the mean ranges 121.25-154.56 K."
+        },
+        "swing": {
+          "value": 146.24,
+          "source": "diviner-polar",
+          "note": "Highest minus lowest temperature in the southern summer season (236.14 K - 89.9 K), the closest Diviner value to a day-night range. A lunar day lasts about 29.5 Earth days."
+        },
+        "coldGround": {
+          "value": -207.62,
+          "source": "diviner-polar",
+          "note": "Lowest temperature in the Diviner maps at this pixel (65.53 K, winter)."
+        },
+        "rain": {
+          "value": 0,
+          "source": "moon-factsheet",
+          "note": "No atmosphere."
+        },
+        "albedo": {
+          "value": null,
+          "source": null,
+          "note": "Diviner polar maps have no albedo layer; not measured."
+        },
+        "sunHeight": {
+          "value": 2.07,
+          "source": "moon-tilt",
+          "note": "Computed, not measured: the highest the Sun gets above a flat horizon in a year is 90° - 89.46752° (latitude) + 1.54° (Moon tilt) = 2.07°. For each Earth site the app uses the same formula with the Earth tilt of 23.44° (NASA Earth fact sheet). This low Sun is why high ground here gets long sunlight."
+        }
+      },
+      "facts": [
+        {
+          "label": "Map pin",
+          "text": "Point on the Shackleton connecting ridge from a NASA study of a 50 m solar power tower: 89.46752° S, 138.012788° W, height 1,937.83 m",
+          "source": "ridge-tower"
+        },
+        {
+          "label": "Pin check",
+          "text": "Our LOLA elevation at the pin is 1,936.4 m, close to the study's 1,937.83 m",
+          "source": "lola-trek"
+        },
+        {
+          "label": "Why here",
+          "text": "In the NASA study, the tower's height at this place gives long periods of sunlight for solar power",
+          "source": "ridge-tower"
+        },
+        {
+          "label": "Landing regions (2022)",
+          "text": "Connecting Ridge and Connecting Ridge Extension were two of the 13 Artemis III candidate landing regions NASA named in 2022",
+          "source": "artemis3-regions-2022"
+        },
+        {
+          "label": "Landing regions (2024)",
+          "text": "Not in the nine regions NASA kept for Artemis III; NASA says this does not mean that the removed regions are unsuitable for later missions",
+          "source": "artemis3-regions"
+        },
+        {
+          "label": "Sunlight (model)",
+          "text": "A study with LRO data planned a 22.11 km solar rover route along the connecting ridge that stays in sunlight for 94.43 % of the year 2021 (a model, not a measurement)",
+          "source": "lro-ridge-traverse"
+        },
+        {
+          "label": "Sunlight (LOLA)",
+          "text": "In sunlight 39.6 % of the time at the pin (22.2-62.9 % within about 120 m). A model from LOLA heights, not a measurement. Every Earth site in our list has the Sun up 50.5-51.7 % of the year (computed from latitude), so this share does not separate them and is not used in the score. The sunniest 60 m pixel of the whole map (88.4 %) is on this ridge, 275 m from the pin",
+          "source": "lola-illumination"
+        },
+        {
+          "label": "Earth in view (LOLA)",
+          "text": "Earth is above the horizon 33 % of the time at the pin (0-51.9 % within about 120 m); direct radio contact needs this",
+          "source": "lola-illumination"
+        },
+        {
+          "label": "Nearest permanent shadow (LOLA)",
+          "text": "511 m to the nearest permanently shadowed 60 m pixel; 5.9 km to a shadowed patch of 1 km² or more. Ice can stay in such cold shadows, but ice is not measured there",
+          "source": "lola-illumination"
+        },
+        {
+          "label": "Hottest",
+          "text": "236.14 K (-37.01 °C), southern summer",
+          "source": "diviner-polar"
+        },
+        {
+          "label": "Winter average",
+          "text": "123.06 K (-150.09 °C); summer average 169.95 K (-103.2 °C)",
+          "source": "diviner-polar"
+        },
+        {
+          "label": "Data",
+          "text": "LRO Diviner, 2009-2020, 240 m pixels; the NASA point is the centre of one Diviner map pixel (0.1 m away). Within 1.2 km the annual mean ranges 121.25-154.56 K.",
+          "source": "diviner-polar"
+        },
+        {
+          "label": "Landing rule",
+          "text": "NASA's key Artemis III landing requirement: ground sloping less than 10° over 100 m",
+          "source": "artemis-landing-slope"
+        },
+        {
+          "label": "Air pressure",
+          "text": "about zero (3 × 10^-15 bar)",
+          "source": "moon-factsheet"
+        }
+      ],
+      "geology": {
+        "primary": null,
+        "secondary": [],
+        "note": "Rock type not known: no source in our list describes the rock of the ridge itself.",
+        "source": null
+      }
+    },
+    {
+      "id": "southpole",
+      "body": "moon",
+      "group": "moon-ice",
+      "name": "Shackleton crater floor (south pole)",
+      "mission": "Permanently shadowed crater floor next to the Artemis landing regions",
+      "lat": -89.67,
+      "lon": 129.78,
+      "values": {
+        "meanTemp": {
+          "value": -53,
+          "source": "diviner",
+          "note": "Surface temperature (Diviner), not air. General Diviner remark: some sunlit crater rims near the pole stay at about 220 K. This describes the sunlit rim, not the shadowed crater floor at this pin.",
+          "strict": {
+            "value": -213.95,
+            "source": "diviner-polar",
+            "note": "Surface temperature, not air: annual mean 59.2 K in the 240 m Diviner pixel at the pin, on the permanently shadowed crater floor (Schorghofer & Williams 2020 map of Diviner bolometric brightness temperature). Within 1.2 km the mean ranges 58.2-59.8 K."
+          }
+        },
+        "swing": {
+          "value": null,
+          "source": null,
+          "note": "Not measured as a single daily range here (the crater floor gets almost no direct sunlight)."
+        },
+        "coldGround": {
+          "value": -203,
+          "source": "nasa-southpole",
+          "note": "NASA's general figure for permanently shadowed craters (about 70 K); no instrument or exact place is named.",
+          "strict": {
+            "value": -232.83,
+            "source": "diviner-polar",
+            "note": "Lowest temperature in the Diviner maps at this pixel on the crater floor (40.32 K, southern winter)."
+          }
+        },
+        "rain": {
+          "value": 0,
+          "source": "moon-factsheet",
+          "note": "No atmosphere."
+        },
+        "albedo": {
+          "value": 0.11,
+          "source": "moon-factsheet",
+          "note": "Bond albedo of the whole Moon, not a value for this site.",
+          "strict": {
+            "value": null,
+            "source": null,
+            "note": "No site-specific albedo found."
+          }
+        }
+      },
+      "facts": [
+        {
+          "label": "Map pin",
+          "text": "Centre of Shackleton crater, 89.67° S, 129.78° E; the crater is 20.92 km across",
+          "source": "shackleton-usgs"
+        },
+        {
+          "label": "Air pressure",
+          "text": "about zero (3 × 10^-15 bar)",
+          "source": "moon-factsheet"
+        },
+        {
+          "label": "Warmest (crater floor)",
+          "text": "95.0 K (-178.1 °C) in southern summer, from the Diviner maps at this pin",
+          "source": "diviner-polar"
+        },
+        {
+          "label": "Water ice (Shackleton)",
+          "text": "possible: the authors say about 20 % surface ice on Shackleton's floor is an alternative explanation of the LOLA brightness, not a measurement",
+          "source": "zuber-2012"
+        },
+        {
+          "label": "Water ice (LCROSS)",
+          "text": "5.6 ± 2.9 % by mass in the regolith at the LCROSS impact site in Cabeus, another shadowed crater (not Shackleton)",
+          "source": "lcross-2010"
+        },
+        {
+          "label": "Sunlit areas (general)",
+          "text": "+54 °C in sunlit periods (a general NASA statement about the south pole, not measured at this point)",
+          "source": "nasa-southpole"
+        },
+        {
+          "label": "UV",
+          "text": "unfiltered (no atmosphere)",
+          "source": "moon-factsheet"
+        },
+        {
+          "label": "Landing regions",
+          "text": "Malapert Massif, Haworth, Nobile Rim, Mons Mouton, de Gerlache Rim, Slater Plain, Peak near Cabeus B (identified for Artemis III)",
+          "source": "artemis3-regions"
+        },
+        {
+          "label": "Artemis plan",
+          "text": "Since February 2026, Artemis III is a test flight in Earth orbit (2027); the first landing is planned as Artemis IV in 2028",
+          "source": "artemis-2026"
+        },
+        {
+          "label": "Geology",
+          "text": "Shackleton sits on the rim of the South Pole-Aitken basin; its walls expose very pure anorthosite",
+          "source": "southpole-geology"
+        }
+      ],
+      "geology": {
+        "primary": "anorthosite",
+        "secondary": [
+          "ice"
+        ],
+        "source": "southpole-geology"
+      }
+    },
+    {
+      "id": "tranquillitatis-pit",
+      "body": "moon",
+      "group": "moon-cave",
+      "name": "Mare Tranquillitatis pit (cave skylight)",
+      "mission": "Proposed cave shelter for a Moon base (seen by LRO; no landing yet)",
+      "lat": 8.3355,
+      "lon": 33.222,
+      "values": {
+        "meanTemp": {
+          "value": -54.7,
+          "source": "diviner-gcp",
+          "note": "Surface temperature of the mare plain around the pit, not inside it (the Moon has no air): mean of the LRO Diviner day-night curve, 218.5 K, in the 0.5° (about 15 km) map bin that contains the pit (all nadir data 2009-2015, 15-minute local-time bins; 43 empty bins filled by straight lines between neighbours). The 100 m pit is far smaller than the bin. The eight bins around it give 217.8-222.3 K. Inside the shaded cave a model gives about 17 °C (see facts)."
+        },
+        "swing": {
+          "value": 301.1,
+          "source": "diviner-gcp",
+          "note": "Highest minus lowest point of the same Diviner day-night curve: 394.8 K near noon minus 93.8 K just before sunrise. Each point is the average of all observations in one 15-minute local-time bin. A lunar day lasts about 29.5 Earth days."
+        },
+        "coldGround": {
+          "value": -179.4,
+          "source": "diviner-gcp",
+          "note": "Coldest point of the Diviner day-night curve in the bin with the pit: 93.8 K at about 05:20 local time, just before sunrise. It is a bin average, so single readings can be a little colder."
+        },
+        "rain": {
+          "value": 0,
+          "source": "moon-factsheet",
+          "note": "No atmosphere."
+        },
+        "albedo": {
+          "value": null,
+          "source": null,
+          "note": "Not used: the only site value found is LOLA's laser normal albedo at 1064 nm (0.156, zero phase angle), a different quantity from the broadband surface albedo of the Earth sites (see facts)."
+        }
+      },
+      "facts": [
+        {
+          "label": "Map pin",
+          "text": "Mare Tranquillitatis pit, 8.3355° N, 33.222° E (LROC Lunar Pit Atlas); the temperatures above are for the flat mare plain around it",
+          "source": "lroc-pit-atlas"
+        },
+        {
+          "label": "Pit size",
+          "text": "Opening about 100 × 88 m inside a funnel about 146 × 140 m; 105 m deep below the funnel floor (the funnel is about 20 m deep). Measured from LRO camera stereo images",
+          "source": "lroc-pit-atlas"
+        },
+        {
+          "label": "Overhang",
+          "text": "The walls overhang by at least 10-15 m on the east, west and north sides; the open part of the floor is flat and covered in boulders",
+          "source": "lroc-pit-atlas"
+        },
+        {
+          "label": "Cave (radar)",
+          "text": "Part of the radar echoes from the pit come from a cave passage tens of metres long under the surface (LRO Mini-RF radar, 2010)",
+          "source": "carrer-2024"
+        },
+        {
+          "label": "Cave length",
+          "text": "More than 60 m (200 feet) from the base of the pit; the full length is unknown",
+          "source": "nasa-caves"
+        },
+        {
+          "label": "Night (measured)",
+          "text": "LRO Diviner sees the pit about 100 K warmer than the ground around it at night",
+          "source": "horvath-2022"
+        },
+        {
+          "label": "Night (measured, map)",
+          "text": "At midnight the 237 m Diviner map pixel that holds the pit reads 126.1 K, while the mare around it (1-6 km away) reads about 100.4 K: 26 K warmer, although the pit fills only part of the pixel",
+          "source": "diviner-ghrm"
+        },
+        {
+          "label": "Protection",
+          "text": "Pits or caves would also give some protection from cosmic rays, solar radiation and micrometeorites",
+          "source": "nasa-pits-temps"
+        },
+        {
+          "label": "Geology",
+          "text": "Hard, dense basalt lava around the pit (judged from rocks and crater wear seen from orbit)",
+          "source": "costello-2026"
+        },
+        {
+          "label": "Pit walls",
+          "text": "Pits in the lunar seas show the layers of the top 20-100 m of basalt lava flows",
+          "source": "wagner-robinson-2022"
+        },
+        {
+          "label": "Distance",
+          "text": "About 370 km (230 miles) north-east of the Apollo 11 landing site",
+          "source": "nasa-caves"
+        },
+        {
+          "label": "Air pressure",
+          "text": "about zero",
+          "source": "moon-factsheet"
+        },
+        {
+          "label": "Hottest (surface)",
+          "text": "394.8 K (+121.7 °C) near local noon, mare surface in the Diviner bin with the pit",
+          "source": "diviner-gcp"
+        },
+        {
+          "label": "Night average (surface)",
+          "text": "104 K (-169 °C) between 18:00 and 06:00 local time, same Diviner bin",
+          "source": "diviner-gcp"
+        },
+        {
+          "label": "Inside the cave (model)",
+          "text": "A heat model checked against Diviner night data says the permanently shaded part under the overhang stays near 290 K (about 17 °C) all lunar day; this is a model result, not a reading",
+          "source": "horvath-2022"
+        },
+        {
+          "label": "Sunlit pit floor (model)",
+          "text": "Pit floors near the equator can reach more than 420 K (about 147 °C) at midday (model)",
+          "source": "horvath-2022"
+        },
+        {
+          "label": "Laser albedo (measured)",
+          "text": "LOLA normal albedo at 1064 nm: 0.156 in the 3 km map pixel with the pit (zero phase angle, one infrared wavelength; not the broadband albedo used for Earth sites)",
+          "source": "lola-albedo"
+        }
+      ],
+      "geology": {
+        "primary": "basalt",
+        "secondary": [],
+        "source": "costello-2026"
+      }
+    },
+    {
+      "id": "apollo11",
+      "body": "moon",
+      "group": "moon-ref",
+      "name": "Apollo 11 site, Mare Tranquillitatis",
+      "mission": "Apollo 11 (NASA, 1969)",
+      "lat": 0.674,
+      "lon": 23.473,
+      "values": {
+        "meanTemp": {
+          "value": null,
+          "source": null,
+          "note": "Not measured."
+        },
+        "swing": {
+          "value": 295,
+          "source": "moon-factsheet",
+          "note": "Generic equatorial day/night range from the NASA Moon fact sheet (95 K to 390 K: +117 °C by day, -178 °C at night), not a measurement at the site.",
+          "strict": {
+            "value": null,
+            "source": null,
+            "note": "No published day/night range for the exact site in our sources."
+          }
+        },
+        "coldGround": {
+          "value": -178,
+          "source": "moon-factsheet",
+          "note": "Night end (95 K) of the same generic equatorial range, not a measurement at the site.",
+          "strict": {
+            "value": null,
+            "source": null,
+            "note": "Generic equatorial night value, not measured at the site."
+          }
+        },
+        "rain": {
+          "value": 0,
+          "source": "moon-factsheet",
+          "note": "No atmosphere."
+        },
+        "albedo": {
+          "value": 0.11,
+          "source": "moon-factsheet",
+          "note": "Bond albedo of the whole Moon; the site is darker titanium-rich basalt.",
+          "strict": {
+            "value": null,
+            "source": null,
+            "note": "No site-specific albedo found."
+          }
+        }
+      },
+      "facts": [
+        {
+          "label": "Map pin",
+          "text": "Lunar module position, 0.674° N, 23.473° E (measured on LRO images)",
+          "source": "lunar-sites"
+        },
+        {
+          "label": "Air pressure",
+          "text": "about zero",
+          "source": "moon-factsheet"
+        },
+        {
+          "label": "Day / night",
+          "text": "+117 / -178 °C (Moon-wide equatorial range, not measured at the site)",
+          "source": "moon-factsheet"
+        },
+        {
+          "label": "Sunlight",
+          "text": "100 % of Earth's, at the top of the atmosphere",
+          "source": "moon-factsheet"
+        },
+        {
+          "label": "UV",
+          "text": "unfiltered (no atmosphere)",
+          "source": "moon-factsheet"
+        },
+        {
+          "label": "Geology",
+          "text": "Titanium-rich mare basalts and breccias, 3.6-3.9 billion years old",
+          "source": "apollo11-samples"
+        },
+        {
+          "label": "Surface unit",
+          "text": "Crater counts fit a single surface rock unit at the landing site: a young, high-potassium mare basalt",
+          "source": "apollo11-basalts"
+        }
+      ],
+      "geology": {
+        "primary": "basalt",
+        "secondary": [],
+        "source": "apollo11-samples"
+      }
+    },
+    {
+      "id": "apollo17",
+      "body": "moon",
+      "group": "moon-ref",
+      "name": "Apollo 17 site, Taurus-Littrow",
+      "mission": "Apollo 17 (NASA, 1972)",
+      "lat": 20.1923,
+      "lon": 30.7655,
+      "values": {
+        "meanTemp": {
+          "value": -57.2,
+          "source": "apollo17-hfe",
+          "note": "Mean surface temperature 216 ± 5 K, measured at the heat-flow experiment site."
+        },
+        "swing": {
+          "value": 282,
+          "source": "apollo17-hfe",
+          "note": "From 102 K at the end of the lunar night to 384 K at lunar noon."
+        },
+        "coldGround": {
+          "value": -171.2,
+          "source": "apollo17-hfe",
+          "note": "102 ± 1.5 K at the end of the lunar night."
+        },
+        "rain": {
+          "value": 0,
+          "source": "moon-factsheet",
+          "note": "No atmosphere."
+        },
+        "albedo": {
+          "value": null,
+          "source": null,
+          "note": "No site-specific albedo found."
+        }
+      },
+      "facts": [
+        {
+          "label": "Map pin",
+          "text": "Apollo 17 instrument station (ALSEP), 20.1923° N, 30.7655° E (measured on LRO images)",
+          "source": "lunar-sites"
+        },
+        {
+          "label": "Hottest",
+          "text": "+110.9 °C (384 ± 6 K) at lunar noon",
+          "source": "apollo17-hfe"
+        },
+        {
+          "label": "Below the surface",
+          "text": "35 cm down, the average temperature is about 40 K higher than at the surface",
+          "source": "lunar-sourcebook"
+        },
+        {
+          "label": "Air pressure",
+          "text": "about zero",
+          "source": "moon-factsheet"
+        },
+        {
+          "label": "Geology",
+          "text": "Titanium-rich basalt on the valley floor, impact-melt breccias on the hills, orange volcanic glass",
+          "source": "apollo17-samples"
+        }
+      ],
+      "geology": {
+        "primary": "basalt",
+        "secondary": [
+          "impactite"
+        ],
+        "source": "apollo17-samples"
+      }
+    },
+    {
+      "id": "phoenix",
+      "body": "mars",
+      "group": "mars",
+      "name": "Phoenix landing site, Vastitas Borealis",
+      "mission": "Phoenix lander (NASA, 2008)",
+      "lat": 68.22,
+      "lon": -125.75,
+      "values": {
+        "meanTemp": {
+          "value": null,
+          "source": null,
+          "note": "Not published for the mission."
+        },
+        "swing": {
+          "value": 49,
+          "source": "phoenix-weather",
+          "note": "Average daily high -30 °C and low -79 °C over the first 61 Martian days (May-July 2008)."
+        },
+        "coldGround": {
+          "value": -93,
+          "source": "rems-humidity-albedo",
+          "note": "About 180 K in the top 15 mm of soil (sol 122), measured by Phoenix's soil probe."
+        },
+        "rain": {
+          "value": 0,
+          "source": "mars-factsheet",
+          "note": "No liquid rain: the air pressure is too low for liquid water to last."
+        },
+        "albedo": {
+          "value": 0.2,
+          "source": "golombek-2017",
+          "note": "Albedo of the landing site measured from orbit."
+        }
+      },
+      "facts": [
+        {
+          "label": "Air pressure",
+          "text": "775 to 734 Pa at midnight (sol 80 to sol 150)",
+          "source": "rems-humidity-albedo"
+        },
+        {
+          "label": "Water ice",
+          "text": "ice 5-18 cm below the surface; calcium carbonate in alkaline soil (pH 7.7)",
+          "source": "phoenix-ice"
+        },
+        {
+          "label": "Ground roughness",
+          "text": "slopes of about 1.8° over 5 m",
+          "source": "golombek-2017"
+        },
+        {
+          "label": "Geology",
+          "text": "Polygon-patterned, ice-cemented soil of the northern plains",
+          "source": "phoenix-ice"
+        },
+        {
+          "label": "Exploration Zone",
+          "text": "Not proposed: the 2015 human landing workshop was limited to latitudes within 50° of the equator",
+          "source": "ez-workshop"
+        }
+      ],
+      "geology": {
+        "primary": "ice",
+        "secondary": [
+          "evaporite"
+        ],
+        "source": "phoenix-ice"
+      }
+    }
+  ],
+  "sources": {
+    "moon-factsheet": {
+      "label": "NASA NSSDC Moon fact sheet",
+      "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
+    },
+    "mars-factsheet": {
+      "label": "NASA NSSDC Mars fact sheet",
+      "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"
+    },
+    "diviner": {
+      "label": "LRO Diviner results (UCLA)",
+      "url": "https://www.diviner.ucla.edu/science"
+    },
+    "zuber-2012": {
+      "label": "Zuber et al. 2012: Constraints on the volatile distribution within Shackleton crater (Nature)",
+      "url": "https://doi.org/10.1038/nature11216"
+    },
+    "lcross-2010": {
+      "label": "Colaprete et al. 2010: Detection of water in the LCROSS ejecta plume (Science)",
+      "url": "https://doi.org/10.1126/science.1186986"
+    },
+    "nasa-southpole": {
+      "label": "NASA: The Moon's south pole is full of mystery, science, intrigue",
+      "url": "https://www.nasa.gov/feature/moons-south-pole-is-full-of-mystery-science-intrigue"
+    },
+    "shackleton-usgs": {
+      "label": "USGS Gazetteer: Shackleton crater",
+      "url": "https://planetarynames.wr.usgs.gov/Feature/5450"
+    },
+    "southpole-geology": {
+      "label": "Gawronska et al. 2020, Advances in Space Research: Geologic context and potential EVA targets at the lunar south pole",
+      "url": "https://doi.org/10.1016/j.asr.2020.05.035"
+    },
+    "malapert-usgs": {
+      "label": "USGS Gazetteer: Mons Malapert",
+      "url": "https://planetarynames.wr.usgs.gov/Feature/16338"
+    },
+    "artemis3-regions": {
+      "label": "NASA NTRS: Artemis III candidate landing regions",
+      "url": "https://ntrs.nasa.gov/citations/20250011660"
+    },
+    "artemis-landing-slope": {
+      "label": "NASA NTRS 20250009323: Artemis Human Landing System overview (2025 Space Apps Challenge); key Artemis III landing requirement: surface slope for landing (100 m) under 10°",
+      "url": "https://ntrs.nasa.gov/citations/20250009323"
+    },
+    "artemis-2026": {
+      "label": "NASA (27 Feb 2026): NASA adds mission to Artemis lunar program, updates architecture",
+      "url": "https://www.nasa.gov/news-release/nasa-adds-mission-to-artemis-lunar-program-updates-architecture/"
+    },
+    "lunar-sites": {
+      "label": "NASA NSSDC: Apollo landing site coordinates (from LRO images)",
+      "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_sites.html"
+    },
+    "apollo11-basalts": {
+      "label": "Iqbal, Hiesinger & van der Bogert 2019, Icarus: Geological mapping and chronology of lunar landing sites: Apollo 11 (arXiv 2003.03292)",
+      "url": "https://arxiv.org/abs/2003.03292"
+    },
+    "apollo11-samples": {
+      "label": "LPI: Apollo 11 samples",
+      "url": "https://www.lpi.usra.edu/lunar/missions/apollo/apollo_11/samples/"
+    },
+    "apollo17-hfe": {
+      "label": "Keihm & Langseth 1973: surface brightness temperatures at the Apollo 17 heat flow site (NASA NTRS)",
+      "url": "https://ntrs.nasa.gov/citations/19740040227"
+    },
+    "apollo17-samples": {
+      "label": "LPI: Apollo 17 samples",
+      "url": "https://www.lpi.usra.edu/lunar/missions/apollo/apollo_17/samples/"
+    },
+    "lunar-sourcebook": {
+      "label": "Lunar Sourcebook, chapter 3: the lunar environment (LPI)",
+      "url": "https://www.lpi.usra.edu/publications/books/lunar_sourcebook/pdf/Chapter03.pdf"
+    },
+    "meda-blog": {
+      "label": "NASA blog: daily records of atmospheric temperature with Perseverance",
+      "url": "https://science.nasa.gov/blogs/daily-records-of-atmospheric-temperature-with-perseverance/"
+    },
+    "jpl-jezero-weather": {
+      "label": "JPL: NASA's first weather report from Jezero Crater",
+      "url": "https://www.jpl.nasa.gov/news/nasas-first-weather-report-from-jezero-crater-on-mars/"
+    },
+    "meda-press": {
+      "label": "MEDA's first 250 sols (press release; paper: Nature Geoscience, doi 10.1038/s41561-022-01084-0)",
+      "url": "https://www.sciencedaily.com/releases/2023/01/230118111707.htm"
+    },
+    "meda-250sols": {
+      "label": "MEDA's first 250 sols (Nature Geoscience)",
+      "url": "https://link.springer.com/article/10.1038/s41561-022-01084-0"
+    },
+    "meda-albedo": {
+      "label": "MEDA surface albedo at Jezero (INTA repository; unreachable on 2026-10-09)",
+      "url": "https://digital.inta.es:8443/jspui/handle/20.500.12666/867"
+    },
+    "meda-albedo-paper": {
+      "label": "Martínez et al. 2023, JGR Planets: Surface energy budget, albedo and thermal inertia at Jezero Crater (MEDA)",
+      "url": "https://doi.org/10.1029/2022JE007537"
+    },
+    "jezero-geology": {
+      "label": "Jezero crater floor: Séítah and Máaz igneous rocks (Science, 2022)",
+      "url": "https://doi.org/10.1126/science.abo2196"
+    },
+    "curiosity-landing": {
+      "label": "Planetary Society (2012): Curiosity press briefing notes, with the landing coordinates from the descent camera",
+      "url": "https://www.planetary.org/articles/08061740-curiosity-press-briefing-notes"
+    },
+    "rems-temps": {
+      "label": "REMS temperatures at Gale (Física de la Tierra)",
+      "url": "https://revistas.ucm.es/index.php/FITE/article/view/53902"
+    },
+    "rems-humidity-albedo": {
+      "label": "Martínez et al. 2017, Space Science Reviews: Mars surface climate from Viking to Curiosity",
+      "url": "https://link.springer.com/article/10.1007/s11214-017-0360-x"
+    },
+    "rems-uv": {
+      "label": "Martínez et al. 2014, JGR Planets: Surface energy budget and thermal inertia at Gale Crater (uses REMS UV data; PMC open access)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4508907/"
+    },
+    "golombek-2017": {
+      "label": "Golombek et al. 2017, Space Science Reviews: properties of the Mars landing sites (table 7)",
+      "url": "https://link.springer.com/article/10.1007/s11214-016-0321-9"
+    },
+    "gale-geology": {
+      "label": "Gale crater lake deposits (Science, 2015)",
+      "url": "https://doi.org/10.1126/science.aac7575"
+    },
+    "phoenix-weather": {
+      "label": "NASA PIA11003: Sixty-one Martian days of weather monitoring (Phoenix)",
+      "url": "https://science.nasa.gov/photojournal/sixty-one-martian-days-of-weather-monitoring/"
+    },
+    "phoenix-ice": {
+      "label": "Smith et al. 2009, Science: H2O at the Phoenix landing site",
+      "url": "https://doi.org/10.1126/science.1172339"
+    },
+    "mars-uv": {
+      "label": "Cockell et al. 2000, Icarus: the ultraviolet environment of Mars (a model)",
+      "url": "https://doi.org/10.1006/icar.2000.6393"
+    },
+    "diviner-polar": {
+      "label": "LRO Diviner polar temperature maps: Williams et al. 2019 (JGR Planets, doi 10.1029/2019JE006028) and Schorghofer & Williams 2020 (PSJ, doi 10.3847/PSJ/abb6ff); values extracted by scripts/extract_diviner.py into data/diviner_malapert.json (Malapert summit, Mons Mouton centre, the Shackleton connecting ridge point and the Shackleton crater floor point)",
+      "url": "https://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/"
+    },
+    "malapert-geology": {
+      "label": "Geologic map of Mons Mouton, Mons Malapert and Cabeus (University of Münster record)",
+      "url": "https://cris-portal.uni-muenster.de/portal/en/publication/172801521"
+    },
+    "ez-workshop": {
+      "label": "Bussey & Hoffman 2016: Human Mars landing site and impacts on Mars surface operations (NASA NTRS 20160001040), with the list of 47 proposed Exploration Zones",
+      "url": "https://ntrs.nasa.gov/citations/20160001040"
+    },
+    "mcs-surface-temps": {
+      "label": "Piqueux et al. 2024: Mars Climate Sounder surface temperature maps (Icarus; dataset doi 10.7910/DVN/YCNFQL)",
+      "url": "https://doi.org/10.7910/DVN/YCNFQL",
+      "notes": "Values extracted by data/raw/mars_ez_extract/mcs_extract.py"
+    },
+    "tes-albedo": {
+      "label": "MGS TES global Lambert albedo map, 8 pixels/degree (NASA PDS)",
+      "url": "https://pds-geosciences.wustl.edu/missions/mgs/tesspecial.html",
+      "notes": "Values extracted by data/raw/mars_ez_extract/tes_albedo.py"
+    },
+    "ez-1033": {
+      "label": "Head et al. 2015: Deuteronilus Mensae Exploration Zone (EZ workshop abstract 1033)",
+      "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1033.pdf"
+    },
+    "ez-1044": {
+      "label": "Plaut 2015: Deuteronilus Mensae Exploration Zone (EZ workshop abstract 1044)",
+      "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1044.pdf"
+    },
+    "ez-1011": {
+      "label": "Viola, McEwen & Dundas 2015: Mid-latitude Martian ice as a target for human exploration (EZ workshop abstract 1011)",
+      "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1011.pdf"
+    },
+    "ez-1034": {
+      "label": "Mustard et al. 2015: Jezero Crater Exploration Zone (EZ workshop abstract 1034)",
+      "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1034.pdf"
+    },
+    "ez-1020": {
+      "label": "Calef et al. 2015: Gale Crater as a landing site for the first human mission to Mars (EZ workshop abstract 1020)",
+      "url": "https://www.hou.usra.edu/meetings/explorationzone2015/pdf/1020.pdf"
+    },
+    "plaut-2009": {
+      "label": "Plaut et al. 2009: Radar evidence for ice in lobate debris aprons (GRL)",
+      "url": "https://doi.org/10.1029/2008GL036379"
+    },
+    "bramson-2015": {
+      "label": "Bramson et al. 2015: Widespread excess ice in Arcadia Planitia, Mars (GRL)",
+      "url": "https://doi.org/10.1002/2015GL064844"
+    },
+    "swim-2021": {
+      "label": "Morgan et al. 2021: Availability of subsurface water-ice resources in the northern mid-latitudes of Mars (Nature Astronomy; USGS record)",
+      "url": "https://pubs.usgs.gov/publication/70226786"
+    },
+    "horvath-2022": {
+      "label": "Horvath, Hayne & Paige 2022: Thermal and illumination environments of lunar pits and caves, models and observations from LRO Diviner (GRL, open access)",
+      "url": "https://doi.org/10.1029/2022GL099710"
+    },
+    "nasa-pits-temps": {
+      "label": "NASA (2022): NASA's LRO finds lunar pits harbor comfortable temperatures",
+      "url": "https://www.nasa.gov/solar-system/nasas-lro-finds-lunar-pits-harbor-comfortable-temperatures/"
+    },
+    "carrer-2024": {
+      "label": "Carrer et al. 2024: Radar evidence of an accessible cave conduit on the Moon below the Mare Tranquillitatis pit (Nature Astronomy)",
+      "url": "https://doi.org/10.1038/s41550-024-02302-y"
+    },
+    "nasa-caves": {
+      "label": "NASA (2024): New evidence adds to findings hinting at network of caves on Moon",
+      "url": "https://science.nasa.gov/solar-system/new-evidence-adds-to-findings-hinting-at-network-of-caves-on-moon/"
+    },
+    "lroc-pit-atlas": {
+      "label": "LROC Lunar Pit Atlas: Mare Tranquillitatis Pit (NASA/GSFC/Arizona State University)",
+      "url": "https://lroc.im-ldi.com/atlases/pits/3"
+    },
+    "wagner-robinson-2022": {
+      "label": "Wagner & Robinson 2022: Lunar pit morphology, implications for exploration (JGR Planets)",
+      "url": "https://doi.org/10.1029/2022JE007328"
+    },
+    "costello-2026": {
+      "label": "Costello et al. 2026: Craters and lunar lua (pits/skylights) in Mare Tranquillitatis and Marius Hills reveal variations in protolith properties (JGR Planets, open access)",
+      "url": "https://doi.org/10.1029/2025JE009427"
+    },
+    "diviner-gcp": {
+      "label": "LRO Diviner Global Cumulative Product: bolometric temperature in 0.5° bins and 15-minute local-time bins, all nadir data 5 Jul 2009 - 1 Apr 2015 (Williams et al. 2017, Icarus, doi 10.1016/j.icarus.2016.08.012; NASA PDS); values at the pit read by data/raw/caves/moon_diviner_extract.py",
+      "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_gcp/"
+    },
+    "diviner-ghrm": {
+      "label": "LRO Diviner Global High-Resolution Mosaics: bolometric temperature at midnight, 128 pixels per degree, data 2009-2022 (Powell et al. 2023, JGR Planets, doi 10.1029/2022JE007532; NASA PDS)",
+      "url": "https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_ghrm/"
+    },
+    "lola-albedo": {
+      "label": "LRO LOLA normal albedo map at 1064 nm, 10 pixels per degree (LDAM_10_FLOAT, NASA PDS; Lucey et al. 2014, JGR Planets, doi 10.1002/2013JE004592)",
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/float_img/"
+    },
+    "mgc3": {
+      "label": "Cushing: Mars Global Cave Candidate Catalog (MGC3), USGS, NASA PDS bundle (doi 10.17189/1519222); entry APC075 'APC ~ Jeanne'",
+      "url": "https://doi.org/10.17189/1519222"
+    },
+    "hirise-jeanne": {
+      "label": "HiRISE PSP_003647_1745: Candidate cavern entrance northeast of Arsia Mons (NASA/JPL-Caltech/UArizona, 2007)",
+      "url": "https://www.uahirise.org/PSP_003647_1745"
+    },
+    "cushing-2007": {
+      "label": "Cushing, Titus, Wynne & Christensen 2007: THEMIS observes possible cave skylights on Mars (GRL)",
+      "url": "https://doi.org/10.1029/2007GL030709"
+    },
+    "cushing-lpsc-2007": {
+      "label": "Cushing et al. 2007: THEMIS observes possible cave skylights on Mars (Lunar and Planetary Science XXXVIII, abstract 1371)",
+      "url": "https://www.lpi.usra.edu/meetings/lpsc2007/pdf/1371.pdf"
+    },
+    "cushing-2012": {
+      "label": "Cushing 2012: Candidate cave entrances on Mars (Journal of Cave and Karst Studies 74, 33-47, doi 10.4311/2010EX0167R)",
+      "url": "https://legacy.caves.org/pub/journal/PDF/V74/cave-74-01-33.pdf"
+    },
+    "cushing-2015": {
+      "label": "Cushing, Okubo & Titus 2015: Atypical pit craters on Mars, new insights from THEMIS, CTX and HiRISE (JGR Planets)",
+      "url": "https://doi.org/10.1002/2014JE004735"
+    },
+    "tharsis-basalt": {
+      "label": "NASA Photojournal PIA04289, Flows of Ascraeus: Tharsis shield-volcano lava is most likely basaltic (MGS MOC)",
+      "url": "https://science.nasa.gov/photojournal/flows-of-ascraeus/"
+    },
+    "arsia-lava-flows": {
+      "label": "NASA Photojournal PIA03963: Arsia Mons lava flows (Mars Odyssey THEMIS)",
+      "url": "https://science.nasa.gov/photojournal/arsia-mons-lava-flows/"
+    },
+    "mola-trek": {
+      "label": "MGS MOLA elevation at the pin (128/64 ppd merge, NASA Mars Trek), as used by scripts/compute_terrain.py",
+      "url": "https://astrogeology.usgs.gov/search/map/mars_mgs_mola_dem_463m"
+    },
+    "mons-mouton-usgs": {
+      "label": "USGS Gazetteer: Mons Mouton (centre 84.60° S, 31.00° E; 130 km across)",
+      "url": "https://planetarynames.wr.usgs.gov/Feature/16070"
+    },
+    "artemis3-regions-2022": {
+      "label": "NASA (19 Aug 2022): NASA identifies candidate regions for landing next Americans on Moon (13 Artemis III regions)",
+      "url": "https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-moon/"
+    },
+    "ridge-tower": {
+      "label": "NASA NTRS 20240009936 (NASA Langley, 2024): Tall Tower Lunar Thermal Analysis; tower site on the Shackleton Connecting Ridge",
+      "url": "https://ntrs.nasa.gov/citations/20240009936"
+    },
+    "lro-ridge-traverse": {
+      "label": "NASA NTRS 20160012274: Future exploration of the south pole as enabled by the Lunar Reconnaissance Orbiter",
+      "url": "https://ntrs.nasa.gov/citations/20160012274"
+    },
+    "viper-2023": {
+      "label": "NASA NTRS 20230004239: VIPER mission traverse planning (2023)",
+      "url": "https://ntrs.nasa.gov/citations/20230004239"
+    },
+    "lola-trek": {
+      "label": "LRO LOLA elevation at the pin (Global 128 ppd v04, NASA Moon Trek), as used by scripts/compute_terrain.py",
+      "url": "https://trek.nasa.gov/moon/TrekWS/rest/cat/metadata/fgdc/html?label=LRO_LOLA_DEM_Global_128ppd_v04"
+    },
+    "lola-illumination": {
+      "label": "LRO LOLA polar illumination maps (Mazarico et al. 2011, Icarus, doi 10.1016/j.icarus.2010.10.030), NASA PDS release 201608, 60 m pixels; values at the pin extracted by scripts/extract_illumination.py into data/illumination.json",
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/extras/illumination/img/"
+    },
+    "moon-tilt": {
+      "label": "NASA Photojournal PIA13720: south pole illumination map ('The spin axis of the Moon is tilted by only 1.54°')",
+      "url": "https://science.nasa.gov/photojournal/south-pole-illumination-map/"
+    },
+    "earth-factsheet": {
+      "label": "NASA NSSDC Earth fact sheet (obliquity to orbit 23.44°)",
+      "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html"
+    }
+  }
+}

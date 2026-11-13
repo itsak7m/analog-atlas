@@ -1,0 +1,1231 @@
+{
+ "generated": "2026-10-10T15:48:54Z",
+ "outputs": {
+  "data/composition.json": 39025,
+  "data/screening_composition.json": 33535
+ },
+ "checksOk": true,
+ "modis": {
+  "collection": "modis-21A2-061",
+  "sample": "all 138 Terra 8-day composites of 2018-2020 (46 per year)",
+  "years": [
+   2018,
+   2020
+  ],
+  "stride": 1,
+  "searched": "2026-10-10T15:10:19Z",
+  "tiles": {
+   "h08v05": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h08v05.061.2021305195435",
+    "last": "MOD21A2.A2020361.h08v05.061.2021012073217"
+   },
+   "h09v04": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h09v04.061.2021305195447",
+    "last": "MOD21A2.A2020361.h09v04.061.2021012073331"
+   },
+   "h09v05": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h09v05.061.2021305195704",
+    "last": "MOD21A2.A2020361.h09v05.061.2021012074523"
+   },
+   "h11v11": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h11v11.061.2021305194143",
+    "last": "MOD21A2.A2020361.h11v11.061.2021012073003"
+   },
+   "h14v03": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h14v03.061.2021305195418",
+    "last": "MOD21A2.A2020361.h14v03.061.2021012071605"
+   },
+   "h15v01": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h15v01.061.2021305193019",
+    "last": "MOD21A2.A2020361.h15v01.061.2021012065647"
+   },
+   "h17v02": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h17v02.061.2021305194219",
+    "last": "MOD21A2.A2020361.h17v02.061.2021012073134"
+   },
+   "h17v05": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h17v05.061.2021305194154",
+    "last": "MOD21A2.A2020361.h17v05.061.2021012075429"
+   },
+   "h18v04": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h18v04.061.2021305195550",
+    "last": "MOD21A2.A2020361.h18v04.061.2021012074417"
+   },
+   "h21v05": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h21v05.061.2021305194317",
+    "last": "MOD21A2.A2020361.h21v05.061.2021012074343"
+   },
+   "h21v06": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h21v06.061.2021305194325",
+    "last": "MOD21A2.A2020361.h21v06.061.2021012073536"
+   },
+   "h21v16": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h21v16.061.2021305203106",
+    "last": "MOD21A2.A2020361.h21v16.061.2021012083019"
+   },
+   "h24v05": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h24v05.061.2021305194337",
+    "last": "MOD21A2.A2020361.h24v05.061.2021012074342"
+   },
+   "h25v05": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h25v05.061.2021305194338",
+    "last": "MOD21A2.A2020361.h25v05.061.2021012080057"
+   },
+   "h29v11": {
+    "found": 138,
+    "sampled": 138,
+    "first": "MOD21A2.A2018001.h29v11.061.2021305194500",
+    "last": "MOD21A2.A2020361.h29v11.061.2021012074553"
+   }
+  },
+  "siteRecords": 2070,
+  "boxCompositesAdded": {
+   "h21v05": 138,
+   "h21v06": 138
+  },
+  "itemIds": "data/raw/composition/modis_items.json"
+ },
+ "s2": {
+  "wadi-rum": {
+   "used": [
+    {
+     "id": "S2B_36RYT_20230214_0_L2A",
+     "date": "2023-02-14",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2B_36RYT_20230505_0_L2A",
+     "date": "2023-05-05",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2B_36RYT_20230704_0_L2A",
+     "date": "2023-07-04",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 3,
+   "candidates": 243,
+   "MB": 24.3
+  },
+  "harrat": {
+   "used": [
+    {
+     "id": "S2A_37SCR_20230127_0_L2A",
+     "date": "2023-01-27",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2B_37SCR_20230402_0_L2A",
+     "date": "2023-04-02",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2B_37SCR_20230701_0_L2A",
+     "date": "2023-07-01",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 3,
+   "candidates": 112,
+   "MB": 24.0
+  },
+  "atacama": {
+   "used": [
+    {
+     "id": "S2B_19KCP_20240420_0_L2A",
+     "date": "2024-04-20",
+     "cloud": 0.02
+    },
+    {
+     "id": "S2A_19KCP_20230101_0_L2A",
+     "date": "2023-01-01",
+     "cloud": 0.04
+    },
+    {
+     "id": "S2A_19KCP_20230717_0_L2A",
+     "date": "2023-07-17",
+     "cloud": 0.04
+    }
+   ],
+   "tried": 3,
+   "candidates": 179,
+   "MB": 22.3
+  },
+  "haughton": {
+   "used": [
+    {
+     "id": "S2A_15XWD_20230728_0_L2A",
+     "date": "2023-07-28",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2B_15XWD_20240707_0_L2A",
+     "date": "2024-07-07",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2A_16XDJ_20230718_0_L2A",
+     "date": "2023-07-18",
+     "cloud": 0.01
+    }
+   ],
+   "tried": 5,
+   "candidates": 99,
+   "MB": 25.4
+  },
+  "death-valley": {
+   "used": [
+    {
+     "id": "S2B_11SNA_20230905_0_L2A",
+     "date": "2023-09-05",
+     "cloud": 0.01
+    },
+    {
+     "id": "S2B_11SNA_20231005_0_L2A",
+     "date": "2023-10-05",
+     "cloud": 0.01
+    },
+    {
+     "id": "S2B_11SNA_20240402_0_L2A",
+     "date": "2024-04-02",
+     "cloud": 0.01
+    }
+   ],
+   "tried": 3,
+   "candidates": 100,
+   "MB": 24.3
+  },
+  "dry-valleys": {
+   "used": [
+    {
+     "id": "S2B_58CDV_20231205_0_L2A",
+     "date": "2023-12-05",
+     "cloud": 1.45
+    },
+    {
+     "id": "S2B_57CWQ_20230111_0_L2A",
+     "date": "2023-01-11",
+     "cloud": 2.68
+    },
+    {
+     "id": "S2B_58CDV_20231207_0_L2A",
+     "date": "2023-12-07",
+     "cloud": 2.39
+    }
+   ],
+   "tried": 3,
+   "candidates": 43,
+   "MB": 24.2
+  },
+  "holuhraun": {
+   "used": [
+    {
+     "id": "S2A_27WXN_20240919_0_L2A",
+     "date": "2024-09-19",
+     "cloud": 0.06
+    }
+   ],
+   "tried": 10,
+   "candidates": 57,
+   "MB": 7.7
+  },
+  "rio-tinto": {
+   "used": [
+    {
+     "id": "S2A_29SQB_20230131_0_L2A",
+     "date": "2023-01-31",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2A_29SQB_20230829_0_L2A",
+     "date": "2023-08-29",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2B_29SQB_20231222_0_L2A",
+     "date": "2023-12-22",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 3,
+   "candidates": 68,
+   "MB": 25.7
+  },
+  "mdrs": {
+   "used": [
+    {
+     "id": "S2B_12SWH_20230201_0_L2A",
+     "date": "2023-02-01",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2A_12SWH_20230716_0_L2A",
+     "date": "2023-07-16",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2B_12SWH_20231019_0_L2A",
+     "date": "2023-10-19",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 3,
+   "candidates": 71,
+   "MB": 24.7
+  },
+  "waqf-as-suwwan": {
+   "used": [
+    {
+     "id": "S2B_37RBQ_20230221_0_L2A",
+     "date": "2023-02-21",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2B_37RBQ_20230402_0_L2A",
+     "date": "2023-04-02",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2B_37RBQ_20230701_0_L2A",
+     "date": "2023-07-01",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 3,
+   "candidates": 113,
+   "MB": 23.8
+  },
+  "lisan-dead-sea": {
+   "used": [
+    {
+     "id": "S2B_36RYV_20230823_0_L2A",
+     "date": "2023-08-23",
+     "cloud": 0.13
+    },
+    {
+     "id": "S2B_36RYV_20241115_0_L2A",
+     "date": "2024-11-15",
+     "cloud": 0.16
+    },
+    {
+     "id": "S2A_36RYV_20230311_0_L2A",
+     "date": "2023-03-11",
+     "cloud": 0.26
+    }
+   ],
+   "tried": 3,
+   "candidates": 105,
+   "MB": 23.8
+  },
+  "qa-al-jafr": {
+   "used": [
+    {
+     "id": "S2A_37RBP_20230127_0_L2A",
+     "date": "2023-01-27",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2B_37RBP_20230402_0_L2A",
+     "date": "2023-04-02",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2B_37RBP_20230701_0_L2A",
+     "date": "2023-07-01",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 3,
+   "candidates": 120,
+   "MB": 19.7
+  },
+  "sp-crater-sfvf": {
+   "used": [
+    {
+     "id": "S2A_12SVE_20230417_0_L2A",
+     "date": "2023-04-17",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2A_12SVE_20230706_0_L2A",
+     "date": "2023-07-06",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2A_12SVE_20231004_0_L2A",
+     "date": "2023-10-04",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 3,
+   "candidates": 86,
+   "MB": 21.7
+  },
+  "craters-of-the-moon": {
+   "used": [
+    {
+     "id": "S2A_11TQJ_20230702_0_L2A",
+     "date": "2023-07-02",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2A_11TQJ_20231020_0_L2A",
+     "date": "2023-10-20",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2B_11TQJ_20230813_0_L2A",
+     "date": "2023-08-13",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 5,
+   "candidates": 122,
+   "MB": 22.9
+  },
+  "ries-crater": {
+   "used": [
+    {
+     "id": "S2B_32UPV_20230908_0_L2A",
+     "date": "2023-09-08",
+     "cloud": 0.01
+    },
+    {
+     "id": "S2B_32UPV_20230531_0_L2A",
+     "date": "2023-05-31",
+     "cloud": 0.02
+    },
+    {
+     "id": "S2B_32UPV_20230302_0_L2A",
+     "date": "2023-03-02",
+     "cloud": 0.55
+    }
+   ],
+   "tried": 3,
+   "candidates": 17,
+   "MB": 24.4
+  },
+  "mistastin": {
+   "used": [],
+   "tried": 10,
+   "candidates": 52,
+   "MB": 0.8
+  },
+  "qaidam-dalangtan": {
+   "used": [
+    {
+     "id": "S2B_46SCH_20240814_0_L2A",
+     "date": "2024-08-14",
+     "cloud": 0.1
+    },
+    {
+     "id": "S2B_46SCH_20241013_0_L2A",
+     "date": "2024-10-13",
+     "cloud": 0.18
+    },
+    {
+     "id": "S2A_46SCH_20230626_0_L2A",
+     "date": "2023-06-26",
+     "cloud": 0.24
+    }
+   ],
+   "tried": 3,
+   "candidates": 148,
+   "MB": 21.5
+  },
+  "tso-kar-ladakh": {
+   "used": [
+    {
+     "id": "S2A_44SKB_20230310_0_L2A",
+     "date": "2023-03-10",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2B_43SGS_20230901_0_L2A",
+     "date": "2023-09-01",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2A_43SGS_20231006_0_L2A",
+     "date": "2023-10-06",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 3,
+   "candidates": 89,
+   "MB": 23.3
+  },
+  "pilbara-north-pole": {
+   "used": [
+    {
+     "id": "S2A_50KQB_20230202_0_L2A",
+     "date": "2023-02-02",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2B_50KQB_20230401_0_L2A",
+     "date": "2023-04-01",
+     "cloud": 0.0
+    },
+    {
+     "id": "S2A_50KQB_20230702_0_L2A",
+     "date": "2023-07-02",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 3,
+   "candidates": 189,
+   "MB": 13.9
+  }
+ },
+ "aster": {
+  "wadi-rum": {
+   "used": [
+    {
+     "id": "AST_L1T_00307112001083707_20150418091309",
+     "date": "2001-07-11",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00307202001083105_20150418153456",
+     "date": "2001-07-20",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00310302003082257_20150501111123",
+     "date": "2003-10-30",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00303292004082904_20150503202531",
+     "date": "2004-03-29",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00304012005082837_20150508221010",
+     "date": "2005-04-01",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00305122005082234_20150509110743",
+     "date": "2005-05-12",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 6,
+   "clearDay": 11,
+   "withTIR": 16,
+   "candidates": 16,
+   "MB": 4.4
+  },
+  "harrat": {
+   "used": [
+    {
+     "id": "AST_L1T_00305172001083153_20150416042338",
+     "date": "2001-05-17",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00306022001083132_20150416101144",
+     "date": "2001-06-02",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00309252002082339_20150425082827",
+     "date": "2002-09-25",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00307182006082201_20150515084008",
+     "date": "2006-07-18",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00309202006082146_20150516063251",
+     "date": "2006-09-20",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 5,
+   "clearDay": 5,
+   "withTIR": 15,
+   "candidates": 15,
+   "MB": 3.6
+  },
+  "atacama": {
+   "used": [
+    {
+     "id": "AST_L1T_00309042002145605_20150424193924",
+     "date": "2002-09-04",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00303202005145413_20150508181404",
+     "date": "2005-03-20",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00309172001150056_20150419162100",
+     "date": "2001-09-17",
+     "cloud": 1.0
+    },
+    {
+     "id": "AST_L1T_00311202001145858_20150420131226",
+     "date": "2001-11-20",
+     "cloud": 1.0
+    },
+    {
+     "id": "AST_L1T_00310252003145444_20150501082035",
+     "date": "2003-10-25",
+     "cloud": 1.0
+    },
+    {
+     "id": "AST_L1T_00310302005145354_20150511182551",
+     "date": "2005-10-30",
+     "cloud": 1.0
+    }
+   ],
+   "tried": 6,
+   "clearDay": 9,
+   "withTIR": 18,
+   "candidates": 18,
+   "MB": 6.0
+  },
+  "haughton": {
+   "used": [
+    {
+     "id": "AST_L1T_00304272003190455_20150428062832",
+     "date": "2003-04-27",
+     "cloud": 1.0
+    }
+   ],
+   "tried": 1,
+   "clearDay": 1,
+   "withTIR": 13,
+   "candidates": 13,
+   "MB": 0.5
+  },
+  "death-valley": {
+   "used": [
+    {
+     "id": "AST_L1T_00306182000190022_20150409211151",
+     "date": "2000-06-18",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00308212000190005_20150411054409",
+     "date": "2000-08-21",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00310012000185316_20150412025617",
+     "date": "2000-10-01",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00305202001185443_20150416053626",
+     "date": "2001-05-20",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00306052001185418_20150416122403",
+     "date": "2001-06-05",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00308012001184704_20150501140511",
+     "date": "2001-08-01",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 6,
+   "clearDay": 17,
+   "withTIR": 32,
+   "candidates": 32,
+   "MB": 4.1
+  },
+  "dry-valleys": {
+   "used": [],
+   "tried": 0,
+   "clearDay": 0,
+   "withTIR": 15,
+   "candidates": 15,
+   "MB": 0.0
+  },
+  "holuhraun": {
+   "used": [
+    {
+     "id": "AST_L1T_00306292001125904_20150418030024",
+     "date": "2001-06-29",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00309272004123809_20150506053510",
+     "date": "2004-09-27",
+     "cloud": 5.0
+    }
+   ],
+   "tried": 2,
+   "clearDay": 2,
+   "withTIR": 119,
+   "candidates": 119,
+   "MB": 1.6
+  },
+  "rio-tinto": {
+   "used": [
+    {
+     "id": "AST_L1T_00306132001112841_20150417180135",
+     "date": "2001-06-13",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00308072001113354_20150501160612",
+     "date": "2001-08-07",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00304282005112541_20150509063457",
+     "date": "2005-04-28",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00311192004112442_20150507024602",
+     "date": "2004-11-19",
+     "cloud": 1.0
+    },
+    {
+     "id": "AST_L1T_00301062005112519_20150507193922",
+     "date": "2005-01-06",
+     "cloud": 2.0
+    },
+    {
+     "id": "AST_L1T_00301222005112522_20150508004109",
+     "date": "2005-01-22",
+     "cloud": 2.0
+    }
+   ],
+   "tried": 6,
+   "clearDay": 7,
+   "withTIR": 15,
+   "candidates": 15,
+   "MB": 5.3
+  },
+  "mdrs": {
+   "used": [
+    {
+     "id": "AST_L1T_00304022002181514_20150422000044",
+     "date": "2002-04-02",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00307302002182136_20150423140104",
+     "date": "2002-07-30",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00310212003181958_20150501071820",
+     "date": "2003-10-21",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00309052004181920_20150505223755",
+     "date": "2004-09-05",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00309192000182832_20150411202506",
+     "date": "2000-09-19",
+     "cloud": 1.0
+    },
+    {
+     "id": "AST_L1T_00310072004181909_20150506143414",
+     "date": "2004-10-07",
+     "cloud": 1.0
+    }
+   ],
+   "tried": 6,
+   "clearDay": 8,
+   "withTIR": 24,
+   "candidates": 24,
+   "MB": 5.0
+  },
+  "waqf-as-suwwan": {
+   "used": [
+    {
+     "id": "AST_L1T_00305172001083211_20150416042332",
+     "date": "2001-05-17",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00306022001083150_20150416101204",
+     "date": "2001-06-02",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00309252002082357_20150425082833",
+     "date": "2002-09-25",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00307182006082219_20150515084016",
+     "date": "2006-07-18",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00311202005082145_20150512004525",
+     "date": "2005-11-20",
+     "cloud": 1.0
+    }
+   ],
+   "tried": 5,
+   "clearDay": 5,
+   "withTIR": 7,
+   "candidates": 7,
+   "MB": 3.8
+  },
+  "lisan-dead-sea": {
+   "used": [
+    {
+     "id": "AST_L1T_00307082000084354_20150410055527",
+     "date": "2000-07-08",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00305242001083806_20150416070042",
+     "date": "2001-05-24",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00307112001083641_20150418091230",
+     "date": "2001-07-11",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00309052004082757_20150505223015",
+     "date": "2004-09-05",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00308162005082152_20150510190603",
+     "date": "2005-08-16",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00305222006082755_20150514122350",
+     "date": "2006-05-22",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 6,
+   "clearDay": 8,
+   "withTIR": 22,
+   "candidates": 22,
+   "MB": 3.3
+  },
+  "qa-al-jafr": {
+   "used": [
+    {
+     "id": "AST_L1T_00303302001083315_20150415104007",
+     "date": "2001-03-30",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00306022001083159_20150416101208",
+     "date": "2001-06-02",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00309252002082406_20150425082837",
+     "date": "2002-09-25",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00303042003082319_20150427125625",
+     "date": "2003-03-04",
+     "cloud": 1.0
+    },
+    {
+     "id": "AST_L1T_00311202005082154_20150512004523",
+     "date": "2005-11-20",
+     "cloud": 1.0
+    }
+   ],
+   "tried": 5,
+   "clearDay": 5,
+   "withTIR": 13,
+   "candidates": 13,
+   "MB": 2.3
+  },
+  "sp-crater-sfvf": {
+   "used": [
+    {
+     "id": "AST_L1T_00305052000183638_20150409141430",
+     "date": "2000-05-05",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00305212000183558_20150409170104",
+     "date": "2000-05-21",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00309192000182925_20150411202518",
+     "date": "2000-09-19",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00304022002181607_20150422000101",
+     "date": "2002-04-02",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00306242003181443_20150429213729",
+     "date": "2003-06-24",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00310212003182042_20150501071839",
+     "date": "2003-10-21",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 6,
+   "clearDay": 13,
+   "withTIR": 34,
+   "candidates": 34,
+   "MB": 4.4
+  },
+  "craters-of-the-moon": {
+   "used": [
+    {
+     "id": "AST_L1T_00309142002183232_20150425014344",
+     "date": "2002-09-14",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00306052006183029_20150514172540",
+     "date": "2006-06-05",
+     "cloud": 0.0
+    }
+   ],
+   "tried": 2,
+   "clearDay": 2,
+   "withTIR": 17,
+   "candidates": 17,
+   "MB": 1.7
+  },
+  "ries-crater": {
+   "used": [
+    {
+     "id": "AST_L1T_00309042005102627_20150511010936",
+     "date": "2005-09-04",
+     "cloud": 1.0
+    },
+    {
+     "id": "AST_L1T_00309202005102619_20150511061909",
+     "date": "2005-09-20",
+     "cloud": 1.0
+    }
+   ],
+   "tried": 2,
+   "clearDay": 2,
+   "withTIR": 6,
+   "candidates": 6,
+   "MB": 1.8
+  },
+  "mistastin": {
+   "used": [],
+   "tried": 0,
+   "clearDay": 0,
+   "withTIR": 7,
+   "candidates": 7,
+   "MB": 0.0
+  },
+  "qaidam-dalangtan": {
+   "used": [
+    {
+     "id": "AST_L1T_00310072000050420_20150412054451",
+     "date": "2000-10-07",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00305132002045755_20150422072439",
+     "date": "2002-05-13",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00307122000045927_20150410080002",
+     "date": "2000-07-12",
+     "cloud": 2.0
+    },
+    {
+     "id": "AST_L1T_00305032001050018_20150415233618",
+     "date": "2001-05-03",
+     "cloud": 3.0
+    }
+   ],
+   "tried": 4,
+   "clearDay": 4,
+   "withTIR": 12,
+   "candidates": 12,
+   "MB": 2.4
+  },
+  "tso-kar-ladakh": {
+   "used": [
+    {
+     "id": "AST_L1T_00305042001054500_20150416000209",
+     "date": "2001-05-04",
+     "cloud": 1.0
+    },
+    {
+     "id": "AST_L1T_00309282002053625_20150425095839",
+     "date": "2002-09-28",
+     "cloud": 1.0
+    },
+    {
+     "id": "AST_L1T_00309172004053426_20150506021124",
+     "date": "2004-09-17",
+     "cloud": 1.0
+    },
+    {
+     "id": "AST_L1T_00310082003054110_20150501034652",
+     "date": "2003-10-08",
+     "cloud": 4.0
+    }
+   ],
+   "tried": 4,
+   "clearDay": 4,
+   "withTIR": 19,
+   "candidates": 19,
+   "MB": 3.5
+  },
+  "pilbara-north-pole": {
+   "used": [
+    {
+     "id": "AST_L1T_00311272000023252_20150413051150",
+     "date": "2000-11-27",
+     "cloud": 0.0
+    },
+    {
+     "id": "AST_L1T_00308102001022740_20150501165645",
+     "date": "2001-08-10",
+     "cloud": 2.0
+    }
+   ],
+   "tried": 2,
+   "clearDay": 2,
+   "withTIR": 2,
+   "candidates": 2,
+   "MB": 1.0
+  }
+ },
+ "check2023": {
+  "ok": true,
+  "file": "data/raw/composition/check2023.json"
+ },
+ "requestTotals": {
+  "planetarycomputer.microsoft.com": {
+   "requests": 60,
+   "bytes": 2118776,
+   "errors": 0
+  },
+  "modiseuwest.blob.core.windows.net": {
+   "requests": 18780,
+   "bytes": 1471396540,
+   "errors": 0
+  },
+  "earth-search.aws.element84.com": {
+   "requests": 39,
+   "bytes": 49814454,
+   "errors": 0
+  },
+  "sentinel-cogs.s3.us-west-2.amazonaws.com": {
+   "requests": 815,
+   "bytes": 398124430,
+   "errors": 0
+  },
+  "astersa.blob.core.windows.net": {
+   "requests": 148,
+   "bytes": 54869603,
+   "errors": 0
+  }
+ },
+ "runs": {
+  "modis": [
+   {
+    "started": "2026-10-10T15:09:08Z",
+    "finished": "2026-10-10T15:09:50Z",
+    "requests": {
+     "planetarycomputer.microsoft.com": {
+      "requests": 17,
+      "bytes": 478794,
+      "errors": 0
+     },
+     "modiseuwest.blob.core.windows.net": {
+      "requests": 254,
+      "bytes": 19489648,
+      "errors": 0
+     }
+    },
+    "sasTokenCalls": 2,
+    "years": [
+     2020,
+     2020
+    ],
+    "stride": 23,
+    "sites": true,
+    "boxes": true,
+    "compositeReads": 30,
+    "MB": 19.5,
+    "failed": [],
+    "seconds": 41.9
+   },
+   {
+    "started": "2026-10-10T15:09:59Z",
+    "finished": "2026-10-10T15:48:08Z",
+    "requests": {
+     "planetarycomputer.microsoft.com": {
+      "requests": 17,
+      "bytes": 1425487,
+      "errors": 0
+     },
+     "modiseuwest.blob.core.windows.net": {
+      "requests": 17614,
+      "bytes": 1348884734,
+      "errors": 0
+     }
+    },
+    "sasTokenCalls": 2,
+    "years": [
+     2018,
+     2020
+    ],
+    "stride": 1,
+    "sites": true,
+    "boxes": true,
+    "compositeReads": 2070,
+    "MB": 1348.9,
+    "failed": [],
+    "seconds": 2289.4
+   }
+  ],
+  "s2": [
+   {
+    "started": "2026-10-10T15:10:37Z",
+    "finished": "2026-10-10T15:18:16Z",
+    "requests": {
+     "earth-search.aws.element84.com": {
+      "requests": 39,
+      "bytes": 49814454,
+      "errors": 0
+     },
+     "sentinel-cogs.s3.us-west-2.amazonaws.com": {
+      "requests": 815,
+      "bytes": 398124430,
+      "errors": 0
+     }
+    },
+    "sasTokenCalls": 0,
+    "dates": [
+     "2023-01-01",
+     "2024-12-31"
+    ]
+   }
+  ],
+  "aster": [
+   {
+    "started": "2026-10-10T15:10:51Z",
+    "finished": "2026-10-10T15:12:19Z",
+    "requests": {
+     "planetarycomputer.microsoft.com": {
+      "requests": 20,
+      "bytes": 143657,
+      "errors": 0
+     },
+     "astersa.blob.core.windows.net": {
+      "requests": 148,
+      "bytes": 54869603,
+      "errors": 0
+     }
+    },
+    "sasTokenCalls": 1
+   }
+  ],
+  "check2023": [
+   {
+    "started": "2026-10-10T15:05:43Z",
+    "finished": "2026-10-10T15:07:10Z",
+    "requests": {
+     "planetarycomputer.microsoft.com": {
+      "requests": 3,
+      "bytes": 35418,
+      "errors": 0
+     },
+     "modiseuwest.blob.core.windows.net": {
+      "requests": 456,
+      "bytes": 51511079,
+      "errors": 0
+     }
+    },
+    "sasTokenCalls": 1,
+    "ok": false
+   },
+   {
+    "started": "2026-10-10T15:07:37Z",
+    "finished": "2026-10-10T15:08:58Z",
+    "requests": {
+     "planetarycomputer.microsoft.com": {
+      "requests": 3,
+      "bytes": 35420,
+      "errors": 0
+     },
+     "modiseuwest.blob.core.windows.net": {
+      "requests": 456,
+      "bytes": 51511079,
+      "errors": 0
+     }
+    },
+    "sasTokenCalls": 1,
+    "ok": true
+   }
+  ]
+ },
+ "nulls": {
+  "dry-valleys": [
+   "15 ASTER L1T scenes with thermal bands cover this point, none clear (<= 5 % cloud) and daytime"
+  ],
+  "mistastin": [
+   "the site point is open water in Sentinel-2's scene classification",
+   "7 ASTER L1T scenes with thermal bands cover this point, none clear (<= 5 % cloud) and daytime"
+  ]
+ }
+}

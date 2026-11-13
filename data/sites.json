@@ -1,0 +1,6201 @@
+{
+ "generated": "2026-11-06",
+ "about": "Built by scripts/build_data.py from data/sites_meta.json and data/raw/power/*.json. Do not edit by hand.",
+ "statusLegend": {
+  "nasa-analog": "NASA or ESA has used this place for analog fieldwork, tests or astronaut training (source given).",
+  "analog": "Used for analog missions, or used or proposed as an analog in published research (source given).",
+  "candidate": "Our proposal. The geology is documented, but no paper calls it a planetary analog yet."
+ },
+ "sites": [
+  {
+   "id": "wadi-rum",
+   "name": "Wadi Rum",
+   "country": "Jordan",
+   "jordan": true,
+   "lat": 29.58,
+   "lon": 35.42,
+   "status": "analog",
+   "analogFor": [
+    "mars"
+   ],
+   "terrain": "Red sandstone and granite desert",
+   "geology": {
+    "primary": "sandstone",
+    "secondary": [
+     "granite"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "sandstone"
+      ],
+      "label": "IGME5000 geological map, 1:5 million (BGR, 2005): unit 600023 at our point",
+      "url": "https://doi.org/10.25928/igme-5000",
+      "quote": "sandstone, siltstone",
+      "note": "Rock names of map unit 600023 (Cambrian - Ordovician) at our point, from the map's attribute table (data/raw/screening/geology/samples_jordan.json). A 1:5 million map does not show features smaller than a few km.",
+      "credit": "IGME5000, © BGR, Hannover, 2005, https://doi.org/10.25928/igme-5000, modified: reclassified to Analog Atlas rock ids"
+     }
+    ],
+    "unsourced": [
+     "granite"
+    ],
+    "note": "Rock type source still to be added for granite. The 1:5 million map lists only sandstone and siltstone at our point."
+   },
+   "why": "Red sandstone and granite desert. NASA Earth Observatory says its colours and textures closely match Mars, and the Jordan Space Research Initiative held its second Mars analog mission, PETRA-2, here in October 2025 (part of the Austrian Space Forum's World's Biggest Analog), after its first, PETRA-1.",
+   "sources": [
+    {
+     "label": "NASA Earth Observatory: Movie Mars on Earth",
+     "url": "https://science.nasa.gov/earth/earth-observatory/movie-mars-on-earth-148764/"
+    },
+    {
+     "label": "Austrian Space Forum: World's Biggest Analog 2025, PETRA-2 in Wadi Rum (picture of the day, days 4 and 9)",
+     "url": "https://oewf.org/en/?p=25286"
+    }
+   ],
+   "caveats": [],
+   "tests": [
+    {
+     "activity": "PETRA-2 analog mission in Wadi Rum, part of the Austrian Space Forum's World's Biggest Analog",
+     "who": "Jordan Space Research Initiative (JSRI) with the Austrian Space Forum (OeWF)",
+     "year": 2025,
+     "type": "tested",
+     "proposed": false,
+     "source": "Austrian Space Forum: World's Biggest Analog 2025, picture of the day (day 4)",
+     "url": "https://oewf.org/en/?p=25286",
+     "quote": "advancing psychological, environmental, and technological research",
+     "pillar": null
+    },
+    {
+     "activity": "Seven days of crew isolation inside the mission habitat (PETRA-2)",
+     "who": "Jordan Space Research Initiative (JSRI)",
+     "year": 2025,
+     "type": "tested",
+     "proposed": false,
+     "source": "Austrian Space Forum: World's Biggest Analog 2025, picture of the day (day 9)",
+     "url": "https://oewf.org/en/?p=25286",
+     "quote": "After seven days in isolation, the crew stepped out of their habitat",
+     "pillar": null
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 29.58,
+     "lon": 35.42
+    },
+    "gridElevation_m": 1076.35,
+    "rawFile": "data/raw/power/wadi-rum.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 6.2585,
+     "ALLSKY_SFC_UV_INDEX": 1.78,
+     "ALLSKY_SRF_ALB": 0.29,
+     "PRECTOTCORR": 0.11,
+     "PS": 89.34,
+     "RH2M": 41.77,
+     "T2M": 18.12,
+     "T2M_MAX": 43.32,
+     "T2M_MIN": -5.6,
+     "T2M_RANGE": 16.16,
+     "TS": 19.72,
+     "TS_MAX": 57.45,
+     "TS_MIN": -6.96,
+     "WS2M": 2.83
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      3.8952,
+      4.8919,
+      6.2518,
+      7.2475,
+      7.9454,
+      8.5901,
+      8.3374,
+      7.717,
+      6.7442,
+      5.4245,
+      4.3051,
+      3.6902
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.78,
+      1.16,
+      1.66,
+      2.08,
+      2.46,
+      2.78,
+      2.73,
+      2.51,
+      2.02,
+      1.44,
+      0.95,
+      0.71
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.27,
+      0.28,
+      0.29,
+      0.29,
+      0.28,
+      0.29,
+      0.29,
+      0.29,
+      0.3,
+      0.28,
+      0.28,
+      0.28
+     ],
+     "PRECTOTCORR": [
+      0.26,
+      0.3,
+      0.13,
+      0.11,
+      0.04,
+      0.0,
+      0.0,
+      0.02,
+      0.04,
+      0.09,
+      0.15,
+      0.15
+     ],
+     "PS": [
+      89.56,
+      89.46,
+      89.37,
+      89.28,
+      89.27,
+      89.14,
+      88.97,
+      89.03,
+      89.29,
+      89.49,
+      89.58,
+      89.63
+     ],
+     "RH2M": [
+      58.43,
+      51.83,
+      43.26,
+      35.43,
+      30.42,
+      29.64,
+      30.57,
+      34.0,
+      38.2,
+      42.18,
+      50.85,
+      56.84
+     ],
+     "T2M": [
+      7.18,
+      9.14,
+      13.14,
+      17.37,
+      22.14,
+      25.45,
+      27.23,
+      27.23,
+      24.87,
+      20.57,
+      13.77,
+      8.88
+     ],
+     "T2M_MAX": [
+      25.81,
+      28.64,
+      32.85,
+      35.53,
+      39.98,
+      41.49,
+      43.32,
+      42.39,
+      41.12,
+      36.47,
+      31.0,
+      27.95
+     ],
+     "T2M_MIN": [
+      -5.6,
+      -4.3,
+      -2.59,
+      1.34,
+      4.67,
+      9.89,
+      13.45,
+      13.99,
+      11.25,
+      6.13,
+      -2.25,
+      -4.58
+     ],
+     "T2M_RANGE": [
+      13.46,
+      14.61,
+      16.26,
+      16.97,
+      17.46,
+      18.49,
+      18.15,
+      18.1,
+      17.49,
+      15.73,
+      13.81,
+      13.37
+     ],
+     "TS": [
+      7.07,
+      9.38,
+      14.1,
+      19.0,
+      24.52,
+      28.58,
+      30.64,
+      30.48,
+      27.43,
+      22.01,
+      14.18,
+      8.63
+     ],
+     "TS_MAX": [
+      31.12,
+      35.53,
+      40.65,
+      46.96,
+      52.28,
+      53.21,
+      57.32,
+      57.45,
+      53.34,
+      47.19,
+      41.0,
+      34.11
+     ],
+     "TS_MIN": [
+      -6.96,
+      -6.62,
+      -4.36,
+      -1.23,
+      2.84,
+      8.92,
+      12.57,
+      12.52,
+      10.21,
+      4.96,
+      -4.55,
+      -5.89
+     ],
+     "WS2M": [
+      2.85,
+      3.05,
+      3.04,
+      3.06,
+      3.1,
+      3.1,
+      3.01,
+      2.84,
+      2.58,
+      2.37,
+      2.43,
+      2.57
+     ]
+    }
+   }
+  },
+  {
+   "id": "harrat",
+   "name": "Harrat al-Shaam",
+   "country": "Jordan",
+   "jordan": true,
+   "lat": 32.2,
+   "lon": 37.13,
+   "status": "candidate",
+   "analogFor": [
+    "moon",
+    "mars"
+   ],
+   "terrain": "Black basalt desert (lava field) with lava tubes",
+   "geology": {
+    "primary": "basalt",
+    "secondary": [],
+    "sources": [
+     {
+      "rocks": [
+       "basalt"
+      ],
+      "label": "Kempe et al. 2006: lava caves of the Harrat al-Shaam basalt field",
+      "url": "https://vulcanospeleology.org/sym12/ISV12p11.pdf",
+      "quote": "The centre is formed by young alkali olivine basaltic lava flows"
+     },
+     {
+      "rocks": [
+       "basalt"
+      ],
+      "label": "IGME5000 geological map, 1:5 million (BGR, 2005): unit 601014 at our point",
+      "url": "https://doi.org/10.25928/igme-5000",
+      "quote": "basalt group",
+      "note": "Rock names of map unit 601014 (Quaternary) at our point, from the map's attribute table (data/raw/screening/geology/samples_jordan.json). A 1:5 million map does not show features smaller than a few km.",
+      "credit": "IGME5000, © BGR, Hannover, 2005, https://doi.org/10.25928/igme-5000, modified: reclassified to Analog Atlas rock ids"
+     }
+    ],
+    "unsourced": []
+   },
+   "why": "Black basalt desert. Basalt is the rock of the lunar maria, such as the Apollo 11 site, and of large parts of Mars. The field also holds 14 surveyed lava caves, including the 923.5 m long Al-Fahda Cave (surveyed in 2005). Lava tubes are proposed natural shelters for future bases on the Moon and Mars.",
+   "sources": [
+    {
+     "label": "Iqbal et al. 2019: geological mapping of the Apollo 11 site, a mare basalt (arXiv 2003.03292)",
+     "url": "https://arxiv.org/abs/2003.03292"
+    },
+    {
+     "label": "Kempe et al. 2006: lava caves of the Harrat al-Shaam basalt field",
+     "url": "https://vulcanospeleology.org/sym12/ISV12p11.pdf"
+    },
+    {
+     "label": "Sauro et al. 2020: lava tubes on Earth, the Moon and Mars",
+     "url": "https://doi.org/10.1016/j.earscirev.2020.103288"
+    }
+   ],
+   "caveats": [],
+   "tests": [
+    {
+     "activity": "Map a surveyed lava tube with laser scanners and test radio links, lights and sensors deep inside it, as practice for using lava tubes as natural shelters on the Moon and Mars",
+     "who": "Our proposal (Analog Atlas team)",
+     "year": null,
+     "type": "proposed",
+     "proposed": true,
+     "source": "Kempe et al. 2006: lava caves of the Harrat al-Shaam basalt field",
+     "url": "https://vulcanospeleology.org/sym12/ISV12p11.pdf",
+     "quote": "We have explored, surveyed and studied a total of 14 lava caves since September 2003.",
+     "pillar": "resources",
+     "basis": "Resources pillar: the 'shelter' tag (14 surveyed lava caves)."
+    },
+    {
+     "activity": "Rover driving and navigation tests across wide, gently sloping basalt lava plains",
+     "who": "Our proposal (Analog Atlas team)",
+     "year": null,
+     "type": "proposed",
+     "proposed": true,
+     "source": "Kempe et al. 2006: lava caves of the Harrat al-Shaam basalt field",
+     "url": "https://vulcanospeleology.org/sym12/ISV12p11.pdf",
+     "quote": "The centre is formed by young alkali olivine basaltic lava flows",
+     "pillar": "terrain",
+     "basis": "Terrain pillar: the gentle slopes in our terrain data for this site (kilometre scale; boulders and small rocks are not measured)."
+    },
+    {
+     "activity": "Geology training on basalt: describe and pick samples of dark lava rock, the same rock family as the Apollo 11 mare site",
+     "who": "Our proposal (Analog Atlas team)",
+     "year": null,
+     "type": "proposed",
+     "proposed": true,
+     "source": "Iqbal et al.: geological mapping of the Apollo 11 landing site (arXiv 2003.03292)",
+     "url": "https://arxiv.org/abs/2003.03292",
+     "quote": "the Group A, High-K (high potassium) young mare basalt",
+     "pillar": "geology",
+     "basis": "Geology pillar: Harrat al-Shaam is basalt (Kempe et al. 2006); the Apollo 11 site is mare basalt (this source)."
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 32.2,
+     "lon": 37.13
+    },
+    "gridElevation_m": 664.55,
+    "rawFile": "data/raw/power/harrat.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 5.7252,
+     "ALLSKY_SFC_UV_INDEX": 1.55,
+     "ALLSKY_SRF_ALB": 0.21,
+     "PRECTOTCORR": 0.21,
+     "PS": 93.74,
+     "RH2M": 45.45,
+     "T2M": 19.41,
+     "T2M_MAX": 46.63,
+     "T2M_MIN": -5.72,
+     "T2M_RANGE": 15.4,
+     "TS": 21.01,
+     "TS_MAX": 59.29,
+     "TS_MIN": -6.69,
+     "WS2M": 3.28
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      3.252,
+      4.0774,
+      5.4593,
+      6.5506,
+      7.4882,
+      8.3998,
+      8.1658,
+      7.458,
+      6.3461,
+      4.8158,
+      3.6206,
+      2.9873
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.55,
+      0.84,
+      1.31,
+      1.74,
+      2.19,
+      2.67,
+      2.65,
+      2.37,
+      1.84,
+      1.19,
+      0.71,
+      0.49
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.19,
+      0.2,
+      0.21,
+      0.21,
+      0.22,
+      0.23,
+      0.23,
+      0.22,
+      0.23,
+      0.22,
+      0.2,
+      0.19
+     ],
+     "PRECTOTCORR": [
+      0.49,
+      0.57,
+      0.34,
+      0.23,
+      0.06,
+      0.04,
+      0.05,
+      0.02,
+      0.01,
+      0.1,
+      0.26,
+      0.38
+     ],
+     "PS": [
+      94.12,
+      93.99,
+      93.84,
+      93.69,
+      93.6,
+      93.41,
+      93.18,
+      93.27,
+      93.59,
+      93.88,
+      94.1,
+      94.2
+     ],
+     "RH2M": [
+      64.78,
+      59.49,
+      51.0,
+      41.96,
+      34.97,
+      32.9,
+      34.51,
+      37.84,
+      37.93,
+      40.47,
+      50.61,
+      59.57
+     ],
+     "T2M": [
+      7.69,
+      9.62,
+      13.84,
+      18.31,
+      23.62,
+      27.25,
+      29.28,
+      29.13,
+      26.85,
+      22.37,
+      14.81,
+      9.6
+     ],
+     "T2M_MAX": [
+      24.74,
+      29.17,
+      34.54,
+      38.42,
+      42.33,
+      44.14,
+      46.63,
+      45.02,
+      43.66,
+      38.9,
+      31.98,
+      28.13
+     ],
+     "T2M_MIN": [
+      -5.59,
+      -5.72,
+      -2.87,
+      3.16,
+      6.52,
+      11.63,
+      14.69,
+      15.72,
+      12.43,
+      7.07,
+      -2.49,
+      -5.42
+     ],
+     "T2M_RANGE": [
+      12.47,
+      13.55,
+      15.28,
+      16.42,
+      17.22,
+      18.03,
+      17.94,
+      17.48,
+      16.41,
+      14.64,
+      12.91,
+      12.3
+     ],
+     "TS": [
+      7.69,
+      9.99,
+      14.74,
+      19.95,
+      26.06,
+      30.32,
+      32.51,
+      32.25,
+      29.42,
+      23.85,
+      15.27,
+      9.48
+     ],
+     "TS_MAX": [
+      26.86,
+      32.98,
+      41.01,
+      45.93,
+      53.11,
+      56.91,
+      59.29,
+      58.35,
+      57.27,
+      50.09,
+      39.75,
+      32.61
+     ],
+     "TS_MIN": [
+      -6.58,
+      -6.6,
+      -3.83,
+      2.12,
+      5.79,
+      11.21,
+      14.02,
+      15.37,
+      11.82,
+      5.58,
+      -5.23,
+      -6.69
+     ],
+     "WS2M": [
+      2.8,
+      3.03,
+      3.16,
+      3.31,
+      3.62,
+      3.97,
+      4.24,
+      3.99,
+      3.35,
+      2.78,
+      2.57,
+      2.56
+     ]
+    }
+   }
+  },
+  {
+   "id": "atacama",
+   "name": "Atacama Desert",
+   "country": "Chile",
+   "jordan": false,
+   "lat": -24.08,
+   "lon": -70.0,
+   "status": "nasa-analog",
+   "analogFor": [
+    "mars"
+   ],
+   "terrain": "Hyper-arid desert with salt crusts",
+   "geology": {
+    "primary": "evaporite",
+    "secondary": [
+     "sandstone"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "evaporite"
+      ],
+      "label": "JGR Planets paper, doi 10.1029/2009JE003425 (source of our 'salts' tag)",
+      "url": "https://doi.org/10.1029/2009JE003425",
+      "quote": "perchlorate‐rich deposits in the Atacama desert are closest in abundance to perchlorate measured at NASA's Phoenix Lander site",
+      "note": "Names salt (perchlorate) deposits in the Atacama Desert in general, not at our point."
+     }
+    ],
+    "unsourced": [
+     "sandstone"
+    ],
+    "note": "Rock type source still to be added for sandstone."
+   },
+   "why": "One of the driest places on Earth. NASA tests life-detection drills here because of its dryness and intense UV.",
+   "sources": [
+    {
+     "label": "NASA Astrobiology: life-detection drill tested in the Atacama",
+     "url": "https://astrobiology.nasa.gov/news/nasa-tests-life-detection-drill-in-the-atacama-desert/"
+    }
+   ],
+   "caveats": [
+    "Longitude -70.00 lies exactly on a NASA POWER solar-grid boundary, so a tiny coordinate change can change the sunlight, UV and albedo values."
+   ],
+   "tests": [
+    {
+     "activity": "First ARADS field test: a Mars-prototype drill and robot arm fed soil to life-detection instruments",
+     "who": "NASA Ames (ARADS project) with Centro de Astrobiología, Spain",
+     "year": 2016,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA Astrobiology: life-detection drill tested in the Atacama",
+     "url": "https://astrobiology.nasa.gov/news/nasa-tests-life-detection-drill-in-the-atacama-desert/",
+     "quote": "a Mars-prototype drill; a sample transfer arm; the Signs of Life Detector (SOLID)",
+     "pillar": "geology",
+     "note": "Year from the NASA image article dated 7 March 2016 (https://www.nasa.gov/image-article/atacama-rover-astrobiology-drilling-studies-night-falls/), which says the project 'has just completed its first deployment'."
+    },
+    {
+     "activity": "Hands-off, automated drilling with the TRIDENT drill mounted on a rover",
+     "who": "NASA Ames (ARADS project) and Honeybee Robotics",
+     "year": null,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA NTRS: TRIDENT drill validation at Mars and lunar analog field sites (2024)",
+     "url": "https://ntrs.nasa.gov/citations/20240000585",
+     "quote": "drill control and fault recovery automation software enabled hands-off operations of a rover-mounted TRIDENT drill",
+     "pillar": "geology",
+     "note": "The abstract does not give the year of these ARADS tests."
+    },
+    {
+     "activity": "The self-driving Zoë rover mapped microbial life on a field expedition",
+     "who": "Carnegie Mellon University and SETI Institute (NASA-funded Life in the Atacama project)",
+     "year": 2005,
+     "type": "tested",
+     "proposed": false,
+     "source": "SETI Institute press release (2013): Zoë robot returns to the Atacama",
+     "url": "https://www.seti.org/news/zoe-robot-returns-to-chiles-atacama-desert-on-nasa-mission-to-search-for-subsurface-life/",
+     "quote": "became the first robot to map microbial life during a 2005 field expedition",
+     "pillar": "terrain",
+     "note": "'First robot' is the press release's own claim."
+    },
+    {
+     "activity": "Zoë rover returned with a 1 m drill to search for life under the surface",
+     "who": "Carnegie Mellon University and SETI Institute (NASA astrobiology mission)",
+     "year": 2013,
+     "type": "tested",
+     "proposed": false,
+     "source": "SETI Institute press release (2013): Zoë robot returns to the Atacama",
+     "url": "https://www.seti.org/news/zoe-robot-returns-to-chiles-atacama-desert-on-nasa-mission-to-search-for-subsurface-life/",
+     "quote": "This time, Zoë is equipped with a one-meter drill to search for subsurface life.",
+     "pillar": "geology"
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": -24.08,
+     "lon": -70.0
+    },
+    "gridElevation_m": 1261.0,
+    "rawFile": "data/raw/power/atacama.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 7.2058,
+     "ALLSKY_SFC_UV_INDEX": 2.64,
+     "ALLSKY_SRF_ALB": 0.23,
+     "PRECTOTCORR": 0.02,
+     "PS": 87.5,
+     "RH2M": 44.09,
+     "T2M": 17.07,
+     "T2M_MAX": 32.93,
+     "T2M_MIN": -0.64,
+     "T2M_RANGE": 14.74,
+     "TS": 18.95,
+     "TS_MAX": 45.22,
+     "TS_MIN": -2.44,
+     "WS2M": 2.34
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      9.161,
+      8.527,
+      7.6481,
+      6.3478,
+      5.118,
+      4.5643,
+      4.8228,
+      5.8812,
+      7.2444,
+      8.4461,
+      9.289,
+      9.4908
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      4.03,
+      3.75,
+      3.1,
+      2.21,
+      1.46,
+      1.13,
+      1.2,
+      1.67,
+      2.36,
+      3.14,
+      3.67,
+      3.98
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.23,
+      0.23,
+      0.23,
+      0.23,
+      0.23,
+      0.23,
+      0.23,
+      0.23,
+      0.24,
+      0.23,
+      0.22,
+      0.23
+     ],
+     "PRECTOTCORR": [
+      0.02,
+      0.06,
+      0.03,
+      0.01,
+      0.01,
+      0.05,
+      0.02,
+      0.04,
+      0.0,
+      0.01,
+      0.01,
+      0.02
+     ],
+     "PS": [
+      87.43,
+      87.41,
+      87.44,
+      87.5,
+      87.56,
+      87.59,
+      87.6,
+      87.58,
+      87.56,
+      87.51,
+      87.45,
+      87.43
+     ],
+     "RH2M": [
+      53.39,
+      55.9,
+      53.38,
+      48.94,
+      39.84,
+      35.7,
+      33.7,
+      33.59,
+      37.79,
+      41.88,
+      45.86,
+      49.88
+     ],
+     "T2M": [
+      19.82,
+      19.96,
+      19.28,
+      17.5,
+      15.77,
+      14.54,
+      14.03,
+      15.08,
+      15.84,
+      16.81,
+      17.68,
+      18.68
+     ],
+     "T2M_MAX": [
+      32.15,
+      32.76,
+      32.39,
+      32.88,
+      30.66,
+      30.74,
+      32.6,
+      32.93,
+      32.64,
+      32.49,
+      31.17,
+      32.64
+     ],
+     "T2M_MIN": [
+      11.13,
+      11.04,
+      10.03,
+      7.49,
+      2.06,
+      2.75,
+      0.35,
+      -0.64,
+      2.29,
+      4.79,
+      4.07,
+      8.79
+     ],
+     "T2M_RANGE": [
+      14.78,
+      14.52,
+      14.57,
+      13.92,
+      13.51,
+      13.57,
+      14.16,
+      15.14,
+      15.68,
+      15.88,
+      15.73,
+      15.48
+     ],
+     "TS": [
+      24.12,
+      24.02,
+      22.41,
+      19.12,
+      15.8,
+      13.59,
+      13.14,
+      14.99,
+      17.07,
+      19.32,
+      21.21,
+      22.87
+     ],
+     "TS_MAX": [
+      45.03,
+      44.71,
+      44.18,
+      41.19,
+      39.23,
+      37.28,
+      38.7,
+      41.08,
+      42.2,
+      43.8,
+      43.03,
+      45.22
+     ],
+     "TS_MIN": [
+      7.86,
+      7.8,
+      6.8,
+      4.17,
+      0.56,
+      -2.33,
+      -2.36,
+      -2.44,
+      -1.0,
+      1.05,
+      1.94,
+      5.95
+     ],
+     "WS2M": [
+      2.87,
+      2.74,
+      2.45,
+      2.09,
+      1.98,
+      1.87,
+      1.93,
+      2.06,
+      2.2,
+      2.43,
+      2.65,
+      2.81
+     ]
+    }
+   }
+  },
+  {
+   "id": "haughton",
+   "name": "Haughton Crater",
+   "country": "Canada",
+   "jordan": false,
+   "lat": 75.38,
+   "lon": -89.67,
+   "status": "nasa-analog",
+   "analogFor": [
+    "mars",
+    "moon"
+   ],
+   "terrain": "Impact crater in a polar desert (Devon Island)",
+   "geology": {
+    "primary": "carbonate",
+    "secondary": [
+     "impactite"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "carbonate"
+      ],
+      "label": "Meteoritics & Planetary Science (2005), doi 10.1111/j.1945-5100.2005.tb00149.x",
+      "url": "https://doi.org/10.1111/j.1945-5100.2005.tb00149.x",
+      "quote": "dolomitic rock (in the crater rim), limestone (wall), gypsum-rich carbonate (floor)"
+     },
+     {
+      "rocks": [
+       "impactite"
+      ],
+      "label": "SwRI internal research (2023): permafrost research at the Haughton-Mars station",
+      "url": "https://www.swri.org/what-we-do/internal-research-development/2023/earth-space/developing-the-swri-astrobiology-program-through-multiomics-spectroscopic-approaches-permafrost-research-the-haughton-mars-station-15-r6381",
+      "quote": "Permafrost associated ground ice was consistently encountered at ~60 cm depth in all permafrost polygon and impact breccia samples."
+     }
+    ],
+    "unsourced": []
+   },
+   "why": "Impact crater in the Devon Island polar desert, used by NASA as a Mars analog.",
+   "sources": [
+    {
+     "label": "NASA analog missions fact sheet (PDF)",
+     "url": "https://www.nasa.gov/wp-content/uploads/2015/06/541196main_analogfactsheet.pdf"
+    }
+   ],
+   "caveats": [],
+   "tests": [
+    {
+     "activity": "Haughton-Mars Project: spacewalk-style traverses, long-term high-data-rate links, robots, and rover and spacesuit engineering",
+     "who": "NASA, Mars Institute and SETI Institute",
+     "year": null,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA analog missions fact sheet (2011, PDF)",
+     "url": "https://www.nasa.gov/wp-content/uploads/2015/06/541196main_analogfactsheet.pdf",
+     "quote": "extravehicular activity traverses, long-term hi-data communication, complex robotic interaction, and on-board rover and suit engineering",
+     "pillar": "terrain",
+     "note": "The fact sheet (NF-2011-04-534-HQ, 2011) does not give years for these tests."
+    },
+    {
+     "activity": "TRIDENT drill tests in icy ground and impact rock, before lunar south pole missions",
+     "who": "NASA Ames and Honeybee Robotics",
+     "year": 2023,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA NTRS: TRIDENT drill validation at Mars and lunar analog field sites (2024)",
+     "url": "https://ntrs.nasa.gov/citations/20240000585",
+     "quote": "in August 2023 TRIDENT was brought to Haughton Crater, a field analog site in the Canadian Arctic",
+     "pillar": "resources",
+     "note": "The same abstract says TRIDENT was manifested for NASA's VIPER and PRIME-1 lunar south pole missions."
+    },
+    {
+     "activity": "Remotely assisted robot traverses, to test how to survey and choose a landing site",
+     "who": "NASA",
+     "year": null,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA NTRS: traverse planning experiments for future planetary surface exploration",
+     "url": "https://ntrs.nasa.gov/citations/20120008542",
+     "quote": "validate landing site survey and selection techniques during planetary surface exploration mission analog demonstration at Haughton Crater",
+     "pillar": "landing",
+     "note": "NTRS record dated 2012; the abstract does not give the field year."
+    },
+    {
+     "activity": "Astronaut geology training with an impact-crater research team",
+     "who": "Canadian Space Agency astronaut Jeremy Hansen",
+     "year": 2013,
+     "type": "tested",
+     "proposed": false,
+     "source": "Canadian Space Agency: training in geology",
+     "url": "https://www.asc-csa.gc.ca/eng/astronauts/about-the-job/space-mission-simulations/training-in-geology.asp",
+     "quote": "Study the Haughton crater",
+     "pillar": "geology",
+     "note": "CSA lists the dates as 16 to 25 July 2013, Devon Island."
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 75.38,
+     "lon": -89.67
+    },
+    "gridElevation_m": 173.12,
+    "rawFile": "data/raw/power/haughton.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 2.3155,
+     "ALLSKY_SFC_UV_INDEX": 0.32,
+     "ALLSKY_SRF_ALB": 0.46,
+     "PRECTOTCORR": 0.85,
+     "PS": 99.06,
+     "RH2M": 94.36,
+     "T2M": -14.42,
+     "T2M_MAX": 16.81,
+     "T2M_MIN": -48.55,
+     "T2M_RANGE": 4.64,
+     "TS": -14.81,
+     "TS_MAX": 17.21,
+     "TS_MIN": -53.7,
+     "WS2M": 3.08
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      0.0,
+      0.0799,
+      1.2593,
+      4.2362,
+      6.72,
+      6.4054,
+      4.8245,
+      2.8171,
+      1.105,
+      0.2213,
+      0.0,
+      0.0
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.0,
+      0.0,
+      0.06,
+      0.37,
+      0.99,
+      1.15,
+      0.75,
+      0.38,
+      0.1,
+      0.01,
+      0.0,
+      0.0
+     ],
+     "ALLSKY_SRF_ALB": [
+      null,
+      0.43,
+      0.66,
+      0.74,
+      0.72,
+      0.54,
+      0.25,
+      0.18,
+      0.29,
+      0.4,
+      0.41,
+      null
+     ],
+     "PRECTOTCORR": [
+      0.39,
+      0.4,
+      0.51,
+      0.55,
+      0.72,
+      1.17,
+      1.63,
+      1.71,
+      1.18,
+      0.91,
+      0.54,
+      0.51
+     ],
+     "PS": [
+      98.75,
+      98.99,
+      99.32,
+      99.47,
+      99.58,
+      99.24,
+      98.86,
+      98.91,
+      98.83,
+      99.07,
+      98.86,
+      98.79
+     ],
+     "RH2M": [
+      99.64,
+      99.65,
+      98.85,
+      95.6,
+      92.04,
+      86.46,
+      83.11,
+      87.98,
+      93.29,
+      97.73,
+      99.01,
+      99.34
+     ],
+     "T2M": [
+      -30.53,
+      -31.64,
+      -27.95,
+      -18.69,
+      -7.6,
+      1.61,
+      5.93,
+      2.81,
+      -4.56,
+      -13.61,
+      -22.7,
+      -27.15
+     ],
+     "T2M_MAX": [
+      -7.77,
+      -7.62,
+      -3.69,
+      -3.22,
+      1.79,
+      15.14,
+      16.81,
+      15.93,
+      5.85,
+      0.2,
+      -5.96,
+      -7.86
+     ],
+     "T2M_MIN": [
+      -48.29,
+      -45.74,
+      -48.55,
+      -39.77,
+      -22.24,
+      -10.2,
+      -1.88,
+      -7.77,
+      -16.24,
+      -33.03,
+      -44.12,
+      -41.1
+     ],
+     "T2M_RANGE": [
+      4.34,
+      4.39,
+      5.87,
+      6.69,
+      5.1,
+      3.44,
+      4.41,
+      4.52,
+      3.92,
+      4.1,
+      4.27,
+      4.56
+     ],
+     "TS": [
+      -32.0,
+      -32.97,
+      -28.43,
+      -18.27,
+      -7.01,
+      2.06,
+      6.16,
+      2.88,
+      -4.68,
+      -14.37,
+      -23.79,
+      -28.45
+     ],
+     "TS_MAX": [
+      -8.34,
+      -8.38,
+      -4.01,
+      -2.24,
+      2.76,
+      14.88,
+      17.21,
+      14.91,
+      6.38,
+      -0.4,
+      -7.07,
+      -8.42
+     ],
+     "TS_MIN": [
+      -51.07,
+      -50.83,
+      -53.7,
+      -42.79,
+      -25.98,
+      -10.48,
+      -2.37,
+      -11.26,
+      -23.0,
+      -35.64,
+      -48.43,
+      -47.57
+     ],
+     "WS2M": [
+      2.76,
+      2.69,
+      3.04,
+      3.17,
+      3.16,
+      3.25,
+      3.25,
+      3.18,
+      3.36,
+      3.16,
+      3.02,
+      2.88
+     ]
+    }
+   }
+  },
+  {
+   "id": "death-valley",
+   "name": "Death Valley",
+   "country": "USA",
+   "jordan": false,
+   "lat": 36.46,
+   "lon": -116.87,
+   "status": "nasa-analog",
+   "analogFor": [
+    "mars"
+   ],
+   "terrain": "Hot, dry basin with salt flats and alluvial fans",
+   "geology": {
+    "primary": "evaporite",
+    "secondary": [
+     "sandstone"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "evaporite"
+      ],
+      "label": "US National Park Service: Death Valley salt flats",
+      "url": "https://www.nps.gov/deva/learn/nature/salt-flats.htm",
+      "quote": "Sodium Chloride—better known as table salt—makes up the majority of salts on Badwater Basin.",
+      "note": "About the Badwater Basin salt flat, about 23.7 km from our point (Badwater coordinates in data/panoramas.json), not the point itself."
+     }
+    ],
+    "unsourced": [
+     "sandstone"
+    ],
+    "note": "Rock type source still to be added for sandstone."
+   },
+   "why": "Hot, dry basin that NASA names in this challenge as a known analog.",
+   "sources": [
+    {
+     "label": "NASA Space Apps 2026 challenge statement",
+     "url": "https://www.spaceappschallenge.org/2026/challenges/identify-earth-locations-that-analog-the-permanent-moon-base-locations-and-mars/"
+    }
+   ],
+   "caveats": [
+    "The NASA POWER grid cell (about 50 km) is centred at about 846 m, so it describes the surrounding ranges more than the valley floor."
+   ],
+   "tests": [
+    {
+     "activity": "Field work to prepare for the first Mars landings (Viking)",
+     "who": "NASA",
+     "year": "1970s",
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA JPL: NASA tests drones in Death Valley (2025)",
+     "url": "https://www.jpl.nasa.gov/news/nasa-tests-drones-in-death-valley-preps-for-martian-sands-and-skies/",
+     "quote": "NASA scientists and engineers have been going to Death Valley National Park since the 1970s",
+     "pillar": "terrain"
+    },
+    {
+     "activity": "Drive tests of a prototype Russian Mars 96 rover, with remote driving and self-driving tests",
+     "who": "International team (Russian rover groups with US partners)",
+     "year": 1992,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA NTRS: international testing of a Mars rover prototype",
+     "url": "https://ntrs.nasa.gov/citations/19940011839",
+     "quote": "evaluate rover performance over different Mars-like terrains",
+     "pillar": "terrain",
+     "note": "The tests were 'in and near Death Valley' in late May 1992."
+    },
+    {
+     "activity": "Test of Perseverance's precision landing system, flown in a helicopter over the park",
+     "who": "NASA JPL",
+     "year": null,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA JPL: NASA tests drones in Death Valley (2025)",
+     "url": "https://www.jpl.nasa.gov/news/nasa-tests-drones-in-death-valley-preps-for-martian-sands-and-skies/",
+     "quote": "tested the Perseverance rover’s precision landing system by flying a component of it in a piloted helicopter over the park",
+     "pillar": "landing",
+     "note": "The article does not give the year of this test."
+    },
+    {
+     "activity": "Drone flights over Mars Hill and sand dunes to improve navigation software for future Mars helicopters",
+     "who": "NASA JPL",
+     "year": 2025,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA JPL: NASA tests drones in Death Valley (2025)",
+     "url": "https://www.jpl.nasa.gov/news/nasa-tests-drones-in-death-valley-preps-for-martian-sands-and-skies/",
+     "quote": "They needed barren, featureless desert dunes to hone navigation software.",
+     "pillar": "terrain"
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 36.46,
+     "lon": -116.87
+    },
+    "gridElevation_m": 845.57,
+    "rawFile": "data/raw/power/death-valley.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 5.7024,
+     "ALLSKY_SFC_UV_INDEX": 1.48,
+     "ALLSKY_SRF_ALB": 0.19,
+     "PRECTOTCORR": 0.34,
+     "PS": 91.73,
+     "RH2M": 29.33,
+     "T2M": 19.1,
+     "T2M_MAX": 46.22,
+     "T2M_MIN": -6.16,
+     "T2M_RANGE": 14.65,
+     "TS": 19.59,
+     "TS_MAX": 59.22,
+     "TS_MIN": -8.42,
+     "WS2M": 2.09
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      3.0377,
+      4.0322,
+      5.5188,
+      6.9372,
+      7.8922,
+      8.5915,
+      7.9217,
+      7.3637,
+      6.2611,
+      4.7136,
+      3.4118,
+      2.6767
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.47,
+      0.76,
+      1.27,
+      1.78,
+      2.17,
+      2.6,
+      2.58,
+      2.29,
+      1.75,
+      1.11,
+      0.63,
+      0.38
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.19,
+      0.19,
+      0.2,
+      0.19,
+      0.19,
+      0.19,
+      0.18,
+      0.19,
+      0.19,
+      0.19,
+      0.19,
+      0.18
+     ],
+     "PRECTOTCORR": [
+      0.56,
+      0.69,
+      0.37,
+      0.25,
+      0.17,
+      0.05,
+      0.32,
+      0.27,
+      0.26,
+      0.34,
+      0.27,
+      0.56
+     ],
+     "PS": [
+      92.19,
+      91.92,
+      91.78,
+      91.55,
+      91.42,
+      91.34,
+      91.52,
+      91.53,
+      91.59,
+      91.78,
+      92.02,
+      92.11
+     ],
+     "RH2M": [
+      44.52,
+      42.1,
+      35.61,
+      28.72,
+      22.46,
+      15.46,
+      19.1,
+      19.14,
+      20.44,
+      26.62,
+      33.8,
+      44.57
+     ],
+     "T2M": [
+      7.54,
+      9.25,
+      13.52,
+      17.44,
+      23.03,
+      29.09,
+      32.49,
+      31.02,
+      26.83,
+      19.37,
+      12.28,
+      6.82
+     ],
+     "T2M_MAX": [
+      25.89,
+      26.66,
+      32.13,
+      36.52,
+      42.64,
+      46.04,
+      46.22,
+      46.12,
+      43.81,
+      37.77,
+      29.76,
+      23.67
+     ],
+     "T2M_MIN": [
+      -6.16,
+      -5.31,
+      -1.69,
+      -0.43,
+      5.22,
+      9.27,
+      16.74,
+      16.26,
+      8.02,
+      -2.19,
+      -4.61,
+      -5.71
+     ],
+     "T2M_RANGE": [
+      12.7,
+      13.59,
+      14.8,
+      15.52,
+      15.98,
+      16.98,
+      15.63,
+      15.51,
+      15.21,
+      14.46,
+      13.46,
+      11.9
+     ],
+     "TS": [
+      5.92,
+      8.53,
+      13.63,
+      18.63,
+      25.08,
+      31.4,
+      34.85,
+      32.88,
+      27.86,
+      19.27,
+      11.11,
+      5.25
+     ],
+     "TS_MAX": [
+      32.29,
+      33.47,
+      41.19,
+      48.03,
+      52.8,
+      59.22,
+      59.17,
+      58.86,
+      55.24,
+      48.11,
+      37.51,
+      27.79
+     ],
+     "TS_MIN": [
+      -7.35,
+      -7.49,
+      -5.43,
+      -2.43,
+      2.94,
+      5.44,
+      14.63,
+      13.92,
+      4.51,
+      -4.67,
+      -7.05,
+      -8.42
+     ],
+     "WS2M": [
+      1.76,
+      2.0,
+      2.17,
+      2.42,
+      2.32,
+      2.41,
+      2.4,
+      2.25,
+      1.99,
+      1.85,
+      1.75,
+      1.75
+     ]
+    }
+   }
+  },
+  {
+   "id": "dry-valleys",
+   "name": "McMurdo Dry Valleys",
+   "country": "Antarctica",
+   "jordan": false,
+   "lat": -77.47,
+   "lon": 161.8,
+   "status": "nasa-analog",
+   "analogFor": [
+    "mars"
+   ],
+   "terrain": "Ice-free polar desert",
+   "geology": {
+    "primary": "granite",
+    "secondary": [
+     "sandstone",
+     "basalt",
+     "ice"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "granite",
+       "sandstone"
+      ],
+      "label": "New Zealand Antarctic Soils Explorer, soil site 415 (Wright Valley, Bull Pass)",
+      "url": "https://antarctic-soils.landcareresearch.co.nz/trips/13/381/",
+      "quote": "Soil parent material: Granite, sandstone and dolerite sandy gravel till with accessions of a few other dyke rocks",
+      "note": "Soil site 415 (-77.4933, 161.858) is about 3 km from our point, in Bull Pass. The same page records 'granite clasts oxidised on upper surfaces and many disaggregated' at the surface and granite clasts in the profile. It describes the glacial till the ground is made of, not the bedrock below it."
+     }
+    ],
+    "unsourced": [
+     "basalt",
+     "ice"
+    ],
+    "note": "Rock type source still to be added for basalt and ice. The ice source we had (doi 10.1002/2014JF003415) is about Beacon Valley, about 50 km away, a different valley, so under the place rule it does not count here (removed 2026-11-03, as for the ice tag in data/resources.json)."
+   },
+   "why": "Ice-free polar desert, among the coldest and driest places on Earth. NASA Earth Observatory says it may be the most Mars-like landscape on Earth, and NASA's astrobiology program says it has long served as an analog site for Mars.",
+   "sources": [
+    {
+     "label": "NASA Earth Observatory: Martian Landscape, Antarctica",
+     "url": "https://science.nasa.gov/earth/earth-observatory/martian-landscape-antarctica-4420/"
+    },
+    {
+     "label": "NASA Astrobiology field sites",
+     "url": "https://astrobiology.nasa.gov/research-locations/"
+    }
+   ],
+   "caveats": [
+    "The NASA POWER surface albedo for this cell (0.56) is high for bare rock and soil, so the roughly 50 km cell probably includes glacier ice or snow around the ice-free valleys.",
+    "The 10 km terrain box around our point is mostly steep ground: median slope 14.16°, only 31.9% of the box under 10°, largest flat zone 2.0 km, relief 1,490 m (data/terrain.json). The Mars ice targets (Deuteronilus Mensae, Erebus Montes, Phoenix) are flat: median slope 0.17–0.52°, largest flat zone 9.5 km. So against them this site's terrain match is 0% and its landing match is 21% (2.0 ÷ 9.5 km). These two pillars describe the steep ground in the box, not the flat valley floors. We have not measured a point on a valley floor."
+   ],
+   "tests": [
+    {
+     "activity": "Drill tests in ice-cemented ground (University Valley) to collect samples from under the surface",
+     "who": "NASA ASTEP team led by Christopher McKay, NASA Ames",
+     "year": null,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA Astrobiology: field sites (University Valley)",
+     "url": "https://astrobiology.nasa.gov/research-locations/",
+     "quote": "This site has been used to test drilling equipment that could be used to collect sub-surface samples from these regions.",
+     "pillar": "resources",
+     "note": "University Valley is in the McMurdo Dry Valleys (same page). The page lists the team as 'ASTEP - Christopher McKay, NASA Ames Research Center (2008)'; it does not give the year of the drill tests."
+    },
+    {
+     "activity": "Tests of life-detection instruments",
+     "who": "NASA",
+     "year": null,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA Astrobiology: field sites (McMurdo Dry Valleys)",
+     "url": "https://astrobiology.nasa.gov/research-locations/",
+     "quote": "The McMurdo Dry Valleys have been used for testing life detection instruments since the early days of NASA.",
+     "pillar": "geology"
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": -77.47,
+     "lon": 161.8
+    },
+    "gridElevation_m": 1138.8,
+    "rawFile": "data/raw/power/dry-valleys.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 2.9993,
+     "ALLSKY_SFC_UV_INDEX": 0.55,
+     "ALLSKY_SRF_ALB": 0.56,
+     "PRECTOTCORR": 0.22,
+     "PS": 85.12,
+     "RH2M": 79.0,
+     "T2M": -27.23,
+     "T2M_MAX": -3.79,
+     "T2M_MIN": -52.01,
+     "T2M_RANGE": 5.61,
+     "TS": -29.74,
+     "TS_MAX": -3.51,
+     "TS_MIN": -54.96,
+     "WS2M": 5.37
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      8.1398,
+      4.8218,
+      1.7369,
+      0.1488,
+      0.0,
+      0.0,
+      0.0,
+      0.0226,
+      0.8551,
+      3.5923,
+      7.4441,
+      9.2789
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      1.61,
+      0.71,
+      0.13,
+      0.01,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.08,
+      0.57,
+      1.53,
+      1.94
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.58,
+      0.56,
+      0.54,
+      0.48,
+      null,
+      null,
+      null,
+      0.63,
+      0.52,
+      0.58,
+      0.58,
+      0.58
+     ],
+     "PRECTOTCORR": [
+      0.25,
+      0.37,
+      0.22,
+      0.22,
+      0.18,
+      0.22,
+      0.13,
+      0.25,
+      0.21,
+      0.23,
+      0.17,
+      0.22
+     ],
+     "PS": [
+      85.88,
+      85.51,
+      85.2,
+      84.95,
+      84.98,
+      85.05,
+      84.82,
+      84.8,
+      84.66,
+      84.64,
+      85.24,
+      85.7
+     ],
+     "RH2M": [
+      72.27,
+      75.29,
+      81.3,
+      82.45,
+      82.01,
+      83.96,
+      84.26,
+      83.88,
+      81.19,
+      77.55,
+      71.47,
+      72.1
+     ],
+     "T2M": [
+      -13.72,
+      -20.15,
+      -28.43,
+      -32.36,
+      -32.18,
+      -33.37,
+      -35.62,
+      -34.61,
+      -33.36,
+      -28.13,
+      -20.57,
+      -14.0
+     ],
+     "T2M_MAX": [
+      -4.43,
+      -6.96,
+      -13.3,
+      -14.73,
+      -14.27,
+      -17.0,
+      -15.55,
+      -16.82,
+      -17.62,
+      -11.14,
+      -9.42,
+      -3.79
+     ],
+     "T2M_MIN": [
+      -23.26,
+      -33.95,
+      -41.76,
+      -47.08,
+      -50.09,
+      -52.01,
+      -51.31,
+      -50.03,
+      -49.23,
+      -45.17,
+      -38.81,
+      -26.97
+     ],
+     "T2M_RANGE": [
+      5.99,
+      6.28,
+      5.3,
+      4.73,
+      5.05,
+      5.27,
+      4.9,
+      5.4,
+      5.51,
+      6.4,
+      6.75,
+      5.79
+     ],
+     "TS": [
+      -14.97,
+      -21.78,
+      -31.11,
+      -35.85,
+      -35.6,
+      -36.52,
+      -39.09,
+      -37.92,
+      -36.42,
+      -30.25,
+      -22.02,
+      -15.06
+     ],
+     "TS_MAX": [
+      -5.53,
+      -8.11,
+      -16.0,
+      -16.47,
+      -16.17,
+      -19.22,
+      -17.85,
+      -18.15,
+      -19.08,
+      -11.78,
+      -8.99,
+      -3.51
+     ],
+     "TS_MIN": [
+      -26.61,
+      -36.4,
+      -46.35,
+      -53.46,
+      -51.27,
+      -53.13,
+      -54.12,
+      -54.96,
+      -52.79,
+      -46.49,
+      -40.11,
+      -30.65
+     ],
+     "WS2M": [
+      2.86,
+      3.54,
+      4.86,
+      6.1,
+      6.57,
+      6.91,
+      7.17,
+      7.13,
+      6.94,
+      5.29,
+      4.02,
+      3.02
+     ]
+    }
+   }
+  },
+  {
+   "id": "holuhraun",
+   "name": "Holuhraun",
+   "country": "Iceland",
+   "jordan": false,
+   "lat": 64.85,
+   "lon": -16.83,
+   "status": "analog",
+   "analogFor": [
+    "mars"
+   ],
+   "terrain": "Young basalt lava field (2014–15 eruption)",
+   "geology": {
+    "primary": "basalt",
+    "secondary": [],
+    "sources": [
+     {
+      "rocks": [
+       "basalt"
+      ],
+      "label": "Pedersen et al. 2017, Journal of Volcanology and Geothermal Research, doi 10.1016/j.jvolgeores.2017.02.027",
+      "url": "https://doi.org/10.1016/j.jvolgeores.2017.02.027",
+      "quote": "Lava field evolution and emplacement dynamics of the 2014–2015 basaltic fissure eruption at Holuhraun, Iceland",
+      "note": "The quote is the paper title (checked on Crossref, 2026-10-23)."
+     }
+    ],
+    "unsourced": []
+   },
+   "why": "Young basalt lava field from the 2014–15 eruption. NASA-funded teams use it as a Mars analog for young volcanic plains and for life-detection tests.",
+   "sources": [
+    {
+     "label": "NASA NTRS: FELDSPAR fieldwork at Holuhraun (2018)",
+     "url": "https://ntrs.nasa.gov/citations/20190029583"
+    },
+    {
+     "label": "USGS: Holuhraun as a planetary analog for Elysium Planitia (2025)",
+     "url": "https://pubs.usgs.gov/publication/70275623"
+    }
+   ],
+   "caveats": [
+    "The NASA POWER surface albedo for this cell (0.63 for the year, still 0.47 in August) is far higher than dark basalt. The 1° solar grid cell around this point also covers part of the Vatnajökull ice cap just south of the lava field, plus seasonal snow."
+   ],
+   "tests": [
+    {
+     "activity": "FELDSPAR sampling expedition on the new lava field, with field tests for signs of microbial life (ATP)",
+     "who": "FELDSPAR team (NASA-funded)",
+     "year": 2018,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA NTRS: FELDSPAR fieldwork at Holuhraun (2018)",
+     "url": "https://ntrs.nasa.gov/citations/20190029583",
+     "quote": "In summer 2018, FELDSPAR conducted an analog sampling expedition to the Holuhraun volcano",
+     "pillar": "geology"
+    },
+    {
+     "activity": "Artemis II crew geology field training",
+     "who": "Artemis II crew",
+     "year": 2024,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA image: Artemis II crew geology training in Iceland",
+     "url": "https://www.nasa.gov/image-detail/amf-jsc2024e055261/",
+     "quote": "Artemis II Crew Geology Training in Iceland. Nautagil / Holohraun Science Activity.",
+     "pillar": "geology",
+     "note": "NASA's caption spells it 'Holohraun', dates the photo 1 August 2024 and gives the location as Drekagil, Iceland."
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 64.85,
+     "lon": -16.83
+    },
+    "gridElevation_m": 801.56,
+    "rawFile": "data/raw/power/holuhraun.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 2.9798,
+     "ALLSKY_SFC_UV_INDEX": 0.54,
+     "ALLSKY_SRF_ALB": 0.63,
+     "PRECTOTCORR": 2.36,
+     "PS": 91.1,
+     "RH2M": 94.09,
+     "T2M": -2.84,
+     "T2M_MAX": 10.31,
+     "T2M_MIN": -23.83,
+     "T2M_RANGE": 4.1,
+     "TS": -4.39,
+     "TS_MAX": 3.04,
+     "TS_MIN": -34.61,
+     "WS2M": 4.82
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      0.1478,
+      0.803,
+      2.4792,
+      4.7719,
+      6.504,
+      6.715,
+      5.7434,
+      4.4191,
+      2.5567,
+      1.17,
+      0.2834,
+      0.0504
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.01,
+      0.05,
+      0.28,
+      0.86,
+      1.42,
+      1.47,
+      1.11,
+      0.76,
+      0.34,
+      0.12,
+      0.02,
+      0.0
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.65,
+      0.71,
+      0.76,
+      0.74,
+      0.67,
+      0.56,
+      0.5,
+      0.47,
+      0.53,
+      0.65,
+      0.69,
+      0.69
+     ],
+     "PRECTOTCORR": [
+      2.3,
+      2.12,
+      2.1,
+      1.93,
+      2.0,
+      1.74,
+      2.46,
+      2.4,
+      2.82,
+      2.79,
+      2.91,
+      2.71
+     ],
+     "PS": [
+      90.23,
+      90.55,
+      90.87,
+      91.35,
+      91.78,
+      91.95,
+      91.68,
+      91.54,
+      91.12,
+      91.02,
+      90.68,
+      90.44
+     ],
+     "RH2M": [
+      94.82,
+      94.25,
+      94.35,
+      93.22,
+      92.35,
+      92.74,
+      94.24,
+      94.33,
+      93.64,
+      95.1,
+      95.24,
+      94.76
+     ],
+     "T2M": [
+      -6.99,
+      -7.02,
+      -6.57,
+      -4.33,
+      -1.56,
+      1.64,
+      2.76,
+      2.31,
+      0.63,
+      -2.75,
+      -5.57,
+      -6.91
+     ],
+     "T2M_MAX": [
+      5.12,
+      3.78,
+      4.52,
+      3.82,
+      6.84,
+      8.66,
+      9.42,
+      10.31,
+      6.96,
+      5.52,
+      4.25,
+      4.4
+     ],
+     "T2M_MIN": [
+      -21.82,
+      -21.04,
+      -20.91,
+      -18.95,
+      -15.35,
+      -6.77,
+      -3.04,
+      -4.42,
+      -10.28,
+      -16.43,
+      -20.41,
+      -23.83
+     ],
+     "T2M_RANGE": [
+      5.06,
+      5.2,
+      5.22,
+      5.41,
+      4.11,
+      2.91,
+      2.3,
+      2.37,
+      3.16,
+      3.85,
+      4.59,
+      5.1
+     ],
+     "TS": [
+      -8.98,
+      -8.96,
+      -8.03,
+      -5.41,
+      -2.16,
+      0.46,
+      0.97,
+      0.57,
+      -0.94,
+      -4.27,
+      -7.36,
+      -8.88
+     ],
+     "TS_MAX": [
+      0.16,
+      0.01,
+      0.4,
+      1.55,
+      2.41,
+      2.96,
+      2.96,
+      3.04,
+      2.02,
+      1.2,
+      0.32,
+      0.15
+     ],
+     "TS_MIN": [
+      -28.6,
+      -31.35,
+      -26.98,
+      -27.74,
+      -19.74,
+      -9.69,
+      -4.48,
+      -6.8,
+      -15.32,
+      -26.47,
+      -26.44,
+      -34.61
+     ],
+     "WS2M": [
+      6.3,
+      6.41,
+      5.82,
+      5.21,
+      4.26,
+      2.98,
+      2.58,
+      2.85,
+      4.56,
+      5.07,
+      5.75,
+      6.16
+     ]
+    }
+   }
+  },
+  {
+   "id": "rio-tinto",
+   "name": "Rio Tinto",
+   "country": "Spain",
+   "jordan": false,
+   "lat": 37.72,
+   "lon": -6.56,
+   "status": "nasa-analog",
+   "analogFor": [
+    "mars"
+   ],
+   "terrain": "Acidic, iron-rich river and mining district",
+   "geology": {
+    "primary": "acid-sulfate",
+    "secondary": [
+     "mudstone"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "acid-sulfate"
+      ],
+      "label": "NASA NTRS 20080026258",
+      "url": "https://ntrs.nasa.gov/citations/20080026258",
+      "quote": "Seasonal evaporation of river water drives precipitation of hydronium jarosite and schwertmannite.",
+      "note": "Jarosite and schwertmannite are iron sulfate minerals (our 'iron sulfates' rock type)."
+     }
+    ],
+    "unsourced": [
+     "mudstone"
+    ],
+    "note": "Rock type source still to be added for mudstone."
+   },
+   "why": "Acidic, iron-rich river studied for Mars-like chemistry. NASA's MARTE project drilled here to rehearse searching for life under the Martian surface.",
+   "sources": [
+    {
+     "label": "NASA Astrobiology: Red River Drills for Mars (MARTE)",
+     "url": "https://astrobiology.nasa.gov/news/red-river-drills-for-mars/"
+    },
+    {
+     "label": "NASA NTRS: MARTE simulated Mars drilling mission",
+     "url": "https://ntrs.nasa.gov/citations/20030111644"
+    }
+   ],
+   "caveats": [],
+   "tests": [
+    {
+     "activity": "MARTE deep drilling (150 m) to search for life underground",
+     "who": "NASA and Centro de Astrobiología, Spain (MARTE project)",
+     "year": 2003,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA Astrobiology: Red River Drills for Mars",
+     "url": "https://astrobiology.nasa.gov/news/red-river-drills-for-mars/",
+     "quote": "recently began drilling 150 meters (495 feet) into the ground near the source of the waters of the Rio Tinto",
+     "pillar": "geology"
+    },
+    {
+     "activity": "MARTE simulated Mars drilling mission: an automatic drill on a mock lander",
+     "who": "NASA Ames and partners (MARTE project)",
+     "year": 2005,
+     "type": "tested",
+     "proposed": false,
+     "source": "Stoker et al. 2008, Astrobiology: the 2005 MARTE robotic drilling experiment",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/19032053/",
+     "quote": "The mission used a fluidless, 10-axis, autonomous coring drill mounted on a simulated lander.",
+     "pillar": "geology"
+    },
+    {
+     "activity": "Remote science teams ran the drilling mission from afar, as for a real Mars mission",
+     "who": "NASA Ames and partners (MARTE project)",
+     "year": 2005,
+     "type": "tested",
+     "proposed": false,
+     "source": "Stoker et al. 2008, Astrobiology: the 2005 MARTE robotic drilling experiment",
+     "url": "https://pubmed.ncbi.nlm.nih.gov/19032053/",
+     "quote": "Two remotely located science teams analyzed the remote sensing data and chose subsample locations.",
+     "pillar": null
+    },
+    {
+     "activity": "Drilling test with TRIDENT, the drill later planned for lunar south pole missions",
+     "who": "NASA Ames and Honeybee Robotics",
+     "year": 2017,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA NTRS: TRIDENT drill validation at Mars and lunar analog field sites (2024)",
+     "url": "https://ntrs.nasa.gov/citations/20240000585",
+     "quote": "TRIDENT Rio Tinto test data from 2017",
+     "pillar": "geology"
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 37.72,
+     "lon": -6.56
+    },
+    "gridElevation_m": 187.78,
+    "rawFile": "data/raw/power/rio-tinto.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 5.0191,
+     "ALLSKY_SFC_UV_INDEX": 1.22,
+     "ALLSKY_SRF_ALB": 0.14,
+     "PRECTOTCORR": 1.28,
+     "PS": 99.51,
+     "RH2M": 62.53,
+     "T2M": 18.01,
+     "T2M_MAX": 46.26,
+     "T2M_MIN": -4.61,
+     "T2M_RANGE": 13.45,
+     "TS": 18.78,
+     "TS_MAX": 55.53,
+     "TS_MIN": -5.44,
+     "WS2M": 2.41
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      2.5606,
+      3.4514,
+      4.5694,
+      5.6974,
+      6.889,
+      7.7254,
+      7.9406,
+      7.0145,
+      5.3628,
+      3.827,
+      2.7943,
+      2.305
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.35,
+      0.59,
+      0.98,
+      1.39,
+      1.82,
+      2.2,
+      2.33,
+      1.99,
+      1.39,
+      0.85,
+      0.46,
+      0.3
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.14,
+      0.14,
+      0.15,
+      0.14,
+      0.14,
+      0.14,
+      0.15,
+      0.15,
+      0.15,
+      0.15,
+      0.14,
+      0.14
+     ],
+     "PRECTOTCORR": [
+      1.56,
+      1.72,
+      1.86,
+      1.76,
+      0.91,
+      0.18,
+      0.02,
+      0.11,
+      0.8,
+      2.28,
+      2.38,
+      1.84
+     ],
+     "PS": [
+      100.0,
+      99.75,
+      99.53,
+      99.28,
+      99.33,
+      99.34,
+      99.29,
+      99.26,
+      99.41,
+      99.42,
+      99.55,
+      99.94
+     ],
+     "RH2M": [
+      81.61,
+      77.71,
+      73.57,
+      68.5,
+      57.83,
+      44.9,
+      35.84,
+      37.37,
+      50.85,
+      65.67,
+      76.19,
+      81.39
+     ],
+     "T2M": [
+      8.96,
+      10.01,
+      12.66,
+      15.56,
+      19.91,
+      25.31,
+      28.61,
+      28.63,
+      24.25,
+      19.06,
+      12.85,
+      9.78
+     ],
+     "T2M_MAX": [
+      21.82,
+      23.88,
+      30.99,
+      32.84,
+      38.64,
+      43.63,
+      45.4,
+      46.26,
+      44.81,
+      36.72,
+      29.02,
+      22.22
+     ],
+     "T2M_MIN": [
+      -4.61,
+      -3.53,
+      -2.01,
+      2.13,
+      4.32,
+      10.24,
+      13.43,
+      14.25,
+      11.79,
+      3.04,
+      -1.49,
+      -3.32
+     ],
+     "T2M_RANGE": [
+      10.72,
+      11.61,
+      12.34,
+      13.01,
+      14.7,
+      16.42,
+      17.64,
+      16.96,
+      14.16,
+      12.27,
+      10.95,
+      10.47
+     ],
+     "TS": [
+      8.45,
+      9.78,
+      12.76,
+      16.13,
+      21.12,
+      27.43,
+      31.12,
+      30.93,
+      25.78,
+      19.42,
+      12.57,
+      9.24
+     ],
+     "TS_MAX": [
+      24.21,
+      27.2,
+      34.88,
+      38.66,
+      46.44,
+      52.39,
+      55.53,
+      54.61,
+      52.72,
+      43.42,
+      33.43,
+      23.51
+     ],
+     "TS_MIN": [
+      -5.44,
+      -4.27,
+      -2.83,
+      1.41,
+      4.0,
+      9.79,
+      13.23,
+      13.74,
+      10.92,
+      2.34,
+      -2.15,
+      -4.36
+     ],
+     "WS2M": [
+      2.39,
+      2.51,
+      2.6,
+      2.5,
+      2.41,
+      2.44,
+      2.47,
+      2.34,
+      2.12,
+      2.28,
+      2.43,
+      2.44
+     ]
+    }
+   }
+  },
+  {
+   "id": "mdrs",
+   "name": "Mars Desert Research Station",
+   "country": "Utah, USA",
+   "jordan": false,
+   "lat": 38.41,
+   "lon": -110.79,
+   "status": "analog",
+   "analogFor": [
+    "mars"
+   ],
+   "terrain": "Desert of red mudstone and sandstone",
+   "geology": {
+    "primary": "mudstone",
+    "secondary": [
+     "sandstone"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "mudstone"
+      ],
+      "label": "Clarke & Stoker 2011, International Journal of Astrobiology 10(3), doi 10.1017/S1473550411000048 (NASA NTRS 20110023235)",
+      "url": "https://ntrs.nasa.gov/citations/20110023235",
+      "quote": "In the immediate vicinity of MDRS the Brushy Basin Member forms a dissected plain of cracking clays",
+      "note": "Manuscript text on NASA NTRS (checked 2026-11-03). The paper calls the clay-rich layers 'floodplain shales' and 'floodplain clays'; our class 'Mudstone / lake mud' covers these clay rocks. Our point is MDRS itself."
+     },
+     {
+      "rocks": [
+       "sandstone"
+      ],
+      "label": "Clarke & Stoker 2011 (same paper)",
+      "url": "https://ntrs.nasa.gov/citations/20110023235",
+      "quote": "The resistant sandstones and conglomerates of the channels form cap rocks that protect the underlying floodplain clays from erosion.",
+      "note": "Same manuscript, about the exhumed channel ridges of the Brushy Basin Member near MDRS (checked 2026-11-03)."
+     }
+    ],
+    "unsourced": []
+   },
+   "why": "Simulated Mars habitat in the Utah desert, run by the Mars Society for analog crews.",
+   "sources": [
+    {
+     "label": "Mars Society: Mars Desert Research Station",
+     "url": "https://mdrs.marssociety.org/"
+    }
+   ],
+   "caveats": [],
+   "tests": [
+    {
+     "activity": "Simulated spacewalks (EVAs) in suits, with airlock and radio checks, during a two-week mission",
+     "who": "Purdue University student crew (Crew 272)",
+     "year": 2023,
+     "type": "tested",
+     "proposed": false,
+     "source": "Purdue University: students at the Mars Desert Research Station",
+     "url": "https://engineering.purdue.edu/AAE/spotlights/2023/2023-0421-mars-desert-research-station-purdue-crew",
+     "quote": "a strict pre-EVA procedure of donning bulky air-circulating EVA suits",
+     "pillar": "terrain"
+    },
+    {
+     "activity": "Drone flights for terrain scouting and mock rescue missions",
+     "who": "Purdue University student crew (Crew 272)",
+     "year": 2023,
+     "type": "tested",
+     "proposed": false,
+     "source": "Purdue University: students at the Mars Desert Research Station",
+     "url": "https://engineering.purdue.edu/AAE/spotlights/2023/2023-0421-mars-desert-research-station-purdue-crew",
+     "quote": "Mars-operable Skydio 2 drone for terrain scouting and mock search-and-rescue missions",
+     "pillar": "terrain"
+    },
+    {
+     "activity": "3D printing of replacement tools inside the habitat",
+     "who": "Purdue University student crew (Crew 272)",
+     "year": 2023,
+     "type": "tested",
+     "proposed": false,
+     "source": "Purdue University: students at the Mars Desert Research Station",
+     "url": "https://engineering.purdue.edu/AAE/spotlights/2023/2023-0421-mars-desert-research-station-purdue-crew",
+     "quote": "we 3D printed replacement tools",
+     "pillar": null
+    },
+    {
+     "activity": "Rock and soil sample analysis during a mission in the World's Biggest Analog",
+     "who": "MDRS Crew 319",
+     "year": 2025,
+     "type": "tested",
+     "proposed": false,
+     "source": "Austrian Space Forum: World's Biggest Analog 2025, picture of the day (day 7)",
+     "url": "https://oewf.org/en/?p=25286",
+     "quote": "analyzing rock and soil samples in the science lab",
+     "pillar": "geology"
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 38.41,
+     "lon": -110.79
+    },
+    "gridElevation_m": 1659.66,
+    "rawFile": "data/raw/power/mdrs.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 5.2874,
+     "ALLSKY_SFC_UV_INDEX": 1.44,
+     "ALLSKY_SRF_ALB": 0.25,
+     "PRECTOTCORR": 0.66,
+     "PS": 83.37,
+     "RH2M": 43.14,
+     "T2M": 11.75,
+     "T2M_MAX": 41.12,
+     "T2M_MIN": -19.96,
+     "T2M_RANGE": 13.64,
+     "TS": 12.19,
+     "TS_MAX": 53.06,
+     "TS_MIN": -25.09,
+     "WS2M": 2.46
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      2.5901,
+      3.6418,
+      5.2721,
+      6.5554,
+      7.4633,
+      8.2188,
+      7.4438,
+      6.6254,
+      5.7857,
+      4.3632,
+      3.1138,
+      2.311
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.4,
+      0.7,
+      1.25,
+      1.74,
+      2.15,
+      2.62,
+      2.6,
+      2.2,
+      1.68,
+      1.02,
+      0.56,
+      0.32
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.24,
+      0.24,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.25,
+      0.24,
+      0.24,
+      0.23,
+      0.25
+     ],
+     "PRECTOTCORR": [
+      0.57,
+      0.61,
+      0.63,
+      0.6,
+      0.58,
+      0.38,
+      0.84,
+      0.77,
+      0.86,
+      0.87,
+      0.58,
+      0.64
+     ],
+     "PS": [
+      83.53,
+      83.27,
+      83.22,
+      83.07,
+      83.14,
+      83.24,
+      83.5,
+      83.53,
+      83.49,
+      83.46,
+      83.51,
+      83.41
+     ],
+     "RH2M": [
+      62.78,
+      56.61,
+      47.96,
+      40.73,
+      35.09,
+      24.89,
+      30.4,
+      33.22,
+      33.43,
+      41.83,
+      50.07,
+      61.14
+     ],
+     "T2M": [
+      -1.12,
+      1.09,
+      5.84,
+      10.11,
+      15.93,
+      22.93,
+      26.74,
+      24.79,
+      19.71,
+      11.42,
+      4.18,
+      -1.17
+     ],
+     "T2M_MAX": [
+      16.3,
+      19.82,
+      25.9,
+      30.48,
+      36.96,
+      40.13,
+      41.12,
+      38.52,
+      38.0,
+      31.19,
+      22.72,
+      16.7
+     ],
+     "T2M_MIN": [
+      -19.96,
+      -19.3,
+      -12.09,
+      -6.72,
+      -3.06,
+      2.17,
+      11.15,
+      9.62,
+      -0.13,
+      -9.55,
+      -12.56,
+      -16.49
+     ],
+     "T2M_RANGE": [
+      10.12,
+      11.29,
+      13.76,
+      15.24,
+      15.69,
+      17.13,
+      14.99,
+      14.46,
+      14.81,
+      14.19,
+      12.23,
+      9.7
+     ],
+     "TS": [
+      -2.25,
+      0.5,
+      5.88,
+      11.02,
+      17.43,
+      24.86,
+      29.0,
+      26.57,
+      20.54,
+      11.25,
+      3.13,
+      -2.32
+     ],
+     "TS_MAX": [
+      21.31,
+      24.01,
+      32.4,
+      39.61,
+      45.87,
+      52.44,
+      53.06,
+      50.36,
+      47.83,
+      38.54,
+      27.75,
+      20.11
+     ],
+     "TS_MIN": [
+      -25.09,
+      -19.62,
+      -13.6,
+      -7.76,
+      -4.64,
+      1.21,
+      8.79,
+      7.66,
+      -2.11,
+      -9.91,
+      -14.83,
+      -22.21
+     ],
+     "WS2M": [
+      2.1,
+      2.46,
+      2.75,
+      3.13,
+      2.79,
+      2.91,
+      2.29,
+      2.19,
+      2.36,
+      2.31,
+      2.19,
+      2.14
+     ]
+    }
+   }
+  },
+  {
+   "id": "waqf-as-suwwan",
+   "name": "Waqf as Suwwan crater",
+   "country": "Jordan",
+   "jordan": true,
+   "lat": 31.05,
+   "lon": 36.8,
+   "status": "candidate",
+   "analogFor": [
+    "moon",
+    "mars"
+   ],
+   "terrain": "Impact crater (about 5.5 km) in limestone desert",
+   "geology": {
+    "primary": "carbonate",
+    "secondary": [
+     "impactite"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "carbonate"
+      ],
+      "label": "IGME5000 geological map, 1:5 million (BGR, 2005): unit 601002 at our point",
+      "url": "https://doi.org/10.25928/igme-5000",
+      "quote": "limestone, marl",
+      "note": "Rock names of map unit 601002 (Eocene) at our point, from the map's attribute table (data/raw/screening/geology/samples_jordan.json). A 1:5 million map does not show features smaller than a few km.",
+      "credit": "IGME5000, © BGR, Hannover, 2005, https://doi.org/10.25928/igme-5000, modified: reclassified to Analog Atlas rock ids"
+     },
+     {
+      "rocks": [
+       "carbonate"
+      ],
+      "label": "Salameh et al. 2008, Meteoritics & Planetary Science (open record)",
+      "url": "https://repository.arizona.edu/handle/10150/656483",
+      "quote": "Ten sites with shatter cone development in fine‐grained sandstone or limestone have been mapped"
+     }
+    ],
+    "unsourced": [
+     "impactite"
+    ],
+    "note": "Rock type source still to be added for impact breccia. The stored quotes name shatter cones, not impact breccia."
+   },
+   "why": "Jordan's only confirmed impact crater, with shatter cones and an exposed central uplift. Impact craters are the most common landform on the Moon and Mars.",
+   "sources": [
+    {
+     "label": "Earth Impact Database: Jebel Waqf as Suwwan (archived)",
+     "url": "https://web.archive.org/web/20241211013447/http://www.passc.net/EarthImpactDatabase/New%20website_05-2018/JebelWaqfasSuwwan.html"
+    },
+    {
+     "label": "Salameh et al. 2008, Meteoritics & Planetary Science (open record)",
+     "url": "https://repository.arizona.edu/handle/10150/656483"
+    }
+   ],
+   "caveats": [
+    "No paper calls it a planetary analog yet. NASA POWER gives the regional climate, not the crater floor."
+   ],
+   "tests": [
+    {
+     "activity": "Astronaut geology training on impact rocks: find and sample shatter cones and uplifted layers, as ESA does at the Ries crater and the Canadian Space Agency does at Mistastin",
+     "who": "Our proposal (Analog Atlas team)",
+     "year": null,
+     "type": "proposed",
+     "proposed": true,
+     "source": "Salameh et al. 2008, Meteoritics & Planetary Science (open record)",
+     "url": "https://repository.arizona.edu/handle/10150/656483",
+     "quote": "Ten sites with shatter cone development in fine‐grained sandstone or limestone have been mapped",
+     "pillar": "geology",
+     "basis": "Geology pillar: confirmed impact crater with shatter cones (this source). Nothing has been tested here yet.",
+     "note": "Quote checked against the abstract of doi 10.1111/j.1945-5100.2008.tb00636.x (Crossref record)."
+    },
+    {
+     "activity": "Moonwalk-style traverse practice from the crater rim to its centre, with route planning and sample stops",
+     "who": "Our proposal (Analog Atlas team)",
+     "year": null,
+     "type": "proposed",
+     "proposed": true,
+     "source": "Salameh et al. 2008, Meteoritics & Planetary Science (open record)",
+     "url": "https://repository.arizona.edu/handle/10150/656483",
+     "quote": "a prominent outer rim rising up to 60 m above the surrounding plain",
+     "pillar": "terrain",
+     "basis": "Terrain pillar: the gentle slopes in our terrain data for this site (kilometre scale; boulders and small rocks are not measured)."
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 31.05,
+     "lon": 36.8
+    },
+    "gridElevation_m": 748.79,
+    "rawFile": "data/raw/power/waqf-as-suwwan.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 5.8466,
+     "ALLSKY_SFC_UV_INDEX": 1.64,
+     "ALLSKY_SRF_ALB": 0.29,
+     "PRECTOTCORR": 0.14,
+     "PS": 92.77,
+     "RH2M": 43.83,
+     "T2M": 19.62,
+     "T2M_MAX": 46.18,
+     "T2M_MIN": -5.97,
+     "T2M_RANGE": 16.13,
+     "TS": 21.48,
+     "TS_MAX": 58.48,
+     "TS_MIN": -7.07,
+     "WS2M": 3.43
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      3.3324,
+      4.1983,
+      5.5999,
+      6.7493,
+      7.6644,
+      8.413,
+      8.2068,
+      7.541,
+      6.4615,
+      5.003,
+      3.7718,
+      3.137
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.6,
+      0.91,
+      1.39,
+      1.85,
+      2.31,
+      2.79,
+      2.76,
+      2.47,
+      1.95,
+      1.29,
+      0.77,
+      0.55
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.26,
+      0.27,
+      0.29,
+      0.29,
+      0.3,
+      0.31,
+      0.31,
+      0.3,
+      0.32,
+      0.29,
+      0.28,
+      0.27
+     ],
+     "PRECTOTCORR": [
+      0.37,
+      0.38,
+      0.22,
+      0.12,
+      0.04,
+      0.0,
+      0.01,
+      0.02,
+      0.02,
+      0.06,
+      0.18,
+      0.21
+     ],
+     "PS": [
+      93.1,
+      92.97,
+      92.85,
+      92.72,
+      92.65,
+      92.49,
+      92.29,
+      92.36,
+      92.66,
+      92.92,
+      93.1,
+      93.18
+     ],
+     "RH2M": [
+      60.84,
+      55.7,
+      47.52,
+      39.29,
+      33.15,
+      31.71,
+      33.37,
+      37.2,
+      39.66,
+      42.0,
+      49.64,
+      56.51
+     ],
+     "T2M": [
+      8.24,
+      10.2,
+      14.38,
+      18.75,
+      23.8,
+      27.28,
+      29.18,
+      29.05,
+      26.62,
+      22.33,
+      15.1,
+      10.04
+     ],
+     "T2M_MAX": [
+      27.81,
+      30.69,
+      35.45,
+      38.71,
+      42.57,
+      43.98,
+      46.18,
+      44.67,
+      43.58,
+      39.15,
+      32.72,
+      29.75
+     ],
+     "T2M_MIN": [
+      -5.97,
+      -4.63,
+      -2.65,
+      3.37,
+      7.46,
+      11.92,
+      15.33,
+      16.79,
+      12.9,
+      6.36,
+      -3.23,
+      -5.72
+     ],
+     "T2M_RANGE": [
+      13.17,
+      14.43,
+      15.99,
+      17.13,
+      18.03,
+      18.65,
+      18.47,
+      18.2,
+      17.39,
+      15.55,
+      13.43,
+      13.11
+     ],
+     "TS": [
+      8.42,
+      10.72,
+      15.68,
+      20.8,
+      26.55,
+      30.59,
+      32.57,
+      32.38,
+      29.48,
+      24.12,
+      15.81,
+      10.09
+     ],
+     "TS_MAX": [
+      31.46,
+      35.88,
+      43.61,
+      47.7,
+      54.8,
+      57.33,
+      58.48,
+      57.75,
+      55.02,
+      50.42,
+      40.55,
+      36.23
+     ],
+     "TS_MIN": [
+      -7.07,
+      -6.3,
+      -3.79,
+      2.26,
+      6.56,
+      11.43,
+      15.19,
+      16.0,
+      12.39,
+      5.13,
+      -5.74,
+      -6.65
+     ],
+     "WS2M": [
+      3.07,
+      3.24,
+      3.44,
+      3.55,
+      3.73,
+      4.1,
+      4.28,
+      4.05,
+      3.41,
+      2.87,
+      2.65,
+      2.72
+     ]
+    }
+   }
+  },
+  {
+   "id": "lisan-dead-sea",
+   "name": "Lisan Peninsula, Dead Sea",
+   "country": "Jordan",
+   "jordan": true,
+   "lat": 31.268,
+   "lon": 35.459,
+   "status": "analog",
+   "analogFor": [
+    "mars"
+   ],
+   "terrain": "Salt flats and evaporites over a salt dome",
+   "geology": {
+    "primary": "evaporite",
+    "secondary": [
+     "mudstone"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "evaporite"
+      ],
+      "label": "Al-Zoubi & ten Brink 2001, Marine and Petroleum Geology",
+      "url": "https://doi.org/10.1016/S0264-8172(01)00031-9",
+      "quote": "Salt diapirs in the Dead Sea basin and their relationship to Quaternary extensional tectonics",
+      "note": "The quote is the paper title."
+     },
+     {
+      "rocks": [
+       "mudstone"
+      ],
+      "label": "IGME5000 geological map, 1:5 million (BGR, 2005): unit 601062 at our point",
+      "url": "https://doi.org/10.25928/igme-5000",
+      "quote": "marl, sand, silt, gravel",
+      "note": "Rock names of map unit 601062 (Pliocene - Quaternary) at our point, from the map's attribute table (data/raw/screening/geology/samples_jordan.json). A 1:5 million map does not show features smaller than a few km. This map does not show the Lisan salt.",
+      "credit": "IGME5000, © BGR, Hannover, 2005, https://doi.org/10.25928/igme-5000, modified: reclassified to Analog Atlas rock ids"
+     }
+    ],
+    "unsourced": []
+   },
+   "why": "Salt flats beside very salty brine. NASA's Astrobiology Institute studied the Dead Sea as a possible analog of early Mars environments: slightly acidic and highly saline.",
+   "sources": [
+    {
+     "label": "NASA Astrobiology Institute 2008 report (Penn State team)",
+     "url": "https://astrobiology.nasa.gov/nai/annual-reports/2008/psu/molecular-signatures-of-life-on-the-edge-ddf-project/index.html"
+    },
+    {
+     "label": "Lisan Peninsula salt diapir, Marine and Petroleum Geology",
+     "url": "https://doi.org/10.1016/S0264-8172(01)00031-9"
+    }
+   ],
+   "caveats": [
+    "The NASA POWER grid cell mixes the lake with the high plateau: its elevation is 185 m, while the Dead Sea shore lies far below sea level. Real air pressure and temperature at the shore are higher than shown."
+   ],
+   "tests": [
+    {
+     "activity": "Search for chemical signs of life in very salty, slightly acidic Dead Sea water, as a possible analog of early Mars",
+     "who": "NASA Astrobiology Institute, Penn State team",
+     "year": "2007–2008",
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA Astrobiology Institute 2008 report (Penn State team)",
+     "url": "https://astrobiology.nasa.gov/nai/annual-reports/2008/psu/molecular-signatures-of-life-on-the-edge-ddf-project/index.html",
+     "quote": "We have used metagenomics, lipid analysis, and amino acid analysis.",
+     "pillar": "resources",
+     "note": "The report covers July 2007 to June 2008 and names the Dead Sea, not the Lisan Peninsula itself."
+    },
+    {
+     "activity": "Brine and salt-crust tests for instruments that sample salty water and look for life in it",
+     "who": "Our proposal (Analog Atlas team)",
+     "year": null,
+     "type": "proposed",
+     "proposed": true,
+     "source": "NASA Astrobiology Institute 2008 report (Penn State team)",
+     "url": "https://astrobiology.nasa.gov/nai/annual-reports/2008/psu/molecular-signatures-of-life-on-the-edge-ddf-project/index.html",
+     "quote": "slightly acidic and highly saline",
+     "pillar": "resources",
+     "basis": "Resources pillar: the 'salts' tag (this source)."
+    },
+    {
+     "activity": "Geology training on salt and mud layers pushed up by the Lisan salt dome",
+     "who": "Our proposal (Analog Atlas team)",
+     "year": null,
+     "type": "proposed",
+     "proposed": true,
+     "source": "Al-Zoubi & ten Brink 2001, Marine and Petroleum Geology",
+     "url": "https://doi.org/10.1016/S0264-8172(01)00031-9",
+     "quote": "Salt diapirs in the Dead Sea basin and their relationship to Quaternary extensional tectonics",
+     "pillar": "geology",
+     "basis": "Geology pillar: evaporite (salt) rock, from this source.",
+     "note": "The quote is the paper title."
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 31.268,
+     "lon": 35.459
+    },
+    "gridElevation_m": 184.51,
+    "rawFile": "data/raw/power/lisan-dead-sea.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 5.7233,
+     "ALLSKY_SFC_UV_INDEX": 1.59,
+     "ALLSKY_SRF_ALB": 0.28,
+     "PRECTOTCORR": 0.51,
+     "PS": 99.07,
+     "RH2M": 52.12,
+     "T2M": 22.14,
+     "T2M_MAX": 46.8,
+     "T2M_MIN": -0.98,
+     "T2M_RANGE": 12.92,
+     "TS": 23.48,
+     "TS_MAX": 55.24,
+     "TS_MIN": -1.98,
+     "WS2M": 2.29
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      3.1627,
+      3.9938,
+      5.3796,
+      6.5736,
+      7.5744,
+      8.346,
+      8.1398,
+      7.4635,
+      6.3629,
+      4.9164,
+      3.6794,
+      3.0007
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.57,
+      0.87,
+      1.34,
+      1.78,
+      2.24,
+      2.71,
+      2.7,
+      2.42,
+      1.89,
+      1.25,
+      0.75,
+      0.52
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.24,
+      0.25,
+      0.27,
+      0.28,
+      0.29,
+      0.31,
+      0.31,
+      0.32,
+      0.32,
+      0.29,
+      0.27,
+      0.26
+     ],
+     "PRECTOTCORR": [
+      1.5,
+      1.48,
+      0.75,
+      0.35,
+      0.15,
+      0.01,
+      0.0,
+      0.02,
+      0.03,
+      0.2,
+      0.65,
+      1.06
+     ],
+     "PS": [
+      99.55,
+      99.39,
+      99.23,
+      99.04,
+      98.92,
+      98.71,
+      98.47,
+      98.54,
+      98.87,
+      99.16,
+      99.4,
+      99.57
+     ],
+     "RH2M": [
+      64.03,
+      61.44,
+      57.88,
+      50.66,
+      42.81,
+      42.53,
+      44.55,
+      48.43,
+      50.89,
+      51.05,
+      52.75,
+      58.84
+     ],
+     "T2M": [
+      12.21,
+      13.75,
+      16.98,
+      20.76,
+      25.5,
+      28.54,
+      30.35,
+      30.31,
+      28.29,
+      25.04,
+      19.16,
+      14.28
+     ],
+     "T2M_MAX": [
+      28.78,
+      31.93,
+      36.67,
+      41.19,
+      43.91,
+      45.29,
+      45.57,
+      46.8,
+      46.73,
+      41.44,
+      35.71,
+      32.88
+     ],
+     "T2M_MIN": [
+      -0.98,
+      2.72,
+      1.58,
+      8.08,
+      12.32,
+      16.67,
+      19.72,
+      21.26,
+      18.1,
+      12.49,
+      3.96,
+      1.75
+     ],
+     "T2M_RANGE": [
+      10.44,
+      11.49,
+      12.74,
+      13.9,
+      14.88,
+      15.45,
+      15.14,
+      14.43,
+      13.39,
+      11.84,
+      10.84,
+      10.38
+     ],
+     "TS": [
+      11.46,
+      13.39,
+      17.36,
+      21.92,
+      27.59,
+      31.55,
+      33.73,
+      33.77,
+      31.16,
+      26.6,
+      19.18,
+      13.53
+     ],
+     "TS_MAX": [
+      29.51,
+      32.52,
+      38.66,
+      45.37,
+      50.51,
+      52.07,
+      53.11,
+      54.27,
+      55.24,
+      48.03,
+      39.59,
+      34.09
+     ],
+     "TS_MIN": [
+      -1.98,
+      0.65,
+      2.53,
+      8.06,
+      11.21,
+      16.55,
+      19.54,
+      21.55,
+      18.18,
+      12.14,
+      4.0,
+      0.79
+     ],
+     "WS2M": [
+      2.38,
+      2.48,
+      2.34,
+      2.32,
+      2.37,
+      2.32,
+      2.3,
+      2.23,
+      2.11,
+      2.01,
+      2.29,
+      2.34
+     ]
+    }
+   }
+  },
+  {
+   "id": "qa-al-jafr",
+   "name": "Qa' al-Jafr",
+   "country": "Jordan",
+   "jordan": true,
+   "lat": 30.313,
+   "lon": 36.328,
+   "status": "candidate",
+   "analogFor": [
+    "mars"
+   ],
+   "terrain": "Playa (dry mud lake) in a closed basin",
+   "geology": {
+    "primary": "mudstone",
+    "secondary": [
+     "evaporite"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "mudstone"
+      ],
+      "label": "IGME5000 geological map, 1:5 million (BGR, 2005): unit 600021 at our point",
+      "url": "https://doi.org/10.25928/igme-5000",
+      "quote": "marl",
+      "note": "Rock names of map unit 600021 (Quaternary) at our point, from the map's attribute table (data/raw/screening/geology/samples_jordan.json). A 1:5 million map does not show features smaller than a few km.",
+      "credit": "IGME5000, © BGR, Hannover, 2005, https://doi.org/10.25928/igme-5000, modified: reclassified to Analog Atlas rock ids"
+     }
+    ],
+    "unsourced": [
+     "evaporite"
+    ],
+    "note": "Rock type source still to be added for evaporite (salt). Our resources search found no documented gypsum or halite in this basin (data/resources.json), so this second rock needs checking."
+   },
+   "why": "Large closed-basin playa whose lake and pond sediments record past wet periods. Dry lake basins are common on Mars.",
+   "sources": [
+    {
+     "label": "Al-Jafr basin lake sediments, Quaternary International",
+     "url": "https://doi.org/10.1016/j.quaint.2014.12.041"
+    },
+    {
+     "label": "GeoNames: Qa' al Jafr",
+     "url": "https://www.geonames.org/248903/qa-al-jafr.html"
+    }
+   ],
+   "caveats": [
+    "No paper calls it a planetary analog yet."
+   ],
+   "tests": [
+    {
+     "activity": "Landing-zone survey practice and long, straight rover drives on a very flat dry lake bed",
+     "who": "Our proposal (Analog Atlas team)",
+     "year": null,
+     "type": "proposed",
+     "proposed": true,
+     "source": "ACOR photo archive: Qa'a Jafr dry lake bed (James A. Sauer, 1975-1981)",
+     "url": "https://archives.acorjordan.org/s/acor/item/96011",
+     "quote": "dry lake bed looking Northeast, close up of dried and cracked mud on surface",
+     "pillar": "landing",
+     "basis": "Landing-zone pillar: the very flat ground in our terrain data for this site (kilometre scale; boulders and small rocks are not measured).",
+     "note": "The quote is the photo title."
+    },
+    {
+     "activity": "Sampling practice in old lake sediments that record past wet periods, like the dry lake beds on Mars",
+     "who": "Our proposal (Analog Atlas team)",
+     "year": null,
+     "type": "proposed",
+     "proposed": true,
+     "source": "Mischke et al. 2015, Quaternary International",
+     "url": "https://doi.org/10.1016/j.quaint.2014.12.041",
+     "quote": "Palaeoenvironmental inferences from late Quaternary sediments of the Al Jafr Basin, Jordan",
+     "pillar": "geology",
+     "basis": "Geology pillar: mudstone (lake sediment), from this source. The evaporite listed as a second rock has no source yet.",
+     "note": "The quote is the paper title."
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 30.313,
+     "lon": 36.328
+    },
+    "gridElevation_m": 936.92,
+    "rawFile": "data/raw/power/qa-al-jafr.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 6.0667,
+     "ALLSKY_SFC_UV_INDEX": 1.74,
+     "ALLSKY_SRF_ALB": 0.29,
+     "PRECTOTCORR": 0.27,
+     "PS": 90.79,
+     "RH2M": 46.16,
+     "T2M": 18.3,
+     "T2M_MAX": 44.59,
+     "T2M_MIN": -8.75,
+     "T2M_RANGE": 16.0,
+     "TS": 19.93,
+     "TS_MAX": 56.95,
+     "TS_MIN": -10.54,
+     "WS2M": 3.13
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      3.647,
+      4.6193,
+      5.9729,
+      7.0145,
+      7.8182,
+      8.4996,
+      8.2742,
+      7.6332,
+      6.6005,
+      5.1982,
+      4.0169,
+      3.4368
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.69,
+      1.04,
+      1.54,
+      1.99,
+      2.42,
+      2.87,
+      2.84,
+      2.56,
+      2.03,
+      1.38,
+      0.86,
+      0.63
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.28,
+      0.28,
+      0.3,
+      0.29,
+      0.3,
+      0.31,
+      0.31,
+      0.3,
+      0.31,
+      0.29,
+      0.28,
+      0.28
+     ],
+     "PRECTOTCORR": [
+      0.85,
+      0.79,
+      0.38,
+      0.21,
+      0.08,
+      0.0,
+      0.0,
+      0.04,
+      0.04,
+      0.13,
+      0.29,
+      0.48
+     ],
+     "PS": [
+      91.05,
+      90.94,
+      90.84,
+      90.73,
+      90.7,
+      90.56,
+      90.38,
+      90.44,
+      90.72,
+      90.94,
+      91.07,
+      91.13
+     ],
+     "RH2M": [
+      64.15,
+      58.8,
+      50.71,
+      41.7,
+      34.68,
+      32.69,
+      33.74,
+      37.88,
+      42.17,
+      45.33,
+      52.71,
+      59.96
+     ],
+     "T2M": [
+      7.13,
+      8.99,
+      12.97,
+      17.28,
+      22.28,
+      25.78,
+      27.67,
+      27.62,
+      25.25,
+      21.01,
+      14.05,
+      9.02
+     ],
+     "T2M_MAX": [
+      26.6,
+      29.2,
+      33.91,
+      36.49,
+      40.78,
+      42.32,
+      44.59,
+      43.7,
+      42.13,
+      37.29,
+      31.59,
+      28.63
+     ],
+     "T2M_MIN": [
+      -8.75,
+      -3.99,
+      -3.21,
+      1.74,
+      5.64,
+      10.36,
+      14.12,
+      15.03,
+      11.29,
+      6.04,
+      -3.51,
+      -4.54
+     ],
+     "T2M_RANGE": [
+      13.11,
+      14.32,
+      15.8,
+      16.86,
+      17.7,
+      18.41,
+      18.2,
+      18.07,
+      17.39,
+      15.46,
+      13.49,
+      13.11
+     ],
+     "TS": [
+      6.97,
+      9.17,
+      13.89,
+      18.94,
+      24.71,
+      28.94,
+      31.04,
+      30.92,
+      28.01,
+      22.66,
+      14.58,
+      8.8
+     ],
+     "TS_MAX": [
+      30.08,
+      33.15,
+      41.32,
+      45.38,
+      51.86,
+      55.24,
+      56.95,
+      55.82,
+      54.27,
+      47.59,
+      38.33,
+      34.35
+     ],
+     "TS_MIN": [
+      -10.54,
+      -6.01,
+      -4.53,
+      -1.16,
+      4.81,
+      9.63,
+      13.88,
+      14.06,
+      10.45,
+      4.01,
+      -5.57,
+      -6.68
+     ],
+     "WS2M": [
+      2.87,
+      3.06,
+      3.18,
+      3.26,
+      3.44,
+      3.67,
+      3.7,
+      3.52,
+      3.1,
+      2.68,
+      2.53,
+      2.56
+     ]
+    }
+   }
+  },
+  {
+   "id": "sp-crater-sfvf",
+   "name": "SP Crater, San Francisco Volcanic Field",
+   "country": "Arizona, USA",
+   "jordan": false,
+   "lat": 35.582,
+   "lon": -111.632,
+   "status": "nasa-analog",
+   "analogFor": [
+    "moon"
+   ],
+   "terrain": "Basaltic cinder cone and lava flow",
+   "geology": {
+    "primary": "basalt",
+    "secondary": [],
+    "sources": [
+     {
+      "rocks": [
+       "basalt"
+      ],
+      "label": "Gullikson et al. 2021, USGS Open-File Report 2021-1072, doi 10.3133/ofr20211072",
+      "url": "https://doi.org/10.3133/ofr20211072",
+      "quote": "S P Mountain presents both major types of basaltic eruptions—explosive and effusive",
+      "note": "Introduction on the USGS page (checked 2026-11-03). S P Mountain is the USGS name for SP Crater, our point. Some other descriptions call its lava basaltic andesite (a little more silica than basalt); we keep the USGS wording."
+     }
+    ],
+    "unsourced": []
+   },
+   "why": "NASA practised Artemis moonwalks here in 2022, and the 2024 Artemis III field test was in the same volcanic field.",
+   "sources": [
+    {
+     "label": "NASA: Practicing our moonwalk",
+     "url": "https://www.nasa.gov/image-article/practicing-our-moonwalk/"
+    },
+    {
+     "label": "USGS: Artemis III mission tests in the San Francisco Volcanic Field",
+     "url": "https://www.usgs.gov/centers/astrogeology-science-center/news/artemis-iii-mission-tests-san-francisco-volcanic-field"
+    }
+   ],
+   "caveats": [],
+   "tests": [
+    {
+     "activity": "JETT3 simulated moonwalk with sample collection at SP Crater",
+     "who": "NASA Joint Extravehicular Activity Test Team (JETT)",
+     "year": 2022,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA: Practicing our moonwalk",
+     "url": "https://www.nasa.gov/image-article/practicing-our-moonwalk/",
+     "quote": "JETT3 was the third simulated moonwalk in preparation for future Artemis missions",
+     "pillar": "terrain"
+    },
+    {
+     "activity": "Week-long Artemis III field test: astronauts in mock spacesuits did four simulated moonwalks",
+     "who": "NASA astronauts Kate Rubins and Andre Douglas, guided by a team at NASA's Johnson Space Center in Houston",
+     "year": 2024,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA: Tests technology, practices Artemis moonwalks in Arizona desert",
+     "url": "https://www.nasa.gov/humans-in-space/nasa-tests-technology-practices-artemis-moonwalks-in-arizona-desert/",
+     "quote": "The test consists of four simulated moonwalks that follow operations planned for Artemis III and beyond",
+     "pillar": "terrain",
+     "note": "The 2024 test was in the San Francisco Volcanic Field near Flagstaff, not at SP Crater itself."
+    },
+    {
+     "activity": "Tests of a heads-up display and guide lights to help crews find their way back to the lander",
+     "who": "NASA",
+     "year": 2024,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA: Tests technology, practices Artemis moonwalks in Arizona desert",
+     "url": "https://www.nasa.gov/humans-in-space/nasa-tests-technology-practices-artemis-moonwalks-in-arizona-desert/",
+     "quote": "a heads-up display using augmented reality or lighting beacons that could help guide crew back to the lander",
+     "pillar": "terrain"
+    },
+    {
+     "activity": "Desert RATS field tests of robots, rovers, habitats and spacesuit equipment",
+     "who": "NASA Desert Research and Technology Studies (Desert RATS) team",
+     "year": null,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA analog missions fact sheet (2011, PDF)",
+     "url": "https://www.nasa.gov/wp-content/uploads/2015/06/541196main_analogfactsheet.pdf",
+     "quote": "evaluates technology, human-robotic systems and extravehicular equipment in the high desert near Flagstaff, Ariz.",
+     "pillar": "terrain",
+     "note": "The fact sheet says 'near Flagstaff'; it does not name SP Crater or give years."
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 35.582,
+     "lon": -111.632
+    },
+    "gridElevation_m": 2093.24,
+    "rawFile": "data/raw/power/sp-crater-sfvf.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 5.5637,
+     "ALLSKY_SFC_UV_INDEX": 1.6,
+     "ALLSKY_SRF_ALB": 0.21,
+     "PRECTOTCORR": 1.02,
+     "PS": 79.27,
+     "RH2M": 47.94,
+     "T2M": 10.17,
+     "T2M_MAX": 37.0,
+     "T2M_MIN": -21.21,
+     "T2M_RANGE": 14.18,
+     "TS": 10.57,
+     "TS_MAX": 46.96,
+     "TS_MIN": -30.77,
+     "WS2M": 2.55
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      3.1865,
+      4.2043,
+      5.7106,
+      7.0013,
+      7.8494,
+      8.4024,
+      6.869,
+      6.3629,
+      5.9328,
+      4.7837,
+      3.6214,
+      2.8049
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.55,
+      0.91,
+      1.48,
+      1.99,
+      2.39,
+      2.8,
+      2.54,
+      2.27,
+      1.86,
+      1.21,
+      0.73,
+      0.45
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.22,
+      0.22,
+      0.21,
+      0.2,
+      0.2,
+      0.19,
+      0.21,
+      0.21,
+      0.21,
+      0.19,
+      0.2,
+      0.21
+     ],
+     "PRECTOTCORR": [
+      1.15,
+      1.16,
+      0.78,
+      0.54,
+      0.45,
+      0.21,
+      1.84,
+      1.98,
+      1.05,
+      0.89,
+      0.86,
+      1.3
+     ],
+     "PS": [
+      79.25,
+      79.06,
+      79.08,
+      79.0,
+      79.1,
+      79.31,
+      79.59,
+      79.58,
+      79.46,
+      79.33,
+      79.3,
+      79.16
+     ],
+     "RH2M": [
+      62.72,
+      59.06,
+      50.37,
+      42.6,
+      36.77,
+      26.85,
+      43.43,
+      48.24,
+      44.04,
+      46.83,
+      52.5,
+      62.01
+     ],
+     "T2M": [
+      -0.5,
+      0.86,
+      4.85,
+      8.39,
+      13.65,
+      19.99,
+      22.18,
+      20.89,
+      17.29,
+      10.39,
+      4.17,
+      -0.72
+     ],
+     "T2M_MAX": [
+      17.37,
+      19.52,
+      24.65,
+      28.81,
+      33.56,
+      36.64,
+      37.0,
+      35.62,
+      34.89,
+      28.64,
+      22.84,
+      17.61
+     ],
+     "T2M_MIN": [
+      -18.09,
+      -21.19,
+      -14.76,
+      -8.68,
+      -4.79,
+      1.03,
+      7.7,
+      6.35,
+      -1.52,
+      -9.45,
+      -13.0,
+      -21.21
+     ],
+     "T2M_RANGE": [
+      10.99,
+      12.14,
+      14.51,
+      15.91,
+      16.66,
+      17.74,
+      14.5,
+      14.1,
+      14.8,
+      14.78,
+      13.18,
+      10.86
+     ],
+     "TS": [
+      -1.3,
+      0.56,
+      5.09,
+      9.3,
+      15.03,
+      21.53,
+      23.87,
+      22.22,
+      17.9,
+      10.18,
+      3.41,
+      -1.58
+     ],
+     "TS_MAX": [
+      21.46,
+      26.18,
+      32.43,
+      37.59,
+      42.66,
+      46.54,
+      46.96,
+      46.07,
+      44.78,
+      35.32,
+      28.2,
+      19.84
+     ],
+     "TS_MIN": [
+      -30.77,
+      -28.59,
+      -17.71,
+      -9.61,
+      -6.46,
+      -0.36,
+      5.1,
+      3.99,
+      -3.29,
+      -9.22,
+      -18.26,
+      -27.88
+     ],
+     "WS2M": [
+      2.41,
+      2.73,
+      2.89,
+      3.3,
+      2.98,
+      2.89,
+      2.09,
+      1.94,
+      2.2,
+      2.39,
+      2.4,
+      2.38
+     ]
+    }
+   }
+  },
+  {
+   "id": "craters-of-the-moon",
+   "name": "Craters of the Moon",
+   "country": "Idaho, USA",
+   "jordan": false,
+   "lat": 43.462,
+   "lon": -113.563,
+   "status": "nasa-analog",
+   "analogFor": [
+    "moon",
+    "mars"
+   ],
+   "terrain": "Basalt lava fields and lava tubes",
+   "geology": {
+    "primary": "basalt",
+    "secondary": [],
+    "sources": [
+     {
+      "rocks": [
+       "basalt"
+      ],
+      "label": "Kuntz et al. 1986, GSA Bulletin (USGS Publications Warehouse), doi 10.1130/0016-7606(1986)97<579:CMTASV>2.0.CO;2",
+      "url": "https://pubs.usgs.gov/publication/70014843",
+      "quote": "Three latest Pleistocene to Holocene basaltic lava fields, Craters of the Moon, Kings Bowl, and Wapi, are located along the Great Rift.",
+      "note": "Abstract on the USGS page (checked 2026-10-23)."
+     }
+    ],
+    "unsourced": []
+   },
+   "why": "The Apollo 14 crew trained here in 1969, and it is a field site of NASA's BASALT Mars-analog project.",
+   "sources": [
+    {
+     "label": "US National Park Service: astronaut training",
+     "url": "https://www.nps.gov/crmo/learn/historyculture/space-exploration-research-and-astronaut-training.htm"
+    },
+    {
+     "label": "BASALT research program (Astrobiology, 2019)",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6442300/"
+    }
+   ],
+   "caveats": [],
+   "tests": [
+    {
+     "activity": "Apollo 14 astronaut geology training on lava fields",
+     "who": "Apollo 14 crew and backups: Alan Shepard, Edgar Mitchell, Joe Engle, Eugene Cernan",
+     "year": 1969,
+     "type": "tested",
+     "proposed": false,
+     "source": "US National Park Service: astronaut training",
+     "url": "https://www.nps.gov/crmo/learn/historyculture/space-exploration-research-and-astronaut-training.htm",
+     "quote": "explored the lava landscape and learned the basics of volcanic geology",
+     "pillar": "geology"
+    },
+    {
+     "activity": "BASALT-1: first field test of how to do real science on simulated Mars spacewalks",
+     "who": "NASA BASALT team",
+     "year": 2016,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA: What is BASALT?",
+     "url": "https://www.nasa.gov/missions/analog-field-testing/what-is-basalt/",
+     "quote": "The first round of BASALT field tests, at Craters of the Moon National Monument and Preserve, in Idaho.",
+     "pillar": "geology"
+    },
+    {
+     "activity": "Ten simulated spacewalks run with Mars-like radio delays of 5 and 15 minutes",
+     "who": "NASA BASALT team",
+     "year": 2016,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA NTRS: BASALT-1 field deployment paper (PDF)",
+     "url": "https://ntrs.nasa.gov/api/citations/20170000363/downloads/20170000363.pdf",
+     "quote": "a series of 10 simulated extravehicular activities (EVAs) on volcanic flows in Idaho's Craters of the Moon (COTM) National Monument",
+     "pillar": "terrain"
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 43.462,
+     "lon": -113.563
+    },
+    "gridElevation_m": 1891.71,
+    "rawFile": "data/raw/power/craters-of-the-moon.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 4.5494,
+     "ALLSKY_SFC_UV_INDEX": 1.14,
+     "ALLSKY_SRF_ALB": 0.22,
+     "PRECTOTCORR": 1.14,
+     "PS": 80.96,
+     "RH2M": 59.83,
+     "T2M": 5.69,
+     "T2M_MAX": 36.91,
+     "T2M_MIN": -32.62,
+     "T2M_RANGE": 12.35,
+     "TS": 5.19,
+     "TS_MAX": 47.74,
+     "TS_MIN": -39.36,
+     "WS2M": 2.21
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      1.8694,
+      2.8073,
+      4.0298,
+      5.3556,
+      6.4932,
+      7.457,
+      7.6006,
+      6.547,
+      5.1581,
+      3.5278,
+      2.1554,
+      1.5
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.23,
+      0.44,
+      0.81,
+      1.3,
+      1.79,
+      2.24,
+      2.41,
+      1.93,
+      1.33,
+      0.74,
+      0.31,
+      0.15
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.42,
+      0.42,
+      0.31,
+      0.16,
+      0.14,
+      0.14,
+      0.14,
+      0.14,
+      0.15,
+      0.14,
+      0.17,
+      0.32
+     ],
+     "PRECTOTCORR": [
+      1.43,
+      1.28,
+      1.52,
+      1.31,
+      1.41,
+      0.92,
+      0.42,
+      0.51,
+      0.76,
+      1.08,
+      1.19,
+      1.89
+     ],
+     "PS": [
+      80.96,
+      80.75,
+      80.75,
+      80.69,
+      80.85,
+      80.99,
+      81.26,
+      81.23,
+      81.17,
+      81.06,
+      80.99,
+      80.84
+     ],
+     "RH2M": [
+      84.83,
+      82.68,
+      72.8,
+      62.38,
+      55.91,
+      47.4,
+      35.45,
+      33.36,
+      38.97,
+      53.08,
+      68.67,
+      83.68
+     ],
+     "T2M": [
+      -7.72,
+      -6.16,
+      -0.68,
+      3.92,
+      9.61,
+      15.2,
+      21.43,
+      20.0,
+      14.3,
+      6.11,
+      -1.1,
+      -7.44
+     ],
+     "T2M_MAX": [
+      7.26,
+      10.85,
+      17.42,
+      24.81,
+      31.03,
+      35.81,
+      36.91,
+      35.76,
+      33.61,
+      27.83,
+      17.98,
+      7.37
+     ],
+     "T2M_MIN": [
+      -29.23,
+      -25.53,
+      -21.87,
+      -10.44,
+      -6.47,
+      -3.59,
+      2.51,
+      1.53,
+      -3.66,
+      -13.87,
+      -32.62,
+      -27.65
+     ],
+     "T2M_RANGE": [
+      10.09,
+      10.28,
+      10.43,
+      11.85,
+      13.4,
+      14.83,
+      15.92,
+      15.33,
+      14.41,
+      12.41,
+      9.43,
+      9.59
+     ],
+     "TS": [
+      -11.15,
+      -8.26,
+      -1.34,
+      4.34,
+      10.45,
+      16.27,
+      22.52,
+      20.87,
+      14.48,
+      5.59,
+      -2.33,
+      -10.01
+     ],
+     "TS_MAX": [
+      9.98,
+      12.88,
+      22.35,
+      29.84,
+      36.39,
+      42.44,
+      47.74,
+      43.91,
+      39.56,
+      33.79,
+      21.63,
+      9.18
+     ],
+     "TS_MIN": [
+      -39.36,
+      -33.1,
+      -27.45,
+      -16.12,
+      -7.2,
+      -5.33,
+      1.12,
+      0.18,
+      -6.9,
+      -16.25,
+      -38.22,
+      -39.05
+     ],
+     "WS2M": [
+      1.77,
+      2.13,
+      2.43,
+      2.51,
+      2.46,
+      2.51,
+      2.39,
+      2.27,
+      2.17,
+      2.1,
+      1.95,
+      1.85
+     ]
+    }
+   }
+  },
+  {
+   "id": "ries-crater",
+   "name": "Nördlinger Ries",
+   "country": "Germany",
+   "jordan": false,
+   "lat": 48.883,
+   "lon": 10.617,
+   "status": "nasa-analog",
+   "analogFor": [
+    "moon"
+   ],
+   "terrain": "Complex impact crater (about 24 km)",
+   "geology": {
+    "primary": "impactite",
+    "secondary": [
+     "carbonate",
+     "granite"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "impactite"
+      ],
+      "label": "von Engelhardt et al. 1995, Meteoritics, doi 10.1111/j.1945-5100.1995.tb01126.x",
+      "url": "https://doi.org/10.1111/j.1945-5100.1995.tb01126.x",
+      "quote": "The distribution and petrography of surficial suevite breccias of the Ries impact crater in Southern Germany are reviewed",
+      "note": "Abstract (via OpenAlex, checked 2026-10-23). It is about the Ries crater as a whole, not our exact point."
+     }
+    ],
+    "unsourced": [
+     "carbonate",
+     "granite"
+    ],
+    "note": "Rock type source still to be added for limestone / dolomite and granite."
+   },
+   "why": "Apollo 14 and 17 crews trained in this impact crater, and ESA uses it in its PANGAEA astronaut geology course.",
+   "sources": [
+    {
+     "label": "ESA: A geological puzzle (Ries, PANGAEA)",
+     "url": "https://www.esa.int/ESA_Multimedia/Images/2024/09/A_geological_puzzle"
+    },
+    {
+     "label": "Earth Impact Database: Ries (archived)",
+     "url": "https://web.archive.org/web/20251214103221/http://www.passc.net/EarthImpactDatabase/New%20website_05-2018/Ries.html"
+    }
+   ],
+   "caveats": [],
+   "tests": [
+    {
+     "activity": "Apollo astronaut geology training on impact rocks",
+     "who": "NASA, for the Apollo 14 and 17 astronauts",
+     "year": 1970,
+     "type": "tested",
+     "proposed": false,
+     "source": "UNESCO Global Geopark Ries: science",
+     "url": "https://en.geopark-ries.de/wissenschaft/",
+     "quote": "NASA conducted geological field training in the Ries Crater",
+     "pillar": "geology",
+     "note": "The page says August 1970."
+    },
+    {
+     "activity": "ESA PANGAEA geology course: astronauts read impact breccia and suevite rocks",
+     "who": "ESA (astronauts Rosemary Coogan, Arnaud Prost and JAXA's Norishige Kanai)",
+     "year": 2024,
+     "type": "tested",
+     "proposed": false,
+     "source": "ESA: A geological puzzle (Ries, PANGAEA)",
+     "url": "https://www.esa.int/ESA_Multimedia/Images/2024/09/A_geological_puzzle",
+     "quote": "the geological puzzle the astronauts must decipher, piece by piece, during ESA’s PANGAEA geology training",
+     "pillar": "geology"
+    },
+    {
+     "activity": "Earlier ESA astronaut geology field training",
+     "who": "European Space Agency astronauts",
+     "year": "2017, 2018, 2021",
+     "type": "tested",
+     "proposed": false,
+     "source": "UNESCO Global Geopark Ries: science",
+     "url": "https://en.geopark-ries.de/wissenschaft/",
+     "quote": "several geological field-training sessions (2017/2018/2021)",
+     "pillar": "geology"
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 48.883,
+     "lon": 10.617
+    },
+    "gridElevation_m": 470.09,
+    "rawFile": "data/raw/power/ries-crater.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 3.2539,
+     "ALLSKY_SFC_UV_INDEX": 0.7,
+     "ALLSKY_SRF_ALB": 0.18,
+     "PRECTOTCORR": 2.05,
+     "PS": 96.11,
+     "RH2M": 81.27,
+     "T2M": 8.74,
+     "T2M_MAX": 36.32,
+     "T2M_MIN": -19.07,
+     "T2M_RANGE": 9.0,
+     "TS": 8.65,
+     "TS_MAX": 40.63,
+     "TS_MIN": -24.6,
+     "WS2M": 2.6
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      1.0046,
+      1.8588,
+      3.0622,
+      4.4321,
+      5.1106,
+      5.6885,
+      5.5601,
+      4.7482,
+      3.467,
+      2.1307,
+      1.11,
+      0.8052
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.08,
+      0.21,
+      0.47,
+      0.86,
+      1.21,
+      1.48,
+      1.48,
+      1.21,
+      0.77,
+      0.37,
+      0.13,
+      0.06
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.26,
+      0.28,
+      0.19,
+      0.16,
+      0.18,
+      0.16,
+      0.16,
+      0.15,
+      0.15,
+      0.15,
+      0.15,
+      0.2
+     ],
+     "PRECTOTCORR": [
+      1.91,
+      1.52,
+      1.59,
+      1.45,
+      2.73,
+      2.47,
+      2.8,
+      2.62,
+      1.85,
+      1.79,
+      1.86,
+      1.92
+     ],
+     "PS": [
+      96.12,
+      96.03,
+      95.98,
+      95.95,
+      96.05,
+      96.15,
+      96.16,
+      96.16,
+      96.3,
+      96.2,
+      96.03,
+      96.21
+     ],
+     "RH2M": [
+      92.49,
+      88.53,
+      82.02,
+      75.88,
+      75.76,
+      73.87,
+      70.78,
+      71.89,
+      75.84,
+      84.55,
+      91.03,
+      92.99
+     ],
+     "T2M": [
+      -1.19,
+      -0.25,
+      3.78,
+      8.68,
+      12.95,
+      16.91,
+      18.74,
+      18.33,
+      13.82,
+      8.96,
+      3.66,
+      -0.07
+     ],
+     "T2M_MAX": [
+      12.38,
+      16.06,
+      21.81,
+      27.85,
+      29.16,
+      32.1,
+      35.65,
+      36.32,
+      29.31,
+      24.98,
+      19.56,
+      13.64
+     ],
+     "T2M_MIN": [
+      -19.07,
+      -18.16,
+      -18.02,
+      -5.19,
+      -2.04,
+      2.78,
+      5.74,
+      5.02,
+      -0.41,
+      -6.38,
+      -8.33,
+      -17.75
+     ],
+     "T2M_RANGE": [
+      5.85,
+      7.43,
+      9.55,
+      11.11,
+      10.55,
+      10.32,
+      10.65,
+      10.75,
+      10.74,
+      9.18,
+      6.45,
+      5.37
+     ],
+     "TS": [
+      -1.69,
+      -0.7,
+      3.59,
+      8.75,
+      13.19,
+      17.16,
+      18.97,
+      18.53,
+      13.8,
+      8.76,
+      3.36,
+      -0.53
+     ],
+     "TS_MAX": [
+      12.51,
+      17.32,
+      24.44,
+      28.24,
+      29.91,
+      34.99,
+      40.63,
+      39.8,
+      31.99,
+      27.22,
+      20.01,
+      13.72
+     ],
+     "TS_MIN": [
+      -24.27,
+      -23.31,
+      -24.6,
+      -5.88,
+      -4.16,
+      1.46,
+      4.88,
+      3.85,
+      -2.85,
+      -8.06,
+      -15.13,
+      -20.85
+     ],
+     "WS2M": [
+      3.21,
+      3.19,
+      3.09,
+      2.54,
+      2.5,
+      2.19,
+      2.21,
+      2.09,
+      2.2,
+      2.45,
+      2.59,
+      2.95
+     ]
+    }
+   }
+  },
+  {
+   "id": "mistastin",
+   "name": "Mistastin crater",
+   "country": "Canada",
+   "jordan": false,
+   "lat": 55.883,
+   "lon": -63.3,
+   "status": "analog",
+   "analogFor": [
+    "moon"
+   ],
+   "terrain": "Impact crater (about 28 km) in anorthosite",
+   "geology": {
+    "primary": "anorthosite",
+    "secondary": [
+     "impactite",
+     "granite"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "anorthosite"
+      ],
+      "label": "Canadian Space Agency: training in geology",
+      "url": "https://www.asc-csa.gc.ca/eng/astronauts/about-the-job/space-mission-simulations/training-in-geology.asp",
+      "quote": "Sample a rock called anorthosite, which is rare on Earth but abundant on the Moon"
+     }
+    ],
+    "unsourced": [
+     "impactite",
+     "granite"
+    ],
+    "note": "Rock type source still to be added for impact breccia and granite."
+   },
+   "why": "An impact crater in anorthosite, the same kind of rock as the lunar highlands around the south pole. Astronauts do geology training here.",
+   "sources": [
+    {
+     "label": "Canadian Space Agency image: Mistastin crater",
+     "url": "https://www.asc-csa.gc.ca/eng/multimedia/search/image/18646"
+    },
+    {
+     "label": "Earth Impact Database: Mistastin (archived)",
+     "url": "https://web.archive.org/web/20240920095648/http://www.passc.net/EarthImpactDatabase/New%20website_05-2018/Mistastin.html"
+    }
+   ],
+   "caveats": [
+    "The crater centre holds a lake, so the NASA POWER cell includes water.",
+    "The 10 km terrain box is not at the pin: it is on the dry west side of the crater (centre 55.88, -63.5, the Discovery Hill side), because a box at the crater centre is mostly lake. Until 3 November 2026 Mistastin had no terrain score for that reason. See coordSource in data/terrain.json."
+   ],
+   "tests": [
+    {
+     "activity": "Two-week astronaut geology expedition: hiking the crater, collecting rock samples",
+     "who": "CSA astronaut Joshua Kutryk and NASA astronaut Matthew Dominick",
+     "year": 2021,
+     "type": "tested",
+     "proposed": false,
+     "source": "Canadian Space Agency: training in geology",
+     "url": "https://www.asc-csa.gc.ca/eng/astronauts/about-the-job/space-mission-simulations/training-in-geology.asp",
+     "quote": "collecting rock samples and practising their geology skills",
+     "pillar": "geology",
+     "note": "CSA lists the dates as 3 to 15 September 2021."
+    },
+    {
+     "activity": "Lunar geology training: astronauts sampled anorthosite, a rock that is rare on Earth but common on the Moon",
+     "who": "CSA astronauts Jeremy Hansen and Jenni Gibbons, NASA astronauts Christina Koch and Raja Chari",
+     "year": 2023,
+     "type": "tested",
+     "proposed": false,
+     "source": "Canadian Space Agency: training in geology",
+     "url": "https://www.asc-csa.gc.ca/eng/astronauts/about-the-job/space-mission-simulations/training-in-geology.asp",
+     "quote": "Sample a rock called anorthosite, which is rare on Earth but abundant on the Moon",
+     "pillar": "geology",
+     "note": "CSA lists the dates as 1 to 9 September 2023."
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 55.883,
+     "lon": -63.3
+    },
+    "gridElevation_m": 426.62,
+    "rawFile": "data/raw/power/mistastin.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 3.0089,
+     "ALLSKY_SFC_UV_INDEX": 0.56,
+     "ALLSKY_SRF_ALB": 0.37,
+     "PRECTOTCORR": 2.6,
+     "PS": 95.87,
+     "RH2M": 92.59,
+     "T2M": -5.86,
+     "T2M_MAX": 25.69,
+     "T2M_MIN": -46.56,
+     "T2M_RANGE": 8.39,
+     "TS": -6.07,
+     "TS_MAX": 25.84,
+     "TS_MIN": -49.61,
+     "WS2M": 4.32
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      0.8978,
+      2.0352,
+      3.7308,
+      5.0626,
+      5.3755,
+      5.221,
+      4.5986,
+      3.7807,
+      2.7348,
+      1.4525,
+      0.6238,
+      0.5568
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.04,
+      0.14,
+      0.48,
+      0.92,
+      1.11,
+      1.2,
+      1.13,
+      0.87,
+      0.51,
+      0.19,
+      0.04,
+      0.02
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.57,
+      0.62,
+      0.65,
+      0.65,
+      0.43,
+      0.22,
+      0.12,
+      0.12,
+      0.11,
+      0.19,
+      0.27,
+      0.48
+     ],
+     "PRECTOTCORR": [
+      1.78,
+      1.56,
+      1.61,
+      2.35,
+      2.23,
+      3.45,
+      4.36,
+      3.63,
+      3.15,
+      2.97,
+      2.36,
+      1.71
+     ],
+     "PS": [
+      95.28,
+      95.51,
+      95.95,
+      96.08,
+      96.29,
+      96.09,
+      95.92,
+      95.98,
+      95.95,
+      95.96,
+      95.76,
+      95.62
+     ],
+     "RH2M": [
+      96.03,
+      95.74,
+      94.01,
+      92.62,
+      91.23,
+      88.08,
+      87.58,
+      88.95,
+      89.94,
+      93.48,
+      96.85,
+      96.71
+     ],
+     "T2M": [
+      -24.03,
+      -23.23,
+      -16.5,
+      -8.22,
+      -0.73,
+      6.9,
+      10.92,
+      10.3,
+      4.64,
+      -1.77,
+      -10.81,
+      -18.86
+     ],
+     "T2M_MAX": [
+      0.89,
+      0.09,
+      1.16,
+      1.64,
+      21.61,
+      25.69,
+      25.09,
+      23.9,
+      23.24,
+      15.09,
+      1.9,
+      1.08
+     ],
+     "T2M_MIN": [
+      -46.56,
+      -44.81,
+      -41.64,
+      -31.39,
+      -20.25,
+      -9.97,
+      -0.56,
+      -1.57,
+      -6.68,
+      -20.0,
+      -29.19,
+      -41.53
+     ],
+     "T2M_RANGE": [
+      9.37,
+      10.61,
+      11.49,
+      9.43,
+      7.01,
+      8.36,
+      8.28,
+      7.95,
+      7.35,
+      5.69,
+      7.29,
+      7.99
+     ],
+     "TS": [
+      -24.81,
+      -23.91,
+      -16.94,
+      -8.34,
+      -0.56,
+      7.47,
+      11.25,
+      10.48,
+      4.65,
+      -2.08,
+      -11.42,
+      -19.62
+     ],
+     "TS_MAX": [
+      0.01,
+      -0.17,
+      0.06,
+      0.3,
+      24.67,
+      25.77,
+      25.84,
+      24.92,
+      23.09,
+      15.67,
+      0.98,
+      0.02
+     ],
+     "TS_MIN": [
+      -49.61,
+      -47.89,
+      -44.53,
+      -35.78,
+      -22.21,
+      -11.52,
+      -1.78,
+      -2.07,
+      -8.75,
+      -22.79,
+      -30.44,
+      -45.97
+     ],
+     "WS2M": [
+      5.28,
+      4.97,
+      5.0,
+      5.01,
+      4.02,
+      3.68,
+      3.28,
+      3.12,
+      3.88,
+      3.98,
+      4.51,
+      5.1
+     ]
+    }
+   }
+  },
+  {
+   "id": "qaidam-dalangtan",
+   "name": "Dalangtan playa, Qaidam Basin",
+   "country": "China",
+   "jordan": false,
+   "lat": 38.503,
+   "lon": 91.398,
+   "status": "analog",
+   "analogFor": [
+    "mars"
+   ],
+   "terrain": "Salt playa with wind-carved ridges in a cold high desert",
+   "geology": {
+    "primary": "evaporite",
+    "secondary": [
+     "mudstone"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "evaporite"
+      ],
+      "label": "Huang et al. 2018, PLOS ONE (Dalangtan)",
+      "url": "https://doi.org/10.1371/journal.pone.0200949",
+      "quote": "These samples are composed of salt minerals, minor silicate mineral fragments and clays."
+     }
+    ],
+    "unsourced": [
+     "mudstone"
+    ],
+    "note": "Rock type source still to be added for mudstone."
+   },
+   "why": "Proposed in published research as a Mars analog: cold, dry, high UV, and its salts record a change from wet to dry like early Mars.",
+   "sources": [
+    {
+     "label": "Qaidam Basin as a Mars analog, Earth-Science Reviews",
+     "url": "https://doi.org/10.1016/j.earscirev.2016.11.003"
+    },
+    {
+     "label": "Huang et al. 2018, PLOS ONE (Dalangtan)",
+     "url": "https://doi.org/10.1371/journal.pone.0200949"
+    }
+   ],
+   "caveats": [],
+   "tests": [
+    {
+     "activity": "Field sampling of microbes and salts in a dry salt lake, to learn where to look for life on Mars",
+     "who": "China University of Geosciences (Wuhan) and partners (Huang et al. 2018)",
+     "year": 2015,
+     "type": "tested",
+     "proposed": false,
+     "source": "Huang et al. 2018, PLOS ONE (Dalangtan)",
+     "url": "https://doi.org/10.1371/journal.pone.0200949",
+     "quote": "during the field trip (20th to 30th of June 2015)",
+     "pillar": "resources"
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 38.503,
+     "lon": 91.398
+    },
+    "gridElevation_m": 3015.38,
+    "rawFile": "data/raw/power/qaidam-dalangtan.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 5.1864,
+     "ALLSKY_SFC_UV_INDEX": 1.38,
+     "ALLSKY_SRF_ALB": 0.27,
+     "PRECTOTCORR": 0.14,
+     "PS": 70.58,
+     "RH2M": 33.54,
+     "T2M": 3.2,
+     "T2M_MAX": 31.52,
+     "T2M_MIN": -24.16,
+     "T2M_RANGE": 13.65,
+     "TS": 4.56,
+     "TS_MAX": 47.77,
+     "TS_MIN": -30.06,
+     "WS2M": 2.69
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      2.909,
+      3.8914,
+      5.2442,
+      6.4327,
+      7.1592,
+      7.0392,
+      6.8321,
+      6.5462,
+      5.6366,
+      4.5682,
+      3.289,
+      2.6273
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.38,
+      0.67,
+      1.14,
+      1.68,
+      2.16,
+      2.34,
+      2.36,
+      2.19,
+      1.67,
+      1.03,
+      0.53,
+      0.33
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.28,
+      0.28,
+      0.28,
+      0.28,
+      0.27,
+      0.26,
+      0.26,
+      0.26,
+      0.25,
+      0.26,
+      0.26,
+      0.27
+     ],
+     "PRECTOTCORR": [
+      0.03,
+      0.02,
+      0.02,
+      0.05,
+      0.25,
+      0.36,
+      0.42,
+      0.24,
+      0.19,
+      0.02,
+      0.01,
+      0.01
+     ],
+     "PS": [
+      70.23,
+      70.18,
+      70.4,
+      70.56,
+      70.64,
+      70.61,
+      70.63,
+      70.76,
+      70.88,
+      70.93,
+      70.68,
+      70.47
+     ],
+     "RH2M": [
+      37.27,
+      34.87,
+      29.23,
+      27.31,
+      30.49,
+      36.15,
+      38.66,
+      35.52,
+      35.03,
+      31.01,
+      30.58,
+      36.36
+     ],
+     "T2M": [
+      -10.22,
+      -6.51,
+      -1.45,
+      3.82,
+      8.34,
+      13.02,
+      15.57,
+      14.94,
+      9.76,
+      2.68,
+      -3.26,
+      -8.77
+     ],
+     "T2M_MAX": [
+      8.79,
+      12.64,
+      19.55,
+      24.41,
+      26.59,
+      28.28,
+      31.42,
+      31.52,
+      25.09,
+      21.02,
+      14.49,
+      8.95
+     ],
+     "T2M_MIN": [
+      -24.16,
+      -23.5,
+      -19.24,
+      -15.23,
+      -7.25,
+      -3.97,
+      2.11,
+      -1.43,
+      -5.69,
+      -10.01,
+      -17.99,
+      -22.16
+     ],
+     "T2M_RANGE": [
+      13.63,
+      13.7,
+      13.14,
+      15.1,
+      14.88,
+      13.59,
+      13.68,
+      13.64,
+      13.87,
+      13.31,
+      12.08,
+      13.23
+     ],
+     "TS": [
+      -11.55,
+      -6.69,
+      -0.56,
+      5.56,
+      11.16,
+      16.57,
+      19.51,
+      18.57,
+      12.3,
+      3.24,
+      -3.84,
+      -10.12
+     ],
+     "TS_MAX": [
+      10.58,
+      16.97,
+      29.09,
+      35.86,
+      39.94,
+      45.3,
+      47.77,
+      45.67,
+      39.81,
+      31.61,
+      19.93,
+      10.11
+     ],
+     "TS_MIN": [
+      -30.06,
+      -27.02,
+      -20.85,
+      -17.05,
+      -8.91,
+      -6.1,
+      -0.41,
+      -3.47,
+      -7.56,
+      -11.66,
+      -20.6,
+      -27.05
+     ],
+     "WS2M": [
+      2.28,
+      2.61,
+      2.93,
+      3.14,
+      3.18,
+      3.07,
+      3.04,
+      2.78,
+      2.45,
+      2.2,
+      2.28,
+      2.27
+     ]
+    }
+   }
+  },
+  {
+   "id": "tso-kar-ladakh",
+   "name": "Tso Kar basin, Ladakh",
+   "country": "India",
+   "jordan": false,
+   "lat": 33.3,
+   "lon": 77.983,
+   "status": "analog",
+   "analogFor": [
+    "mars"
+   ],
+   "terrain": "High-altitude salt lake basin with permafrost",
+   "geology": {
+    "primary": "evaporite",
+    "secondary": [
+     "mudstone",
+     "ice"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "ice",
+       "mudstone"
+      ],
+      "label": "Ladakh as a planetary analog, International Journal of Astrobiology",
+      "url": "https://doi.org/10.1017/S1473550419000119",
+      "quote": "The permafrost mound along the Tso-Kar palaeo-shoreline included cryo structures such as clear lenses of ice, in a matrix of dark grey icy mud",
+      "note": "Full text, 'Tso-Kar permafrost region': ice lenses in icy mud at the lake's old shoreline. Before 2026-10-26 the quote was from the abstract ('periglacial ice-mud and permafrost melt water environments in the Tso-Kar region')."
+     },
+     {
+      "rocks": [
+       "evaporite"
+      ],
+      "label": "Ladakh as a planetary analog, International Journal of Astrobiology",
+      "url": "https://doi.org/10.1017/S1473550419000119",
+      "quote": "Tso-Kar Lake shoreline with abundant salt deposits",
+      "note": "Full text, caption of Fig. 15(a): salt deposits at Tso Kar itself. Before 2026-10-26 the quote was from the HABIT test, which was at Khardung La, not at Tso Kar."
+     }
+    ],
+    "unsourced": []
+   },
+   "why": "High-altitude salt lake basin with permafrost, reviewed as a Mars analog. It has the lowest air pressure of all our sites.",
+   "sources": [
+    {
+     "label": "Ladakh as a planetary analog, International Journal of Astrobiology",
+     "url": "https://doi.org/10.1017/S1473550419000119"
+    }
+   ],
+   "caveats": [
+    "The NASA POWER cell is centred higher than the lake itself."
+   ],
+   "tests": [
+    {
+     "activity": "Tests of life-detection methods in brines, icy mud and permafrost melt water",
+     "who": "Ladakh pathfinding expedition team (Pandey et al. 2019)",
+     "year": 2016,
+     "type": "tested",
+     "proposed": false,
+     "source": "Ladakh as a planetary analog, International Journal of Astrobiology",
+     "url": "https://doi.org/10.1017/S1473550419000119",
+     "quote": "biomass measurements in brines, periglacial ice-mud and permafrost melt water environments in the Tso-Kar region",
+     "pillar": "resources"
+    },
+    {
+     "activity": "A mock-up of the ExoMars HABIT instrument measured how salts in the soil take up water from the air",
+     "who": "Ladakh pathfinding expedition team (Pandey et al. 2019)",
+     "year": 2016,
+     "type": "tested",
+     "proposed": false,
+     "source": "Ladakh as a planetary analog, International Journal of Astrobiology",
+     "url": "https://doi.org/10.1017/S1473550419000119",
+     "quote": "ExoMars Mission instrument mockup: HabitAbility: Brines, Irradiance and Temperature (HABIT)",
+     "pillar": "climate",
+     "note": "Not at Tso Kar itself: the paper's full text says the HABIT mock-up ran at Khardung La, a high pass in Ladakh ('Deliquescent melting of calcium chloride at Khardung La'). Listed as a test the same expedition made in the region."
+    },
+    {
+     "activity": "HOPE analog mission: two crew members for 10 days, testing health checks, surface work and sampling",
+     "who": "ISRO Human Space Flight Centre with an industry partner",
+     "year": 2025,
+     "type": "tested",
+     "proposed": false,
+     "source": "ISRO: Space analog mission in Tso Kar Valley, Ladakh",
+     "url": "https://www.isro.gov.in/Space_Analog_Mission.html",
+     "quote": "validate health-monitoring protocols, planetary surface operations, and refine sample collection and microbial analysis techniques",
+     "pillar": "climate",
+     "note": "ISRO says it chose Tso Kar for its high UV, low air pressure, cold and salty permafrost."
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": 33.3,
+     "lon": 77.983
+    },
+    "gridElevation_m": 5058.42,
+    "rawFile": "data/raw/power/tso-kar-ladakh.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 4.9075,
+     "ALLSKY_SFC_UV_INDEX": 1.66,
+     "ALLSKY_SRF_ALB": 0.22,
+     "PRECTOTCORR": 0.62,
+     "PS": 54.77,
+     "RH2M": 56.53,
+     "T2M": -6.09,
+     "T2M_MAX": 20.99,
+     "T2M_MIN": -40.01,
+     "T2M_RANGE": 12.91,
+     "TS": -4.81,
+     "TS_MAX": 40.16,
+     "TS_MIN": -57.54,
+     "WS2M": 2.58
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      2.4806,
+      2.7,
+      4.0224,
+      5.4317,
+      6.7166,
+      6.762,
+      6.6631,
+      6.3667,
+      5.9887,
+      5.0981,
+      3.6734,
+      2.861
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      0.52,
+      0.71,
+      1.28,
+      1.92,
+      2.55,
+      2.65,
+      2.68,
+      2.54,
+      2.13,
+      1.49,
+      0.86,
+      0.57
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.26,
+      0.26,
+      0.28,
+      0.28,
+      0.26,
+      0.2,
+      0.17,
+      0.17,
+      0.16,
+      0.17,
+      0.21,
+      0.25
+     ],
+     "PRECTOTCORR": [
+      0.6,
+      0.6,
+      0.71,
+      0.47,
+      0.4,
+      0.53,
+      1.23,
+      1.44,
+      0.52,
+      0.18,
+      0.41,
+      0.35
+     ],
+     "PS": [
+      54.17,
+      54.25,
+      54.55,
+      54.82,
+      54.96,
+      54.98,
+      55.04,
+      55.11,
+      55.11,
+      54.99,
+      54.77,
+      54.46
+     ],
+     "RH2M": [
+      68.31,
+      73.02,
+      66.91,
+      56.73,
+      50.54,
+      49.01,
+      51.69,
+      56.64,
+      50.22,
+      44.17,
+      51.22,
+      60.75
+     ],
+     "T2M": [
+      -19.08,
+      -17.54,
+      -12.91,
+      -6.54,
+      -1.89,
+      2.85,
+      6.97,
+      6.44,
+      1.51,
+      -5.14,
+      -11.65,
+      -16.74
+     ],
+     "T2M_MAX": [
+      -1.8,
+      -2.08,
+      6.39,
+      9.18,
+      12.5,
+      18.74,
+      20.99,
+      20.56,
+      16.8,
+      11.7,
+      4.1,
+      2.76
+     ],
+     "T2M_MIN": [
+      -40.01,
+      -38.98,
+      -33.3,
+      -26.08,
+      -16.68,
+      -12.69,
+      -7.25,
+      -6.67,
+      -9.7,
+      -17.8,
+      -35.7,
+      -39.16
+     ],
+     "T2M_RANGE": [
+      12.5,
+      13.0,
+      13.12,
+      10.78,
+      10.99,
+      14.12,
+      15.38,
+      14.68,
+      13.89,
+      11.06,
+      12.59,
+      12.81
+     ],
+     "TS": [
+      -21.41,
+      -19.58,
+      -13.39,
+      -4.14,
+      2.28,
+      7.52,
+      11.26,
+      9.85,
+      3.93,
+      -3.37,
+      -12.44,
+      -19.03
+     ],
+     "TS_MAX": [
+      4.82,
+      4.98,
+      17.38,
+      24.51,
+      31.95,
+      37.81,
+      40.16,
+      36.84,
+      32.92,
+      22.85,
+      12.61,
+      8.88
+     ],
+     "TS_MIN": [
+      -57.3,
+      -55.86,
+      -50.22,
+      -44.66,
+      -23.81,
+      -22.15,
+      -8.76,
+      -8.77,
+      -11.76,
+      -23.86,
+      -48.74,
+      -57.54
+     ],
+     "WS2M": [
+      2.68,
+      2.97,
+      2.74,
+      3.05,
+      2.96,
+      2.64,
+      2.37,
+      2.14,
+      2.24,
+      2.25,
+      2.39,
+      2.54
+     ]
+    }
+   }
+  },
+  {
+   "id": "pilbara-north-pole",
+   "name": "North Pole Dome, Pilbara",
+   "country": "Australia",
+   "jordan": false,
+   "lat": -21.048,
+   "lon": 119.393,
+   "status": "nasa-analog",
+   "analogFor": [
+    "mars"
+   ],
+   "terrain": "Ancient volcanic and hydrothermal rocks with stromatolites",
+   "geology": {
+    "primary": "basalt",
+    "secondary": [
+     "chert"
+    ],
+    "sources": [
+     {
+      "rocks": [
+       "basalt"
+      ],
+      "label": "Rasmussen & Muhling 2023, Goldschmidt 2023 abstracts, doi 10.7185/gold2023.19457",
+      "url": "https://doi.org/10.7185/gold2023.19457",
+      "quote": "Hydrothermal hydrocarbon generation in 3.5 Ga basalt-hosted seafloor vent systems, North Pole Dome, Pilbara Craton, Australia",
+      "note": "The quote is the abstract title (checked on Crossref, 2026-10-23)."
+     },
+     {
+      "rocks": [
+       "chert"
+      ],
+      "label": "Nijman et al. 1998, Precambrian Research, doi 10.1016/S0301-9268(97)00062-4",
+      "url": "https://doi.org/10.1016/S0301-9268(97)00062-4",
+      "quote": "Growth fault control of Early Archaean cherts, barite mounds and chert-barite veins, North Pole Dome, Eastern Pilbara, Western Australia",
+      "note": "The quote is the paper title (checked on Crossref, 2026-10-23)."
+     }
+    ],
+    "unsourced": []
+   },
+   "why": "Some of Earth's oldest signs of life are preserved here. The Mars 2020 and ExoMars teams held their first joint field training here in 2019.",
+   "sources": [
+    {
+     "label": "JPL: Scientists explore Outback as testbed for Mars",
+     "url": "https://www.jpl.nasa.gov/news/scientists-explore-outback-as-testbed-for-mars"
+    },
+    {
+     "label": "Dresser Formation as a Mars analogue (arXiv 1401.5201)",
+     "url": "https://arxiv.org/abs/1401.5201"
+    }
+   ],
+   "caveats": [],
+   "tests": [
+    {
+     "activity": "First joint field expedition of the Mars 2020 and ExoMars science teams, learning to spot fossil stromatolites",
+     "who": "NASA Mars 2020 and ESA-Roscosmos ExoMars science teams, led by Martin Van Kranendonk (UNSW)",
+     "year": 2019,
+     "type": "tested",
+     "proposed": false,
+     "source": "NASA: Mars science teams investigate ancient life in Australia",
+     "url": "https://www.nasa.gov/solar-system/mars-scientists-investigate-ancient-life-in-australia/",
+     "quote": "Among the science teams’ stops: a stromatolite cluster in a grouping of rock called the Dresser Formation",
+     "pillar": "geology",
+     "note": "The Dresser Formation is the North Pole Dome rock studied in arXiv 1401.5201 (site source)."
+    }
+   ],
+   "power": {
+    "source": "NASA POWER climatology API, community RE",
+    "period": "20-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2020)",
+    "apiVersion": "v2.10.0",
+    "request": {
+     "lat": -21.048,
+     "lon": 119.393
+    },
+    "gridElevation_m": 175.37,
+    "rawFile": "data/raw/power/pilbara-north-pole.json",
+    "fetched": "2026-10-09",
+    "page": "https://power.larc.nasa.gov/",
+    "units": {
+     "ALLSKY_SFC_SW_DWN": "kW-hr/m^2/day",
+     "ALLSKY_SFC_UV_INDEX": "W m-2 x 40",
+     "ALLSKY_SRF_ALB": "dimensionless",
+     "PRECTOTCORR": "mm/day",
+     "PS": "kPa",
+     "RH2M": "%",
+     "T2M": "C",
+     "T2M_MAX": "C",
+     "T2M_MIN": "C",
+     "T2M_RANGE": "C",
+     "TS": "C",
+     "TS_MAX": "C",
+     "TS_MIN": "C",
+     "WS2M": "m/s"
+    },
+    "annual": {
+     "ALLSKY_SFC_SW_DWN": 6.4068,
+     "ALLSKY_SFC_UV_INDEX": 2.29,
+     "ALLSKY_SRF_ALB": 0.18,
+     "PRECTOTCORR": 1.11,
+     "PS": 99.11,
+     "RH2M": 39.26,
+     "T2M": 27.5,
+     "T2M_MAX": 48.95,
+     "T2M_MIN": 6.49,
+     "T2M_RANGE": 15.63,
+     "TS": 29.2,
+     "TS_MAX": 64.7,
+     "TS_MIN": 5.75,
+     "WS2M": 3.27
+    },
+    "monthly": {
+     "ALLSKY_SFC_SW_DWN": [
+      7.428,
+      7.0906,
+      6.4315,
+      5.7002,
+      4.8242,
+      4.3558,
+      4.6982,
+      5.8207,
+      6.8914,
+      7.6015,
+      8.0779,
+      8.0016
+     ],
+     "ALLSKY_SFC_UV_INDEX": [
+      3.26,
+      3.12,
+      2.65,
+      2.02,
+      1.42,
+      1.12,
+      1.22,
+      1.63,
+      2.16,
+      2.62,
+      2.99,
+      3.26
+     ],
+     "ALLSKY_SRF_ALB": [
+      0.17,
+      0.17,
+      0.17,
+      0.18,
+      0.18,
+      0.18,
+      0.18,
+      0.18,
+      0.18,
+      0.17,
+      0.17,
+      0.17
+     ],
+     "PRECTOTCORR": [
+      3.39,
+      3.42,
+      2.73,
+      0.52,
+      0.5,
+      0.8,
+      0.49,
+      0.04,
+      0.11,
+      0.11,
+      0.25,
+      1.04
+     ],
+     "PS": [
+      98.5,
+      98.58,
+      98.83,
+      99.18,
+      99.46,
+      99.64,
+      99.67,
+      99.57,
+      99.34,
+      99.06,
+      98.81,
+      98.6
+     ],
+     "RH2M": [
+      50.45,
+      54.77,
+      53.07,
+      43.12,
+      37.38,
+      39.44,
+      37.82,
+      30.7,
+      29.15,
+      28.19,
+      30.53,
+      37.4
+     ],
+     "T2M": [
+      32.68,
+      31.58,
+      30.46,
+      28.47,
+      23.64,
+      19.79,
+      19.62,
+      21.62,
+      25.67,
+      30.47,
+      32.6,
+      33.67
+     ],
+     "T2M_MAX": [
+      48.81,
+      48.66,
+      47.6,
+      43.15,
+      38.07,
+      34.42,
+      35.45,
+      38.89,
+      41.83,
+      46.66,
+      47.12,
+      48.95
+     ],
+     "T2M_MIN": [
+      18.99,
+      17.76,
+      14.47,
+      11.59,
+      8.58,
+      6.57,
+      6.49,
+      7.26,
+      9.81,
+      11.98,
+      17.26,
+      20.25
+     ],
+     "T2M_RANGE": [
+      13.76,
+      13.35,
+      13.31,
+      14.58,
+      14.8,
+      14.69,
+      15.64,
+      17.31,
+      18.16,
+      18.07,
+      17.58,
+      16.16
+     ],
+     "TS": [
+      35.19,
+      33.5,
+      31.89,
+      29.58,
+      24.27,
+      20.19,
+      20.05,
+      22.53,
+      27.45,
+      33.11,
+      35.84,
+      37.15
+     ],
+     "TS_MAX": [
+      62.24,
+      60.31,
+      59.65,
+      55.91,
+      47.34,
+      42.36,
+      43.26,
+      48.27,
+      52.65,
+      60.74,
+      61.99,
+      64.7
+     ],
+     "TS_MIN": [
+      18.98,
+      16.07,
+      13.31,
+      10.66,
+      7.57,
+      5.79,
+      5.75,
+      6.68,
+      8.15,
+      11.26,
+      16.88,
+      19.85
+     ],
+     "WS2M": [
+      3.38,
+      3.16,
+      3.03,
+      2.87,
+      3.19,
+      3.47,
+      3.21,
+      3.14,
+      3.17,
+      3.41,
+      3.59,
+      3.68
+     ]
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,71 @@
+{
+ "about": "Curated table that turns IGME5000 geology map units into Analog Atlas rock ids, for the Jordan screening layer (Discover Jordan). Key = the map's unit code (DBF field GEO). petrography, age and region are copied from the map (fields Portr_Petr, Portr_Pe_1..3, AgeName, regName); scripts/screening_geology.py stops if they differ from the map. primary and secondary are our reading of the map's own rock words, in the map's order, unless the reason says the rock type is a guess. Read by scripts/screening_geology.py only; the app gets the result through data/screening_jordan.json.",
+ "format": 1,
+ "map": {
+  "name": "IGME5000: The 1:5 Million International Geological Map of Europe and Adjacent Areas (BGR)",
+  "layer": "IGME5000_europeEPSG3034shp_geology_poly_v01",
+  "key": "GEO",
+  "doi": "https://doi.org/10.25928/igme-5000",
+  "credit": "IGME5000, © BGR, Hannover, 2005, https://doi.org/10.25928/igme-5000, modified: reclassified to Analog Atlas rock ids"
+ },
+ "vocabulary": "Every rock id is a key of ROCK_LABEL in js/scoring.js. The script stops on any other id.",
+ "certainty": {
+  "high": "The map names the rock and it matches one of our rock ids directly.",
+  "medium": "The map names the rocks, but our reading is a judgement call (for example marl read as mudstone, or a mixed sequence).",
+  "low": "The map gives only an age, or our rock list has no close class. The rock id is a guess: shown on the box page but not used for scoring."
+ },
+ "rules": [
+  "The box's unit is the most frequent of its 25 sample points (ties: higher certainty, then lower unit code).",
+  "primary comes from this table only when certainty is high or medium. For a low-certainty unit the box's primary is null and the guess is kept as 'inferred', for display only.",
+  "secondary = this table's secondaries of the box's unit, plus the primary of every other unit with at least 5 of the 25 points and certainty not low, minus the primary. A box with no primary has no secondary.",
+  "Water (unit 8500007) and undifferentiated Neogene (unit 600017) have no rock id.",
+  "Marl, marlstone and siltstone count as mudstone (fine-grained sediment)."
+ ],
+ "notRepresentable": [
+  "evaporite as a main rock (salt bodies such as the Lisan diapir are too small for 1:5 million)",
+  "impactite (the Waqf as Suwwan crater is too small for 1:5 million)",
+  "anorthosite",
+  "acid-sulfate",
+  "ice"
+ ],
+ "provenance": "Proposed by the geology scout on 2026-10-10 from the IGME5000 attributes (29 units found inside Jordan). Ported here with a short reason per row. Unit 600065 was added on 2026-10-10 because the 5 x 5 points of border boxes on the final grid reach it. The values were checked against the map's DBF by scripts/screening_geology.py.",
+ "review": {
+  "status": "Awaiting review of every row by a team member.",
+  "decisions": [
+   "2026-10-10, team lead: keep the low-certainty -> null rule and the rule that adds other units with at least 5 of 25 points as secondaries.",
+   "2026-10-10, team lead: accept marl -> mudstone (it gives Waqf as Suwwan vs Gale a geology score of 0.5)."
+  ]
+ },
+ "units": {
+  "600016": {"petrography": ["basalt group"], "age": "Cenozoic", "region": "", "primary": "basalt", "secondary": [], "certainty": "high", "reason": "Cenozoic basalt: maps directly to basalt."},
+  "600017": {"petrography": ["undifferentiated"], "age": "Neogene", "region": "", "primary": null, "secondary": [], "certainty": "low", "reason": "The map gives only an age (Neogene) near Azraq and Wadi Sirhan, and no rock type can be defended from it, so no rock id."},
+  "600021": {"petrography": ["marl"], "age": "Quaternary", "region": "Jordan", "primary": "mudstone", "secondary": [], "certainty": "medium", "reason": "Lake marl of Qa' al-Jafr, read as mudstone (lake mud). The playa's salt is not on the map."},
+  "600023": {"petrography": ["sandstone", "siltstone"], "age": "Cambrian - Ordovician", "region": "Jordan", "primary": "sandstone", "secondary": ["mudstone"], "certainty": "high", "reason": "Sandstone listed first; siltstone counts as mudstone. The Wadi Rum unit."},
+  "600024": {"petrography": ["undifferentiated"], "age": "Archean - Proterozoic I", "region": "", "primary": "granite", "secondary": [], "certainty": "low", "reason": "The map gives only an age. Old basement near Aqaba is mostly granite, so granite is a guess."},
+  "600033": {"petrography": ["sandstone"], "age": "Silurian", "region": "Jordan", "primary": "sandstone", "secondary": [], "certainty": "high", "reason": "Sandstone only."},
+  "600061": {"petrography": ["granite group", "granodiorite"], "age": "Proterozoic II - Proterozoic III", "region": "", "primary": "granite", "secondary": [], "certainty": "high", "reason": "Granite and granodiorite: maps directly to granite."},
+  "600065": {"petrography": ["undifferentiated"], "age": "Precambrian", "region": "", "primary": "granite", "secondary": [], "certainty": "low", "reason": "The map gives only an age (Precambrian basement at the southern border). Nearby basement units are granite, so granite is a guess."},
+  "600067": {"petrography": ["basalt"], "age": "Neogene - Quaternary", "region": "Jordan", "primary": "basalt", "secondary": [], "certainty": "high", "reason": "Basalt only."},
+  "600069": {"petrography": ["marl", "limestone", "chalk", "sandstone"], "age": "Eocene - Miocene", "region": "", "primary": "carbonate", "secondary": ["mudstone", "sandstone"], "certainty": "low", "reason": "Marl is listed before limestone and chalk, so carbonate versus mudstone is unclear. A border unit drawn by a neighbouring survey."},
+  "600072": {"petrography": ["chert"], "age": "Late Cretaceous", "region": "Mount Scopus Group", "primary": "chert", "secondary": [], "certainty": "high", "reason": "Chert only. A thin border unit named by a neighbouring survey (Mount Scopus Group)."},
+  "600073": {"petrography": ["dolomite/dolostone", "marl", "sandstone"], "age": "Late Cretaceous", "region": "Judea Group", "primary": "carbonate", "secondary": ["mudstone", "sandstone"], "certainty": "medium", "reason": "Dolomite listed first, so carbonate; marl counts as mudstone. A thin border unit named by a neighbouring survey (Judea Group)."},
+  "600078": {"petrography": ["limestone", "dolomite/dolostone", "shale/slate", "gypsum"], "age": "Triassic", "region": "Ramon Group", "primary": "carbonate", "secondary": ["mudstone", "evaporite"], "certainty": "medium", "reason": "Limestone and dolomite first, so carbonate; shale counts as mudstone and gypsum as evaporite. A thin border unit (Ramon Group)."},
+  "600080": {"petrography": ["undifferentiated", "siliclastics, consolidated"], "age": "Precambrian", "region": "", "primary": "sandstone", "secondary": [], "certainty": "low", "reason": "The map says only 'consolidated siliciclastics' of Precambrian age; sandstone is a broad guess."},
+  "600081": {"petrography": ["volcanic alkaline group", "plutonic alkaline group"], "age": "Precambrian", "region": "", "primary": "granite", "secondary": [], "certainty": "low", "reason": "Old alkaline volcanic and plutonic rocks. Our rock list has no felsic volcanic class; the plutonic part is closest to granite."},
+  "600130": {"petrography": ["undifferentiated"], "age": "Proterozoic III", "region": "", "primary": "granite", "secondary": [], "certainty": "low", "reason": "The map gives only an age. Basement near Aqaba is mostly granite, so granite is a guess."},
+  "600321": {"petrography": ["undifferentiated"], "age": "Ordovician", "region": "", "primary": "sandstone", "secondary": [], "certainty": "low", "reason": "The map gives only an age. Ordovician rocks of the Disi and Rum area are mostly sandstone, so sandstone is a guess."},
+  "600322": {"petrography": ["undifferentiated"], "age": "Silurian", "region": "", "primary": "sandstone", "secondary": ["mudstone"], "certainty": "low", "reason": "The map gives only an age. Silurian rocks of south Jordan are sandstone and siltstone, so this is a guess."},
+  "601002": {"petrography": ["limestone", "marl"], "age": "Eocene", "region": "Jordan", "primary": "carbonate", "secondary": ["mudstone"], "certainty": "high", "reason": "Limestone listed first, so carbonate; marl counts as mudstone. Waqf as Suwwan lies in this unit; its crater is too small for the map."},
+  "601004": {"petrography": ["limestone", "sandstone", "chalk"], "age": "Early Cretaceous", "region": "Jordan", "primary": "carbonate", "secondary": ["sandstone"], "certainty": "medium", "reason": "Limestone is listed first, but Jordan's Early Cretaceous is largely sandstone (Kurnub), so the order is a judgement call."},
+  "601005": {"petrography": ["chalk", "marlstone", "limestone", "phonolite"], "age": "Late Cretaceous", "region": "Jordan", "primary": "carbonate", "secondary": ["mudstone"], "certainty": "high", "reason": "Chalk and limestone are carbonate; marlstone counts as mudstone. The 4th word, phonolite (a volcanic rock), does not fit this sedimentary unit and is ignored."},
+  "601006": {"petrography": ["sandstone"], "age": "Cretaceous", "region": "Jordan", "primary": "sandstone", "secondary": [], "certainty": "high", "reason": "Sandstone only."},
+  "601007": {"petrography": ["limestone", "sandstone", "marl"], "age": "Jurassic", "region": "Jordan", "primary": "carbonate", "secondary": ["sandstone", "mudstone"], "certainty": "medium", "reason": "Mixed sequence with limestone listed first; marl counts as mudstone."},
+  "601013": {"petrography": ["basalt group"], "age": "Neogene", "region": "Jordan", "primary": "basalt", "secondary": [], "certainty": "high", "reason": "Neogene basalt: maps directly to basalt."},
+  "601014": {"petrography": ["basalt group"], "age": "Quaternary", "region": "Jordan", "primary": "basalt", "secondary": [], "certainty": "high", "reason": "Young basalt: maps directly to basalt. The Harrat site lies in this unit."},
+  "601018": {"petrography": ["limestone", "marl", "chert"], "age": "Palaeocene - Eocene", "region": "Jordan", "primary": "carbonate", "secondary": ["chert", "mudstone"], "certainty": "high", "reason": "Limestone listed first, so carbonate; chert is named by the map; marl counts as mudstone."},
+  "601053": {"petrography": ["sandstone", "limestone", "dolomite/dolostone"], "age": "Cambrian", "region": "Jordan", "primary": "sandstone", "secondary": ["carbonate"], "certainty": "medium", "reason": "Mixed sequence with sandstone listed first; limestone and dolomite give a carbonate secondary."},
+  "601056": {"petrography": ["sandstone", "mudstone"], "age": "Triassic", "region": "Jordan", "primary": "sandstone", "secondary": ["mudstone"], "certainty": "high", "reason": "Sandstone and mudstone, both named by the map."},
+  "601062": {"petrography": ["marl", "sand", "silt", "gravel"], "age": "Pliocene - Quaternary", "region": "Jordan", "primary": "mudstone", "secondary": ["sandstone"], "certainty": "medium", "reason": "Rift-valley fill (Jordan Valley, Dead Sea, Wadi Araba). Marl first, so mudstone; loose sand and gravel give a sandstone secondary. The Lisan salt is too small for the map."},
+  "8500007": {"petrography": [], "age": "undifferentiated", "region": "", "primary": null, "secondary": [], "certainty": "high", "reason": "Water: the map shows the Dead Sea and the Gulf of Aqaba as submarine continental crust. No rock id."}
+ }
+}

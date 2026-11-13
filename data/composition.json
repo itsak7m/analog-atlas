@@ -1,0 +1,1416 @@
+{
+ "about": "Measured surface-composition indicators at the 19 Earth sites: MODIS thermal emissivity (1 km), Sentinel-2 reflectance ratios (60 m) and an ASTER thermal silica index (90 m). DISPLAY-ONLY evidence, never scored. Each indicator is a measurement of the top surface, not a rock identification. Built by scripts/fetch_composition.py from the raw extracts in data/raw/composition/. Do not edit by hand.",
+ "generated": "2026-10-10T15:48:54Z",
+ "sources": [
+  {
+   "id": "mod21a2",
+   "label": "MODIS/Terra Land Surface Temperature/3-Band Emissivity 8-Day L3 Global 1km SIN Grid V061 (MOD21A2), via Microsoft Planetary Computer (collection modis-21A2-061)",
+   "url": "https://planetarycomputer.microsoft.com/dataset/modis-21A2-061",
+   "doi": "10.5067/MODIS/MOD21A2.061",
+   "licence": "NASA open data: no restrictions on use, sale or redistribution (LP DAAC data policy)",
+   "licenceUrl": "https://lpdaac.usgs.gov/data/data-citation-and-policies/",
+   "credit": "Hulley, G., & Hook, S. (2021). MOD21A2 v061 [Data set]. NASA EOSDIS Land Processes DAAC. https://doi.org/10.5067/MODIS/MOD21A2.061. Accessed through Microsoft Planetary Computer."
+  },
+  {
+   "id": "aster-l1t",
+   "label": "ASTER Level 1 Precision Terrain Corrected Registered At-Sensor Radiance V003 (AST_L1T), thermal bands 10-14, via Microsoft Planetary Computer (collection aster-l1t, 2000-2006)",
+   "url": "https://planetarycomputer.microsoft.com/dataset/aster-l1t",
+   "doi": "10.5067/ASTER/AST_L1T.003",
+   "licence": "Public domain (USGS data policy; NASA LP DAAC data policy)",
+   "licenceUrl": "https://www.usgs.gov/core-science-systems/hdds/data-policy",
+   "credit": "NASA LP DAAC (2015). ASTER Level 1 Precision Terrain Corrected Registered At-Sensor Radiance V003 [Data set]. NASA/METI/AIST/Japan Spacesystems and U.S./Japan ASTER Science Team. https://doi.org/10.5067/ASTER/AST_L1T.003. Accessed through Microsoft Planetary Computer."
+  },
+  {
+   "id": "sentinel-2-l2a",
+   "label": "Copernicus Sentinel-2 MSI Level-2A surface reflectance, Cloud-Optimized GeoTIFFs on AWS Open Data (Element 84 Earth Search v1, collection sentinel-2-l2a)",
+   "url": "https://registry.opendata.aws/sentinel-2-l2a-cogs/",
+   "doi": "10.5270/S2_-742ikth",
+   "licence": "Copernicus Sentinel data terms (free, full and open; legal notice)",
+   "licenceUrl": "https://sentinel.esa.int/documents/247904/690755/Sentinel_Data_Legal_Notice",
+   "credit": "Contains modified Copernicus Sentinel data 2023-2024"
+  }
+ ],
+ "references": [
+  {
+   "id": "salisbury1992",
+   "citation": "Salisbury, J.W. & D'Aria, D.M. (1992). Emissivity of terrestrial materials in the 8-14 µm atmospheric window. Remote Sensing of Environment 42, 83-106.",
+   "doi": "10.1016/0034-4257(92)90092-X"
+  },
+  {
+   "id": "hulley2015",
+   "citation": "Hulley, G.C., Hook, S.J., Abbott, E., Malakar, N., Islam, T. & Abrams, M. (2015). The ASTER Global Emissivity Dataset (ASTER GED): Mapping Earth's emissivity at 100 meter spatial scale. Geophysical Research Letters 42, 7966-7976.",
+   "doi": "10.1002/2015GL065564"
+  },
+  {
+   "id": "hulley2011",
+   "citation": "Hulley, G.C. & Hook, S.J. (2011). Generating consistent land surface temperature and emissivity products between ASTER and MODIS data for Earth science research. IEEE Transactions on Geoscience and Remote Sensing 49, 1304-1315.",
+   "doi": "10.1109/TGRS.2010.2063034"
+  },
+  {
+   "id": "gillespie1998",
+   "citation": "Gillespie, A., Rokugawa, S., Matsunaga, T., Cothern, J.S., Hook, S. & Kahle, A.B. (1998). A temperature and emissivity separation algorithm for Advanced Spaceborne Thermal Emission and Reflection Radiometer (ASTER) images. IEEE Transactions on Geoscience and Remote Sensing 36, 1113-1126.",
+   "doi": "10.1109/36.700995"
+  },
+  {
+   "id": "ninomiya2005",
+   "citation": "Ninomiya, Y., Fu, B. & Cudahy, T.J. (2005). Detecting lithology with ASTER multispectral thermal infrared 'radiance-at-sensor' data. Remote Sensing of Environment 99, 127-139.",
+   "doi": "10.1016/j.rse.2005.06.009"
+  },
+  {
+   "id": "vandermeer2014",
+   "citation": "van der Meer, F.D., van der Werff, H.M.A. & van Ruitenbeek, F.J.A. (2014). Potential of ESA's Sentinel-2 for geological applications. Remote Sensing of Environment 148, 124-133.",
+   "doi": "10.1016/j.rse.2014.03.022"
+  }
+ ],
+ "rules": {
+  "displayOnly": "These indicators are display-only evidence. They are never used in any score or ranking.",
+  "modis": "MODIS MOD21A2 v061 (Terra, 1 km). Band-29 emissivity e29 at 8.55 µm: quartz and sulfate (gypsum) have strong emissivity lows (reststrahlen bands) near 8.5-9 µm, so e29 is low on quartz- or sulfate-rich surfaces and high on low-silica rock (basalt), clay, carbonate, vegetation and water. Bands 31 (11 µm) and 32 (12 µm) are stored for reference; they stay near 0.96-0.98 on most land. Site value: mean of all valid pixels of the 3 x 3 pixel window (about 2.8 km x 2.8 km) around the site over all 138 Terra 8-day composites of 2018-2020 (46 per year); samples with daytime LST missing or below 0 °C are left out (snow, ice or frozen ground raise emissivity). n = number of pixel samples (pixels x composites).",
+  "s2": {
+   "feRatio": "Iron-oxide ratio B4/B2 (red / blue surface reflectance): ferric iron oxides (hematite, goethite) absorb blue light, so a higher ratio means a redder, more iron-stained surface (van der Meer et al. 2014).",
+   "swirRatio": "2.2 µm ratio B11/B12 (1.6 / 2.2 µm): clay (Al-OH), carbonate and sulfate minerals absorb in the B12 range (about 2.1-2.3 µm), so a higher ratio means more of these minerals (van der Meer et al. 2014).",
+   "brightness": "Unweighted mean of B2, B3, B4, B8, B11 and B12 surface reflectance (0-1), a broadband-like brightness (not a calibrated albedo): dark basalt and varnished rock are low; salt, gypsum, chalk and sand are high.",
+   "ndvi": "NDVI = (B8 - B4) / (B8 + B4); flags vegetation. When NDVI at the site is above 0.3 in any used scene, the site is not interpreted.",
+   "method": "3 x 3 pixels of 20 m (60 m) around the site; the 10 m bands are averaged to 20 m first; only pixels that the L2A scene classification (SCL) calls bare (5) or vegetation (4) are used, and a scene needs 5 of 9. Per scene the median of the pixels; site value = median of the scene values. Scenes from 2023-01-01 to 2024-12-31: clearest first (cloud cover <= 5 %, the clearest scene of each season first, then up to 20 %); the first 3 usable scenes are kept. Reflectance = DN x 0.0001 (Earth Search COGs with boa_offset_applied = true; the offset is not applied again). waterPct = largest share of water (SCL 6) in the ~2.8 km MODIS window among the used scenes."
+  },
+  "aster": "ASTER L1T thermal bands 10-14 (90 m, 2000-2006). Clear daytime scenes (cloud cover <= 5 %, descending = daytime pass, sun elevation > 20°) that contain the site; the first 6 by (cloud cover, date) are read; 5 x 5 pixels (about 450 m) around the site. Radiance L = (DN - 1) x unit conversion coefficient; emissivity e10..e14 by the normalized emissivity method (maximum emissivity 0.97). Silica index = (e13 + e14) / 2 - (e10 + e12) / 2, from the median of each band's emissivity over all valid pixels of all used scenes: silica minerals pull bands 10-12 (8.1-9.3 µm) down while bands 13-14 stay high, so a larger index means a more silica-rich surface. quartzIndex = L11² / (L10 x L12) (Ninomiya et al. 2005). Not atmospherically corrected — relative only: water vapour also lowers bands 10-12, so compare sites with each other, not with laboratory values. rank = position from the highest silica index among the sites with ASTER data.",
+  "reading": "From the MODIS band-29 mean e29 only: e29 < 0.88 → 'quartz- or sulfate-rich surface'; e29 > 0.95 → 'low-silica surface (basalt-like, clay or carbonate)'; otherwise 'mixed'. Not interpreted when Sentinel-2 shows vegetation (NDVI > 0.3) or open water at the site. A reading describes the top surface (thermal bands see the top fraction of a millimetre); it never names a rock.",
+  "thresholds": "Physics: quartz- and sulfate-rich materials have deep emissivity lows at 8-9.5 µm, while basalt, carbonate, clay, vegetation and water stay high there (laboratory spectra: Salisbury & D'Aria 1992; global ASTER emissivity: Hulley et al. 2015; MODIS band-29 emissivity from the same temperature-emissivity separation: Gillespie et al. 1998, Hulley & Hook 2011). The cut values 0.88 and 0.95 are ours, placed between those ranges; we looked at these same 19 sites and the scout's 2023 values when fixing them, so the readings and the Jordan checks are illustrations, not independent tests.",
+  "jordanCheck": "Only for the 5 Jordan sites: the reading is compared with the app's rock type (data/sites_meta.json geology.primary). Expected reading: sandstone → quartz- or sulfate-rich; basalt and carbonate → low-silica; mudstone → low-silica or mixed; evaporite → quartz- or sulfate-rich (gypsum) or low-silica (halite, aragonite, clay), so for evaporite the check is weak. 'agrees' = the reading is the expected one; 'partly' = the reading is 'mixed', or it is silica-rich over a mapped carbonate or mudstone (thermal bands see only the top surface, and in deserts a lag of chert (flint) gravel or blown quartz sand often covers soft sedimentary rock); 'differs' = otherwise. The reason quotes e29 and, when available, the ASTER silica index and its rank among the sites.",
+  "flags": {
+   "vegetation": "Sentinel-2 NDVI > 0.3 at the site in at least one used scene: not interpreted.",
+   "water": "the site point is open water in Sentinel-2's scene classification: not interpreted.",
+   "waterNearby": "water covers more than 20 % of the ~2.8 km MODIS window in at least one used Sentinel-2 scene; water raises e29, so read e29 with care.",
+   "coldSeason": "more than 25 % of the valid MODIS samples were left out because daytime LST was below 0 °C: the mean is from the snow-free season only.",
+   "vegetationUnchecked": "no usable Sentinel-2 scene, so vegetation could not be checked.",
+   "oneS2Scene": "only one usable Sentinel-2 scene.",
+   "oneAsterScene": "only one clear daytime ASTER scene.",
+   "noModis": "no MODIS value (why given).",
+   "noS2": "no Sentinel-2 value (why given).",
+   "noAster": "no ASTER value (why given)."
+  }
+ },
+ "sample": {
+  "modis": "all 138 Terra 8-day composites of 2018-2020 (46 per year)",
+  "modisYears": [
+   2018,
+   2020
+  ],
+  "s2Dates": [
+   "2023-01-01",
+   "2024-12-31"
+  ],
+  "asterYears": [
+   2000,
+   2006
+  ]
+ },
+ "places": {
+  "wadi-rum": {
+   "modis": {
+    "e29": 0.864,
+    "e31": 0.956,
+    "e32": 0.968,
+    "n": 1242,
+    "years": "2018-2020",
+    "composites": 138,
+    "coldExcluded": 0
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2B_36RYT_20230214_0_L2A",
+      "date": "2023-02-14",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2B_36RYT_20230505_0_L2A",
+      "date": "2023-05-05",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2B_36RYT_20230704_0_L2A",
+      "date": "2023-07-04",
+      "cloud": 0.0
+     }
+    ],
+    "feRatio": 2.178,
+    "swirRatio": 1.243,
+    "brightness": 0.298,
+    "ndvi": 0.095,
+    "ndviMax": 0.106,
+    "waterPct": 0.0
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00307112001083707_20150418091309",
+      "date": "2001-07-11",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00307202001083105_20150418153456",
+      "date": "2001-07-20",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00310302003082257_20150501111123",
+      "date": "2003-10-30",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00303292004082904_20150503202531",
+      "date": "2004-03-29",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00304012005082837_20150508221010",
+      "date": "2005-04-01",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00305122005082234_20150509110743",
+      "date": "2005-05-12",
+      "cloud": 0.0
+     }
+    ],
+    "silicaIndex": 0.147,
+    "quartzIndex": 1.055,
+    "rank": 1,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "quartz- or sulfate-rich surface",
+   "flags": [],
+   "jordanCheck": {
+    "rock": "sandstone",
+    "verdict": "agrees",
+    "reason": "agrees: sandstone on the map; MODIS e29 0.864 (silica-rich), ASTER silica index 0.147 (highest of 17 sites) → fits quartz sandstone"
+   }
+  },
+  "harrat": {
+   "modis": {
+    "e29": 0.974,
+    "e31": 0.961,
+    "e32": 0.971,
+    "n": 1240,
+    "years": "2018-2020",
+    "composites": 138,
+    "coldExcluded": 0
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2A_37SCR_20230127_0_L2A",
+      "date": "2023-01-27",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2B_37SCR_20230402_0_L2A",
+      "date": "2023-04-02",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2B_37SCR_20230701_0_L2A",
+      "date": "2023-07-01",
+      "cloud": 0.0
+     }
+    ],
+    "feRatio": 1.954,
+    "swirRatio": 1.08,
+    "brightness": 0.179,
+    "ndvi": 0.08,
+    "ndviMax": 0.08,
+    "waterPct": 0.0
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00305172001083153_20150416042338",
+      "date": "2001-05-17",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00306022001083132_20150416101144",
+      "date": "2001-06-02",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00309252002082339_20150425082827",
+      "date": "2002-09-25",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00307182006082201_20150515084008",
+      "date": "2006-07-18",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00309202006082146_20150516063251",
+      "date": "2006-09-20",
+      "cloud": 0.0
+     }
+    ],
+    "silicaIndex": 0.082,
+    "quartzIndex": 1.044,
+    "rank": 9,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "low-silica surface (basalt-like, clay or carbonate)",
+   "flags": [],
+   "jordanCheck": {
+    "rock": "basalt",
+    "verdict": "agrees",
+    "reason": "agrees: basalt on the map; MODIS e29 0.974 (low-silica), ASTER silica index 0.082 (9th highest of 17 sites) → fits basalt"
+   }
+  },
+  "atacama": {
+   "modis": {
+    "e29": 0.905,
+    "e31": 0.954,
+    "e32": 0.969,
+    "n": 1242,
+    "years": "2018-2020",
+    "composites": 138,
+    "coldExcluded": 0
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2B_19KCP_20240420_0_L2A",
+      "date": "2024-04-20",
+      "cloud": 0.02
+     },
+     {
+      "id": "S2A_19KCP_20230101_0_L2A",
+      "date": "2023-01-01",
+      "cloud": 0.04
+     },
+     {
+      "id": "S2A_19KCP_20230717_0_L2A",
+      "date": "2023-07-17",
+      "cloud": 0.04
+     }
+    ],
+    "feRatio": 1.697,
+    "swirRatio": 1.018,
+    "brightness": 0.234,
+    "ndvi": 0.098,
+    "ndviMax": 0.099,
+    "waterPct": 0.0
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00309042002145605_20150424193924",
+      "date": "2002-09-04",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00303202005145413_20150508181404",
+      "date": "2005-03-20",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00309172001150056_20150419162100",
+      "date": "2001-09-17",
+      "cloud": 1.0
+     },
+     {
+      "id": "AST_L1T_00311202001145858_20150420131226",
+      "date": "2001-11-20",
+      "cloud": 1.0
+     },
+     {
+      "id": "AST_L1T_00310252003145444_20150501082035",
+      "date": "2003-10-25",
+      "cloud": 1.0
+     },
+     {
+      "id": "AST_L1T_00310302005145354_20150511182551",
+      "date": "2005-10-30",
+      "cloud": 1.0
+     }
+    ],
+    "silicaIndex": 0.104,
+    "quartzIndex": 1.006,
+    "rank": 4,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "mixed",
+   "flags": []
+  },
+  "haughton": {
+   "modis": {
+    "e29": 0.967,
+    "e31": 0.961,
+    "e32": 0.973,
+    "n": 234,
+    "years": "2018-2020",
+    "composites": 34,
+    "coldExcluded": 493
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2A_15XWD_20230728_0_L2A",
+      "date": "2023-07-28",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2B_15XWD_20240707_0_L2A",
+      "date": "2024-07-07",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2A_16XDJ_20230718_0_L2A",
+      "date": "2023-07-18",
+      "cloud": 0.01
+     }
+    ],
+    "feRatio": 1.193,
+    "swirRatio": 1.106,
+    "brightness": 0.338,
+    "ndvi": 0.036,
+    "ndviMax": 0.056,
+    "waterPct": 0.0
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00304272003190455_20150428062832",
+      "date": "2003-04-27",
+      "cloud": 1.0
+     }
+    ],
+    "silicaIndex": 0.021,
+    "quartzIndex": 1.009,
+    "rank": 17,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "low-silica surface (basalt-like, clay or carbonate)",
+   "flags": [
+    {
+     "id": "coldSeason",
+     "why": "44 % of the valid MODIS samples had daytime LST below 0 °C and were left out: values are from the snow-free season only"
+    },
+    {
+     "id": "oneAsterScene",
+     "why": "only 1 clear daytime ASTER scene"
+    }
+   ]
+  },
+  "death-valley": {
+   "modis": {
+    "e29": 0.945,
+    "e31": 0.965,
+    "e32": 0.973,
+    "n": 1230,
+    "years": "2018-2020",
+    "composites": 138,
+    "coldExcluded": 0
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2B_11SNA_20230905_0_L2A",
+      "date": "2023-09-05",
+      "cloud": 0.01
+     },
+     {
+      "id": "S2B_11SNA_20231005_0_L2A",
+      "date": "2023-10-05",
+      "cloud": 0.01
+     },
+     {
+      "id": "S2B_11SNA_20240402_0_L2A",
+      "date": "2024-04-02",
+      "cloud": 0.01
+     }
+    ],
+    "feRatio": 1.459,
+    "swirRatio": 1.852,
+    "brightness": 0.198,
+    "ndvi": 0.735,
+    "ndviMax": 0.766,
+    "waterPct": 0.0
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00306182000190022_20150409211151",
+      "date": "2000-06-18",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00308212000190005_20150411054409",
+      "date": "2000-08-21",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00310012000185316_20150412025617",
+      "date": "2000-10-01",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00305202001185443_20150416053626",
+      "date": "2001-05-20",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00306052001185418_20150416122403",
+      "date": "2001-06-05",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00308012001184704_20150501140511",
+      "date": "2001-08-01",
+      "cloud": 0.0
+     }
+    ],
+    "silicaIndex": 0.086,
+    "quartzIndex": 1.038,
+    "rank": 6,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "not interpreted: vegetation at the site",
+   "flags": [
+    {
+     "id": "vegetation",
+     "why": "Sentinel-2 NDVI at the site is above 0.3 (up to 0.77): the composition indicators are not interpreted"
+    }
+   ]
+  },
+  "dry-valleys": {
+   "modis": {
+    "e29": 0.883,
+    "e31": 0.943,
+    "e32": 0.954,
+    "n": 21,
+    "years": "2018-2020",
+    "composites": 8,
+    "coldExcluded": 647
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2B_58CDV_20231205_0_L2A",
+      "date": "2023-12-05",
+      "cloud": 1.45
+     },
+     {
+      "id": "S2B_57CWQ_20230111_0_L2A",
+      "date": "2023-01-11",
+      "cloud": 2.68
+     },
+     {
+      "id": "S2B_58CDV_20231207_0_L2A",
+      "date": "2023-12-07",
+      "cloud": 2.39
+     }
+    ],
+    "feRatio": 1.092,
+    "swirRatio": 1.01,
+    "brightness": 0.231,
+    "ndvi": -0.01,
+    "ndviMax": 0.0,
+    "waterPct": 3.0
+   },
+   "aster": null,
+   "reading": "mixed",
+   "flags": [
+    {
+     "id": "coldSeason",
+     "why": "64 % of the valid MODIS samples had daytime LST below 0 °C and were left out: values are from the snow-free season only"
+    },
+    {
+     "id": "noAster",
+     "why": "15 ASTER L1T scenes with thermal bands cover this point, none clear (<= 5 % cloud) and daytime"
+    }
+   ]
+  },
+  "holuhraun": {
+   "modis": {
+    "e29": 0.964,
+    "e31": 0.947,
+    "e32": 0.955,
+    "n": 539,
+    "years": "2018-2020",
+    "composites": 69,
+    "coldExcluded": 585
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2A_27WXN_20240919_0_L2A",
+      "date": "2024-09-19",
+      "cloud": 0.06
+     }
+    ],
+    "feRatio": 1.17,
+    "swirRatio": 0.969,
+    "brightness": 0.037,
+    "ndvi": 0.07,
+    "ndviMax": 0.07,
+    "waterPct": 16.0
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00306292001125904_20150418030024",
+      "date": "2001-06-29",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00309272004123809_20150506053510",
+      "date": "2004-09-27",
+      "cloud": 5.0
+     }
+    ],
+    "silicaIndex": 0.041,
+    "quartzIndex": 1.029,
+    "rank": 16,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "low-silica surface (basalt-like, clay or carbonate)",
+   "flags": [
+    {
+     "id": "coldSeason",
+     "why": "50 % of the valid MODIS samples had daytime LST below 0 °C and were left out: values are from the snow-free season only"
+    },
+    {
+     "id": "oneS2Scene",
+     "why": "only 1 usable Sentinel-2 scene (10 tried)"
+    }
+   ]
+  },
+  "rio-tinto": {
+   "modis": {
+    "e29": 0.972,
+    "e31": 0.972,
+    "e32": 0.974,
+    "n": 1227,
+    "years": "2018-2020",
+    "composites": 138,
+    "coldExcluded": 0
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2A_29SQB_20230131_0_L2A",
+      "date": "2023-01-31",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2A_29SQB_20230829_0_L2A",
+      "date": "2023-08-29",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2B_29SQB_20231222_0_L2A",
+      "date": "2023-12-22",
+      "cloud": 0.0
+     }
+    ],
+    "feRatio": 1.633,
+    "swirRatio": 1.658,
+    "brightness": 0.144,
+    "ndvi": 0.674,
+    "ndviMax": 0.697,
+    "waterPct": 0.3
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00306132001112841_20150417180135",
+      "date": "2001-06-13",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00308072001113354_20150501160612",
+      "date": "2001-08-07",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00304282005112541_20150509063457",
+      "date": "2005-04-28",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00311192004112442_20150507024602",
+      "date": "2004-11-19",
+      "cloud": 1.0
+     },
+     {
+      "id": "AST_L1T_00301062005112519_20150507193922",
+      "date": "2005-01-06",
+      "cloud": 2.0
+     },
+     {
+      "id": "AST_L1T_00301222005112522_20150508004109",
+      "date": "2005-01-22",
+      "cloud": 2.0
+     }
+    ],
+    "silicaIndex": 0.077,
+    "quartzIndex": 1.038,
+    "rank": 10,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "not interpreted: vegetation at the site",
+   "flags": [
+    {
+     "id": "vegetation",
+     "why": "Sentinel-2 NDVI at the site is above 0.3 (up to 0.70): the composition indicators are not interpreted"
+    }
+   ]
+  },
+  "mdrs": {
+   "modis": {
+    "e29": 0.898,
+    "e31": 0.958,
+    "e32": 0.968,
+    "n": 1164,
+    "years": "2018-2020",
+    "composites": 131,
+    "coldExcluded": 51
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2B_12SWH_20230201_0_L2A",
+      "date": "2023-02-01",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2A_12SWH_20230716_0_L2A",
+      "date": "2023-07-16",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2B_12SWH_20231019_0_L2A",
+      "date": "2023-10-19",
+      "cloud": 0.0
+     }
+    ],
+    "feRatio": 1.56,
+    "swirRatio": 1.021,
+    "brightness": 0.275,
+    "ndvi": 0.062,
+    "ndviMax": 0.071,
+    "waterPct": 0.0
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00304022002181514_20150422000044",
+      "date": "2002-04-02",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00307302002182136_20150423140104",
+      "date": "2002-07-30",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00310212003181958_20150501071820",
+      "date": "2003-10-21",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00309052004181920_20150505223755",
+      "date": "2004-09-05",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00309192000182832_20150411202506",
+      "date": "2000-09-19",
+      "cloud": 1.0
+     },
+     {
+      "id": "AST_L1T_00310072004181909_20150506143414",
+      "date": "2004-10-07",
+      "cloud": 1.0
+     }
+    ],
+    "silicaIndex": 0.123,
+    "quartzIndex": 1.05,
+    "rank": 3,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "mixed",
+   "flags": []
+  },
+  "waqf-as-suwwan": {
+   "modis": {
+    "e29": 0.869,
+    "e31": 0.951,
+    "e32": 0.968,
+    "n": 1242,
+    "years": "2018-2020",
+    "composites": 138,
+    "coldExcluded": 0
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2B_37RBQ_20230221_0_L2A",
+      "date": "2023-02-21",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2B_37RBQ_20230402_0_L2A",
+      "date": "2023-04-02",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2B_37RBQ_20230701_0_L2A",
+      "date": "2023-07-01",
+      "cloud": 0.0
+     }
+    ],
+    "feRatio": 2.084,
+    "swirRatio": 1.257,
+    "brightness": 0.327,
+    "ndvi": 0.126,
+    "ndviMax": 0.128,
+    "waterPct": 0.0
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00305172001083211_20150416042332",
+      "date": "2001-05-17",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00306022001083150_20150416101204",
+      "date": "2001-06-02",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00309252002082357_20150425082833",
+      "date": "2002-09-25",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00307182006082219_20150515084016",
+      "date": "2006-07-18",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00311202005082145_20150512004525",
+      "date": "2005-11-20",
+      "cloud": 1.0
+     }
+    ],
+    "silicaIndex": 0.145,
+    "quartzIndex": 1.079,
+    "rank": 2,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "quartz- or sulfate-rich surface",
+   "flags": [],
+   "jordanCheck": {
+    "rock": "carbonate",
+    "verdict": "partly",
+    "reason": "partly: carbonate on the map; MODIS e29 0.869 (silica-rich), ASTER silica index 0.145 (2nd highest of 17 sites) → likely chert (flint) gravel or blown quartz sand covering the carbonate"
+   }
+  },
+  "lisan-dead-sea": {
+   "modis": {
+    "e29": 0.962,
+    "e31": 0.97,
+    "e32": 0.97,
+    "n": 1173,
+    "years": "2018-2020",
+    "composites": 138,
+    "coldExcluded": 0
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2B_36RYV_20230823_0_L2A",
+      "date": "2023-08-23",
+      "cloud": 0.13
+     },
+     {
+      "id": "S2B_36RYV_20241115_0_L2A",
+      "date": "2024-11-15",
+      "cloud": 0.16
+     },
+     {
+      "id": "S2A_36RYV_20230311_0_L2A",
+      "date": "2023-03-11",
+      "cloud": 0.26
+     }
+    ],
+    "feRatio": 1.79,
+    "swirRatio": 1.082,
+    "brightness": 0.472,
+    "ndvi": 0.05,
+    "ndviMax": 0.069,
+    "waterPct": 0.0
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00307082000084354_20150410055527",
+      "date": "2000-07-08",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00305242001083806_20150416070042",
+      "date": "2001-05-24",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00307112001083641_20150418091230",
+      "date": "2001-07-11",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00309052004082757_20150505223015",
+      "date": "2004-09-05",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00308162005082152_20150510190603",
+      "date": "2005-08-16",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00305222006082755_20150514122350",
+      "date": "2006-05-22",
+      "cloud": 0.0
+     }
+    ],
+    "silicaIndex": 0.102,
+    "quartzIndex": 1.047,
+    "rank": 5,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "low-silica surface (basalt-like, clay or carbonate)",
+   "flags": [],
+   "jordanCheck": {
+    "rock": "evaporite",
+    "verdict": "agrees",
+    "reason": "agrees: evaporite on the map; MODIS e29 0.962 (low-silica), ASTER silica index 0.102 (5th highest of 17 sites) → fits halite, aragonite or clay-rich marl rather than gypsum"
+   }
+  },
+  "qa-al-jafr": {
+   "modis": {
+    "e29": 0.954,
+    "e31": 0.968,
+    "e32": 0.975,
+    "n": 1222,
+    "years": "2018-2020",
+    "composites": 138,
+    "coldExcluded": 0
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2A_37RBP_20230127_0_L2A",
+      "date": "2023-01-27",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2B_37RBP_20230402_0_L2A",
+      "date": "2023-04-02",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2B_37RBP_20230701_0_L2A",
+      "date": "2023-07-01",
+      "cloud": 0.0
+     }
+    ],
+    "feRatio": 2.01,
+    "swirRatio": 1.154,
+    "brightness": 0.495,
+    "ndvi": 0.062,
+    "ndviMax": 0.063,
+    "waterPct": 0.0
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00303302001083315_20150415104007",
+      "date": "2001-03-30",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00306022001083159_20150416101208",
+      "date": "2001-06-02",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00309252002082406_20150425082837",
+      "date": "2002-09-25",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00303042003082319_20150427125625",
+      "date": "2003-03-04",
+      "cloud": 1.0
+     },
+     {
+      "id": "AST_L1T_00311202005082154_20150512004523",
+      "date": "2005-11-20",
+      "cloud": 1.0
+     }
+    ],
+    "silicaIndex": 0.085,
+    "quartzIndex": 1.045,
+    "rank": 7,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "low-silica surface (basalt-like, clay or carbonate)",
+   "flags": [],
+   "jordanCheck": {
+    "rock": "mudstone",
+    "verdict": "agrees",
+    "reason": "agrees: mudstone on the map; MODIS e29 0.954 (low-silica), ASTER silica index 0.085 (7th highest of 17 sites) → fits clay-rich mud"
+   }
+  },
+  "sp-crater-sfvf": {
+   "modis": {
+    "e29": 0.977,
+    "e31": 0.965,
+    "e32": 0.968,
+    "n": 1211,
+    "years": "2018-2020",
+    "composites": 135,
+    "coldExcluded": 20
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2A_12SVE_20230417_0_L2A",
+      "date": "2023-04-17",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2A_12SVE_20230706_0_L2A",
+      "date": "2023-07-06",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2A_12SVE_20231004_0_L2A",
+      "date": "2023-10-04",
+      "cloud": 0.0
+     }
+    ],
+    "feRatio": 1.813,
+    "swirRatio": 1.088,
+    "brightness": 0.127,
+    "ndvi": 0.151,
+    "ndviMax": 0.16,
+    "waterPct": 0.0
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00305052000183638_20150409141430",
+      "date": "2000-05-05",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00305212000183558_20150409170104",
+      "date": "2000-05-21",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00309192000182925_20150411202518",
+      "date": "2000-09-19",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00304022002181607_20150422000101",
+      "date": "2002-04-02",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00306242003181443_20150429213729",
+      "date": "2003-06-24",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00310212003182042_20150501071839",
+      "date": "2003-10-21",
+      "cloud": 0.0
+     }
+    ],
+    "silicaIndex": 0.071,
+    "quartzIndex": 1.032,
+    "rank": 14,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "low-silica surface (basalt-like, clay or carbonate)",
+   "flags": []
+  },
+  "craters-of-the-moon": {
+   "modis": {
+    "e29": 0.976,
+    "e31": 0.967,
+    "e32": 0.97,
+    "n": 813,
+    "years": "2018-2020",
+    "composites": 98,
+    "coldExcluded": 316
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2A_11TQJ_20230702_0_L2A",
+      "date": "2023-07-02",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2A_11TQJ_20231020_0_L2A",
+      "date": "2023-10-20",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2B_11TQJ_20230813_0_L2A",
+      "date": "2023-08-13",
+      "cloud": 0.0
+     }
+    ],
+    "feRatio": 1.371,
+    "swirRatio": 1.215,
+    "brightness": 0.123,
+    "ndvi": 0.112,
+    "ndviMax": 0.14,
+    "waterPct": 0.1
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00309142002183232_20150425014344",
+      "date": "2002-09-14",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00306052006183029_20150514172540",
+      "date": "2006-06-05",
+      "cloud": 0.0
+     }
+    ],
+    "silicaIndex": 0.073,
+    "quartzIndex": 1.033,
+    "rank": 13,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "low-silica surface (basalt-like, clay or carbonate)",
+   "flags": [
+    {
+     "id": "coldSeason",
+     "why": "26 % of the valid MODIS samples had daytime LST below 0 °C and were left out: values are from the snow-free season only"
+    }
+   ]
+  },
+  "ries-crater": {
+   "modis": {
+    "e29": 0.968,
+    "e31": 0.973,
+    "e32": 0.975,
+    "n": 966,
+    "years": "2018-2020",
+    "composites": 119,
+    "coldExcluded": 28
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2B_32UPV_20230908_0_L2A",
+      "date": "2023-09-08",
+      "cloud": 0.01
+     },
+     {
+      "id": "S2B_32UPV_20230531_0_L2A",
+      "date": "2023-05-31",
+      "cloud": 0.02
+     },
+     {
+      "id": "S2B_32UPV_20230302_0_L2A",
+      "date": "2023-03-02",
+      "cloud": 0.55
+     }
+    ],
+    "feRatio": 1.574,
+    "swirRatio": 1.149,
+    "brightness": 0.131,
+    "ndvi": 0.247,
+    "ndviMax": 0.846,
+    "waterPct": 0.0
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00309042005102627_20150511010936",
+      "date": "2005-09-04",
+      "cloud": 1.0
+     },
+     {
+      "id": "AST_L1T_00309202005102619_20150511061909",
+      "date": "2005-09-20",
+      "cloud": 1.0
+     }
+    ],
+    "silicaIndex": 0.064,
+    "quartzIndex": 1.031,
+    "rank": 15,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "not interpreted: vegetation at the site",
+   "flags": [
+    {
+     "id": "vegetation",
+     "why": "Sentinel-2 NDVI at the site is above 0.3 (up to 0.85): the composition indicators are not interpreted"
+    }
+   ]
+  },
+  "mistastin": {
+   "modis": {
+    "e29": 0.966,
+    "e31": 0.975,
+    "e32": 0.966,
+    "n": 449,
+    "years": "2018-2020",
+    "composites": 61,
+    "coldExcluded": 573
+   },
+   "s2": null,
+   "aster": null,
+   "reading": "not interpreted: water at the site",
+   "flags": [
+    {
+     "id": "coldSeason",
+     "why": "51 % of the valid MODIS samples had daytime LST below 0 °C and were left out: values are from the snow-free season only"
+    },
+    {
+     "id": "noS2",
+     "why": "the site point is open water in Sentinel-2's scene classification"
+    },
+    {
+     "id": "water",
+     "why": "the site point is open water in Sentinel-2's scene classification: not interpreted"
+    },
+    {
+     "id": "noAster",
+     "why": "7 ASTER L1T scenes with thermal bands cover this point, none clear (<= 5 % cloud) and daytime"
+    }
+   ]
+  },
+  "qaidam-dalangtan": {
+   "modis": {
+    "e29": 0.945,
+    "e31": 0.964,
+    "e32": 0.971,
+    "n": 1134,
+    "years": "2018-2020",
+    "composites": 132,
+    "coldExcluded": 85
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2B_46SCH_20240814_0_L2A",
+      "date": "2024-08-14",
+      "cloud": 0.1
+     },
+     {
+      "id": "S2B_46SCH_20241013_0_L2A",
+      "date": "2024-10-13",
+      "cloud": 0.18
+     },
+     {
+      "id": "S2A_46SCH_20230626_0_L2A",
+      "date": "2023-06-26",
+      "cloud": 0.24
+     }
+    ],
+    "feRatio": 1.395,
+    "swirRatio": 1.086,
+    "brightness": 0.279,
+    "ndvi": 0.026,
+    "ndviMax": 0.031,
+    "waterPct": 0.0
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00310072000050420_20150412054451",
+      "date": "2000-10-07",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00305132002045755_20150422072439",
+      "date": "2002-05-13",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00307122000045927_20150410080002",
+      "date": "2000-07-12",
+      "cloud": 2.0
+     },
+     {
+      "id": "AST_L1T_00305032001050018_20150415233618",
+      "date": "2001-05-03",
+      "cloud": 3.0
+     }
+    ],
+    "silicaIndex": 0.074,
+    "quartzIndex": 1.024,
+    "rank": 11,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "mixed",
+   "flags": []
+  },
+  "tso-kar-ladakh": {
+   "modis": {
+    "e29": 0.926,
+    "e31": 0.966,
+    "e32": 0.969,
+    "n": 955,
+    "years": "2018-2020",
+    "composites": 125,
+    "coldExcluded": 195
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2A_44SKB_20230310_0_L2A",
+      "date": "2023-03-10",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2B_43SGS_20230901_0_L2A",
+      "date": "2023-09-01",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2A_43SGS_20231006_0_L2A",
+      "date": "2023-10-06",
+      "cloud": 0.0
+     }
+    ],
+    "feRatio": 1.436,
+    "swirRatio": 1.164,
+    "brightness": 0.34,
+    "ndvi": 0.06,
+    "ndviMax": 0.1,
+    "waterPct": 42.2
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00305042001054500_20150416000209",
+      "date": "2001-05-04",
+      "cloud": 1.0
+     },
+     {
+      "id": "AST_L1T_00309282002053625_20150425095839",
+      "date": "2002-09-28",
+      "cloud": 1.0
+     },
+     {
+      "id": "AST_L1T_00309172004053426_20150506021124",
+      "date": "2004-09-17",
+      "cloud": 1.0
+     },
+     {
+      "id": "AST_L1T_00310082003054110_20150501034652",
+      "date": "2003-10-08",
+      "cloud": 4.0
+     }
+    ],
+    "silicaIndex": 0.073,
+    "quartzIndex": 1.02,
+    "rank": 12,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "mixed",
+   "flags": [
+    {
+     "id": "waterNearby",
+     "why": "water covers up to 42 % of the ~2.8 km MODIS window in Sentinel-2's scene classification; water raises e29"
+    }
+   ]
+  },
+  "pilbara-north-pole": {
+   "modis": {
+    "e29": 0.972,
+    "e31": 0.965,
+    "e32": 0.969,
+    "n": 1242,
+    "years": "2018-2020",
+    "composites": 138,
+    "coldExcluded": 0
+   },
+   "s2": {
+    "scenes": [
+     {
+      "id": "S2A_50KQB_20230202_0_L2A",
+      "date": "2023-02-02",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2B_50KQB_20230401_0_L2A",
+      "date": "2023-04-01",
+      "cloud": 0.0
+     },
+     {
+      "id": "S2A_50KQB_20230702_0_L2A",
+      "date": "2023-07-02",
+      "cloud": 0.0
+     }
+    ],
+    "feRatio": 1.957,
+    "swirRatio": 1.267,
+    "brightness": 0.126,
+    "ndvi": 0.237,
+    "ndviMax": 0.24,
+    "waterPct": 0.0
+   },
+   "aster": {
+    "scenes": [
+     {
+      "id": "AST_L1T_00311272000023252_20150413051150",
+      "date": "2000-11-27",
+      "cloud": 0.0
+     },
+     {
+      "id": "AST_L1T_00308102001022740_20150501165645",
+      "date": "2001-08-10",
+      "cloud": 2.0
+     }
+    ],
+    "silicaIndex": 0.085,
+    "quartzIndex": 1.048,
+    "rank": 8,
+    "of": 17,
+    "note": "not atmospherically corrected — relative only"
+   },
+   "reading": "low-silica surface (basalt-like, clay or carbonate)",
+   "flags": []
+  }
+ }
+}
