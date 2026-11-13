@@ -8,7 +8,7 @@ Analog Atlas is a web app with a 3D globe of Earth, the Moon and Mars. It ranks 
 
 The data is real and sourced: measured where possible, and shown as "not measured" where it is not. Every value names its source.
 
-> **Live app:** https://itsak7m.github.io/analog-atlas/ (GitHub Pages; flat globe there, because the 3D terrain needs a Cesium ion key that works only on localhost)
+> **Live app:** https://itsak7m.github.io/analog-atlas/ (GitHub Pages, full 3D: it uses its own public Cesium ion key in `config.site.js`, which works only on itsak7m.github.io and can only read map assets)
 > **30-second demo video:** https://itsak7m.github.io/analog-atlas/pitch/analog-atlas-pitch-promo30.webm · **7-slide deck:** [pitch/AnalogAtlas_CosmicCats.pptx](pitch/AnalogAtlas_CosmicCats.pptx) · **Code:** https://github.com/itsak7m/analog-atlas
 > Run it on your own computer for the full 3D globe: `start.bat` (http://localhost:8080), see section 1.
 >
