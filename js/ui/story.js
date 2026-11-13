@@ -10,7 +10,7 @@ import { $, esc, toast } from '../util.js';
 import { pct, CLIMATE_FACTORS, PILLARS } from '../scoring.js';
 import { findSite, findTarget } from '../data.js';
 import { REDUCED_MOTION } from '../config.js';
-import { baseData } from './base.js';
+import { baseData, coverScreen, revealCover } from './base.js';
 import { drawBase, BASE_PARTS } from '../globe/base3d.js';
 import { marsDelaySeconds, formatDelay } from '../orbits.js';
 import { makePixelCat } from '../../pitch/pixelcat.js';
@@ -56,9 +56,34 @@ function removeBase() {
   if (run?.base) { run.base.remove(); run.base = null; }
 }
 
+// The same base, the same camera, another world: a picture of the view covers the globe while the other
+// place loads under it, then opens from the base outward (see coverScreen in base.js).
+async function swapBase(api, sel, place, text) {
+  const o = api.globe.orbit;
+  if (!o || !api.globe.viewer) return false;
+  const view = { heading: o.heading, pitch: o.pitch, range: o.range };
+  const cover = await coverScreen(api, text);
+  try {
+    removeBase();
+    const h = await api.jumpTo(sel, view);
+    if (h == null) return false;
+    run.base = { remove: drawBase(api.globe.viewer, api.globe.ellipsoid, place, h), viewer: api.globe.viewer, at: place.id };
+    await api.globe.waitForTiles(8000);
+    return true;
+  } finally {
+    await revealCover(cover);
+    api.globe.resumeOrbit();
+  }
+}
+
 async function ensureBase(api, live, { build }) {
   const viewer = api.globe.viewer;
-  if (run.base && run.base.viewer === viewer) return true;
+  if (run.base && run.base.viewer === viewer && run.base.at === TARGET) return true;
+  const target = findTarget(state.data, TARGET);
+  // The base is in Jordan (the scene before): swap the world back to Mars under the same base.
+  if (run.base && run.base.viewer === viewer && state.view === 'closeup') {
+    return swapBase(api, { kind: 'target', id: TARGET }, target, `${findSite(state.data, SITE).name}, Earth  →  ${target.name}, Mars`);
+  }
   removeBase();
   if (!viewer) return false;
   if (!(state.world === 'mars' && state.view === 'closeup' && state.selected?.id === TARGET)) {
@@ -69,7 +94,7 @@ async function ensureBase(api, live, { build }) {
   if (h == null || !live()) return false;
   const place = findTarget(state.data, TARGET);
   const remove = drawBase(api.globe.viewer, api.globe.ellipsoid, place, h, { build: true, reducedMotion: REDUCED_MOTION });
-  run.base = { remove, viewer: api.globe.viewer };
+  run.base = { remove, viewer: api.globe.viewer, at: TARGET };
   if (!build) BASE_PARTS.forEach((p) => remove.reveal(p.id));
   return true;
 }
@@ -125,6 +150,15 @@ function buildScenes(api, docs) {
           $(`#story [data-part="${p.id}"]`)?.classList.add('on');
           await wait(1300);
         }
+      },
+    },
+    {
+      k: 'Back on Earth', t: 'The same base, in Jordan.',
+      s: `${esc(site.name)}: where a crew can practise for Jezero first. Only the world around the base changed.`,
+      hold: 5000,
+      run: async (live) => {
+        if (!(await ensureBase(api, live, { build: false })) || !live()) return;
+        await swapBase(api, { kind: 'site', id: SITE }, site, `${target.name}, Mars  →  ${site.name}, Earth`);
       },
     },
     {

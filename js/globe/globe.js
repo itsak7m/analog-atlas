@@ -529,6 +529,72 @@ export class Globe {
     return this.ellipsoid.cartesianToCartographic(o.center).height;
   }
 
+  // World swap of the Base plan: put the camera straight into the slow orbit around a place, with no flight,
+  // at the same heading, pitch and range as before, so the base stays in the same spot on the screen.
+  // Returns the ground height of the orbit centre, or null when a newer camera move took over.
+  async jumpOrbit(place, { heading, pitch, range }) {
+    const viewer = this.viewer;
+    const ellipsoid = this.ellipsoid;
+    this.flightId += 1;
+    const token = this.flightId;
+    const current = () => this.viewer === viewer && this.flightId === token;
+    this.exitLook();
+    this.orbit = null;
+    this.spinning = false;
+    this.lastInput = performance.now();
+    this.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+    this.setSunForPlace(place);
+    // Look at the place first (at its measured height, if known), so its terrain starts loading at once.
+    const guess = this.knownHeight(this.body, place.lon, place.lat);
+    const look = (h) => {
+      const center = Cesium.Cartesian3.fromDegrees(place.lon, place.lat, h, ellipsoid);
+      this.camera.lookAt(center, new Cesium.HeadingPitchRange(heading, pitch, range));
+      return center;
+    };
+    look(Number.isFinite(guess) ? guess : 0);
+    this.mode = 'flying';
+    const { h } = await this.groundHeight(place.lon, place.lat);
+    if (!current()) return null;
+    const center = look(h);
+    this.orbit = { center, heading, pitch, range, paused: true }; // resumeOrbit() once the new world is shown
+    this.mode = 'closeup';
+    return h;
+  }
+
+  // Resolves when the ground on screen has finished loading (a few calm frames in a row), or after ms.
+  waitForTiles(ms = 8000) {
+    const viewer = this.viewer;
+    const t0 = performance.now();
+    let calm = 0;
+    return new Promise((resolve) => {
+      const step = () => {
+        if (this.viewer !== viewer) { resolve(false); return; }
+        const ts = this.tileset;
+        const loaded = viewer.scene.globe.tilesLoaded && (!ts || !ts.show || ts.tilesLoaded);
+        calm = loaded ? calm + 1 : 0;
+        if (calm >= 4) { resolve(true); return; }
+        if (performance.now() - t0 > ms) { resolve(false); return; }
+        requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  }
+
+  // A picture of the 3D view as it is now (data: URL), taken right after a frame is drawn; null if not possible.
+  snapshot() {
+    const scene = this.viewer?.scene;
+    if (!scene) return Promise.resolve(null);
+    return new Promise((resolve) => {
+      let done = false;
+      const finish = (v) => { if (done) return; done = true; remove(); resolve(v); };
+      const remove = scene.postRender.addEventListener(() => {
+        try { finish(scene.canvas.toDataURL('image/jpeg', 0.9)); } catch { finish(null); }
+      });
+      scene.requestRender();
+      setTimeout(() => finish(null), 1000);
+    });
+  }
+
   async flyToPlace(place) {
     const body = BODIES[this.body];
     const ellipsoid = this.ellipsoid;

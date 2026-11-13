@@ -575,6 +575,27 @@ const api = {
     if (!sel && saved?.hidden) hideDetail();
   },
   backToGlobe,
+  // Base plan world swap: show a place's close-up at once (no flight), with the camera at the given
+  // heading, pitch and range. Returns the ground height of the place, or null.
+  async jumpTo(sel, view) {
+    select(sel);
+    const place = placeOf(sel);
+    if (!place || !globe.viewer) return null;
+    const world = worldOf(sel, place);
+    if (state.world !== world) await showWorld(world);
+    if (!globe.viewer) return null;
+    update({ view: 'flying' });
+    setCloseup(true);
+    setBackVisible(true);
+    pins.setHidden(true);
+    const h = await globe.jumpOrbit(place, view);
+    if (h == null) return null;
+    update({ view: 'closeup' });
+    renderDetail();
+    return h;
+  },
+  // The ranking of the Earth sites for any target (the shown one, or computed).
+  rankingFor: (id) => (id === state.targetId ? ranked : computeRanking(id)),
   openTwin: (siteId, targetId) => openTwin(findSite(state.data, siteId), findTarget(state.data, targetId)),
   closeOverlay,
   // Also turns Discover off, so the tour and the Jordan corridor show the hand-picked sites only.
@@ -738,7 +759,8 @@ async function main() {
   $('#loading').classList.add('done');
   if (!/[?&](demo|shot)/.test(location.search)) {
     $('#story-hero').hidden = false;
-    document.addEventListener('pointerdown', (e) => { if (!e.target.closest('#story-hero')) hideHero(); }, { once: true, capture: true });
+    const away = (e) => { if (e.target.closest?.('#story-hero')) return; hideHero(); for (const t of ['pointerdown', 'click', 'keydown']) document.removeEventListener(t, away, true); };
+    for (const t of ['pointerdown', 'click', 'keydown']) document.addEventListener(t, away, true);
   }
   if (NO_3D) banner(`<b>3D is off for this visit</b> (<b>?no3d</b> in the address): the globe shows NASA pictures without 3D terrain and works without internet. <a href="${esc(addressWith3D(true))}">Turn 3D back on</a>`, 12000);
   else if (!HAS_ION) banner('3D terrain is off: the globe works, but close-ups are flat. <button type="button" class="btn small primary" data-setup>Turn on 3D</button>', 12000);

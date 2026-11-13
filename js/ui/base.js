@@ -12,6 +12,7 @@ import { drawBase, BASE_PARTS } from '../globe/base3d.js';
 import { marsDelaySeconds, marsDistanceKm, nextConjunction, formatDelay, LIGHT_KM_S } from '../orbits.js';
 import { tourRunning } from './tour.js';
 import { corridorActive } from './corridor.js';
+import { REDUCED_MOTION } from '../config.js';
 
 let docs = null;
 export async function baseData() {
@@ -49,7 +50,7 @@ export async function startBase(api, { sel, place, target, result, here, onAsk }
   try { await baseData(); } catch (err) { toast(`Base plan data could not load: ${err.message}`, 5000); return; }
   stopBase();
   const body = planBodyOf(place, target);
-  const ctx = { sel, place, target, result, body, onAsk };
+  const ctx = { sel, place, target, result, body, onAsk, swapTo: swapTarget(api, sel, place, target) };
   let h = null;
   if (api.globe.viewer) {
     const flown = here || await api.flyTo(sel); // already in the close-up of this place: just come closer
@@ -60,6 +61,76 @@ export async function startBase(api, { sel, place, target, result, here, onAsk }
   active = { ctx, api, remove: drawBase(viewer, api.globe.ellipsoid, place, h) };
   document.body.classList.add('basing');
   showCard();
+}
+
+// ---------- world swap: the same base, the same view, another world around it ----------
+// A Moon or Mars target swaps to its closest Earth twin (the first site of its ranking); an Earth site swaps
+// to the target it is compared with. Nothing about the base or the camera changes, only the place around it.
+function swapTarget(api, sel, place, target) {
+  if (sel.kind === 'target') {
+    const top = api.rankingFor?.(place.id)?.find((r) => r.score != null);
+    return top ? { sel: { kind: 'site', id: top.site.id }, place: top.site, target: place, result: top } : null;
+  }
+  return target ? { sel: { kind: 'target', id: target.id }, place: target, target, result: null } : null;
+}
+
+const worldOf = (place) => BODY_LABEL[place.body || 'earth'];
+const swapLabel = (to) => `${to.place.body && to.place.body !== 'earth' ? (to.place.body === 'mars' ? '🔴' : '🌕') : '🌍'} Same base on ${worldOf(to.place)}: ${to.place.name.split(' (')[0]}`;
+
+// A picture of the view as it is now covers the globe while the other world loads under it.
+export async function coverScreen(api, text) {
+  const shot = await api.globe.snapshot();
+  const el = document.createElement('div');
+  el.className = 'swap-cover';
+  el.innerHTML = `${shot ? `<img alt="" src="${shot}">` : ''}<div class="swap-label"><i></i>${esc(text)}</div>`;
+  document.body.appendChild(el);
+  return el;
+}
+
+// Opens the cover as a growing circle from the middle of the screen (where the base is), then removes it.
+export function revealCover(el) {
+  return new Promise((resolve) => {
+    if (!el?.isConnected) { resolve(); return; }
+    el.classList.add('opening');
+    if (REDUCED_MOTION) { el.remove(); resolve(); return; }
+    const t0 = performance.now();
+    const far = Math.hypot(innerWidth, innerHeight) * 0.75;
+    const step = (now) => {
+      const t = Math.min(1, (now - t0) / 1700);
+      const r = far * t * t * (3 - 2 * t);
+      const mask = `radial-gradient(circle at 50% 50%, transparent ${r}px, #000 ${r + 160}px)`;
+      el.style.webkitMaskImage = mask;
+      el.style.maskImage = mask;
+      if (t < 1) requestAnimationFrame(step); else { el.remove(); resolve(); }
+    };
+    requestAnimationFrame(step);
+  });
+}
+
+let swapping = false;
+async function swapWorld() {
+  if (!active || swapping || !active.ctx.swapTo) return;
+  swapping = true;
+  const { api, ctx } = active;
+  const to = ctx.swapTo;
+  const o = api.globe.orbit;
+  const view = o ? { heading: o.heading, pitch: o.pitch, range: o.range } : null;
+  const cover = await coverScreen(api, `${ctx.place.name.split(' (')[0]}, ${worldOf(ctx.place)}  →  ${to.place.name.split(' (')[0]}, ${worldOf(to.place)}`);
+  try {
+    stopBase();
+    const h = view ? await api.jumpTo(to.sel, view) : null;
+    if (h == null) { toast('The other world could not be shown.'); return; }
+    const next = { sel: to.sel, place: to.place, target: to.target, result: to.result, body: planBodyOf(to.place, to.target), onAsk: ctx.onAsk };
+    next.swapTo = swapTarget(api, next.sel, next.place, next.target);
+    active = { ctx: next, api, remove: drawBase(api.globe.viewer, api.globe.ellipsoid, to.place, h) };
+    document.body.classList.add('basing');
+    showCard();
+    await api.globe.waitForTiles(8000);
+  } finally {
+    await revealCover(cover);
+    api.globe.resumeOrbit();
+    swapping = false;
+  }
 }
 
 function showCard() {
@@ -78,13 +149,15 @@ function showCard() {
     <div class="t">${test ? 'Test base at' : `${esc(BODY_LABEL[body])} base at`} ${esc(place.name)}</div>
     <div class="base-parts">${parts}</div>${testLine}
     <div class="s">Call home from the communication room: ${esc(delayLine(body))}.</div>
-    <div class="ctl"><button type="button" class="btn small primary" data-b="plan">Plan details</button>
+    <div class="ctl">${ctx.swapTo ? `<button type="button" class="btn small primary" data-b="swap">${esc(swapLabel(ctx.swapTo))}</button>` : ''}
+      <button type="button" class="btn small${ctx.swapTo ? '' : ' primary'}" data-b="plan">Plan details</button>
       <button type="button" class="btn small" data-b="ask">Ask SI about this base</button>
       <button type="button" class="btn small" data-b="exit">Exit base</button></div>`;
   el.querySelector('[data-b="plan"]').addEventListener('click', () => openBaseDetails(ctx));
+  el.querySelector('[data-b="swap"]')?.addEventListener('click', swapWorld);
   el.querySelector('[data-b="ask"]').addEventListener('click', () => ctx.onAsk?.(`Plan a ${test ? 'test base' : 'base'} at ${place.name}${test ? ` to prepare for ${target.name}` : ''}: what are the main problems there and how does each part of the base solve them?`));
   el.querySelector('[data-b="exit"]').addEventListener('click', () => { const { api } = active; stopBase(); api.backToGlobe(); });
-  el.querySelector('[data-b="plan"]').focus();
+  (el.querySelector('[data-b="swap"]') || el.querySelector('[data-b="plan"]')).focus();
 }
 
 export function stopBase() {
