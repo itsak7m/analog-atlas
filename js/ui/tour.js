@@ -89,7 +89,7 @@ export function markRunButton(sel, on, idle, running) {
   if (txt) txt.textContent = on ? running[1] : idle[1];
   b.title = on ? running[2] : idle[2];
 }
-const tourButton = (on) => markRunButton('#tour-btn', on, ['▶', 'Tour', 'Play the 2-minute mission tour'], ['■', 'Stop tour', 'Stop the mission tour (Esc)']);
+const tourButton = (on) => markRunButton('#tour-btn', on, ['▶', 'Data tour', 'Play the 2-minute data tour'], ['■', 'Stop tour', 'Stop the mission tour (Esc)']);
 
 function ring(selector) {
   let el = $('#tour-ring');

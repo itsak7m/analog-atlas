@@ -734,3 +734,122 @@ body.basing #rank { visibility: hidden; }
   .sender { grid-template-columns: 1fr auto; }
   .plate-row { grid-template-columns: 90px 1fr 52px; }
 }
+
+/* ---------- Story mode (js/ui/story.js): a clean screen, one big card, real 3D behind it ---------- */
+.more { position: relative; }
+.more-menu { position: absolute; right: 0; top: calc(100% + 6px); display: flex; flex-direction: column; gap: 6px; padding: 8px; min-width: 190px; z-index: 40; }
+.more-menu .btn { justify-content: flex-start; width: 100%; }
+.top-actions .more-menu .btn .txt { display: inline !important; }
+#story-btn[aria-pressed="true"] { background: var(--amber); color: #1a1205; }
+
+.story-hero {
+  position: fixed; left: 50%; top: 52%; transform: translate(-50%, -50%); z-index: 30;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 18px 30px; border: 1px solid var(--amber); border-radius: 999px;
+  background: rgba(5, 8, 15, 0.82); color: var(--text); cursor: pointer; font: inherit;
+  box-shadow: 0 0 0 0 rgba(255, 181, 71, 0.5); animation: heroPulse 2.4s ease-in-out infinite;
+}
+.story-hero .big { font: 600 24px/1.1 var(--fd); letter-spacing: .04em; color: var(--amber); }
+.story-hero small { color: var(--muted); }
+.story-hero:hover, .story-hero:focus-visible { background: rgba(14, 24, 40, 0.95); outline: none; }
+@keyframes heroPulse { 50% { box-shadow: 0 0 0 14px rgba(255, 181, 71, 0); } }
+
+/* While the story runs: only the brand, the Story button and the globe. */
+body.story-on .topbar > :not(.brand):not(.top-actions),
+body.story-on .top-actions > :not(#story-btn),
+body.story-on #rank, body.story-on #detail, body.story-on #kit-bar, body.story-on #kit-panel,
+body.story-on #pins, body.story-on #hud, body.story-on #banner, body.story-on #caption, body.story-on .story-hero { display: none !important; }
+body.story-on #story-btn .txt::after { content: ' (stop)'; }
+
+.story {
+  position: fixed; left: 50%; bottom: calc(var(--gap) + 8px); transform: translateX(-50%); z-index: 26;
+  width: min(900px, calc(100vw - 2 * var(--gap)));
+  display: flex; gap: 16px; align-items: flex-start; padding: 18px 22px 14px;
+  background: rgba(5, 8, 15, 0.9); border: 1px solid var(--line-strong); border-left: 3px solid var(--amber);
+  backdrop-filter: blur(6px); animation: cardIn .45s ease both;
+}
+.st-cat { flex: none; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.st-cat canvas { width: 126px; height: 80px; image-rendering: pixelated; }
+.st-cat small { font: 10px var(--fm); color: var(--dim); }
+.st-main { flex: 1; min-width: 0; }
+.st-k { font: 600 11px var(--fm); letter-spacing: .16em; text-transform: uppercase; color: var(--amber); }
+.st-t { font: 600 32px/1.15 var(--fd); margin: 4px 0 6px; }
+.st-t .w { display: inline-block; opacity: 0; transform: translateY(12px); animation: wordIn .5s ease forwards; animation-delay: calc(var(--i) * 70ms); }
+.st-s { color: var(--muted); font-size: 16px; opacity: 0; animation: fadeIn .6s ease .5s forwards; }
+.st-viz { margin-top: 12px; opacity: 0; animation: fadeIn .5s ease .8s forwards; }
+.st-segs { display: flex; gap: 3px; margin-top: 14px; }
+.st-segs i { flex: 1; height: 3px; background: var(--line); position: relative; overflow: hidden; }
+.st-segs i.done { background: var(--amber); }
+.story.ready .st-segs i.now::after { content: ''; position: absolute; inset: 0; background: var(--amber); transform-origin: left; animation: segFill var(--d, 5s) linear forwards; }
+.story.paused .st-segs i.now::after { animation-play-state: paused; }
+.st-ctl { display: flex; gap: 6px; margin-top: 10px; justify-content: flex-end; }
+.st-end { display: flex; gap: 8px; margin-top: 14px; }
+.story.end .st-t { font-size: 36px; }
+
+/* Jordan <-> Mars match */
+.st-match { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 12px; }
+.st-match > span { font: 600 14px var(--fm); letter-spacing: .1em; text-transform: uppercase; }
+.st-match > span:first-child { color: var(--earth); }
+.st-match > span:nth-of-type(2) { color: var(--mars); }
+.st-link { height: 3px; background: linear-gradient(90deg, var(--earth), var(--mars)); transform: scaleX(0); transform-origin: left; transition: transform 1.2s ease; }
+.st-match.go .st-link { transform: scaleX(1); }
+.story:not(.ready) .st-match { visibility: hidden; }
+.st-match b { font: 700 44px/1 var(--fd); color: var(--amber); }
+.st-match small { grid-column: 1 / -1; color: var(--muted); font-size: 13px; }
+
+/* Base parts lighting up as they rise */
+.st-parts { display: flex; flex-wrap: wrap; gap: 8px; }
+.st-parts span { padding: 6px 12px; border: 1px solid var(--line-strong); color: var(--dim); transition: all .5s ease; }
+.st-parts span.on { border-color: var(--c); color: var(--text); background: color-mix(in srgb, var(--c) 18%, transparent); box-shadow: 0 0 18px color-mix(in srgb, var(--c) 45%, transparent); }
+
+/* Hydroponic farm */
+.st-farm { display: flex; gap: 14px; }
+.st-crop { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 6px; border: 1px solid var(--line); position: relative; overflow: hidden; }
+.st-plant { font-size: 40px; line-height: 1.1; transform: translateY(26px) scale(0.2); opacity: 0; }
+.st-farm.grow .st-plant { animation: sprout 1.3s cubic-bezier(.2, 1.4, .4, 1) forwards; animation-delay: calc(var(--i) * 0.6s); }
+.st-water { width: 100%; height: 8px; background: repeating-linear-gradient(90deg, #2b6fd6 0 14px, #4f8ff0 14px 28px); opacity: .8; animation: water 1.6s linear infinite; }
+.st-crop b { font-size: 15px; }
+.st-crop span { font: 12px var(--fm); color: var(--green); text-transform: uppercase; letter-spacing: .1em; }
+@keyframes sprout { to { transform: none; opacity: 1; } }
+@keyframes water { to { background-position: 28px 0; } }
+
+/* Message home */
+.st-msg { display: flex; flex-direction: column; gap: 4px; }
+.st-typed { font: 15px var(--fm); color: var(--text); min-height: 1.4em; }
+.st-typed i { display: inline-block; width: 8px; height: 1em; background: var(--amber); vertical-align: -2px; margin-left: 2px; animation: blink 1s steps(1) infinite; }
+.st-msg svg { width: 100%; max-height: 110px; }
+.st-msg text { fill: var(--muted); font: 12px var(--fm); text-anchor: middle; }
+.st-route { fill: none; stroke: var(--amber); stroke-width: 2; stroke-linecap: round; }
+.st-mars { fill: var(--mars); }
+.st-earth { fill: var(--earth); }
+.st-msg.done .st-earth { animation: arrive .9s ease 2; }
+.st-env rect { fill: var(--panel-solid); stroke: var(--amber); stroke-width: 1.5; }
+.st-env path { fill: none; stroke: var(--amber); stroke-width: 1.5; }
+.st-clock { font: 13px var(--fm); color: var(--muted); }
+.st-clock b { color: var(--amber); font-size: 18px; }
+.st-msg.done .st-clock b { color: var(--green); }
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes arrive { 50% { filter: drop-shadow(0 0 10px var(--earth)); } }
+
+/* NASA's five hazards */
+.st-hazards { display: flex; flex-wrap: wrap; gap: 8px; }
+.st-hazards span { padding: 6px 10px; border: 1px solid var(--line-strong); color: var(--dim); opacity: 0; animation: popIn .4s ease forwards; animation-delay: calc(0.9s + var(--i) * 0.15s); }
+.st-hazards span.hot { color: var(--text); border-color: var(--amber); background: var(--amber-soft); animation: popIn .4s ease forwards, hazard 1.8s ease-in-out 2s infinite; animation-delay: calc(0.9s + var(--i) * 0.15s), 2s; }
+.st-src { display: inline-block; margin-top: 8px; font-size: 12px; color: var(--dim); }
+@keyframes hazard { 50% { box-shadow: 0 0 22px rgba(255, 181, 71, 0.55); } }
+
+@media (max-width: 720px) {
+  .story { flex-direction: column; align-items: stretch; padding: 12px 14px 10px; gap: 6px; }
+  .st-cat { flex-direction: row; gap: 8px; }
+  .st-cat canvas { width: 84px; height: 53px; }
+  .st-t { font-size: 22px; }
+  .story.end .st-t { font-size: 24px; }
+  .st-s { font-size: 14px; }
+  .st-plant { font-size: 30px; }
+  .story-hero .big { font-size: 19px; }
+  .story-hero { width: calc(100vw - 2 * var(--gap)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .st-t .w, .st-s, .st-viz, .st-hazards span, .st-plant { opacity: 1; transform: none; animation: none !important; }
+  .story-hero { animation: none; }
+}

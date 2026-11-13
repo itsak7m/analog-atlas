@@ -17,7 +17,17 @@ Team Cosmic Cats · NASA Space Apps 2026 · Amman. About 4 minutes, four speaker
 
 1. **Do not rely on the venue Wi-Fi.** Use your phone hotspot if you can. If the internet is weak, use **`start_offline.bat`**: everything works except the 3D terrain.
 2. **Start 15 minutes early:** double-click `start.bat`, open http://localhost:8080 in Chrome.
-3. **Warm up the places you will show:** press **▶ Tour** once and let it run to the end, then open **Jezero → Base plan** and **Malapert → Base plan** once. The map tiles are then in the browser's cache, so on stage they appear at once.
+3. **Warm up the places you will show:** press **▶ Story** once and let it run to the end. The map tiles are then in the browser's cache, so on stage they appear at once. Then reload the page (F5), so the big **▶ Start the mission** button is waiting in the middle.
+
+**Easiest way to present:** press **▶ Start the mission** and talk over the story (lines below). Space pauses it when someone needs more time; → skips ahead. At the end press **Show the data**: the full app opens for the judges' questions. The step-by-step demo in section B is the same story done by hand, if you prefer it.
+
+| Story scene | Who talks |
+|---|---|
+| 1 Mission, 2 Jordan | Human side (hook) |
+| 3 Mars · Jezero (the match %) | Demo driver |
+| 4 The crew's home (base builds) | Science (why Mars is hard) |
+| 5 Food, 6 Message home, 7 The crew | Human side |
+| 8 End → Show the data | Demo driver, then Hardware (field kit) |
 4. Check http://localhost:8080/tests/ says **All 72 tests passed**.
 5. Laptop on the charger, notifications off, sleep off, screen zoom 100 %, the browser in full screen (F11).
 6. **Backup:** the 30 s video `pitch/analog-atlas-pitch-promo30.webm` and the deck `pitch/AnalogAtlas_CosmicCats.pptx` open in another window. If anything freezes, switch to them and keep talking.

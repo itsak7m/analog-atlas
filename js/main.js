@@ -15,6 +15,7 @@ import { openTune } from './ui/tune.js';
 import { openMethod } from './ui/method.js';
 import { closeOverlay, overlayOpen } from './ui/overlay.js';
 import { playTour, stopTour, tourRunning, focusAfterRun } from './ui/tour.js';
+import { playStory, stopStory, storyRunning } from './ui/story.js';
 import { startCorridor, stopCorridor, corridorActive, corridorSiteIds } from './ui/corridor.js';
 import { startBase, stopBase, baseActive } from './ui/base.js';
 import { openAsk } from './ui/ask.js';
@@ -231,6 +232,7 @@ function onDetailAction(e) {
     case 'street': if (place) openStreet(place); break;
     case 'twin': if (place) openTwin(place, findTarget(state.data, state.targetId)); break;
     case 'tour': if (need3D('The mission tour')) playTour(api); break;
+    case 'story': startStory(); break;
     case 'base': if (place && state.selected?.kind !== 'box') openBase(state.selected, place); break;
     case 'brief-more': {
       const open = btn.closest('.welcome').classList.toggle('open');
@@ -434,8 +436,32 @@ function openBase(sel, place) {
   startBase(api, { sel: { ...sel }, place, target, result, here: state.view === 'closeup', onAsk: (q) => openAsk(q) });
 }
 
+// Story mode: the short animated story (Earth -> Jordan -> Mars -> the crew's base). The start button in the
+// middle of the screen shows only until the visitor starts the story or touches anything else.
+function startStory() {
+  hideHero();
+  if (storyRunning()) { stopStory(); return; }
+  if (tourRunning()) stopTour();
+  if (corridorActive()) stopCorridor();
+  if (need3D('The story')) playStory(api);
+}
+
+function hideHero() { const h = $('#story-hero'); if (h) h.hidden = true; }
+
+// "More" menu in the top bar: the tools a first-time visitor does not need (3D, data tour, Jordan corridor).
+function initMore() {
+  const btn = $('#more-btn');
+  const menu = $('#more-menu');
+  const set = (open) => { menu.hidden = !open; btn.setAttribute('aria-expanded', String(open)); };
+  btn.addEventListener('click', (e) => { e.stopPropagation(); set(menu.hidden); });
+  menu.addEventListener('click', () => set(false));
+  document.addEventListener('click', (e) => { if (!menu.hidden && !e.target.closest('#more-menu, #more-btn')) set(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
+}
+
 function toggleCorridor() {
   if (corridorActive()) { stopCorridor(); return; }
+  if (storyRunning()) { toast('Exit the story first (Esc).'); return; }
   if (tourRunning()) { toast('Exit the mission tour first (Esc).'); return; }
   if (need3D('The Jordan corridor')) startCorridor(api);
 }
@@ -667,7 +693,10 @@ async function main() {
     await backToGlobe();
     if (hadFocus && state.view === 'globe') focusAfterRun('#target-picker');
   });
-  $('#tour-btn').addEventListener('click', () => (tourRunning() ? stopTour() : need3D('The mission tour') && playTour(api)));
+  $('#tour-btn').addEventListener('click', () => (tourRunning() ? stopTour() : !storyRunning() && need3D('The mission tour') && playTour(api)));
+  $('#story-btn').addEventListener('click', startStory);
+  $('#story-hero').addEventListener('click', startStory);
+  initMore();
   $('#corridor-btn').addEventListener('click', toggleCorridor);
   $('#method-btn').addEventListener('click', openMethod);
   $('#ask-btn').addEventListener('click', () => openAsk());
@@ -680,6 +709,7 @@ async function main() {
   initDiscover({ onTab: onRankTab, onPick: pickBox });
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape' || overlayOpen()) return;
+    if (storyRunning()) { stopStory(); return; }
     if (tourRunning()) { stopTour(); return; }
     if (corridorActive()) { stopCorridor(); backToGlobe(); return; } // the same as the corridor's Exit button
     if (baseActive()) { backToGlobe(); return; } // the same as Exit base
@@ -706,6 +736,10 @@ async function main() {
   buildPins();
   renderWelcome();
   $('#loading').classList.add('done');
+  if (!/[?&](demo|shot)/.test(location.search)) {
+    $('#story-hero').hidden = false;
+    document.addEventListener('pointerdown', (e) => { if (!e.target.closest('#story-hero')) hideHero(); }, { once: true, capture: true });
+  }
   if (NO_3D) banner(`<b>3D is off for this visit</b> (<b>?no3d</b> in the address): the globe shows NASA pictures without 3D terrain and works without internet. <a href="${esc(addressWith3D(true))}">Turn 3D back on</a>`, 12000);
   else if (!HAS_ION) banner('3D terrain is off: the globe works, but close-ups are flat. <button type="button" class="btn small primary" data-setup>Turn on 3D</button>', 12000);
   // Pitch mode (?demo for the 30-second video, ?shot=<name> for slide pictures): loaded only when asked for.

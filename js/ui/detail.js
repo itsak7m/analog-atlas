@@ -182,7 +182,7 @@ export function renderWelcome() {
     </ol>
     <p class="src">Climate: NASA POWER 2001–2020 averages (from satellites and weather models). Targets: measurements from Perseverance, Curiosity and Phoenix on Mars, two Mars orbiters (MRO Mars Climate Sounder, MGS TES), LRO Diviner and Apollo 17 on the Moon, and NASA fact sheets. Every number links to its source in <b>Method &amp; data</b>.</p>
     </div>
-    <div class="actions"><button type="button" class="btn primary" data-action="tour">Play the 2-minute mission tour</button><button type="button" class="btn brief-more" data-action="brief-more" aria-expanded="false" aria-controls="welcome-more">More</button></div>
+    <div class="actions"><button type="button" class="btn primary" data-action="story">▶ Play the 2-minute story</button><button type="button" class="btn brief-more" data-action="brief-more" aria-expanded="false" aria-controls="welcome-more">More</button></div>
   </div>`);
 }
 

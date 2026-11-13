@@ -39,12 +39,18 @@
     </div>
     <div class="spacer"></div>
     <div class="top-actions">
-      <button type="button" class="btn" id="token-btn" title="3D terrain on or off">3D <span id="token-state">off</span></button>
       <button type="button" class="btn" id="back-btn" hidden><span aria-hidden="true">◀</span> <span class="txt">Back to globe</span></button>
-      <button type="button" class="btn" id="tour-btn" title="Play the 2-minute mission tour"><span aria-hidden="true">▶</span> <span class="txt">Tour</span></button>
-      <button type="button" class="btn" id="corridor-btn" title="Jordan Analog Corridor"><span aria-hidden="true">◆</span> <span class="txt">Jordan</span></button>
+      <button type="button" class="btn primary" id="story-btn" aria-pressed="false" title="Play the short animated story (Esc to exit)"><span aria-hidden="true">▶</span> <span class="txt">Story</span></button>
       <button type="button" class="btn" id="ask-btn" title="Ask Atlas: questions about the places, the base, crops, the Moon and Mars"><span aria-hidden="true">?</span> <span class="txt">Ask</span></button>
       <button type="button" class="btn" id="method-btn" title="Method and data sources"><span aria-hidden="true">≡</span> <span class="txt">Method &amp; data</span></button>
+      <div class="more">
+        <button type="button" class="btn" id="more-btn" aria-expanded="false" aria-controls="more-menu" title="More tools"><span aria-hidden="true">⋯</span> <span class="txt">More</span></button>
+        <div class="more-menu panel" id="more-menu" hidden>
+          <button type="button" class="btn" id="tour-btn" title="Play the 2-minute data tour"><span aria-hidden="true">▶</span> <span class="txt">Data tour</span></button>
+          <button type="button" class="btn" id="corridor-btn" title="Jordan Analog Corridor"><span aria-hidden="true">◆</span> <span class="txt">Jordan corridor</span></button>
+          <button type="button" class="btn" id="token-btn" title="3D terrain on or off">3D <span id="token-state">off</span></button>
+        </div>
+      </div>
     </div>
     <!-- The flight read-out sits just under the top bar, whatever height the bar wraps to. -->
     <div id="hud" class="hud" hidden aria-hidden="true"></div>
@@ -98,6 +104,7 @@
   <section id="kit-panel" class="panel bracket kit-panel" hidden aria-label="ESP32 field kit"></section>
   <div id="overlay-root"></div>
   <div id="caption" class="caption" hidden role="status" aria-live="polite"></div>
+  <button type="button" id="story-hero" class="story-hero" hidden><span class="big">▶ Start the mission</span><small>A 2-minute story: Jordan, Mars and the crew's home</small></button>
 
   <div id="banner" class="banner" hidden role="status"></div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>

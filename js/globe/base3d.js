@@ -21,14 +21,36 @@ export const BASE_PARTS = [
 ];
 
 // Draws the base around (lon, lat) at ground height h on the globe's ellipsoid. Returns a function that removes it.
-export function drawBase(viewer, ellipsoid, { lon, lat }, h) {
+// With { build: true } (Story mode) every part starts hidden; remove.reveal(partId) makes that part rise out of
+// the ground in about a second (at once with reduced motion).
+export function drawBase(viewer, ellipsoid, { lon, lat }, h, { build = false, reducedMotion = false } = {}) {
   const centre = Cesium.Cartesian3.fromDegrees(lon, lat, h, ellipsoid);
   const enu = Cesium.Transforms.eastNorthUpToFixedFrame(centre, ellipsoid);
   const at = (e, n, up = 0) => Cesium.Matrix4.multiplyByPoint(enu, new Cesium.Cartesian3(e, n, up), new Cesium.Cartesian3());
   const upright = (pos) => Cesium.Transforms.headingPitchRollQuaternion(pos, new Cesium.HeadingPitchRoll(0, 0, 0), ellipsoid);
   const colour = (css, a = 1) => Cesium.Color.fromCssColorString(css).withAlpha(a);
   const added = [];
-  const add = (spec) => added.push(viewer.entities.add(spec));
+  // Build animation: when each part was revealed (performance.now()), and the local "up" direction.
+  const shownAt = {};
+  const up = Cesium.Cartesian3.normalize(Cesium.Cartesian3.subtract(at(0, 0, 1), centre, new Cesium.Cartesian3()), new Cesium.Cartesian3());
+  const RISE_MS = 1100;
+  const DROP_M = 16;
+  let part = null; // the part the next add() calls belong to
+  const add = (spec) => {
+    if (build && part) {
+      const id = part;
+      spec.show = new Cesium.CallbackProperty(() => shownAt[id] != null, false);
+      if (spec.position && !reducedMotion) {
+        const final = spec.position;
+        spec.position = new Cesium.CallbackProperty((time, result) => {
+          const t = shownAt[id] == null ? 0 : Math.min(1, (performance.now() - shownAt[id]) / RISE_MS);
+          const drop = DROP_M * (1 - t) ** 3;
+          return Cesium.Cartesian3.add(final, Cesium.Cartesian3.multiplyByScalar(up, -drop, new Cesium.Cartesian3()), result || new Cesium.Cartesian3());
+        }, false);
+      }
+    }
+    added.push(viewer.entities.add(spec));
+  };
   const label = (text, css) => ({
     text,
     font: '600 15px "IBM Plex Sans", sans-serif',
@@ -43,6 +65,7 @@ export function drawBase(viewer, ellipsoid, { lon, lat }, h) {
     backgroundColor: colour('#05080f', 0.7),
   });
 
+  part = 'habitat';
   // Habitat: two upright modules (radius 5 m, 7 m tall) on a 4 m deep footing, so they never float on rough ground.
   LAYOUT.habitat.forEach(([e, n], i) => {
     const pos = at(e, n, 1.5);
@@ -51,6 +74,7 @@ export function drawBase(viewer, ellipsoid, { lon, lat }, h) {
     add({ position: top, orientation: upright(top), ellipsoid: { radii: new Cesium.Cartesian3(5, 5, 2.4), maximumCone: Math.PI / 2, material: colour('#eef2f8') } });
     if (i === 0) add({ position: at(e + 7, n, 13), label: label('Habitat', '#eef2f8') });
   });
+  part = 'greenhouse';
   // Greenhouse: a glass dome, radius 13 m.
   {
     const [e, n] = LAYOUT.greenhouse;
@@ -63,6 +87,7 @@ export function drawBase(viewer, ellipsoid, { lon, lat }, h) {
     }
     add({ position: at(e, n, 9), label: label('Hydroponic greenhouse', '#9be3a5') });
   }
+  part = 'comm';
   // Communication room: a box with an 18 m mast and a dish.
   {
     const [e, n] = LAYOUT.comm;
@@ -75,6 +100,7 @@ export function drawBase(viewer, ellipsoid, { lon, lat }, h) {
     add({ position: dishPos, orientation: tilt, ellipsoid: { radii: new Cesium.Cartesian3(3.6, 3.6, 1.0), minimumCone: Math.PI / 2, material: colour('#ffb547'), outline: true, outlineColor: colour('#ffd28a') } });
     add({ position: at(e, n, 21), label: label('Communication room', '#ffcf7a') });
   }
+  part = 'solar';
   // Solar arrays on posts.
   LAYOUT.solar.forEach(([e, n], i) => {
     const pos = at(e, n, 2.2);
@@ -84,9 +110,12 @@ export function drawBase(viewer, ellipsoid, { lon, lat }, h) {
     add({ position: post, orientation: upright(post), cylinder: { length: 6, topRadius: 0.3, bottomRadius: 0.3, material: colour('#7a859c') } });
     if (i === 1) add({ position: at(e, n, 7), label: label('Solar power', '#a8c0ff') });
   });
+  part = 'habitat';
   // Pressurised tunnels between the modules (drawn on the ground).
   for (const [[e1, n1], [e2, n2]] of LAYOUT.paths) {
     add({ polyline: { positions: [at(e1, n1, 0.6), at(e2, n2, 0.6)], width: 6, material: colour('#9aa6bd', 0.9) } });
   }
-  return () => { for (const ent of added) { try { viewer.entities.remove(ent); } catch { /* viewer rebuilt */ } } };
+  const remove = () => { for (const ent of added) { try { viewer.entities.remove(ent); } catch { /* viewer rebuilt */ } } };
+  remove.reveal = (id) => { if (shownAt[id] == null) shownAt[id] = performance.now(); };
+  return remove;
 }
