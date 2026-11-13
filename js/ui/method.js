@@ -519,6 +519,7 @@ function limitsList() {
   const d = state.data;
   const items = ['Climate alone barely separates desert sites (several tie within 1 %). That is why terrain, geology and field measurements matter.',
     'Mean temperature and daily swing compare Earth air (NASA POWER T2M and T2M_RANGE, 2 m above the ground) with surface or ground temperatures on the Moon and at the Mars targets measured from orbit (see "How the score works"). At Jezero the coldest value is air too (MEDA). The Ground surface switch in Tune factors uses MODIS surface temperature instead: clear-sky only, its mean is about 2–3 K warmer than a 24 h mean and its swing catches about 88 % of the daily range.',
+    'Gravity, vacuum, radiation and the thin Martian air cannot be reproduced anywhere on Earth, so they are not scored and every analog breaks there. Dust storms are not scored either: we have no dust measurement for the Earth sites.',
     'The surface composition indicators (MODIS emissivity, Sentinel-2, ASTER, EMIT) are display only. Their reading cut values were set while looking at the same sites, so they illustrate rather than test.'];
   const thin = d.targets.filter((t) => targetGaps(t).length).map((t) => `${esc(t.name)}: ${pillarText(t)}`);
   if (thin.length) items.push(`Some targets have no data for whole pillars, so their full analog match uses fewer pillars. ${thin.join('; ')}.`);
@@ -592,6 +593,26 @@ function limitsList() {
   items.push(`Only "Stand here · 3D terrain" is rendered from elevation data. "360° photo", "panorama", "Photo" and "Street View" all show real photographs${orbit.length ? ` (for ${andList(orbit)}, "Photo" shows a photo taken from orbit, not from the ground)` : ''}. Street View needs internet.`);
   items.push('The field kit is a prototype. Without a connected kit or a loaded log, its values are simulated, and they are always labelled "Simulated".');
   return `<ul>${items.map((x) => `<li>${x}</li>`).join('')}</ul>`;
+}
+
+// The criteria of the challenge statement, and how Analog Atlas answers each one (also in README section 3).
+function challengeCriteria() {
+  const rows = [
+    ['Geology', 'Covered', 'Geology pillar: the main rock type of each site against the target (same rock 1, same family 0.5, else 0), every rock with a published source.'],
+    ['Mineral presence', 'Covered', 'Resources pillar: sourced tags such as ice, salts and lava-tube shelter. Surface composition from orbit (EMIT minerals, ASTER and MODIS emissivity, Sentinel-2) is shown on each site page, display only.'],
+    ['Temperature', 'Covered', 'Climate pillar: mean temperature, daily swing and coldest ground (NASA POWER on Earth; LRO Diviner, Mars Climate Sounder, MEDA, REMS, Phoenix on the targets). MODIS ground surface temperature as a switch. The ESP32 field kit measures air, ground and soil on site.'],
+    ['Illumination', 'Partly', 'Scored: albedo, and for the three Moon base sites the highest Sun in the sky. Shown but not scored: LRO LOLA sunlit share, Earth in view and distance to permanent shadow at the base sites, because no Earth site has polar-Moon light (every site has the Sun up about half the time).'],
+    ['Volcanic terrain', 'Covered', 'Basalt sites (for example Harrat al-Shaam, Craters of the Moon, Holuhraun) are scored against volcanic targets: the Arsia Mons skylight, the Mare Tranquillitatis pit, Apollo 11 and Apollo 17.'],
+    ['Underground environments', 'Covered', 'Two cave targets (the Mare Tranquillitatis pit on the Moon, the Arsia Mons skylight on Mars). Lava tubes on Earth earn the "shelter" resource. Nobody has measured inside these caves, so their values describe the surface around the opening.'],
+    ['Dust storms', 'Not scored', 'We have no dust-storm measurement for the Earth sites, so dust is not a factor. It appears only in the target notes (for example the UV drop during a dust storm measured by Perseverance).'],
+    ['A place to test equipment for a base', 'Covered', 'Landing-zone pillar (largest flat square in a 10 km box), "Stand here" in 3D, and the ESP32 field kit for a test day at the site.'],
+    ['Topography', 'Covered', 'Terrain pillar: slope statistics over a 10 km box on the same 500 m grid on all three worlds (Copernicus DEM, LRO LOLA, MGS MOLA).'],
+    ['Gravity, radiation, vacuum', 'Cannot be reproduced', 'No place on Earth has low gravity, vacuum or Moon or Mars radiation, and Mars air pressure is under 1 % of Earth’s. They are not scored for any site; every analog breaks here. Gravity maps (GRAIL) are therefore not used.'],
+    ['Where it works, how well, where it does not', 'Covered', 'Every result gives a %, the score of each pillar, the weak pillars, a ⚑ when data is weak, and the Limits list.'],
+    ['Search Earth for unrecognised analogs', 'Partly', 'Discover Jordan scores all of Jordan in 886 boxes of 10 km with the same method. It is a screening of Jordan only, not of the whole Earth, and no box is field-checked yet.'],
+  ].map(([a, b, c]) => `<tr><td>${esc(a)}</td><td><b>${esc(b)}</b></td><td>${esc(c)}</td></tr>`).join('');
+  return `<p>The challenge asks where an analog works, how well, and where it does not. This is how each criterion is handled.</p>
+    <div class="scroll-x"><table class="facts"><thead><tr><th>Challenge criterion</th><th>Status</th><th>How Analog Atlas handles it</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 // The resources listed on the challenge page (Resources tab, read on 13 November 2026), and what we really use.
@@ -712,6 +733,7 @@ export function openMethod() {
       <li><b>Log table</b>: the kit's daily mean air temperature and daily range next to NASA POWER T2M and T2M_RANGE for the same month at the kit location, to check that the kit gives realistic numbers.</li>
       <li><b>Simulated</b>: without a device the app shows simulated values made from NASA POWER monthly averages for the kit location plus a daily cycle. They are always labelled "Simulated".</li></ul>
     <h3 class="label">Limits</h3>${limitsList()}
+    <h3 class="label">Challenge criteria</h3>${challengeCriteria()}
     <h3 class="label">Challenge resources used</h3>${challengeResources()}
     <h3 class="label">Data files</h3>${dataFiles()}
     <h3 class="label">Credits</h3>${creditsSection()}

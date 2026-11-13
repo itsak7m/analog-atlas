@@ -39,6 +39,25 @@ The three base sites use only 3 of 5 pillars (their rock type and resources are 
 
 **Next user and next step (a plan, not done yet).** The first users we have in mind are students and teachers in Jordan who want to run a field day at a real analog site, and later teams that plan analog missions. We have not contacted any organisation yet. Our next step is a real 24-hour log with the ESP32 field kit at Harrat al-Shaam, the #1 Earth twin of Jezero, and, once access is checked, at the best Discover box for Jezero, 25 km to its south-west. We then compare both days with NASA POWER (section 6) and ask a geologist to review the Jordan rock table (section 7).
 
+### Challenge criteria
+
+The challenge asks where an analog works, how well, and where it does not. How each criterion is handled (also in the app: Method & data → Challenge criteria):
+
+| Challenge criterion | Status | How Analog Atlas handles it |
+|---|---|---|
+| Geology | Covered | Geology pillar: the main rock type of each site against the target (same rock 1, same family 0.5, else 0), every rock with a published source. |
+| Mineral presence | Covered | Resources pillar: sourced tags such as ice, salts and lava-tube shelter. Surface composition from orbit (EMIT minerals, ASTER and MODIS emissivity, Sentinel-2) is shown on each site page, display only. |
+| Temperature | Covered | Climate pillar: mean temperature, daily swing and coldest ground (NASA POWER on Earth; LRO Diviner, Mars Climate Sounder, MEDA, REMS, Phoenix on the targets). MODIS ground surface temperature as a switch. The ESP32 field kit measures air, ground and soil on site. |
+| Illumination | Partly | Scored: albedo, and for the three Moon base sites the highest Sun in the sky. Shown but not scored: LRO LOLA sunlit share, Earth in view and distance to permanent shadow at the base sites, because no Earth site has polar-Moon light (every site has the Sun up about half the time). |
+| Volcanic terrain | Covered | Basalt sites (for example Harrat al-Shaam, Craters of the Moon, Holuhraun) are scored against volcanic targets: the Arsia Mons skylight, the Mare Tranquillitatis pit, Apollo 11 and Apollo 17. |
+| Underground environments | Covered | Two cave targets (the Mare Tranquillitatis pit on the Moon, the Arsia Mons skylight on Mars). Lava tubes on Earth earn the "shelter" resource. Nobody has measured inside these caves, so their values describe the surface around the opening. |
+| Dust storms | Not scored | We have no dust-storm measurement for the Earth sites, so dust is not a factor. It appears only in the target notes (for example the UV drop during a dust storm measured by Perseverance). |
+| A place to test equipment for a base | Covered | Landing-zone pillar (largest flat square in a 10 km box), "Stand here" in 3D, and the ESP32 field kit for a test day at the site. |
+| Topography | Covered | Terrain pillar: slope statistics over a 10 km box on the same 500 m grid on all three worlds (Copernicus DEM, LRO LOLA, MGS MOLA). |
+| Gravity, radiation, vacuum | Cannot be reproduced | No place on Earth has low gravity, vacuum or Moon or Mars radiation, and Mars air pressure is under 1 % of Earth’s. They are not scored for any site; every analog breaks here. Gravity maps (GRAIL) are therefore not used. |
+| Where it works, how well, where it does not | Covered | Every result gives a %, the score of each pillar, the weak pillars, a ⚑ when data is weak, and the Limits list. |
+| Search Earth for unrecognised analogs | Partly | Discover Jordan scores all of Jordan in 886 boxes of 10 km with the same method. It is a screening of Jordan only, not of the whole Earth, and no box is field-checked yet. |
+
 ---
 
 ## 1. Start the app (Windows)
@@ -427,6 +446,7 @@ The Al-Fahda cave was a Jordan candidate site. We removed it from the list: it l
 - **Shackleton crater floor**: the pin is a permanently shadowed crater floor, but the brief's reference values are general figures (sunlit polar rims for the mean temperature, shadowed craters in general for the coldest ground, the whole Moon for albedo). Strict data uses only the Diviner values measured at the pin. Its ice tag rests on Zuber et al. 2012, which says surface ice on the floor is possible, not proven. Its regolith tag rests on Thomson et al. 2012 (radar of Shackleton crater itself; the quote is about the crater wall slopes, which the place rule accepts because the pin is inside that crater, but it is not a measurement on the floor).
 - **Data-quality flag ⚑ for targets:** a target gets a ⚑ when fewer than 3 of its 5 factors are measured at the site itself (rain counts, because it is physically zero). Today this applies to Apollo 11, whose other values are generic Moon figures or not measured.
 - **Data-quality flag ⚑ for Earth sites:** NASA POWER cells are about 50 km wide, and small places (a crater floor, a cave, the Dead Sea shore) have their own microclimate. When a site's cell is more than 400 m higher or lower than the real ground (about 2.6 °C), the site gets a ⚑ in the ranking and a warning, and stays in the ranking. Today: Death Valley (904 m), Tso Kar (521 m), the Lisan Peninsula at the Dead Sea (511 m) and the McMurdo Dry Valleys (435 m). The NASA POWER albedo of the Holuhraun and Dry Valleys cells is high for bare rock (0.63 and 0.56 for the year), probably because the cells include ice or snow.
+- **Gravity, vacuum and radiation** cannot be reproduced anywhere on Earth (nor the thin Martian air), so they are not scored and every analog breaks there. **Dust storms** are not scored either: we have no dust measurement for the Earth sites.
 - POWER "maximum/minimum" values are the extreme hourly values of 2001–2020, while the other values are averages. Target values come from missions with different instruments and durations.
 - Some reference target values are Moon-wide or Mars-wide averages or midpoints. They are labelled, and **Strict data** replaces them with site measurements or leaves them out.
 - **Geology** match levels (1, 0.5 or 0) and the rock families are our method choice, not a measurement. The 10° slope scale is also a method choice. Resource tags often describe a whole region rather than the exact pin.
