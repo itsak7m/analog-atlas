@@ -1,16 +1,16 @@
 // Detail panel for one 10 km screening box of Discover Jordan (design 4.4).
 // The same layout as a site page, plus the screening label, the box's rank, its neighbours, caveats,
 // the hand-picked Jordan sites for comparison and where every number comes from.
-// Not shown for boxes: Twin view, panoramas and "What crews can test here".
+// The featured box also has a rover trial proposal and a terrain comparison from the raw elevations.
 
 import { state } from '../state.js';
 import { ROCK_LABEL, R_SLOPE, SAFE_SLOPE_DEG, pct } from '../scoring.js';
 import { esc, fmt, fmtCoord, BODY_LABEL, CELL_GAP_LIMIT_M, distanceKm, scoreColor } from '../util.js';
-import { noScoreText, gapWords, strictDropsClimate } from './ranking.js';
+import { noScoreText, gapWords, strictDropsClimate, scoreLabel } from './ranking.js';
 import { setPanel, mbar, POWER_FACTS, srcLink, artemisLink } from './detail.js';
 import { currentResult, screenDoc, nearText, containedSite, whyWords } from './discover.js';
 import { findBox, neighbours, siteScoreNoResources, getScreening, SCREEN_LABEL } from '../screening.js';
-import { earthCell, earthTempLine, orbitBoxHTML } from './orbit.js';
+import { earthCell, targetCell, earthTempLine, orbitBoxHTML } from './orbit.js';
 
 const shortName = (name) => String(name || '').split(',')[0].split(' (')[0];
 const link = (url, text) => (url ? `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(text)}</a>` : esc(text));
@@ -92,12 +92,13 @@ function pillarsSection(box, rec, target, row, doc) {
   const g = row.geology;
   return `<div class="section"><span class="label">Terrain and geology</span>
     <table class="facts"><thead><tr><th>Pillar</th><th>This box</th><th>${esc(shortName(target.name))}</th><th>Match</th></tr></thead><tbody>
+    <tr><td>Climate</td><td colspan="2" class="src">${row.climate.used} comparable factors</td><td class="match">${mbar(row.climate.score)}</td></tr>
     <tr><td>Median slope</td><td class="num">${slope(bt)}</td><td class="num">${slope(tt)}</td><td class="match">${mbar(row.terrain ? row.terrain.score : null)}</td></tr>
-    <tr><td>Largest flat zone (&lt;${SAFE_SLOPE_DEG}°)</td><td class="num">${flat(bt)}</td><td class="num">${flat(tt)}</td><td class="match">${mbar(row.landing ? row.landing.score : null)}</td></tr>
+    <tr><td>Largest flat zone (&lt;${SAFE_SLOPE_DEG}°)</td><td class="num">${flat(bt)}</td><td class="num">${flat(tt)}</td><td class="match">${state.pillars.landing > 0 ? mbar(row.landing?.score) : '<span class="src">Context</span>'}</td></tr>
     <tr><td>Main rock</td><td>${rockCell(box, rec, doc)}</td><td>${target.geology?.primary ? esc(ROCK_LABEL[target.geology.primary] || target.geology.primary) : '<span class="src">not measured</span>'}</td><td class="match">${mbar(g ? g.score : null)}</td></tr>
     <tr><td>Resources</td><td colspan="2"><span class="src">not available for screening boxes (pillar left out)</span></td><td class="match">${mbar(null)}</td></tr>
     </tbody></table>
-    <p class="src">${g ? `${esc(g.reason)}. ` : ''}Slope: 10 km box, 500 m grid, the same method as the sites; a ${R_SLOPE}° difference scores 0. Largest flat zone: side of the biggest square in the box where all ground is under ${SAFE_SLOPE_DEG}° (${artemisLink()}); a zone as large as the target's scores 1.${terrainNote(rec)}</p></div>`;
+    <p class="src">${g ? `${esc(g.reason)}. ` : ''}Slopes are estimated over 1 km on a 500 m grid. A ${R_SLOPE}° difference scores 0. The flat-zone estimate uses that same grid. ${artemisLink()} uses 100 m slopes.${terrainNote(rec)}</p></div>`;
 }
 
 // ---------- caveats ----------
@@ -209,7 +210,7 @@ function scoreLines(row, result) {
   const lines = [];
   if (state.mode === 'full' && row.score != null && row.pillarsUsed != null) {
     const others = gapWords([...(strictDropsClimate(row) ? ['climate'] : []), ...(row.targetGaps || []).filter((g) => g !== 'resources'), ...(row.missing || [])]);
-    lines.push(`${row.pillarsUsed} ${row.pillarsUsed === 1 ? 'pillar' : 'pillars'} (no resources data${others ? `; no data for ${others}` : ''})`);
+    lines.push(`${row.pillarsUsed} of ${row.pillarsEnabled} enabled pillars used · no resources data${others ? ` · insufficient ${others} data` : ''}`);
   }
   if (row.eligible && row.rank != null) {
     // The Top 10 numbers its rows (clusters), so name the row too: "rank =24 of 760 listed boxes · Top 10 row =4".
@@ -220,6 +221,32 @@ function scoreLines(row, result) {
     lines.push(`not in the list: ${row.why.map((w) => whyWords({ ...row, why: [w] })).join('; ')}`);
   }
   return lines.map((l) => `<br>${esc(l)}`).join('');
+}
+
+function roverCaseHTML(box, target) {
+  const rover = state.data.roverCase;
+  if (box.id !== rover?.boxId || target.id !== rover.targetId) return '';
+  const candidate = rover.places[box.id];
+  const lunar = rover.places[target.id];
+  const names = [[box.id, 'Candidate'], [target.id, 'Shackleton ridge'], ['wadi-rum', 'Wadi Rum reference'], ['harrat', 'Harrat flat reference']];
+  const rows = names.flatMap(([id, name]) => rover.places[id].metrics.map((m) =>
+    `<tr><th scope="row">${name}</th><td>${m.baselineKm} km</td><td class="num">${fmt(m.medianDeg, 2, '°')}</td><td class="num">${fmt(m.p90Deg, 2, '°')}</td><td class="num">${fmt(m.under10Pct, 1, '%')}</td></tr>`)).join('');
+  return `<section class="rover-case" aria-label="Rover mobility case">
+    <h3>Rover mobility near Wadi Rum</h3>
+    <dl class="rover-stats">
+      <div><dt>Jordan candidate</dt><dd>${fmt(candidate.metrics[0].medianDeg, 1, '°')}</dd></div>
+      <div><dt>Shackleton ridge</dt><dd>${fmt(lunar.metrics[0].medianDeg, 1, '°')}</dd></div>
+    </dl>
+    <p class="src">Median slope in two 10 km areas, using a 1 km baseline.</p>
+    <button type="button" class="btn primary" data-action="base">Explore base in 3D</button>
+    <p><b>Proposed trial.</b> Repeat passes on a surveyed slope and a nearby flat track with similar soil. Log wheel rotations, battery voltage and current. Measure distance separately to estimate slip and energy per metre.</p>
+    <p class="src">Satellite screening. Field access, surface roughness and traction still need checking. Lunar gravity, soil and temperatures differ.</p>
+    <details><summary>Compare slope statistics and sources</summary>
+      <p class="src">The medians are close at both scales. The Jordan box has a steeper upper tail at 1 km. P90 is the slope below which 90% of samples fall.</p>
+      <div class="scroll-x"><table class="facts"><thead><tr><th>Area</th><th>Baseline</th><th>Median</th><th>P90</th><th>Under 10°</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <p class="src">Central differences on a 500 m grid. ${candidate.metrics[0].samples} slopes at 1 km and ${candidate.metrics[1].samples} at 2 km per area. ${link(candidate.source, 'Copernicus DEM samples')} · ${link(lunar.source, 'NASA LRO LOLA samples')}.</p>
+    </details>
+  </section>`;
 }
 
 // Render one box. box: a box shaped like a site (boxToSite in js/screening.js) or its id;
@@ -235,7 +262,7 @@ export function renderBox(box, target, row) {
   el.hidden = false;
   document.body.classList.add('sheet-detail');
   const score = row ? row.score : null;
-  const modeText = state.mode === 'full' ? 'full analog match' : 'climate match';
+  const modeText = scoreLabel().toLowerCase();
   const inCloseup = state.view !== 'globe';
   const holds = containedSite(rec);
   const near = nearText(rec);
@@ -246,8 +273,8 @@ export function renderBox(box, target, row) {
     return `<tr>
       <td>${esc(f.short)}${r.weight !== 1 ? ` <span class="src">×${r.weight.toFixed(1)}</span>` : ''}</td>
       <td class="num">${earthCell(r)}</td>
-      <td class="num">${r.target == null ? '<span class="src">not measured</span>' : fmt(r.target, f.digits, f.unit)}</td>
-      <td class="match">${mbar(r.score)}</td></tr>`;
+      <td class="num">${targetCell(r)}</td>
+      <td class="match">${r.excluded ? `<span class="src" title="${esc(r.excluded)}">Not scored</span>` : mbar(r.score)}</td></tr>`;
   }).join('') : '';
   const targetSources = row ? [...new Set(row.climate.rows.map((r) => r.source).filter(Boolean))].map(srcLink).join(' · ') : '';
   const annual = box.power?.annual || {};
@@ -256,16 +283,18 @@ export function renderBox(box, target, row) {
   // Stepping with N/E/S/W keeps focus on the same direction button, so the keyboard can walk the grid.
   const focusDir = el.contains(document.activeElement) ? document.activeElement.dataset.dir : null;
   setPanel(el, `
-    <button type="button" class="btn small close" data-action="close" aria-label="Close details">✕</button>
+    <button type="button" class="btn small close" data-action="close" aria-label="Close details" title="Back to results">←</button>
     <div class="kicker"><span class="tag screen">Screening box</span><span class="tag jo">Jordan</span><span class="body-chip earth">Earth</span></div>
     <h2 class="title" tabindex="-1">${esc(title)}</h2>
     <p class="where">${near ? `${esc(box.name)} · ` : ''}${esc(fmtCoord(box.lat, box.lon))} · 10 km box${holds ? ` · holds ${esc(shortName(holds.name))}` : ''}</p>
     <p class="screen-label">${esc(doc.label || SCREEN_LABEL)}</p>
+    ${roverCaseHTML(box, target)}
     <div class="scorebox"><span class="big">${score == null ? '<small>no score</small>' : `${pct(score)}<small>%</small>`}</span>
       <span class="of">${esc(modeText)} with<br><b>${esc(target.name)}</b> · ${esc(BODY_LABEL[target.body])}${row ? scoreLines(row, result) : ''}</span></div>
     ${score == null && row ? `<p class="caveat">${noScoreText([row], target).replace('no site gets a score', 'no box gets a score')}</p>` : ''}
     <div class="actions" style="margin-top:0">
-      ${inCloseup ? '<button type="button" class="btn" data-action="back">Back to globe</button>' : '<button type="button" class="btn primary" data-action="fly">Fly down</button>'}
+      ${box.id === state.data.roverCase?.boxId && target.id === state.data.roverCase?.targetId ? '' : '<button type="button" class="btn primary" data-action="base">Explore base in 3D</button>'}
+      ${inCloseup ? '<button type="button" class="btn" data-action="back">Back to globe</button>' : '<button type="button" class="btn" data-action="fly">Fly down</button>'}
       <button type="button" class="btn" data-action="stand">Stand here · 3D terrain</button>
     </div>
     ${navHTML(box)}

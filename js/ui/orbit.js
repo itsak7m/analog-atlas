@@ -39,13 +39,22 @@ export function earthCell(r) {
   if (r.earthFrom === 'latitude') return `${value}<div class="src" title="Computed from the site latitude: 90° − |latitude| + ${SUN_TILT.earth}° (Earth tilt), at most 90°">from latitude</div>`;
   if (!LST_FIELD[f.id] || r.earthFrom === 'kit') return value;
   const from = r.earthFrom === 'modis'
-    ? `<div class="src" title="${esc(MODIS_NOTE)}">surface · MODIS</div>`
-    : '<div class="src" title="NASA POWER (cell about 50 km): mean and swing are air 2 m above the ground (T2M, T2M_RANGE); coldest ground is the model skin temperature (TS_MIN).">' + (f.id === 'coldGround' ? 'ground · NASA POWER' : 'air 2 m · NASA POWER') + '</div>';
+    ? `<div class="src" title="${esc(MODIS_NOTE)}">surface · MODIS 2003–2020</div>`
+    : '<div class="src" title="NASA POWER (cell about 50 km): mean and swing are air 2 m above the ground (T2M, T2M_RANGE); coldest ground is the model skin temperature (TS_MIN).">' + (f.id === 'coldGround' ? 'ground' : 'air 2 m') + ' · NASA POWER 2001–2020</div>';
   return `${value}${from}${r.earth == null && r.earthWhy ? `<div class="src">${esc(r.earthWhy)}</div>` : ''}`;
+}
+
+export function targetCell(r) {
+  if (r.target == null) return '<span class="src">not measured</span>';
+  const { digits, unit } = r.factor;
+  const basis = { air: 'air', surface: 'surface', soil: 'soil' }[r.basis];
+  const info = [basis, r.window].filter(Boolean).join(' · ');
+  return `${fmt(r.target, digits, unit)}${info ? `<div class="src">${esc(info)}</div>` : ''}`;
 }
 
 // One line under a factor table in surface mode (empty in air mode).
 export function earthTempLine(kind = 'site') {
+  if (state.earthTemp === 'matched') return '<p class="src">Air is compared with air and surface with surface. Periods and sampling differ, so temperature scores are approximate.</p>';
   if (state.earthTemp !== 'surface') return '';
   const doc = state.data.lstDoc;
   const period = doc?.period ? `${yearOf(doc.period.first)}–${yearOf(doc.period.last)}` : '2003–2020';
@@ -72,6 +81,7 @@ const LST_FLAG_WORDS = {
 
 // Whether the surface values are in the score now (Earth temperature switch in Tune factors).
 function usedLine(v) {
+  if (state.earthTemp === 'matched') return 'Used for comparable surface factors when measurements are available. See the factor table.';
   if (state.earthTemp !== 'surface') return 'Not used in the score now: Earth temperature is set to Air 2 m in Tune factors.';
   if ((v.flags || []).includes('water')) return 'Not used in the score: mostly water (the three temperature factors are left out).';
   const missing = Object.values(LST_FIELD).filter((k) => v[k] == null).length;

@@ -1,15 +1,12 @@
 // One shared state object plus a tiny event bus.
 
-import { CLIMATE_FACTORS, PILLARS } from './scoring.js';
+import { screeningDefaults } from './scoring.js';
 
 export const state = {
   world: 'earth',            // which body the globe shows: earth | moon | mars
   targetId: 'jezero',        // the Moon/Mars site Earth places are compared with
-  mode: 'full',              // climate (NASA POWER only) | full (climate + terrain + landing + geology + resources)
-  strict: false,             // true: use only target values measured at the site itself
-  earthTemp: 'air',          // Earth temperature source: air (NASA POWER, the default) | surface (MODIS, data/lst.json)
-  weights: Object.fromEntries(CLIMATE_FACTORS.map((f) => [f.id, 1])),
-  pillars: Object.fromEntries(PILLARS.map((p) => [p.id, 1])),
+  mode: 'full',              // climate match | screening score
+  ...screeningDefaults(),
   selected: null,            // { kind: 'site' | 'target' | 'box', id } (a box only while Discover is on)
   view: 'globe',             // globe | flying | closeup | ground
   data: null,                // { sites, targets, sources, panoramas, terrain, assets }

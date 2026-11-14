@@ -13,12 +13,17 @@
         "meanTemp": {
           "value": -55,
           "source": "meda-press",
-          "note": "Mean near-surface air temperature measured by MEDA over the first 250 sols (northern spring and summer), not a full Mars year."
+          "note": "Mean near-surface air temperature measured by MEDA over the first 250 sols (northern spring and summer), not a full Mars year.",
+          "measurementWindow": "First 250 Perseverance sols",
+          "temperatureBasis": "air"
         },
         "swing": {
           "value": 60,
           "source": "meda-blog",
-          "note": "Daily air range, about -83 to -23 °C (JPL's first report: high -22 °C, low -83 °C)."
+          "note": "Daily air range, about -83 to -23 °C (JPL's first report: high -22 °C, low -83 °C).",
+          "measurementWindow": "Early MEDA observations",
+          "screeningNote": "An early MEDA range and a long-term average daily range are different statistics.",
+          "temperatureBasis": "air"
         },
         "coldGround": {
           "value": -83,
@@ -28,7 +33,9 @@
             "value": null,
             "source": null,
             "note": "The lowest ground temperature measured at Jezero is not given in our sources."
-          }
+          },
+          "measurementWindow": "Typical pre-dawn MEDA observation",
+          "temperatureBasis": "air"
         },
         "rain": {
           "value": 0,
@@ -110,7 +117,9 @@
             "value": null,
             "source": null,
             "note": "We found no published yearly mean air temperature for Gale."
-          }
+          },
+          "measurementWindow": "Mars-wide average in the reference brief",
+          "temperatureBasis": "unknown"
         },
         "swing": {
           "value": 60,
@@ -120,12 +129,16 @@
             "value": null,
             "source": null,
             "note": "REMS measured a range (45-75 °C), not one typical value."
-          }
+          },
+          "measurementWindow": "Range along Curiosity’s traverse",
+          "temperatureBasis": "air"
         },
         "coldGround": {
           "value": -100,
           "source": "rems-temps",
-          "note": "Coldest ground temperature measured by REMS (about 173 K at Dingo Gap, sol 534)."
+          "note": "Coldest ground temperature measured by REMS (about 173 K at Dingo Gap, sol 534).",
+          "measurementWindow": "Curiosity sol 534 at Dingo Gap",
+          "temperatureBasis": "surface"
         },
         "rain": {
           "value": 0,
@@ -201,7 +214,9 @@
         "meanTemp": {
           "value": -65.9,
           "source": "mcs-surface-temps",
-          "note": "Average ground temperature from orbit (MRO Mars Climate Sounder, 25 km around the centre). Seen near 3 AM and 3 PM only, so close to but not exactly a true average; ground, not air (the same map gives -55.7 °C at Jezero, where the rover measured -55 °C air)."
+          "note": "Average ground temperature from orbit (MRO Mars Climate Sounder, 25 km around the centre). Seen near 3 AM and 3 PM only, so close to but not exactly a true average; ground, not air (the same map gives -55.7 °C at Jezero, where the rover measured -55 °C air).",
+          "measurementWindow": "Seasonal MRO observations near 03:00 and 15:00",
+          "temperatureBasis": "surface"
         },
         "swing": {
           "value": null,
@@ -211,7 +226,9 @@
         "coldGround": {
           "value": -108.3,
           "source": "mcs-surface-temps",
-          "note": "Coldest ground temperature seen by Mars Climate Sounder (25 km mean, near 3 AM). The true pre-dawn minimum is probably a little colder."
+          "note": "Coldest ground temperature seen by Mars Climate Sounder (25 km mean, near 3 AM). The true pre-dawn minimum is probably a little colder.",
+          "measurementWindow": "Coldest mapped MRO observation near 03:00",
+          "temperatureBasis": "surface"
         },
         "rain": {
           "value": 0,
@@ -269,7 +286,9 @@
         "meanTemp": {
           "value": -70.8,
           "source": "mcs-surface-temps",
-          "note": "Average ground temperature from orbit (MRO Mars Climate Sounder, 25 km around the centre). Seen near 3 AM and 3 PM only, so close to but not exactly a true average; ground, not air (the same map gives -55.7 °C at Jezero, where the rover measured -55 °C air)."
+          "note": "Average ground temperature from orbit (MRO Mars Climate Sounder, 25 km around the centre). Seen near 3 AM and 3 PM only, so close to but not exactly a true average; ground, not air (the same map gives -55.7 °C at Jezero, where the rover measured -55 °C air).",
+          "measurementWindow": "Seasonal MRO observations near 03:00 and 15:00",
+          "temperatureBasis": "surface"
         },
         "swing": {
           "value": null,
@@ -279,7 +298,9 @@
         "coldGround": {
           "value": -116.8,
           "source": "mcs-surface-temps",
-          "note": "Coldest ground temperature seen by Mars Climate Sounder (25 km mean, near 3 AM). The true pre-dawn minimum is probably a little colder."
+          "note": "Coldest ground temperature seen by Mars Climate Sounder (25 km mean, near 3 AM). The true pre-dawn minimum is probably a little colder.",
+          "measurementWindow": "Coldest mapped MRO observation near 03:00",
+          "temperatureBasis": "surface"
         },
         "rain": {
           "value": 0,
@@ -334,7 +355,9 @@
         "meanTemp": {
           "value": -72.3,
           "source": "mcs-surface-temps",
-          "note": "Average ground temperature from orbit (MRO Mars Climate Sounder, 25 km around the skylight). Seen near 3 AM and 3 PM only, so close to but not exactly a true average; ground, not air. It describes the dusty lava plain around the skylight, not the inside of the cave."
+          "note": "Average ground temperature from orbit (MRO Mars Climate Sounder, 25 km around the skylight). Seen near 3 AM and 3 PM only, so close to but not exactly a true average; ground, not air. It describes the dusty lava plain around the skylight, not the inside of the cave.",
+          "measurementWindow": "Seasonal MRO observations near 03:00 and 15:00",
+          "temperatureBasis": "surface"
         },
         "swing": {
           "value": null,
@@ -344,7 +367,9 @@
         "coldGround": {
           "value": -128.7,
           "source": "mcs-surface-temps",
-          "note": "Coldest ground temperature seen by Mars Climate Sounder (144.5 K, 25 km mean, near 3 AM). The true pre-dawn minimum is probably a little colder."
+          "note": "Coldest ground temperature seen by Mars Climate Sounder (144.5 K, 25 km mean, near 3 AM). The true pre-dawn minimum is probably a little colder.",
+          "measurementWindow": "Coldest mapped MRO observation near 03:00",
+          "temperatureBasis": "surface"
         },
         "rain": {
           "value": 0,
@@ -431,24 +456,31 @@
       "body": "moon",
       "group": "moon-base",
       "name": "Malapert Massif (south pole)",
-      "mission": "Artemis landing region (NASA)",
+      "mission": "Lunar south pole reference site · Artemis candidate region (NASA, 2024)",
       "lat": -85.964,
       "lon": -2.319,
       "values": {
         "meanTemp": {
           "value": -118.9,
           "source": "diviner-polar",
-          "note": "Surface temperature (the Moon has no air): annual mean 154.3 K in the 240 m Diviner pixel at the summit (Schorghofer & Williams 2020 map of Diviner bolometric brightness temperature). Within 1.2 km the mean ranges 126-162 K."
+          "note": "Surface temperature (the Moon has no air): annual mean 154.3 K in the 240 m Diviner pixel at the summit (Schorghofer & Williams 2020 map of Diviner bolometric brightness temperature). Within 1.2 km the mean ranges 126-162 K.",
+          "measurementWindow": "Diviner annual mean at the pixel",
+          "temperatureBasis": "surface"
         },
         "swing": {
           "value": 201.3,
           "source": "diviner-polar",
-          "note": "Highest minus lowest temperature in the southern summer season (259.25 K - 57.92 K), the closest Diviner value to a day-night range. A lunar day lasts about 29.5 Earth days."
+          "note": "Highest minus lowest temperature in the southern summer season (259.25 K - 57.92 K), the closest Diviner value to a day-night range. A lunar day lasts about 29.5 Earth days.",
+          "measurementWindow": "Diviner southern summer range",
+          "screeningNote": "The lunar thermal cycle and the Earth day-night statistic cover different time scales.",
+          "temperatureBasis": "surface"
         },
         "coldGround": {
           "value": -216.6,
           "source": "diviner-polar",
-          "note": "Lowest temperature in the Diviner maps at this pixel (56.6 K, winter)."
+          "note": "Lowest temperature in the Diviner maps at this pixel (56.6 K, winter).",
+          "measurementWindow": "Diviner winter minimum at the pixel",
+          "temperatureBasis": "surface"
         },
         "rain": {
           "value": 0,
@@ -535,24 +567,31 @@
       "body": "moon",
       "group": "moon-base",
       "name": "Mons Mouton (south pole)",
-      "mission": "Artemis III candidate regions Mons Mouton and Mons Mouton Plateau (NASA, 2024)",
+      "mission": "Lunar south pole reference site · Artemis candidate regions Mons Mouton and Mons Mouton Plateau (NASA, 2024)",
       "lat": -84.6,
       "lon": 31.0,
       "values": {
         "meanTemp": {
           "value": -153.83,
           "source": "diviner-polar",
-          "note": "Surface temperature (the Moon has no air): annual mean 119.32 K in the 240 m Diviner pixel at the pin (Schorghofer & Williams 2020 map of Diviner bolometric brightness temperature). Within 1.2 km the mean ranges 86.89-135.4 K."
+          "note": "Surface temperature (the Moon has no air): annual mean 119.32 K in the 240 m Diviner pixel at the pin (Schorghofer & Williams 2020 map of Diviner bolometric brightness temperature). Within 1.2 km the mean ranges 86.89-135.4 K.",
+          "measurementWindow": "Diviner annual mean at the pixel",
+          "temperatureBasis": "surface"
         },
         "swing": {
           "value": 187.03,
           "source": "diviner-polar",
-          "note": "Highest minus lowest temperature in the southern summer season (244.6 K - 57.57 K), the closest Diviner value to a day-night range. A lunar day lasts about 29.5 Earth days."
+          "note": "Highest minus lowest temperature in the southern summer season (244.6 K - 57.57 K), the closest Diviner value to a day-night range. A lunar day lasts about 29.5 Earth days.",
+          "measurementWindow": "Diviner southern summer range",
+          "screeningNote": "The lunar thermal cycle and the Earth day-night statistic cover different time scales.",
+          "temperatureBasis": "surface"
         },
         "coldGround": {
           "value": -215.58,
           "source": "diviner-polar",
-          "note": "Lowest temperature in the Diviner maps at this pixel (57.57 K, summer)."
+          "note": "Lowest temperature in the Diviner maps at this pixel (57.57 K, summer).",
+          "measurementWindow": "Diviner winter minimum at the pixel",
+          "temperatureBasis": "surface"
         },
         "rain": {
           "value": 0,
@@ -649,24 +688,31 @@
       "body": "moon",
       "group": "moon-base",
       "name": "Shackleton connecting ridge (south pole)",
-      "mission": "Sunlit ridge between Shackleton and de Gerlache craters (Artemis III candidate region in NASA's 2022 list)",
+      "mission": "Lunar south pole reference site · connecting ridge in NASA’s 2022 candidate list",
       "lat": -89.46752,
       "lon": -138.012788,
       "values": {
         "meanTemp": {
           "value": -131.12,
           "source": "diviner-polar",
-          "note": "Surface temperature (the Moon has no air): annual mean 142.03 K in the 240 m Diviner pixel at the pin (Schorghofer & Williams 2020 map of Diviner bolometric brightness temperature). Within 1.2 km the mean ranges 121.25-154.56 K."
+          "note": "Surface temperature (the Moon has no air): annual mean 142.03 K in the 240 m Diviner pixel at the pin (Schorghofer & Williams 2020 map of Diviner bolometric brightness temperature). Within 1.2 km the mean ranges 121.25-154.56 K.",
+          "measurementWindow": "Diviner annual mean at the pixel",
+          "temperatureBasis": "surface"
         },
         "swing": {
           "value": 146.24,
           "source": "diviner-polar",
-          "note": "Highest minus lowest temperature in the southern summer season (236.14 K - 89.9 K), the closest Diviner value to a day-night range. A lunar day lasts about 29.5 Earth days."
+          "note": "Highest minus lowest temperature in the southern summer season (236.14 K - 89.9 K), the closest Diviner value to a day-night range. A lunar day lasts about 29.5 Earth days.",
+          "measurementWindow": "Diviner southern summer range",
+          "screeningNote": "The lunar thermal cycle and the Earth day-night statistic cover different time scales.",
+          "temperatureBasis": "surface"
         },
         "coldGround": {
           "value": -207.62,
           "source": "diviner-polar",
-          "note": "Lowest temperature in the Diviner maps at this pixel (65.53 K, winter)."
+          "note": "Lowest temperature in the Diviner maps at this pixel (65.53 K, winter).",
+          "measurementWindow": "Diviner winter minimum at the pixel",
+          "temperatureBasis": "surface"
         },
         "rain": {
           "value": 0,
@@ -779,8 +825,12 @@
           "strict": {
             "value": -213.95,
             "source": "diviner-polar",
-            "note": "Surface temperature, not air: annual mean 59.2 K in the 240 m Diviner pixel at the pin, on the permanently shadowed crater floor (Schorghofer & Williams 2020 map of Diviner bolometric brightness temperature). Within 1.2 km the mean ranges 58.2-59.8 K."
-          }
+            "note": "Surface temperature, not air: annual mean 59.2 K in the 240 m Diviner pixel at the pin, on the permanently shadowed crater floor (Schorghofer & Williams 2020 map of Diviner bolometric brightness temperature). Within 1.2 km the mean ranges 58.2-59.8 K.",
+            "measurementWindow": "Diviner annual mean at the pixel",
+            "temperatureBasis": "surface"
+          },
+          "measurementWindow": "General polar reference in the brief",
+          "temperatureBasis": "surface"
         },
         "swing": {
           "value": null,
@@ -794,8 +844,12 @@
           "strict": {
             "value": -232.83,
             "source": "diviner-polar",
-            "note": "Lowest temperature in the Diviner maps at this pixel on the crater floor (40.32 K, southern winter)."
-          }
+            "note": "Lowest temperature in the Diviner maps at this pixel on the crater floor (40.32 K, southern winter).",
+            "measurementWindow": "Diviner winter minimum at the pixel",
+            "temperatureBasis": "surface"
+          },
+          "measurementWindow": "General polar reference in the brief",
+          "temperatureBasis": "surface"
         },
         "rain": {
           "value": 0,
@@ -885,17 +939,24 @@
         "meanTemp": {
           "value": -54.7,
           "source": "diviner-gcp",
-          "note": "Surface temperature of the mare plain around the pit, not inside it (the Moon has no air): mean of the LRO Diviner day-night curve, 218.5 K, in the 0.5° (about 15 km) map bin that contains the pit (all nadir data 2009-2015, 15-minute local-time bins; 43 empty bins filled by straight lines between neighbours). The 100 m pit is far smaller than the bin. The eight bins around it give 217.8-222.3 K. Inside the shaded cave a model gives about 17 °C (see facts)."
+          "note": "Surface temperature of the mare plain around the pit, not inside it (the Moon has no air): mean of the LRO Diviner day-night curve, 218.5 K, in the 0.5° (about 15 km) map bin that contains the pit (all nadir data 2009-2015, 15-minute local-time bins; 43 empty bins filled by straight lines between neighbours). The 100 m pit is far smaller than the bin. The eight bins around it give 217.8-222.3 K. Inside the shaded cave a model gives about 17 °C (see facts).",
+          "measurementWindow": "LRO Diviner observations, 2009–2015",
+          "temperatureBasis": "surface"
         },
         "swing": {
           "value": 301.1,
           "source": "diviner-gcp",
-          "note": "Highest minus lowest point of the same Diviner day-night curve: 394.8 K near noon minus 93.8 K just before sunrise. Each point is the average of all observations in one 15-minute local-time bin. A lunar day lasts about 29.5 Earth days."
+          "note": "Highest minus lowest point of the same Diviner day-night curve: 394.8 K near noon minus 93.8 K just before sunrise. Each point is the average of all observations in one 15-minute local-time bin. A lunar day lasts about 29.5 Earth days.",
+          "measurementWindow": "LRO Diviner observations, 2009–2015",
+          "screeningNote": "The lunar thermal cycle and the Earth day-night statistic cover different time scales.",
+          "temperatureBasis": "surface"
         },
         "coldGround": {
           "value": -179.4,
           "source": "diviner-gcp",
-          "note": "Coldest point of the Diviner day-night curve in the bin with the pit: 93.8 K at about 05:20 local time, just before sunrise. It is a bin average, so single readings can be a little colder."
+          "note": "Coldest point of the Diviner day-night curve in the bin with the pit: 93.8 K at about 05:20 local time, just before sunrise. It is a bin average, so single readings can be a little colder.",
+          "measurementWindow": "LRO Diviner observations, 2009–2015",
+          "temperatureBasis": "surface"
         },
         "rain": {
           "value": 0,
@@ -1023,7 +1084,10 @@
             "value": null,
             "source": null,
             "note": "No published day/night range for the exact site in our sources."
-          }
+          },
+          "measurementWindow": "Lunar equatorial reference in the brief",
+          "screeningNote": "The lunar thermal cycle and the Earth day-night statistic cover different time scales.",
+          "temperatureBasis": "surface"
         },
         "coldGround": {
           "value": -178,
@@ -1033,7 +1097,9 @@
             "value": null,
             "source": null,
             "note": "Generic equatorial night value, not measured at the site."
-          }
+          },
+          "measurementWindow": "Lunar equatorial reference in the brief",
+          "temperatureBasis": "surface"
         },
         "rain": {
           "value": 0,
@@ -1106,17 +1172,24 @@
         "meanTemp": {
           "value": -57.2,
           "source": "apollo17-hfe",
-          "note": "Mean surface temperature 216 ± 5 K, measured at the heat-flow experiment site."
+          "note": "Mean surface temperature 216 ± 5 K, measured at the heat-flow experiment site.",
+          "measurementWindow": "Apollo 17 heat-flow experiment",
+          "temperatureBasis": "surface"
         },
         "swing": {
           "value": 282,
           "source": "apollo17-hfe",
-          "note": "From 102 K at the end of the lunar night to 384 K at lunar noon."
+          "note": "From 102 K at the end of the lunar night to 384 K at lunar noon.",
+          "measurementWindow": "Apollo 17 heat-flow experiment",
+          "screeningNote": "The lunar thermal cycle and the Earth day-night statistic cover different time scales.",
+          "temperatureBasis": "surface"
         },
         "coldGround": {
           "value": -171.2,
           "source": "apollo17-hfe",
-          "note": "102 ± 1.5 K at the end of the lunar night."
+          "note": "102 ± 1.5 K at the end of the lunar night.",
+          "measurementWindow": "Apollo 17 heat-flow experiment",
+          "temperatureBasis": "surface"
         },
         "rain": {
           "value": 0,
@@ -1181,12 +1254,16 @@
         "swing": {
           "value": 49,
           "source": "phoenix-weather",
-          "note": "Average daily high -30 °C and low -79 °C over the first 61 Martian days (May-July 2008)."
+          "note": "Average daily high -30 °C and low -79 °C over the first 61 Martian days (May-July 2008).",
+          "measurementWindow": "First 61 sols, May–July 2008",
+          "temperatureBasis": "air"
         },
         "coldGround": {
           "value": -93,
           "source": "rems-humidity-albedo",
-          "note": "About 180 K in the top 15 mm of soil (sol 122), measured by Phoenix's soil probe."
+          "note": "About 180 K in the top 15 mm of soil (sol 122), measured by Phoenix's soil probe.",
+          "measurementWindow": "Phoenix sol 122",
+          "temperatureBasis": "soil"
         },
         "rain": {
           "value": 0,

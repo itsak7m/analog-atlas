@@ -5,7 +5,7 @@
 // Every number in the captions is read from the data at run time, never typed in.
 
 import { findSite, findTarget } from '../data.js';
-import { pct, PILLARS } from '../scoring.js';
+import { pct, PILLARS, referenceDefaults } from '../scoring.js';
 import { esc } from '../util.js';
 import { hideDetail } from './detail.js';
 import { SOUTH_POLE_VIEW as POLE } from '../globe/globe.js';
@@ -76,11 +76,11 @@ function facts(api, state) {
 }
 
 // Same scoring settings for every run (the visitor's own settings come back at the end, as in the tour).
-function defaults(api, state) {
+function defaults(api) {
   const saved = api.settings();
   api.closePanels();
   api.setTarget('jezero');
-  api.setSettings({ mode: 'full', strict: false, earthTemp: 'air', weights: Object.fromEntries(Object.keys(state.weights).map((k) => [k, 1])), pillars: Object.fromEntries(Object.keys(state.pillars).map((k) => [k, 1])) });
+  api.setSettings({ mode: 'full', ...referenceDefaults() });
   return saved;
 }
 
@@ -103,8 +103,7 @@ function discoverCaption(state) {
   const site = res?.sites?.find((x) => x.score != null);
   const head = `<b>Discover Jordan:</b> ${scr ? `${scr.boxes.length} squares${km ? ` of ${km} km` : ''}` : 'all of Jordan'}, scored with the same method`;
   if (!box || !site) return head;
-  const near = Math.abs(box.pct - site.pct) <= 2; // "differences of 1–2 points are within the resolution of the data" (Discover notes)
-  return `${head}<small>best square ${box.pct}%, best hand-picked site ${esc(site.site.name)} ${site.pct}% (both without resources)${near ? ': the same within the resolution of the data, so the data agrees with our pick' : ''}</small>`;
+  return `${head}<small>best square ${box.pct}%, best hand-picked site ${esc(site.site.name)} ${site.pct}% (both without resources)</small>`;
 }
 
 async function sequence(api, helpers, state) {
@@ -123,7 +122,7 @@ async function sequence(api, helpers, state) {
 
   // 9–13 s: the Earth sites (the one change of world).
   await at(9);
-  caption(`${f.sites} Earth sites scored on <b>${PILLARS.length} pillars</b><small>${PILLARS.map((p) => p.label.toLowerCase()).join(' · ')} (NASA, ESA and USGS open data)</small>`);
+  caption(`${f.sites} Earth sites scored on <b>${PILLARS.length} pillars in Reference settings</b><small>${PILLARS.map((p) => p.label.toLowerCase()).join(' · ')} (NASA, ESA and USGS open data)</small>`);
   await api.showWorld('earth');
   api.lookAt({ lat: 31.6, lon: 36.9 }, 1.9e6);
 
@@ -182,6 +181,7 @@ const SHOTS = {
     await sleep(600);
     document.querySelector('#detail .orbit')?.scrollIntoView({ block: 'start' });
   },
+  async rover(api, h) { await h.openRoverCase(); },
   async discover(api, h) { await api.showWorld('earth'); hideDetail(); await h.onRankTab('discover'); await api.lookAt({ lat: 31.3, lon: 36.9 }, 9.5e5); },
   // &site=<id>&target=<id> picks another pair, e.g. to check the photo of every place (default: Harrat and Jezero).
   async twin(api) { const q = new URLSearchParams(location.search); await api.showWorld('earth'); api.openTwin(q.get('site') || 'harrat', q.get('target') || 'jezero'); },
@@ -199,7 +199,7 @@ export async function runDemo(api, helpers, state) {
   // &clean hides the side panels and the kit bar; &nopins also hides the pins (pictures without numbers).
   if (params.has('clean')) { const st = document.createElement('style'); st.textContent = '#rank, #detail, .kit-bar, #kit-bar, #hud, #banner, #toast, .topbar { display: none !important; }' + (params.has('nopins') ? ' #pins { display: none !important; }' : ''); document.head.appendChild(st); }
   if (shot) {
-    defaults(api, state);
+    defaults(api);
     hideDetail();
     if (SHOTS[shot]) await SHOTS[shot](api, helpers, state);
     await sleep(2500);
@@ -207,14 +207,14 @@ export async function runDemo(api, helpers, state) {
     document.documentElement.dataset.shotReady = shot;
     return;
   }
-  const saved = defaults(api, state);
+  const saved = defaults(api);
   await prepare(api, state);
   const go = async () => {
     try { await sequence(api, helpers, state); } finally { api.setSettings(saved); }
   };
   if (params.has('auto')) { await sleep(2500); return go(); }
   const start = el('demo-start');
-  start.innerHTML = `<div><b>Pitch video mode (30 seconds)</b><br>1. Press F11 for full screen.  2. Start recording (Win + Alt + R).  3. Press Start.<br><button type="button">Start</button></div>`;
+  start.innerHTML = `<div><b>Reference rankings demo (30 seconds)</b><br>1. Press F11 for full screen.  2. Start recording (Win + Alt + R).  3. Press Start.<br><button type="button">Start</button></div>`;
   start.querySelector('button').addEventListener('click', async () => {
     start.remove();
     await sleep(1200);

@@ -10,7 +10,7 @@ const rad = Cesium.Math.toRadians;
 const deg = Cesium.Math.toDegrees;
 
 export const BODIES = {
-  earth: { name: 'Earth', home: { lon: 36, lat: 22, height: 2.0e7 }, approach: 260000, range: 9000, eye: 30 },
+  earth: { name: 'Earth', home: { lon: 36, lat: 22, height: 1.55e7 }, approach: 260000, range: 9000, eye: 30 },
   moon: { name: 'Moon', home: { lon: 55, lat: -38, height: 6.6e6 }, approach: 140000, range: 6500, eye: 2 },
   mars: { name: 'Mars', home: { lon: 107, lat: 7, height: 1.25e7 }, approach: 180000, range: 7500, eye: 2 },
 };
@@ -113,12 +113,13 @@ export class Globe {
       msaaSamples: 4,
       useBrowserRecommendedResolution: false,
       globe: new Cesium.Globe(ellipsoid),
-      skyBox: body === 'earth' ? undefined : Cesium.SkyBox.createEarthSkyBox(),
+      skyBox: false,
       skyAtmosphere: body === 'earth' ? undefined : body === 'mars' ? new Cesium.SkyAtmosphere(ellipsoid) : false,
       shadows: body === 'moon',
       contextOptions: { webgl: { powerPreference: 'high-performance' } },
     });
     this.viewer = viewer;
+    viewer.scene.backgroundColor = Cesium.Color.fromCssColorString('#101c25');
     // Render at the screen's real resolution (sharp), but cap very dense phone screens at 2x for speed.
     const dpr = window.devicePixelRatio || 1;
     if (dpr > 2) viewer.resolutionScale = 2 / dpr;
@@ -154,7 +155,7 @@ export class Globe {
     globe.showGroundAtmosphere = true;
     if (scene.moon) scene.moon.show = false;
 
-    // Day-side pictures stay faintly visible at night ("moonlit"), so the globe's outline never disappears.
+    // Day imagery stays faintly visible when the optional day/night layer is enabled.
     const NIGHT_TINT = 0.16;
     // 1. Offline base picture: our NASA Blue Marble file if present, else Natural Earth II shipped with CesiumJS.
     const base = Cesium.ImageryLayer.fromProviderAsync(
@@ -178,7 +179,7 @@ export class Globe {
       this.detailLayer.errorEvent.addEventListener((err) => this.onStatus({ body: 'earth', ion: false, error: String(err) }));
       layers.add(this.detailLayer);
     }
-    // 4. NASA Black Marble city lights, only on the night side.
+    // 4. NASA Black Marble city lights for the optional day/night view.
     const night = layers.addImageryProvider(new Cesium.UrlTemplateImageryProvider({
       url: GIBS.blackMarble,
       maximumLevel: 8,
@@ -544,17 +545,19 @@ export class Globe {
     this.lastInput = performance.now();
     this.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
     this.setSunForPlace(place);
-    // Look at the place first (at its measured height, if known), so its terrain starts loading at once.
+    // Frame the rendered surface first so the detailed terrain starts loading.
     const guess = this.knownHeight(this.body, place.lon, place.lat);
     const look = (h) => {
       const center = Cesium.Cartesian3.fromDegrees(place.lon, place.lat, h, ellipsoid);
       this.camera.lookAt(center, new Cesium.HeadingPitchRange(heading, pitch, range));
       return center;
     };
-    look(Number.isFinite(guess) ? guess : 0);
+    look(this.has3D && Number.isFinite(guess) ? guess : 0);
     this.mode = 'flying';
-    const { h } = await this.groundHeight(place.lon, place.lat);
+    const { h: measuredHeight } = await this.groundHeight(place.lon, place.lat);
     if (!current()) return null;
+    // Flat imagery is on the ellipsoid. The base model must sit on the same rendered surface as the camera.
+    const h = this.has3D ? measuredHeight : 0;
     const center = look(h);
     this.orbit = { center, heading, pitch, range, paused: true }; // resumeOrbit() once the new world is shown
     this.mode = 'closeup';
@@ -737,18 +740,16 @@ export class Globe {
   }
 
   // ---------- lighting ----------
-  // Far view: the Sun is placed at 13:00 local solar time over the home longitude (Jordan on Earth),
-  // so the area we talk about is lit and the night side with city lights is still visible.
-  // Close-ups: 10:00 local solar time at the site. Both are display choices, not the current time.
+  // The Sun is placed at 13:00 over the home longitude, and at 10:00 in Earth close-ups.
+  // Earth imagery is shown in daylight for a consistent map.
   setRealSun() {
     if (!this.viewer) return;
     this.setClockForLocalTime(BODIES[this.body].home.lon, 13);
     this.scene.light = new Cesium.SunLight();
-    this.setDayNight(true);
+    this.setDayNight(false);
   }
 
-  // Day/night shading only in the far view. Close to the ground the satellite photos already carry
-  // their own daylight and shadows, and the night layer would wrongly show on slopes facing away.
+  // Toggle Earth globe lighting and the night imagery together.
   setDayNight(on) {
     if (this.body !== 'earth' || !this.viewer) return;
     const globe = this.scene.globe;

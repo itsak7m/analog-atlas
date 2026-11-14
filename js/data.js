@@ -13,7 +13,7 @@ async function getJSON(path, optional = false) {
 }
 
 export async function loadData() {
-  const [sitesDoc, targetsDoc, panoramas, terrainDoc, assets, powerDoc, resourcesDoc, streetDoc, lstDoc, compositionDoc, emitDoc] = await Promise.all([
+  const [sitesDoc, targetsDoc, panoramas, terrainDoc, assets, powerDoc, resourcesDoc, streetDoc, lstDoc, compositionDoc, emitDoc, roverCase] = await Promise.all([
     getJSON('data/sites.json'),
     getJSON('data/targets.json'),
     getJSON('data/panoramas.json', true),
@@ -25,6 +25,7 @@ export async function loadData() {
     getJSON('data/lst.json', true),
     getJSON('data/composition.json', true),
     getJSON('data/emit.json', true),
+    getJSON('data/rover_case.json', true),
   ]);
   // MODIS land surface temperature for the "Ground surface" switch: site.lst (null when the site is not in the file).
   const lstPlaces = lstDoc && lstDoc.places && typeof lstDoc.places === 'object' ? lstDoc.places : null;
@@ -43,6 +44,7 @@ export async function loadData() {
     streetview: streetDoc ? streetDoc.places : {},
     lstDoc: lstPlaces ? lstDoc : null,
     compositionDoc: compositionDoc && compositionDoc.places ? compositionDoc : null,
+    roverCase,
     emitDoc: emitDoc && emitDoc.places && typeof emitDoc.places === 'object' ? emitDoc : null,
     // id -> list of resource tags, for the resources pillar
     resources: resourcesDoc ? Object.fromEntries(Object.entries(resourcesDoc.places).map(([id, p]) => [id, Object.keys(p.tags)])) : null,

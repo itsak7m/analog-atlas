@@ -4,10 +4,8 @@
 //   factor score = max(0, 1 − |earth − target| / R)
 //   site score   = Σ(w × factor score) ÷ Σ w      (only factors whose target value was measured)
 //
-// "Climate match" uses only the five NASA POWER factors and reproduces the
-// reference rankings exactly. "Full analog match" is the weighted mean of five pillars:
-// climate, terrain (median slope), landing zone (largest flat zone), geology (rock type)
-// and resources. Pillars that cannot be computed are left out; at least FULL_MIN_PILLARS are needed.
+// The screening score averages the available, enabled pillars. The legacy five-pillar
+// calculation is kept for reproducing the project's original reference rankings.
 
 // Mean temperature: on Earth this is NASA POWER T2M (air at 2 m). Target values are air
 // (Perseverance MEDA at Jezero) or surface/ground temperatures (Moon: Diviner, Apollo 17;
@@ -102,8 +100,20 @@ const weightOf = (weights, id) => (weights && weights[id] != null ? weights[id] 
 // Earth temperature source (Tune factors). 'air' (default): NASA POWER, as in the reference rankings.
 // 'surface': NASA MODIS land surface temperature at the site's 1 km pixel (data/lst.json, attached as site.lst;
 // a Discover box gets the 10 km box mean from data/screening_lst.json). Rain and albedo always stay NASA POWER.
-export const EARTH_TEMPS = ['air', 'surface'];
 export const LST_FIELD = { meanTemp: 'meanSurface_C', swing: 'swingSurface_C', coldGround: 'coldSurface_C' };
+
+export function screeningDefaults() {
+  return {
+    strict: true,
+    earthTemp: 'matched',
+    weights: Object.fromEntries(CLIMATE_FACTORS.map(({ id }) => [id, 1])),
+    pillars: Object.fromEntries(PILLARS.map(({ id }) => [id, id === 'landing' ? 0 : 1])),
+  };
+}
+
+export function referenceDefaults() {
+  return { ...screeningDefaults(), strict: false, earthTemp: 'air', pillars: Object.fromEntries(PILLARS.map(({ id }) => [id, 1])) };
+}
 
 // Where the Earth value of a factor comes from: { value, from: 'power' | 'modis' | 'kit', why }.
 // In surface mode a missing value, or a site whose MODIS pixel is mostly water, gives null with the reason.
@@ -148,13 +158,24 @@ export function measuredFactors(target) {
 
 export function climateBreakdown(site, target, weights, override, strict = false, earthTemp = 'air') {
   const rows = factorsFor(target).map((factor) => {
-    const es = earthSource(site, factor.id, earthTemp, override);
-    const earth = es.value;
     const tv = targetValue(target, factor.id, strict);
-    const tValue = tv ? tv.value : null;
-    const score = factorScore(earth, tValue, factor.R);
+    const matched = earthTemp === 'matched';
+    const basis = tv.temperatureBasis;
+    let excluded = '';
+    if (matched && LST_FIELD[factor.id] && tv.value != null) {
+      const needsSurface = factor.id === 'coldGround';
+      if (basis !== 'surface' && (basis !== 'air' || needsSurface)) {
+        excluded = basis === 'soil' ? 'Soil temperature requires a comparable soil measurement.' : 'No comparable target temperature for this factor.';
+      }
+      if (tv.screeningNote) excluded = tv.screeningNote;
+    }
+    const es = earthSource(site, factor.id, matched ? (basis === 'surface' ? 'surface' : 'air') : earthTemp, override);
+    if (matched && es.from === 'kit' && basis === 'surface' && factor.id !== 'coldGround') {
+      excluded = 'This kit value measures air temperature.';
+    }
+    const score = excluded ? null : factorScore(es.value, tv.value, factor.R);
     const weight = weightOf(weights, factor.id);
-    return { factor, earth, earthFrom: es.from, earthWhy: es.why, target: tValue, score, weight, source: tv ? tv.source : null, note: tv ? tv.note : '', strictApplied: !!(tv && tv.strictApplied) };
+    return { factor, earth: es.value, earthFrom: es.from, earthWhy: es.why, target: tv.value, score, weight, source: tv.source, note: tv.note, basis, window: tv.measurementWindow, excluded, strictApplied: !!tv.strictApplied };
   });
   let num = 0;
   let den = 0;
@@ -165,8 +186,9 @@ export function climateBreakdown(site, target, weights, override, strict = false
     den += row.weight;
     used += 1;
   }
-  const enough = !strict || rows.filter((r) => r.target != null).length >= STRICT_MIN_FACTORS;
-  return { rows, used, enough, score: den > 0 && enough ? num / den : null };
+  const enough = !strict || rows.filter((r) => r.target != null && !r.excluded && (earthTemp !== 'matched' || r.weight > 0)).length >= STRICT_MIN_FACTORS;
+  const enoughEarth = earthTemp !== 'matched' || override || used >= STRICT_MIN_FACTORS;
+  return { rows, used, enough, score: den > 0 && enough && enoughEarth ? num / den : null };
 }
 
 export function geologyMatch(siteGeo, targetGeo) {
@@ -211,8 +233,9 @@ export function terrainMatch(siteTerrain, targetTerrain) {
   return { score, earth: a, target: b };
 }
 
-// A full analog match needs at least this many of the 5 pillars, otherwise it is "not enough data".
+// Minimum coverage for the legacy method and for the independent screening pillars.
 export const FULL_MIN_PILLARS = 3;
+export const SCREEN_MIN_PILLARS = 2;
 
 // Pillars that are missing because one place lacks the data. `tagsMissing` is the resources rule:
 // a target with no sourced tags gives nothing to compare; a site needs an entry in resources.json.
@@ -254,16 +277,23 @@ export function scoreSite(site, target, opts = {}) {
     num += w * value;
     den += w;
   }
-  const pillarsUsed = parts.filter(([, value]) => value != null).length;
+  const active = parts.filter(([id]) => weightOf(opts.pillars, id) > 0);
+  const pillarsUsed = active.filter(([, value]) => value != null).length;
+  const minPillars = weightOf(opts.pillars, 'landing') > 0 ? FULL_MIN_PILLARS : SCREEN_MIN_PILLARS;
   // Only list a gap for a pillar that really is missing.
   const unused = (ids) => ids.filter((id) => parts.find((p) => p[0] === id)[1] == null);
   const targetGaps = unused(dataGaps(target, opts.terrain ? opts.terrain[target.id] : null, !targetTags || !targetTags.length));
   const siteGaps = unused(dataGaps(site, usableTerrain ? opts.terrain[site.id] : null, !siteTags));
-  const few = pillarsUsed < FULL_MIN_PILLARS;
+  if (opts.earthTemp === 'matched' && climate.score == null) {
+    (climate.enough ? siteGaps : targetGaps).push('climate');
+  }
+  const few = pillarsUsed < minPillars;
   return {
     score: den > 0 && !few ? num / den : null,
     reason: few ? 'few-pillars' : null,
     pillarsUsed,
+    pillarsEnabled: active.length,
+    minPillars,
     targetGaps,
     siteGaps,
     climate,
@@ -311,11 +341,11 @@ export function stability(sites, target, opts = {}, { runs = 1000, topN = 3, see
   const counts = Object.fromEntries(sites.map((s) => [s.id, 0]));
   for (let i = 0; i < runs; i++) {
     const weights = {};
-    for (const f of CLIMATE_FACTORS) weights[f.id] = rand() * 2;
+    for (const f of CLIMATE_FACTORS) weights[f.id] = rand() * 2 * Number(weightOf(opts.weights, f.id) > 0);
     const pillars = {};
-    for (const p of PILLARS) pillars[p.id] = rand() * 2;
+    for (const p of PILLARS) pillars[p.id] = rand() * 2 * Number(weightOf(opts.pillars, p.id) > 0);
     // Extra factors are drawn last, and only for targets that use them, so other targets get the same draws as before.
-    for (const f of extra) weights[f.id] = rand() * 2;
+    for (const f of extra) weights[f.id] = rand() * 2 * Number(weightOf(opts.weights, f.id) > 0);
     const ranked = rankSites(sites, target, { ...opts, weights, pillars });
     for (const r of ranked.slice(0, topN)) if (r.score != null) counts[r.site.id] += 1;
   }

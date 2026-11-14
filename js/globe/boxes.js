@@ -20,8 +20,8 @@ import { esc } from '../util.js';
 import { boxFill } from '../screening.js';
 
 const SHRINK = 0.02;          // each rectangle is 2 % smaller than its box, so the cells read as a grid
-const OUTLINE_CSS = '#ffb547';
-const OUTLINE_WIDTH = 3;      // pixels
+const OUTLINE_CSS = '#fff2ce';
+const OUTLINE_WIDTH = 4;      // pixels
 
 // Used only when the data file carries no credits (the file's sources[].credit come first).
 const FALLBACK_CREDITS = [
