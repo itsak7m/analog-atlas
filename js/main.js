@@ -4,11 +4,12 @@
 import { HAS_ION, ION_TOKEN, NO_3D } from './config.js';
 import { openTokenSetup, setIonProblem, addressWith3D } from './ui/setup.js';
 import { state, update, on } from './state.js';
+import { screeningDefaults } from './scoring.js';
 import { loadData, findSite, findTarget } from './data.js';
 import { Globe, BODIES, SOUTH_POLE_VIEW } from './globe/globe.js';
 import { Pins } from './globe/pins.js';
 import { computeRanking, renderRanking, markSelected, earthPinItems } from './ui/ranking.js';
-import { renderWelcome, renderSite, renderTarget, hideDetail, focusDetail } from './ui/detail.js';
+import { renderSite, renderTarget, hideDetail, focusDetail } from './ui/detail.js';
 import { initTopbar, setWorld, setTarget, setBackVisible, DEFAULT_TARGET } from './ui/topbar.js';
 import { openPano, openTwin, openStreet } from './ui/pano.js';
 import { openTune } from './ui/tune.js';
@@ -21,7 +22,7 @@ import { startBase, stopBase, baseActive } from './ui/base.js';
 import { initKit, kit, refreshKit, feedLine, openPanel as openKitPanel, closePanel as closeKitPanel } from './kit/kit.js';
 import { loadScreening, scoreBoxes, findBox } from './screening.js';
 import { BoxLayer } from './globe/boxes.js';
-import { initDiscover, setDiscoverTab, renderDiscover, renderDiscoverMessage, markDiscoverSelected, announceDiscover } from './ui/discover.js';
+import { initDiscover, setDiscoverTab, renderDiscover, renderDiscoverMessage, markDiscoverSelected, announceDiscover, nearText } from './ui/discover.js';
 import { renderBox } from './ui/screening-detail.js';
 import { $, esc, fmt, toast } from './util.js';
 
@@ -58,7 +59,7 @@ function buildPins() {
   if (state.world === 'earth') {
     const fair = state.discover && state.screenRanked ? new Map(state.screenRanked.sites.map((s) => [s.site.id, s])) : null;
     const selId = state.selected?.kind === 'site' ? state.selected.id : null;
-    items = earthPinItems({ ranked, target, selId, fair, corridor: corridorSiteIds(), kit });
+    items = earthPinItems({ ranked, target, selId, fair, corridor: corridorSiteIds(), kit: kit.source === 'usb' ? kit : null });
   } else {
     items = state.data.targets.filter((t) => t.body === state.world).map((t) => ({
       id: t.id,
@@ -102,7 +103,7 @@ function refreshDiscover() {
 }
 
 // The "Discover Jordan" tab: switch to Earth if needed, load the boxes once, then show the Top 10 and the boxes.
-async function openDiscover() {
+async function openDiscover({ frame = true } = {}) {
   if (tourRunning()) { toast('Exit the mission tour first (Esc).'); setDiscoverTab(state.discover); return; }
   if (state.discover && state.screening) return;
   stopCorridor();
@@ -127,7 +128,7 @@ async function openDiscover() {
   buildPins(); // the site pins now show the same kind of % as the boxes
   boxes.setShown(true);
   announceDiscover(state.screenRanked);
-  api.lookAt({ lat: 31.3, lon: 36.9 }, 9e5);
+  if (frame) return api.lookAt({ lat: 31.3, lon: 36.9 }, 9e5);
 }
 
 // Turn Discover off: the site list comes back, the boxes leave the globe and a selected box is closed.
@@ -160,7 +161,38 @@ function pickBox(id) {
   stopCorridor();
   select({ kind: 'box', id });
   announcePick(state.selected);
-  api.lookAt(box, 1.2e5);
+  return api.lookAt(box, 1.2e5);
+}
+
+async function openRoverCase() {
+  const rover = state.data.roverCase;
+  if (!rover || tourRunning() || storyRunning()) return;
+  api.closePanels();
+  api.setSettings({ mode: 'full', ...screeningDefaults() });
+  api.setTarget(rover.targetId);
+  await openDiscover({ frame: false });
+  if (state.discover && state.targetId === rover.targetId && findBox(rover.boxId)) {
+    return pickBox(rover.boxId);
+  }
+}
+
+async function explorePair(body) {
+  if (!need3D('Explore the base') || baseActive() || tourRunning() || storyRunning()) return;
+  if (body === 'moon') {
+    const rover = state.data.roverCase;
+    if (!rover) return;
+    await openRoverCase();
+    const sel = state.selected;
+    if (sel?.kind === 'box' && sel.id === rover.boxId && state.targetId === rover.targetId) {
+      return openBase(sel, placeOf(sel));
+    }
+    return;
+  }
+  api.closePanels();
+  api.setSettings({ mode: 'full', ...screeningDefaults() });
+  api.setTarget(DEFAULT_TARGET.mars);
+  const top = ranked.find((row) => row.score != null);
+  if (top) return openBase({ kind: 'site', id: top.site.id }, top.site);
 }
 
 // N/E/S/W on a box page. Keyboard focus stays on the same direction button (renderBox keeps it there).
@@ -189,11 +221,11 @@ function stabilityFor(id) {
 function renderDetail() {
   const sel = state.selected;
   const target = findTarget(state.data, state.targetId);
-  if (!sel) { renderWelcome(); return; }
+  if (!sel) { hideDetail(); return; }
   if (sel.kind === 'box') {
     const box = placeOf(sel);
     if (box) renderBox(box, target, state.screenRanked?.byId.get(sel.id));
-    else renderWelcome();
+    else hideDetail();
   } else if (sel.kind === 'site') {
     const site = findSite(state.data, sel.id);
     const result = ranked.find((r) => r.site.id === sel.id);
@@ -219,6 +251,7 @@ function onDetailAction(e) {
       boxes.setSelected(null);
       if (state.discover) markDiscoverSelected(null);
       hideDetail();
+      if (state.view !== 'globe') backToGlobe();
       focusAfterClose(prev);
       break;
     }
@@ -232,13 +265,8 @@ function onDetailAction(e) {
     case 'twin': if (place) openTwin(place, findTarget(state.data, state.targetId)); break;
     case 'tour': if (need3D('The mission tour')) playTour(api); break;
     case 'story': startStory(); break;
-    case 'base': if (place && state.selected?.kind !== 'box') openBase(state.selected, place); break;
-    case 'brief-more': {
-      const open = btn.closest('.welcome').classList.toggle('open');
-      btn.setAttribute('aria-expanded', String(open));
-      btn.textContent = open ? 'Less' : 'More';
-      break;
-    }
+    case 'rover-case': openRoverCase(); break;
+    case 'base': if (place) openBase(state.selected, place); break;
     default: break;
   }
 }
@@ -278,6 +306,7 @@ function select(sel) {
   boxes.setSelected(boxId);
   if (state.discover) markDiscoverSelected(boxId);
   renderDetail();
+  $('#detail').scrollTop = 0;
 }
 
 // The world a selected place is on: Earth for a site or a box, the target's own body for a target.
@@ -293,9 +322,11 @@ function announcePick(sel) {
 
 function pickSite(id) {
   stopCorridor();
+  const site = findSite(state.data, id);
+  if (!site) return;
   select({ kind: 'site', id });
   announcePick(state.selected);
-  flyToSelected();
+  if (state.world === 'earth') api.lookAt(site, 2.4e5);
 }
 
 function pickTarget(id) {
@@ -313,8 +344,8 @@ function setCloseup(on) {
 }
 
 // Leave the close-up UI before a camera move back to a far view (used by api.home and api.lookAt).
-function resetCloseupUi() {
-  stopBase();
+function resetCloseupUi({ preserveBase = false } = {}) {
+  if (!preserveBase) stopBase();
   const wasCloseup = state.view !== 'globe';
   setCloseup(false);
   setBackVisible(false);
@@ -397,12 +428,12 @@ async function backToGlobe() {
   renderDetail();
 }
 
-async function showWorld(world) {
+async function showWorld(world, { preserveBase = false } = {}) {
   if (state.world === world && globe.viewer) return;
   if (world !== 'earth') closeDiscover(); // the boxes are on Earth only
   update({ world });
   setWorld(world);
-  resetCloseupUi();
+  resetCloseupUi({ preserveBase });
   try {
     await globe.show(world);
   } catch (err) {
@@ -430,22 +461,22 @@ function need3D(what) {
 // Base plan (future work): the 3D concept base at a site or target, with its plan. At an Earth site the
 // plan is a test base for the current target; at a target it is the base itself.
 function openBase(sel, place) {
+  if (!place) return;
   const target = sel.kind === 'target' ? place : findTarget(state.data, state.targetId);
-  const result = sel.kind === 'site' ? ranked.find((r) => r.site.id === sel.id) : null;
-  startBase(api, { sel: { ...sel }, place, target, result, here: state.view === 'closeup' });
+  const result = sel.kind === 'box' ? state.screenRanked?.byId.get(sel.id)
+    : sel.kind === 'site' ? ranked.find((r) => r.site.id === sel.id) : null;
+  const here = state.view === 'closeup' && state.selected?.kind === sel.kind && state.selected?.id === sel.id;
+  const name = sel.kind === 'box' && nearText(place.screen);
+  return startBase(api, { sel: { ...sel }, place: name ? { ...place, name } : place, target, result, here });
 }
 
-// Story mode: the short animated story (Earth -> Jordan -> Mars -> the crew's base). The start button in the
-// middle of the screen shows only until the visitor starts the story or touches anything else.
+// The optional animated story is available in More.
 function startStory() {
-  hideHero();
   if (storyRunning()) { stopStory(); return; }
   if (tourRunning()) stopTour();
   if (corridorActive()) stopCorridor();
   if (need3D('The story')) playStory(api);
 }
-
-function hideHero() { const h = $('#story-hero'); if (h) h.hidden = true; }
 
 // "More" menu in the top bar: the tools a first-time visitor does not need (3D, data tour, Jordan corridor).
 function initMore() {
@@ -570,19 +601,21 @@ const api = {
   openDiscover, // brings Discover back after the tour, when the visitor had it open
   restoreDetail(saved) {
     const sel = saved?.selected && placeOf(saved.selected) ? saved.selected : null;
-    select(sel); // with no selection this shows the welcome card
+    select(sel);
     if (!sel && saved?.hidden) hideDetail();
   },
   backToGlobe,
   // Base plan world swap: show a place's close-up at once (no flight), with the camera at the given
   // heading, pitch and range. Returns the ground height of the place, or null.
   async jumpTo(sel, view) {
-    select(sel);
-    const place = placeOf(sel);
+    const place = sel.kind === 'box' ? findBox(sel.id) : placeOf(sel);
     if (!place || !globe.viewer) return null;
     const world = worldOf(sel, place);
-    if (state.world !== world) await showWorld(world);
+    if (state.world !== world) await showWorld(world, { preserveBase: true });
     if (!globe.viewer) return null;
+    if (sel.kind === 'box' && !state.discover) await openDiscover({ frame: false });
+    if (sel.kind === 'box' && !state.discover) return null;
+    select(sel);
     update({ view: 'flying' });
     setCloseup(true);
     setBackVisible(true);
@@ -646,6 +679,8 @@ async function main() {
   // Measured ground height at a pin (data/terrain.json centre elevation), only where the terrain box is
   // centred on the pin itself (some boxes, such as Mistastin's, are moved off the pin on purpose).
   const knownGroundHeight = (body, lon, lat) => {
+    const box = state.selected?.kind === 'box' && body === 'earth' ? findBox(state.selected.id) : null;
+    if (box?.lat === lat && box.lon === lon && Number.isFinite(box.screen.terrain?.centre_elev_m)) return box.screen.terrain.centre_elev_m;
     const p = Object.values(state.data.terrain || {}).find((t) => t.body === body && Math.abs(t.lat - lat) < 0.005 && Math.abs(t.lon - lon) < 0.005);
     return p && Number.isFinite(p.centre_elev_m) ? p.centre_elev_m : null;
   };
@@ -672,8 +707,8 @@ async function main() {
       } else if (s.terrain || s.tiles) set3D(true);
       else if (s.artemis === false && !artemisNoted) {
         artemisNoted = true; // once per visit
-        banner(`NASA's Artemis III candidate landing regions are not shown: Cesium ion did not send them (${s.status === 404 ? 'error 404: the data set is not available to this account' : s.status ? `error ${s.status}` : esc(s.error)}).`, 9000);
-      } else if (s.artemis) banner('<b>Orange areas:</b> NASA Artemis III candidate landing regions near the south pole.', 9000);
+        banner(`The historical Artemis candidate map is unavailable (${s.status === 404 ? 'dataset unavailable to this account' : s.status ? `error ${s.status}` : esc(s.error)}). The reference pins are still shown.`, 9000);
+      } else if (s.artemis) banner('<b>Orange areas:</b> historical Artemis candidate regions near the lunar south pole.', 9000);
     },
   });
   window.__atlas = { globe, state, kit, kitFeed: feedLine };
@@ -701,10 +736,6 @@ async function main() {
     },
   });
   setTarget(findTarget(state.data, state.targetId));
-  document.querySelectorAll('.mode-toggle button').forEach((b) => b.addEventListener('click', () => {
-    update({ mode: b.dataset.mode });
-    rescore();
-  }));
   $('#detail').addEventListener('click', onDetailAction);
   // The button hides itself, so keyboard focus moves on: to the heading of the place in the panel, else the target picker.
   $('#back-btn').addEventListener('click', async () => {
@@ -715,7 +746,9 @@ async function main() {
   });
   $('#tour-btn').addEventListener('click', () => (tourRunning() ? stopTour() : !storyRunning() && need3D('The mission tour') && playTour(api)));
   $('#story-btn').addEventListener('click', startStory);
-  $('#story-hero').addEventListener('click', startStory);
+  $('#feature-moon').addEventListener('click', () => explorePair('moon'));
+  $('#feature-mars').addEventListener('click', () => explorePair('mars'));
+  $('#feature-evidence').addEventListener('click', openRoverCase);
   initMore();
   $('#corridor-btn').addEventListener('click', toggleCorridor);
   $('#method-btn').addEventListener('click', openMethod);
@@ -740,32 +773,29 @@ async function main() {
     if (key !== kitPinKey && state.world === 'earth') buildPins();
   });
 
+  const params = new URLSearchParams(location.search);
+  const captureMode = params.has('demo') || params.has('shot');
   refreshRanking();
   await initKit();
   try {
     await globe.show('earth');
   } catch (err) {
     // No WebGL (an old or locked-down browser): keep the ranking and details usable.
-    renderWelcome();
-    $('#loading').classList.add('done');
     noGlobe(err);
-    return;
   }
   boxes.attach(globe.viewer);
   buildPins();
-  renderWelcome();
+  $('#atlas-feature').hidden = captureMode || !state.data.roverCase;
   $('#loading').classList.add('done');
-  if (!/[?&](demo|shot)/.test(location.search)) {
-    $('#story-hero').hidden = false;
-    const away = (e) => { if (e.target.closest?.('#story-hero')) return; hideHero(); for (const t of ['pointerdown', 'click', 'keydown']) document.removeEventListener(t, away, true); };
-    for (const t of ['pointerdown', 'click', 'keydown']) document.addEventListener(t, away, true);
+  if (params.get('case') === 'rover') {
+    await openRoverCase();
   }
   if (NO_3D) banner(`<b>3D is off for this visit</b> (<b>?no3d</b> in the address): the globe shows NASA pictures without 3D terrain and works without internet. <a href="${esc(addressWith3D(true))}">Turn 3D back on</a>`, 12000);
   else if (!HAS_ION) banner('3D terrain is off: the globe works, but close-ups are flat. <button type="button" class="btn small primary" data-setup>Turn on 3D</button>', 12000);
   // Pitch mode (?demo for the 30-second video, ?shot=<name> for slide pictures): loaded only when asked for.
-  if (/[?&](demo|shot)\b/.test(location.search)) {
+  if (captureMode) {
     const { runDemo } = await import('./ui/demo.js');
-    runDemo(api, { onRankTab: (tab) => (tab === 'discover' ? openDiscover() : closeDiscover()) }, state);
+    await runDemo(api, { openRoverCase, onRankTab: (tab) => (tab === 'discover' ? openDiscover() : closeDiscover()) }, state);
   }
 }
 
