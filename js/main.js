@@ -22,7 +22,7 @@ import { startBase, stopBase, baseActive } from './ui/base.js';
 import { initKit, kit, refreshKit, feedLine, openPanel as openKitPanel, closePanel as closeKitPanel } from './kit/kit.js';
 import { loadScreening, scoreBoxes, findBox } from './screening.js';
 import { BoxLayer } from './globe/boxes.js';
-import { initDiscover, setDiscoverTab, renderDiscover, renderDiscoverMessage, markDiscoverSelected, announceDiscover, nearText } from './ui/discover.js';
+import { initDiscover, setDiscoverTab, renderDiscover, renderDiscoverMessage, markDiscoverSelected, announceDiscover } from './ui/discover.js';
 import { renderBox } from './ui/screening-detail.js';
 import { $, esc, fmt, toast } from './util.js';
 
@@ -177,7 +177,7 @@ async function openRoverCase() {
 }
 
 async function explorePair(body) {
-  if (!need3D('Explore the base') || baseActive() || tourRunning() || storyRunning()) return;
+  if (baseActive() || tourRunning() || storyRunning()) return;
   // The starred pair of this world: the target whose closest Earth twin scores highest (see starPairs).
   const star = starPairs()[body];
   if (!star) return;
@@ -337,8 +337,8 @@ function setCloseup(on) {
 }
 
 // Leave the close-up UI before a camera move back to a far view (used by api.home and api.lookAt).
-function resetCloseupUi({ preserveBase = false } = {}) {
-  if (!preserveBase) stopBase();
+function resetCloseupUi() {
+  stopBase();
   const wasCloseup = state.view !== 'globe';
   setCloseup(false);
   setBackVisible(false);
@@ -421,12 +421,12 @@ async function backToGlobe() {
   renderDetail();
 }
 
-async function showWorld(world, { preserveBase = false } = {}) {
+async function showWorld(world) {
   if (state.world === world && globe.viewer) return;
   if (world !== 'earth') closeDiscover(); // the boxes are on Earth only
   update({ world });
   setWorld(world);
-  resetCloseupUi({ preserveBase });
+  resetCloseupUi();
   try {
     await globe.show(world);
   } catch (err) {
@@ -451,16 +451,12 @@ function need3D(what) {
   return false;
 }
 
-// Base plan (future work): the 3D concept base at a site or target, with its plan. At an Earth site the
-// plan is a test base for the current target; at a target it is the base itself.
+// Open the same concept floor plan with context for the chosen rehearsal site or target.
 function openBase(sel, place) {
   if (!place || !baseAllowed(sel)) return;
   const target = sel.kind === 'target' ? place : findTarget(state.data, state.targetId);
-  const result = sel.kind === 'box' ? state.screenRanked?.byId.get(sel.id)
-    : sel.kind === 'site' ? ranked.find((r) => r.site.id === sel.id) : null;
-  const here = state.view === 'closeup' && state.selected?.kind === sel.kind && state.selected?.id === sel.id;
-  const name = sel.kind === 'box' && nearText(place.screen);
-  return startBase(api, { sel: { ...sel }, place: name ? { ...place, name } : place, target, result, here });
+  const result = sel.kind === 'site' ? ranked.find((r) => r.site.id === sel.id) : null;
+  return startBase({ place, target, result });
 }
 
 // The optional animated story is available in More.
@@ -598,28 +594,6 @@ const api = {
     if (!sel && saved?.hidden) hideDetail();
   },
   backToGlobe,
-  // Base plan world swap: show a place's close-up at once (no flight), with the camera at the given
-  // heading, pitch and range. Returns the ground height of the place, or null.
-  // at: an exact point to look at instead of the place's own pin (the base beside a cave skylight).
-  async jumpTo(sel, view, at = null) {
-    const place = at || (sel.kind === 'box' ? findBox(sel.id) : placeOf(sel));
-    if (!place || !globe.viewer) return null;
-    const world = worldOf(sel, place);
-    if (state.world !== world) await showWorld(world, { preserveBase: true });
-    if (!globe.viewer) return null;
-    if (sel.kind === 'box' && !state.discover) await openDiscover({ frame: false });
-    if (sel.kind === 'box' && !state.discover) return null;
-    select(sel);
-    update({ view: 'flying' });
-    setCloseup(true);
-    setBackVisible(true);
-    pins.setHidden(true);
-    const h = await globe.jumpOrbit(place, view);
-    if (h == null) return null;
-    update({ view: 'closeup' });
-    renderDetail();
-    return h;
-  },
   // The ranking of the Earth sites for any target (the shown one, or computed).
   rankingFor: (id) => (id === state.targetId ? ranked : computeRanking(id)),
   openTwin: (siteId, targetId) => openTwin(findSite(state.data, siteId), findTarget(state.data, targetId)),
@@ -759,7 +733,6 @@ async function main() {
     if (storyRunning()) { stopStory(); return; }
     if (tourRunning()) { stopTour(); return; }
     if (corridorActive()) { stopCorridor(); backToGlobe(); return; } // the same as the corridor's Exit button
-    if (baseActive()) { backToGlobe(); return; } // the same as Exit base
     if (!$('#kit-panel').hidden) { closeKitPanel(); return; }
     if (state.view !== 'globe') backToGlobe();
   });
