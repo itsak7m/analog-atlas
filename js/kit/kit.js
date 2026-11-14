@@ -12,7 +12,6 @@ const HISTORY_MS = 15 * 60 * 1000;    // charts show the last 15 minutes
 const DAY_MS = 24 * 3600 * 1000;      // the log is cut into 24-hour windows, starting at its first timed row
 const FULL_DAY_MS = 20 * 3600 * 1000; // a window counts as a full day with at least 20 hours of data...
 const MAX_GAP_MS = 3600 * 1000;       // ...and no gap longer than 1 hour
-const STALE_MS = 5000;                // live data older than this: the bar says "no data for N s"
 const TIME_RESEND_MS = 5000;          // send TIME again at most once every 5 s
 const ALB_MIN_LUX = 1000;             // albedo needs daylight on the UP sensor...
 const ALB_MIN_SUN_DEG = 20;           // ...and the sun 20° or more above the horizon (low sun: angle errors dominate)
@@ -50,7 +49,6 @@ export const kit = {
 
 let serial = null;
 let simTimer = null;
-let watchTimer = null;
 let dump = null;      // lines collected during LOG DUMP
 let lastTimeSent = 0;
 let pendingLog = null; // a LOG command waiting for the status line that confirms it
@@ -120,7 +118,6 @@ function push(reading) {
   kit.history.push(reading);
   const cutoff = Date.now() - HISTORY_MS;
   while (kit.history.length && kit.history[0].t < cutoff) kit.history.shift();
-  renderBar();
   if (!$('#kit-panel').hidden) renderLive();
   emit('kit', kit);
 }
@@ -178,7 +175,6 @@ function resendTime() {
 function setViaBase() {
   if (kit.viaBase || kit.source !== 'usb') return;
   kit.viaBase = true;
-  renderBar();
   if (!$('#kit-panel').hidden) renderPanel();
 }
 
@@ -234,19 +230,6 @@ async function connect() {
   }
 }
 
-// While connected, redraw the bar every second when no data arrives, so it can say "no data for N s".
-function startWatch() {
-  stopWatch();
-  watchTimer = setInterval(() => {
-    if (!kit.latest || Date.now() - kit.latest.t > STALE_MS) renderBar();
-  }, 1000);
-}
-
-function stopWatch() {
-  clearInterval(watchTimer);
-  watchTimer = null;
-}
-
 function onState(s, err) {
   if (s === 'connected') {
     stopSim();
@@ -256,14 +239,12 @@ function onState(s, err) {
     kit.latest = null;
     kit.connectedAt = Date.now();
     lastTimeSent = 0;
-    startWatch();
     toast('Field kit connected');
   } else if (s === 'error') {
     console.warn('serial error', err);
     toast(`USB problem: ${err?.message || err}. Still listening for data.`, 5000);
   } else {
     // disconnected or unplugged
-    stopWatch();
     kit.viaBase = false;
     dump = null;
     clearTimeout(pendingLog?.timer);
@@ -271,7 +252,6 @@ function onState(s, err) {
     toast(s === 'unplugged' ? 'Field kit unplugged. Back to simulation.' : 'Field kit disconnected. Back to simulation.');
     startSim();
   }
-  renderBar();
   if (!$('#kit-panel').hidden) renderPanel();
   emit('kit', kit);
 }
@@ -347,58 +327,16 @@ export function liveInputs() {
   if (alb.value != null) inputs.albedo = alb.value;
   const log = logSummary();
   if (log.swing != null) inputs.swing = log.swing;
-  if (log.cold) inputs.coldGround = log.cold.value;
+  if (log.cold && (state.earthTemp !== 'matched' || log.cold.from.startsWith('infrared surface'))) inputs.coldGround = log.cold.value;
   return inputs;
 }
 
 export function liveScore(target) {
   const inputs = liveInputs();
   const pseudoSite = { power: { annual: {} } };
-  const res = climateBreakdown(pseudoSite, target, state.weights, inputs, state.strict);
+  const res = climateBreakdown(pseudoSite, target, state.weights, inputs, state.strict, state.earthTemp === 'matched' ? 'matched' : 'air');
   const used = res.rows.filter((r) => r.score != null).length;
   return { ...res, used, inputs };
-}
-
-// ---------- kit bar ----------
-function renderBar() {
-  const st = $('#kit-state');
-  const reads = $('#kit-reads');
-  const dot = $('#kit-dot');
-  const L = kit.latest;
-  const live = kit.source === 'usb';
-  st.className = `kit-state ${live ? 'live' : 'sim'}`;
-  st.textContent = live ? (kit.viaBase || L?.via === 'espnow' ? 'Live · radio' : 'Live · USB') : 'Simulated';
-  dot.className = `dot ${live ? 'on' : 'sim'}`;
-  reads.classList.toggle('sim', !live);
-  if (!L) {
-    const wait = live ? Math.round((Date.now() - (kit.connectedAt || Date.now())) / 1000) : 0;
-    reads.innerHTML = `<span>${live ? `Waiting for the first reading…${wait * 1000 > STALE_MS ? ` (${wait} s)` : ''}` : 'Starting simulation…'}</span>`;
-    return;
-  }
-  const target = findTarget(state.data, state.targetId);
-  const s = liveScore(target);
-  const age = Date.now() - L.t;
-  const alb = albedoNow();
-  const parts = [
-    ...(live && age > STALE_MS ? [['No data for', `${Math.round(age / 1000)} s`]] : []),
-    ['Air', fmt(L.air, 1, '°C')],
-    ['Humidity', fmt(L.rh, 0, '%')],
-    // Simulated (no kit connected): only air, humidity and the match, so the bar does not read like sensor
-    // debug output ("Albedo sun too low", "UV index < 1.0"). The Field kit panel still shows every value.
-    ...(live ? [
-      ['UV index', L.uvBelow != null ? `< ${fmt(L.uvBelow, 1)}` : fmt(L.uv, 1)],
-      ['Soil probe', fmt(L.ground, 1, '°C')],
-      ['Surface', fmt(L.surf, 1, '°C')],
-      ['Albedo', alb.value == null ? alb.why : fmt(alb.value, 2)],
-    ] : []),
-  ].filter(([, v]) => v !== 'not measured');
-  // The match with the target in plain words: "Kit vs Malapert Massif 0% · far apart" (under 20 % is a display
-  // choice for the words only; the number is the snapshot score from the panel).
-  const name = target.name.split(' (')[0];
-  const p = s.score == null ? null : pct(s.score);
-  const tip = `${live ? 'Live kit reading' : 'Simulated kit reading (no kit connected)'} compared with ${name}: a snapshot, not a 20-year average. Open Field kit for the details.`;
-  reads.innerHTML = parts.map(([k, v]) => `<span>${k}<b>${esc(v)}</b></span>`).join('')
-    + (p == null ? '' : `<span title="${esc(tip)}">Kit vs ${esc(name)}<b>${p}%${p < 20 ? ' · far apart' : ''}</b></span>`);
 }
 
 // ---------- panel ----------
@@ -539,15 +477,15 @@ function renderLive() {
       coldGround: log.cold ? `log minimum, ${log.cold.from}` : 'log minimum',
       rain: 'not measured by the kit',
     }[f.id];
-    const missing = f.id === 'swing' || f.id === 'coldGround' ? 'needs a full 24 h log window' : f.id === 'albedo' ? alb.why : 'not measured';
+    const missing = f.id === 'coldGround' && log.cold ? 'surface measurement needed' : f.id === 'swing' || f.id === 'coldGround' ? 'needs a full 24 h log window' : f.id === 'albedo' ? alb.why : 'not measured';
     return `<tr><td>${esc(f.short)} <span class="src">${esc(why)}</span></td>
       <td class="num">${r.earth == null ? `<span class="src">${esc(missing)}</span>` : fmt(r.earth, f.digits, unitOf(f))}</td>
       <td class="num">${r.target == null ? '<span class="src">not measured</span>' : fmt(r.target, f.digits, unitOf(f))}</td>
-      <td class="match">${r.score == null ? '—' : `${pct(r.score)}%`}</td></tr>`;
+      <td class="match">${r.excluded ? `<span title="${esc(r.excluded)}">Not scored</span>` : r.score == null ? '—' : `${pct(r.score)}%`}</td></tr>`;
   }).join('');
   $('#kp-live').innerHTML = `
     <table class="facts"><thead><tr><th>Factor</th><th>${kit.source === 'usb' ? 'Kit now' : 'Simulated now'}</th><th>${esc(target.name.split(' (')[0])}</th><th>Match</th></tr></thead><tbody>${rows}</tbody></table>
-    <p class="src">${s.score == null ? `No ${sim ? 'simulated' : 'live'} factor available yet.` : `${sim ? 'Simulated' : 'Live'} snapshot score: <b>${pct(s.score)}%</b> from ${s.used} of 5 factors.`} Same formula as the ranking, but with the ${sim ? 'simulated' : "kit's"} values instead of 20-year NASA averages, so the two numbers are not directly comparable.${sim && kit.log ? ' Daily swing and coldest ground come from the loaded log, not from the simulation.' : ''}</p>`;
+    <p class="src">${s.score == null ? 'No comparable snapshot score yet.' : `${sim ? 'Simulated' : 'Live'} snapshot score: <b>${pct(s.score)}%</b> from ${s.used} factors.`} The snapshot covers a different time window from the site rankings.${sim && kit.log ? ' Daily swing and the ground reading use the imported log when available.' : ''}</p>`;
 }
 
 function renderMessages() {
@@ -633,7 +571,6 @@ function refreshLog() {
   if (save) save.disabled = !kit.log;
   renderLog();
   renderLive();
-  renderBar();
   emit('kit', kit);
 }
 
@@ -834,7 +771,6 @@ function setK(k) {
   for (const r of kit.history) albedoOf(r);
   toast(k === 1 ? 'Albedo calibration k = 1 (not calibrated).' : `Albedo calibration k = ${k} saved.`);
   renderPanel();
-  renderBar();
 }
 
 // ---------- panel events ----------
@@ -902,6 +838,7 @@ export function openPanel() {
   el.hidden = false;
   renderPanel();
   $('#kit-btn').setAttribute('aria-expanded', 'true');
+  el.querySelector('[data-kit="close"]').focus({ preventScroll: true });
 }
 
 export function closePanel() {
@@ -909,7 +846,7 @@ export function closePanel() {
   const hadFocus = el.contains(document.activeElement);
   el.hidden = true;
   $('#kit-btn').setAttribute('aria-expanded', 'false');
-  if (hadFocus) $('#kit-btn').focus(); // do not leave the keyboard focus on a hidden element
+  if (hadFocus) $('#more-btn').focus();
 }
 
 export function togglePanel() {
@@ -921,7 +858,6 @@ export function togglePanel() {
 export function feedLine(line) { onLine(line); }
 
 export function refreshKit() {
-  renderBar();
   if (!$('#kit-panel').hidden) renderLive();
 }
 
