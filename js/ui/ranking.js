@@ -79,17 +79,20 @@ export function computeRanking(targetId = state.targetId, extra = {}) {
   });
 }
 
-// The star: on each world, the target whose closest Earth twin scores highest with the default screening score
-// (full match). Only that pair gets the 3D base. It always uses the defaults, so Tune factors does not move it.
-// { moon: { targetId, siteId, score }, mars: {...} }
+// The star: on each world, the target with the strongest JORDAN match (the best Jordan site, default screening
+// score, full match). The project is about rehearsing in Jordan, so the base pairs are Jordan pairs; the world #1
+// is kept as world (it can be a site outside Jordan) and is named next to the pair, so nothing is hidden.
+// Only that pair gets the 3D base. It always uses the defaults, so Tune factors does not move it.
+// { moon: { targetId, siteId, score, world: { siteId, score } }, mars: {...} }
 let stars = null;
 export function starPairs() {
   if (stars) return stars;
   const d = state.data;
   const out = {};
   for (const t of d.targets) {
-    const top = rankSites(d.sites, t, { mode: 'full', ...screeningDefaults(), terrain: d.terrain, resources: d.resources }).find((r) => r.score != null);
-    if (top && (!out[t.body] || top.score > out[t.body].score)) out[t.body] = { targetId: t.id, siteId: top.site.id, score: top.score };
+    const rows = rankSites(d.sites, t, { mode: 'full', ...screeningDefaults(), terrain: d.terrain, resources: d.resources }).filter((r) => r.score != null);
+    const top = rows.find((r) => r.site.jordan);
+    if (top && (!out[t.body] || top.score > out[t.body].score)) out[t.body] = { targetId: t.id, siteId: top.site.id, score: top.score, world: { siteId: rows[0].site.id, score: rows[0].score } };
   }
   stars = out;
   return out;
