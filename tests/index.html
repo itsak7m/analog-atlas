@@ -34,7 +34,7 @@
   window.addEventListener('unhandledrejection', (e) => cannotStart(e.reason));
 </script>
 <script type="module">
-import { CLIMATE_FACTORS, PILLARS, ROCK_LABEL, RESOURCES, FULL_MIN_PILLARS, STRICT_MIN_FACTORS, factorScore, climateBreakdown, scoreSite, rankSites, geologyMatch, terrainMatch, landingMatch, resourcesMatch, stability, pct, LST_FIELD, SUN_TILT, sunHeight, factorsFor, earthSource } from '../js/scoring.js';
+import { CLIMATE_FACTORS, PILLARS, ROCK_LABEL, RESOURCES, FULL_MIN_PILLARS, STRICT_MIN_FACTORS, factorScore, climateBreakdown, scoreSite, rankSites, geologyMatch, terrainMatch, landingMatch, resourcesMatch, stability, pct, LST_FIELD, SUN_TILT, sunHeight, factorsFor, earthSource, screeningDefaults } from '../js/scoring.js';
 import { cellGap, scoreColor } from '../js/util.js';
 
 const out = document.getElementById('out');
@@ -335,7 +335,7 @@ test('every target is in a valid group, in the agreed order', () => {
   if (topbar.importError) throw new Error(`topbar.js did not load: ${topbar.importError.message}`);
   const ORDER = ['moon-base', 'moon-cave', 'moon-ice', 'moon-ref', 'mars-base', 'mars-cave', 'mars'];
   const LABEL = {
-    'moon-base': 'Moon · permanent base sites (south pole)',
+    'moon-base': 'Lunar south pole reference sites',
     'moon-cave': 'Moon · cave shelter (lava-tube pit)',
     'moon-ice': 'Moon · south-pole ice (shadowed crater floor)',
     'mars-base': 'Mars · proposed human landing zones (NASA, 2015)',
@@ -485,7 +485,7 @@ const boxIdAt = (lat, lon) => `jo-r${pad2(Math.floor((lat - SOUTH) / DLAT))}c${p
 const ALL_W = Object.fromEntries(CLIMATE_FACTORS.map((f) => [f.id, 1]));
 const ALL_P = Object.fromEntries(PILLARS.map((p) => [p.id, 1]));
 const appData = { sites, targets, terrain, resources: tags };
-const SETTINGS = targets.flatMap((t) => ['climate', 'full'].flatMap((mode) => [false, true].map((strict) => ({ targetId: t.id, mode, strict }))));
+const SETTINGS = targets.flatMap((t) => ['climate', 'full'].flatMap((mode) => [false, true].map((strict) => ({ targetId: t.id, mode, strict, earthTemp: 'air' }))));
 const settingText = (s) => `${s.targetId} (${s.mode}${s.strict ? ', strict' : ''})`;
 const NEAR_8 = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
 
@@ -817,7 +817,7 @@ test('Jordan screening 7: Top 10 rules (no water, site, ⚑ or incomplete box li
     r.top.forEach((c, i) => eq(c, r.clusters[i], `${where} top ${i}:`));
   }
   // The same data gives the same list, from scratch.
-  const again = m.scoreBoxes({ screening: m.prepareScreening(scrDoc), data: appData, weights: ALL_W, pillars: ALL_P, targetId: 'jezero', mode: 'full', strict: false });
+  const again = m.scoreBoxes({ screening: m.prepareScreening(scrDoc), data: appData, weights: ALL_W, pillars: ALL_P, targetId: 'jezero', mode: 'full', strict: false, earthTemp: 'air' });
   const first = allResults().find((s) => s.targetId === 'jezero' && s.mode === 'full' && !s.strict).result;
   eq(again.listed.map((x) => x.id).join(), first.listed.map((x) => x.id).join(), 'repeat order:');
   eq(again.top.map((c) => `${c.lead.id}+${c.nearby}`).join(), first.top.map((c) => `${c.lead.id}+${c.nearby}`).join(), 'repeat top 10:');
@@ -938,6 +938,28 @@ test('every site has a MODIS surface-temperature entry; every null value is expl
     if (p.coldSurface_C != null && !/^\d{4}-\d{2}-\d{2}$/.test(p.coldSurfaceStart || '')) throw new Error(`${s.id} has no date for its coldest night`);
   }
   if (!(lstDoc.product?.dois || []).length) throw new Error('no DOI in data/lst.json');
+});
+test('screening defaults compare temperature media and give slope one vote', () => {
+  const defaults = screeningDefaults();
+  eq(defaults.strict, true);
+  eq(defaults.earthTemp, 'matched');
+  eq(defaults.pillars.landing, 0);
+  const opts = { ...fullOpts, ...defaults };
+  const rows = (target) => Object.fromEntries(scoreSite(LS('harrat'), T(target), opts).climate.rows.map((r) => [r.factor.id, r]));
+  eq(rows('jezero').meanTemp.earthFrom, 'power');
+  eq(rows('jezero').swing.score, null, 'different range statistics:');
+  eq(rows('shackleton-ridge').meanTemp.earthFrom, 'modis');
+  eq(rows('shackleton-ridge').swing.score, null, 'different thermal cycles:');
+  eq(rows('phoenix').coldGround.score, null, 'no Earth soil climatology:');
+  const apollo = scoreSite(LS('harrat'), T('apollo11'), opts);
+  eq(apollo.climate.score, null);
+  eq(apollo.pillarsUsed, 3, 'Apollo 11 uses terrain, rock type and resources:');
+  eq(apollo.pillarsEnabled, 4);
+  const scr = needScreening().prepareScreening(scrDoc, scrLstDoc);
+  const candidate = needScreening().scoreBoxes({ ...opts, screening: scr, data: appData, targetId: 'shackleton-ridge' }).byId.get('jo-r06c01');
+  eq(candidate.pillarsEnabled, 3, 'Discover also omits resources:');
+  eq(candidate.pillarsUsed, 2);
+  eq(candidate.eligible, true);
 });
 test('Discover boxes in surface mode score exactly like a site built by hand with the box MODIS values (sample of boxes)', () => {
   const m = needScreening();
