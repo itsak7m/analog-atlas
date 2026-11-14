@@ -706,7 +706,7 @@ export function openMethod() {
       <tr><td>Resources</td><td>Sourced tags a base needs: water ice, natural shelter (caves), regolith, salts.</td></tr>
     </tbody></table>
     <p><span class="formula">factor score = max(0, 1 − |Earth value − target value| ÷ R)</span></p>
-    <p><b>⭐ The strongest Jordan match on each world</b> (the only pairs that get the base plan):</p><ul>${pairs}</ul>
+    <p><b>⭐ The strongest Jordan match on each world</b> (the only pairs that get the 3D base):</p><ul>${pairs}</ul>
     <p><b>Honest limits.</b> This is satellite screening, not a field visit. Earth cannot test low gravity, vacuum or space radiation. Differences of 1–2 points are within the resolution of the data. If a value was not measured, the app says <i>not measured</i>; it never invents one.</p>`;
   const body = `<div class="sheet-body method">
     ${short}

@@ -722,6 +722,8 @@ table.boxes .sw { display: inline-block; width: 12px; height: 12px; vertical-ali
 }
 
 /* ---------- Base plan (future work) and Ask Atlas ---------- */
+.caption.base-card { width: min(760px, calc(100vw - 2 * var(--gap))); background: rgba(5,8,15,.93); z-index: 19; } /* under .overlay (20), so Plan details covers it */
+body.basing #rank { visibility: hidden; }
 .base-parts { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
 .base-part { font: 600 12px var(--fd); letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border: 1px solid var(--c); color: var(--c); background: rgba(5,8,15,.6); }
 .base-plan h4.label { margin-top: 14px; }
@@ -810,6 +812,11 @@ body.story-on #story-btn .txt::after { content: ' (stop)'; }
 .st-match b { font: 700 44px/1 var(--fd); color: var(--amber); }
 .st-match small { grid-column: 1 / -1; color: var(--muted); font-size: 13px; }
 
+/* Base parts lighting up as they rise */
+.st-parts { display: flex; flex-wrap: wrap; gap: 8px; }
+.st-parts span { padding: 6px 12px; border: 1px solid var(--line-strong); color: var(--dim); transition: all .5s ease; }
+.st-parts span.on { border-color: var(--c); color: var(--text); background: color-mix(in srgb, var(--c) 18%, transparent); box-shadow: 0 0 18px color-mix(in srgb, var(--c) 45%, transparent); }
+
 /* Hydroponic farm */
 .st-farm { display: flex; gap: 14px; }
 .st-crop { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 6px; border: 1px solid var(--line); position: relative; overflow: hidden; }
@@ -862,6 +869,12 @@ body.story-on #story-btn .txt::after { content: ' (stop)'; }
   .story-hero { animation: none; }
 }
 
+/* Base plan world swap (js/ui/base.js): a picture of the old view covers the globe, then opens from the base outward. */
+.swap-cover { position: fixed; inset: 0; z-index: 2; pointer-events: none; background: var(--void); }
+.swap-cover img { width: 100%; height: 100%; object-fit: fill; display: block; }
+.swap-label { position: absolute; left: 50%; top: calc(var(--top) + 3 * var(--gap)); transform: translateX(-50%); display: flex; align-items: center; gap: 10px; padding: 8px 16px; background: rgba(5, 8, 15, 0.88); border: 1px solid var(--amber); color: var(--text); font: 600 15px var(--fb); white-space: nowrap; }
+.swap-label i { width: 12px; height: 12px; border: 2px solid var(--amber); border-top-color: transparent; border-radius: 50%; animation: spin .8s linear infinite; }
+.swap-cover.opening .swap-label { opacity: 0; transition: opacity .3s; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ===================================================================================================
@@ -996,8 +1009,8 @@ table.facts th { font-size: 12px; }
 .loading .box { font-size: 18px; color: #fff; font-weight: 600; }
 .credits { background: rgba(0,0,0,.6); border-radius: 4px; }
 
-/* Captions and tour */
-.caption, .caption.tour-card { background: rgba(17,17,17,.96); border: 0; border-radius: var(--r-card); }
+/* Captions, tour, base card */
+.caption, .caption.tour-card, .caption.base-card { background: rgba(17,17,17,.96); border: 0; border-radius: var(--r-card); }
 .caption .k { font-size: 13px; color: var(--muted); }
 .caption .bar, .tour-card .segs i, .st-segs i { background: var(--line-strong); border-radius: 2px; }
 .caption .bar i, .tour-card .segs i.done, .tour-card .segs i.now::after, .st-segs i.done, .story.ready .st-segs i.now::after { background: #fff; }
@@ -1012,6 +1025,8 @@ table.facts th { font-size: 12px; }
 .sender-track i { background: var(--amber); box-shadow: none; }
 .ask .ask-q { border: 0; border-radius: 12px; }
 .ask .ask-a { border: 0; border-radius: 12px; }
+.swap-label { border: 0; border-radius: var(--r-ctl); background: rgba(17,17,17,.95); }
+.swap-label i { border-color: #fff; border-top-color: transparent; }
 
 /* Story */
 .story { background: rgba(17,17,17,.96); border: 0; border-radius: var(--r-card); backdrop-filter: none; }
@@ -1020,6 +1035,8 @@ table.facts th { font-size: 12px; }
 .st-match > span { font: 600 15px var(--fb); }
 .st-match b { font: 600 44px/1 var(--fb); }
 .st-link { background: var(--amber); }
+.st-parts span { border: 0; border-radius: var(--r-ctl); background: var(--panel-raised); color: var(--dim); }
+.st-parts span.on { color: #fff; background: color-mix(in srgb, var(--c) 30%, #111); box-shadow: none; }
 .st-crop { border: 0; border-radius: 12px; background: var(--panel-raised); }
 .st-crop span { font: 500 12px var(--fb); }
 .st-typed, .st-clock, .st-msg text, .st-cat small { font-family: var(--fb); }
@@ -1117,7 +1134,11 @@ body.discover-on .feature-photo, body.discover-on .atlas-feature h1, body.discov
 .rover-case table { min-width: 310px; }
 .rover-case table th, .rover-case table td { padding: 6px 5px 6px 0; }
 .rover-case .src { color: var(--muted); }
-body:is(.story-on,.touring) :is(#globe,#pins) { inset: 0; border-radius: 0; }
+body:is(.story-on,.touring,.basing) :is(#globe,#pins) { inset: 0; border-radius: 0; }
+body.basing :is(#rank,#detail,#hud) { visibility: hidden; pointer-events: none; }
+body.basing .base-card { left: var(--gap); right: auto; bottom: var(--gap); transform: none; width: min(440px, calc(100vw - 2 * var(--gap))); background: var(--panel-solid); border: 1px solid var(--line); border-radius: 12px; }
+body.basing .base-card .btn { white-space: normal; text-align: left; }
+body.basing .base-card .t { font-size: 20px; }
 body.story-on .topbar > .top-actions { display: flex; }
 body.story-on .top-actions > .more { display: block !important; }
 .kit-panel { bottom: var(--gap); }
@@ -1154,8 +1175,9 @@ body.story-on .top-actions > .more { display: block !important; }
   #rank-title { margin-top: 8px; }
   .sheet-handle { min-height: 25px; padding-top: 8px; margin-bottom: 2px; }
   .sheet-handle::before { top: 1px; }
-  body.closeup #globe, body.closeup #pins { bottom: calc(var(--sheet-h) + 2 * var(--gap)); }
-  body.story-on .credits { bottom: auto; top: calc(var(--atlas-top) + 6px); }
+  body.closeup:not(.basing) #globe, body.closeup:not(.basing) #pins { bottom: calc(var(--sheet-h) + 2 * var(--gap)); }
+  body.basing .base-card { bottom: var(--gap); max-height: 40dvh; overflow-y: auto; }
+  body.basing .credits, body.story-on .credits { bottom: auto; top: calc(var(--atlas-top) + 6px); }
 }
 
 @media (max-width: 380px) {

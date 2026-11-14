@@ -323,7 +323,7 @@ function buildSteps(api) {
     },
     {
       k: 'Analog Atlas', t: 'Places on Earth that behave like the Moon and Mars',
-      s: 'NASA data · open methods · a base floor plan · made in Jordan',
+      s: 'NASA data · open methods · a 3D base concept · made in Jordan',
       end: true,
       dur: 6000,
       run: async () => { await api.home(); },
