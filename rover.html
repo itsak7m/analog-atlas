@@ -80,6 +80,8 @@ footer{margin-top:56px;border-top:1px solid var(--line);padding-top:16px}
 <tr><td>ESP32</td><td>Reads all sensors (I²C, UART, RS485) and sends the data packet</td><td>—</td></tr>
 </tbody></table></div>
 
+<p><a href="mmar-esp01.html">Open the interactive rover blueprint (3D model, wiring, data pipeline; Arabic/English) →</a> <span class="small">Concept, illustrative numbers.</span></p>
+
 <h2>How the data travels</h2>
 <div class="flow"><span>Sensors</span><i>→</i><span>ESP32 packet (value, unit, position, time)</span><i>→</i><span>SD card log + upload to the server</span><i>→</i><span>Analog Atlas score</span></div>
 <p>Every value carries its unit, source and type: <b>measured</b> on site, <b>derived</b> from a map, or <b>not available</b>. The same rule as the app: nothing is invented.</p>

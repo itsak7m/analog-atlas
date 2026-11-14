@@ -1,0 +1,2513 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07120f">
+<meta name="description" content="System Integration & Calibration Architecture - MMAR-ESP-001 Low-Cost Autonomous Ground-Truth Calibrator">
+<title>MMAR-ESP-001 | System Integration & Calibration Architecture</title>
+<!-- Three.js for True 3D CAD Rover Model -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  --bg: #06100d;
+  --panel: #0b1915;
+  --panel2: #0f221c;
+  --panel3: #142c24;
+  --line: rgba(177, 226, 196, 0.15);
+  --line-bright: rgba(185, 242, 119, 0.45);
+  --muted: #93a89b;
+  --text: #edf5ec;
+  --mint: #b9f277;
+  --green: #57d5a0;
+  --blue: #7bcfff;
+  --amber: #f7b955;
+  --danger: #ff6b6b;
+  --sans: 'IBM Plex Sans Arabic', 'Inter', system-ui, -apple-system, sans-serif;
+  --mono: 'Space Mono', monospace;
+  --max: 1180px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: radial-gradient(ellipse at 50% -10%, #17362b 0, transparent 48%), var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button, select, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+.wrap { width: min(var(--max), calc(100% - 36px)); margin: auto; }
+
+/* Topbar */
+.topbar {
+  height: 68px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: rgba(6, 16, 13, 0.9);
+  backdrop-filter: blur(16px);
+}
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.brand { font: 700 13px var(--mono); direction: ltr; display: flex; align-items: center; gap: 10px; }
+.brandmark {
+  width: 32px; height: 32px;
+  border: 1px solid var(--mint);
+  border-radius: 9px;
+  display: grid; place-items: center;
+  color: var(--mint);
+  background: rgba(185, 242, 119, 0.08);
+  box-shadow: 0 0 15px rgba(185, 242, 119, 0.15);
+}
+.links { display: flex; gap: 18px; color: #a8b8ae; font-size: 12.5px; font-weight: 500; }
+.links a { transition: color .2s; padding: 4px 0; }
+.links a:hover { color: var(--mint); }
+.nav-actions { display: flex; gap: 8px; align-items: center; }
+.lang-btn {
+  border: 1px solid var(--mint);
+  background: rgba(185, 242, 119, 0.14);
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: var(--mint);
+  font: 700 11.5px var(--mono);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: .2s;
+}
+.lang-btn:hover { background: var(--mint); color: #07150e; }
+.navcta {
+  border: 1px solid var(--line);
+  background: var(--panel2);
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  transition: .2s;
+}
+.navcta:hover { border-color: var(--mint); color: var(--mint); }
+
+/* FIRST SECTION: Core Methodology & Narrative */
+.methodology-hero {
+  padding: 44px 0 36px;
+  border-bottom: 1px solid var(--line);
+  background: radial-gradient(circle at 85% 15%, rgba(185,242,119,0.08), transparent 40%);
+}
+.eyebrow, .kicker {
+  font: 700 10.5px var(--mono); color: var(--mint); letter-spacing: .1em; direction: ltr;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.eyebrow::before { content: ""; display: inline-block; width: 20px; height: 1.5px; background: var(--mint); }
+
+.cost-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(87, 213, 160, 0.12); border: 1px solid rgba(87, 213, 160, 0.4);
+  color: var(--mint); padding: 5px 12px; border-radius: 99px; font-size: 12px; font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.intro-banner {
+  background: linear-gradient(135deg, rgba(15, 34, 28, 0.95), rgba(9, 22, 18, 0.95));
+  border: 1px solid var(--line-bright);
+  border-radius: 16px;
+  padding: 26px;
+  margin-top: 14px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+}
+.intro-banner h1 {
+  font-size: clamp(26px, 3.6vw, 42px);
+  line-height: 1.22;
+  margin: 8px 0 14px;
+  font-weight: 700;
+}
+.intro-banner h1 span { color: var(--mint); }
+.narrative-lead {
+  font-size: 15px;
+  color: #d4e4d8;
+  margin: 0 0 20px;
+  line-height: 1.85;
+  background: rgba(6, 16, 13, 0.65);
+  border-right: 3px solid var(--mint);
+  padding: 14px 18px;
+  border-radius: 10px;
+}
+html[dir="ltr"] .narrative-lead { border-right: 0; border-left: 3px solid var(--mint); }
+
+/* 14 Parameters Dual Matrix (9 Geology + 5 Resources) */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.pillar-box {
+  background: #08130f;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+}
+.pillar-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line);
+}
+.pillar-head h3 { margin: 0; font-size: 14.5px; color: var(--mint); display: flex; align-items: center; gap: 8px; }
+.pillar-count { font: 700 10px var(--mono); background: rgba(185,242,119,0.12); color: var(--mint); padding: 3px 8px; border-radius: 6px; direction: ltr; }
+.param-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.p-chip {
+  font-size: 12px;
+  padding: 6px 11px;
+  border-radius: 8px;
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  color: #e2efe5;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: .18s;
+}
+.p-chip:hover { border-color: var(--mint); transform: translateY(-1px); background: rgba(185,242,119,0.1); }
+.p-chip i { font: 700 10px var(--mono); color: var(--mint); font-style: normal; }
+.pillar-box.resources .p-chip i { color: var(--blue); }
+.pillar-box.resources .pillar-head h3 { color: var(--blue); }
+.pillar-box.resources .pillar-count { color: var(--blue); background: rgba(123,207,255,0.12); }
+
+/* 4-Stage Architecture Story Cards */
+.story-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+.story-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 15px;
+  position: relative;
+}
+.story-card .sc-tag { font: 700 10px var(--mono); color: var(--mint); direction: ltr; display: block; margin-bottom: 6px; }
+.story-card h4 { margin: 0 0 6px; font-size: 14px; color: #fff; }
+.story-card p { margin: 0; font-size: 12px; color: #b4c7ba; line-height: 1.65; }
+
+/* Comparison Block: Why Our Methodology vs CubeSats / Satellites / Rovers */
+.comparison-wrap {
+  margin-top: 20px;
+  background: #07120e;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+}
+.comp-head {
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 14px; flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.comp-head h3 { margin: 4px 0 0; font-size: 18px; color: var(--text); }
+.comp-head p { margin: 0; font-size: 12.5px; color: var(--muted); max-width: 620px; }
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.comp-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 16px;
+}
+.comp-card.ours {
+  border-color: var(--mint);
+  background: linear-gradient(160deg, rgba(185,242,119,0.09), rgba(11,25,21,0.95));
+}
+.comp-badge {
+  font: 700 10px var(--mono); direction: ltr; display: inline-block;
+  padding: 3px 8px; border-radius: 5px; margin-bottom: 8px;
+  background: rgba(255,255,255,0.06); color: var(--muted);
+}
+.comp-card.ours .comp-badge { background: var(--mint); color: #06140c; }
+.comp-card h4 { margin: 0 0 8px; font-size: 14.5px; }
+.comp-card p { margin: 0 0 10px; font-size: 12px; color: #b6c8bc; line-height: 1.65; }
+.comp-list { list-style: none; padding: 0; margin: 0; font-size: 11.5px; color: #9ab0a1; display: grid; gap: 5px; }
+.comp-list li::before { content: "• "; color: var(--amber); font-weight: bold; }
+.comp-card.ours .comp-list li { color: #d5eadb; }
+.comp-card.ours .comp-list li::before { content: "✓ "; color: var(--mint); }
+
+/* Summary Strip */
+.summary { border-bottom: 1px solid var(--line); background: #091612; }
+.summary-row { display: grid; grid-template-columns: repeat(4, 1fr); }
+.sum { padding: 15px 18px; border-left: 1px solid var(--line); }
+html[dir="ltr"] .sum { border-left: 0; border-right: 1px solid var(--line); }
+.sum:last-child { border: 0 !important; }
+.sum strong { font: 700 18px var(--mono); color: var(--mint); direction: ltr; display: block; }
+.sum span { color: var(--muted); font-size: 11.5px; }
+
+/* Sections */
+section { padding: 56px 0; }
+.head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: 24px; flex-wrap: wrap; }
+.head h2 { font-size: clamp(24px, 3.2vw, 34px); line-height: 1.25; margin: 6px 0 0; font-weight: 700; }
+.head p { max-width: 500px; color: var(--muted); font-size: 13.5px; margin: 0; }
+
+/* Interactive Workflow Cards */
+.workflow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.flow {
+  padding: 18px; border: 1px solid var(--line); border-radius: 12px;
+  background: var(--panel); cursor: pointer; transition: all .22s;
+}
+.flow:hover, .flow.active {
+  border-color: var(--mint); background: var(--panel2); transform: translateY(-2px);
+}
+.flow .n { font: 700 10px var(--mono); color: var(--mint); display: flex; justify-content: space-between; direction: ltr; }
+.flow h3 { font-size: 15px; margin: 8px 0 5px; }
+.flow p { font-size: 12px; color: var(--muted); margin: 0; }
+.sensorline {
+  margin-top: 14px; padding: 14px 18px; border: 1px solid var(--line);
+  border-radius: 11px; background: var(--panel2); color: #bfd0c4; font-size: 12.5px;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+}
+.sensorline b { color: var(--mint); font-weight: 600; }
+.sensor-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.s-badge {
+  font: 10px var(--mono); direction: ltr; padding: 4px 8px; border-radius: 6px;
+  background: rgba(185, 242, 119, 0.08); border: 1px solid rgba(185, 242, 119, 0.25); color: var(--mint);
+  cursor: pointer; transition: .15s;
+}
+.s-badge:hover { background: var(--mint); color: #081811; }
+
+/* Simulation Section */
+.simulation { background: linear-gradient(180deg, transparent, #091612 8%, #091612 92%, transparent); }
+.simgrid { display: grid; grid-template-columns: .92fr 1.08fr; gap: 16px; align-items: stretch; }
+.card { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); overflow: hidden; display: flex; flex-direction: column; }
+.card-head {
+  padding: 14px 18px; border-bottom: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: center; gap: 10px; background: rgba(15, 34, 28, 0.6);
+}
+.card-head h3 { font-size: 14.5px; margin: 0; font-weight: 600; }
+.tag {
+  font: 700 9.5px var(--mono); color: var(--green); direction: ltr;
+  padding: 3px 8px; border-radius: 99px; background: rgba(87, 213, 160, 0.1); border: 1px solid rgba(87, 213, 160, 0.3);
+}
+
+.preset-bar { padding: 12px 18px 4px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.preset-bar span { font-size: 11px; color: var(--muted); }
+.preset-pill {
+  font-size: 11px; padding: 4px 10px; border-radius: 7px;
+  border: 1px solid var(--line); background: var(--panel2); color: #c4d6c8; transition: .15s;
+}
+.preset-pill:hover, .preset-pill.active {
+  border-color: var(--mint); color: var(--mint); background: rgba(185, 242, 119, 0.12); font-weight: 600;
+}
+
+.inputs { padding: 12px 18px; }
+.range-row { margin-bottom: 10px; }
+.range-row:last-child { margin-bottom: 2px; }
+.range-label { display: flex; justify-content: space-between; color: #c3d3c7; font-size: 11.5px; margin-bottom: 2px; }
+.range-label b { font: 700 11px var(--mono); color: var(--mint); direction: ltr; }
+.range { width: 100%; accent-color: var(--mint); cursor: pointer; height: 6px; background: #1c3128; border-radius: 6px; }
+
+.results { padding: 4px 18px 18px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.result-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+.candidate {
+  padding: 9px 12px; border: 1px solid var(--line); border-radius: 9px;
+  margin: 5px 0; background: #091511; cursor: pointer; transition: .2s;
+}
+.candidate:hover { border-color: rgba(185, 242, 119, 0.4); background: #0e201a; }
+.candidate.best { border-color: var(--mint); background: rgba(185, 242, 119, 0.06); }
+.candidate-title { display: flex; justify-content: space-between; font-size: 11.5px; font-weight: 500; }
+.candidate-title b { font: 700 11.5px var(--mono); color: var(--mint); direction: ltr; }
+.bar { height: 4px; background: #1e3129; border-radius: 8px; margin-top: 6px; overflow: hidden; }
+.bar i { height: 100%; display: block; background: linear-gradient(90deg, var(--green), var(--mint)); transition: width .25s ease; }
+
+.formula {
+  font: 10.5px var(--mono); direction: ltr; text-align: left; color: #d8edc4;
+  padding: 10px 12px; background: #07110d; border: 1px solid var(--line); border-radius: 8px; margin-top: 10px;
+}
+.formula small { display: block; font: 10.5px var(--sans); color: #8fa396; margin-top: 4px; }
+
+/* 3D Dot Map Z=f(X,Y) Canvas */
+.map-toolbar {
+  padding: 9px 14px; border-bottom: 1px solid var(--line); background: #091612;
+  display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.tool-group { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+.tool-btn {
+  background: var(--panel2); border: 1px solid var(--line); border-radius: 6px;
+  padding: 4px 9px; font-size: 10.5px; color: #bfd0c4; transition: .15s;
+}
+.tool-btn:hover { border-color: var(--line-bright); color: #fff; }
+.tool-btn.active { background: rgba(185, 242, 119, 0.15); border-color: var(--mint); color: var(--mint); font-weight: 600; }
+.tool-select {
+  background: var(--panel2); border: 1px solid var(--line); border-radius: 6px;
+  padding: 4px 8px; font-size: 10.5px; color: var(--mint); outline: none;
+}
+
+.map-wrap {
+  position: relative;
+  background: radial-gradient(ellipse at 50% 50%, #163327, #07110d 78%);
+  flex: 1; min-height: 390px; overflow: hidden;
+}
+.map-wrap canvas { width: 100%; height: 100%; min-height: 390px; display: block; touch-action: none; cursor: grab; }
+.map-wrap canvas:active { cursor: grabbing; }
+.map-stats { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; flex-wrap: wrap; pointer-events: none; }
+.map-stat {
+  font: 9.5px var(--mono); direction: ltr; color: #c7dbcc;
+  background: rgba(7, 17, 13, 0.85); border: 1px solid var(--line); padding: 4px 8px; border-radius: 6px;
+}
+.map-stat b { color: var(--mint); }
+.map-key {
+  position: absolute; top: 12px; left: 12px; direction: ltr; color: var(--mint);
+  font: 700 9.5px var(--mono); background: rgba(7, 17, 13, 0.86); padding: 5px 9px; border-radius: 6px; border: 1px solid var(--line-bright);
+  pointer-events: none;
+}
+.map-zone- telemetry {
+  position: absolute; bottom: 52px; left: 12px; right: 12px;
+}
+.zone-telemetry-bar {
+  padding: 9px 14px; background: #07120e; border-top: 1px solid var(--line);
+  font-size: 11px; color: #c5d8ca; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+}
+.zone-telemetry-bar b { color: var(--mint); font-family: var(--mono); }
+.map-note {
+  position: absolute; bottom: 12px; right: 12px; font-size: 10px; color: #9ab0a1;
+  background: rgba(7, 17, 13, 0.85); padding: 5px 9px; border-radius: 6px; border: 1px solid var(--line);
+  pointer-events: none;
+}
+.map-actions { position: absolute; left: 12px; bottom: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+.map-actions button {
+  background: rgba(15, 34, 28, 0.92); border: 1px solid var(--line);
+  border-radius: 7px; padding: 6px 11px; font-size: 11px; font-weight: 500; transition: .15s;
+}
+.map-actions button.primary-scan { background: var(--mint); color: #081811; border-color: var(--mint); font-weight: 700; }
+
+/* 3D Blueprint & Rover Section */
+.blueprint { background: #081410; border-block: 1px solid var(--line); }
+.blue-layout { display: grid; grid-template-columns: .78fr 1.22fr; gap: 22px; align-items: stretch; }
+.blue-copy { display: flex; flex-direction: column; justify-content: space-between; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+.blue-copy > div > p { font-size: 13px; color: var(--muted); margin: 0 0 12px; }
+
+.parts { list-style: none; padding: 0; margin: 0 0 14px; display: grid; gap: 6px; }
+.parts li {
+  padding: 9px 11px; border: 1px solid var(--line); border-radius: 9px;
+  font-size: 11.5px; color: #c4d4c8; background: #091612; cursor: pointer; transition: .18s;
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+}
+.parts li:hover, .parts li.active {
+  border-color: var(--mint); background: rgba(185, 242, 119, 0.09); color: #fff;
+}
+.parts li b { color: var(--mint); font-weight: 600; display: block; font-size: 12px; }
+.part-pin { font: 9px var(--mono); direction: ltr; color: var(--blue); background: rgba(123, 207, 255, 0.1); padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
+
+.part-inspector {
+  padding: 11px 13px; border-radius: 9px; background: #06100d; border: 1px solid var(--line-bright);
+  margin-bottom: 12px; font-size: 11.5px;
+}
+.part-inspector .pi-head { display: flex; justify-content: space-between; align-items: center; font: 700 10.5px var(--mono); color: var(--mint); direction: ltr; margin-bottom: 4px; }
+.part-inspector p { margin: 0; color: #bdd0c2; font-size: 11.5px; line-height: 1.55; }
+.small-note { font-size: 10px; color: #7d9285; }
+
+/* 3D Rover Stage */
+.rover-card {
+  border: 1px solid var(--line); border-radius: 14px; background: var(--panel);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.rover-top-controls {
+  padding: 10px 14px; border-bottom: 1px solid var(--line); background: #0a1813;
+  display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.rover-stage {
+  position: relative; flex: 1; min-height: 460px; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 60%, rgba(87, 150, 105, 0.16), transparent 60%), linear-gradient(180deg, #0b1a15, #06100d);
+  cursor: grab;
+}
+.rover-stage:active { cursor: grabbing; }
+.rover-stage canvas { width: 100%; height: 100%; min-height: 460px; display: block; outline: none; }
+
+.callout-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.callout-tag {
+  position: absolute; transform: translate(-50%, -100%);
+  font: 700 9.5px var(--mono); direction: ltr; color: var(--text);
+  background: rgba(6, 16, 13, 0.88); border: 1px solid rgba(185, 242, 119, 0.45);
+  padding: 3px 7px; border-radius: 5px; white-space: nowrap;
+  pointer-events: auto; cursor: pointer; transition: border-color .15s, background .15s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.45);
+}
+.callout-tag:hover, .callout-tag.active {
+  background: var(--mint); color: #07150e; border-color: #fff; z-index: 10;
+}
+.callout-tag::after {
+  content: ""; position: absolute; left: 50%; bottom: -5px; transform: translateX(-50%);
+  width: 6px; height: 6px; border-radius: 50%; background: var(--mint);
+}
+
+.rover-hud { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; flex-wrap: wrap; pointer-events: none; }
+.hud-pill {
+  font: 9.5px var(--mono); direction: ltr; color: #b7ccbe;
+  background: rgba(6, 16, 13, 0.84); border: 1px solid var(--line); padding: 4px 8px; border-radius: 6px;
+}
+.hud-pill b { color: var(--mint); }
+
+.rover-bottom-bar {
+  position: absolute; bottom: 12px; left: 12px; right: 12px;
+  display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; pointer-events: none;
+}
+.rover-bottom-bar > * { pointer-events: auto; }
+
+/* Interactive ESP32 Wiring Schematic */
+.schematic-box { margin-top: 16px; border: 1px solid var(--line); border-radius: 14px; background: #07120e; overflow: hidden; }
+.schem-head {
+  padding: 12px 18px; border-bottom: 1px solid var(--line); background: #0b1a14;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+}
+.schem-head h4 { margin: 0; font-size: 13.5px; display: flex; align-items: center; gap: 8px; }
+.schem-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 16px; padding: 16px; align-items: center; }
+.schem-svg-wrap { background: #050d0a; border: 1px solid var(--line); border-radius: 10px; padding: 10px; overflow-x: auto; }
+.schem-svg-wrap svg { width: 100%; height: auto; min-width: 520px; display: block; }
+.wire-line { fill: none; stroke-width: 2; transition: opacity .2s, stroke-width .2s; }
+.wire-node { cursor: pointer; transition: .2s; }
+.wire-node:hover rect { stroke: #fff; stroke-width: 2.2; }
+.schem-details { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; font-size: 12px; }
+.schem-details h5 { margin: 0 0 6px; color: var(--mint); font: 700 13px var(--mono); direction: ltr; }
+.pin-table { width: 100%; border-collapse: collapse; margin-top: 10px; font: 11px var(--mono); direction: ltr; text-align: left; }
+.pin-table th, .pin-table td { padding: 5px 7px; border-bottom: 1px solid var(--line); }
+.pin-table th { color: var(--muted); font-weight: 400; }
+.pin-table td { color: var(--text); }
+
+/* AI Predictive Section */
+.ai { padding: 54px 0; }
+.ai-panel {
+  border: 1px solid var(--line-bright); border-radius: 16px; padding: 28px;
+  background: radial-gradient(circle at 8% 85%, rgba(185, 242, 119, 0.12), transparent 36%), linear-gradient(130deg, #0f221a, #091612);
+  display: grid; grid-template-columns: 1.1fr .9fr; gap: 24px; align-items: center; position: relative; overflow: hidden;
+}
+.ai-content h2 { font-size: clamp(24px, 3.2vw, 34px); margin: 8px 0 10px; }
+.ai-content p { color: #b5c6ba; font-size: 13.5px; margin: 0 0 16px; }
+.ai-predictor-box { background: rgba(6, 16, 13, 0.85); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.ai-target-btns { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.ai-metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.ai-metric { padding: 9px 11px; border-radius: 8px; background: var(--panel); border: 1px solid var(--line); }
+.ai-metric span { font-size: 10.5px; color: var(--muted); display: block; }
+.ai-metric strong { font: 700 14px var(--mono); color: var(--mint); direction: ltr; }
+
+.btn {
+  padding: 10px 16px; border-radius: 9px; border: 1px solid var(--line);
+  background: var(--panel2); font-size: 13px; font-weight: 600; transition: all .2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn.primary { background: var(--mint); border-color: var(--mint); color: #0b1c13; font-weight: 700; }
+.btn:hover { transform: translateY(-2px); border-color: var(--line-bright); }
+
+.footer { padding: 24px 0; border-top: 1px solid var(--line); color: #83968b; font-size: 11px; }
+.footer-inner { display: flex; justify-content: space-between; gap: 15px; align-items: center; flex-wrap: wrap; }
+.footer strong { font: 700 12px var(--mono); color: var(--mint); direction: ltr; }
+
+@media (max-width: 960px) {
+  .pillars-grid, .story-steps, .comp-grid, .simgrid, .blue-layout, .schem-grid, .ai-panel { grid-template-columns: 1fr; }
+  .workflow { grid-template-columns: repeat(2, 1fr); }
+  .summary-row { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .links { display: none; }
+  .workflow { grid-template-columns: 1fr; }
+  .rover-stage, .rover-stage canvas { min-height: 360px; }
+  .map-wrap, .map-wrap canvas { min-height: 330px; }
+}
+</style>
+</head>
+<body>
+<div id="concept-banner" style="position:sticky;top:0;z-index:9999;background:#2a1d05;color:#ffd58a;border-bottom:1px solid #f5a623;padding:8px 16px;font:14px/1.5 system-ui,sans-serif;text-align:center" dir="auto">
+  <b>Concept demo · SI-assisted.</b> The rover is not built yet and no AI model is trained yet. Every number in the matcher, the dot map and the reverse prediction is illustrative, not a measurement.
+  <br><span dir="rtl">عرض لفكرة (Concept) · بمساعدة SI. الروبوت غير مبني بعد ولا يوجد موديل مدرّب بعد. كل الأرقام في المحاكاة توضيحية وليست قياسات.</span>
+  · <a href="./" style="color:#ffd58a">Analog Atlas (real data)</a> · <a href="rover.html" style="color:#ffd58a">Field method</a>
+</div>
+
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <span class="brandmark">⌁</span>
+      <span>MMAR <span style="color:#789083">/ ESP-001</span></span>
+    </a>
+    <nav class="links">
+      <a href="#methodology" data-i18n="nav_meth">المنهجية والـ 14 معياراً</a>
+      <a href="#comparison" data-i18n="nav_comp">مقارنة مع CubeSats</a>
+      <a href="#simulation" data-i18n="nav_sim">خريطة Z=f(X,Y) والـ AI</a>
+      <a href="#blueprint" data-i18n="nav_3d">المجسم الهندسي 3D</a>
+      <a href="#wiring" data-i18n="nav_wire">مخطط ESP32</a>
+      <a href="#ai" data-i18n="nav_ai">التنبؤ العكسي</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="lang-btn" id="langToggleBtn" title="Switch Language / تغيير اللغة">
+        <span>🌐</span>
+        <span id="langBtnTxt">English</span>
+      </button>
+      <a class="navcta" href="#blueprint" data-i18n="nav_cta">فحص الروبوت 3D ↓</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- ========================================================================
+       00 / FIRST SECTION: CORE METHODOLOGY, 14 PARAMETERS & CUBESAT COMPARISON
+       ======================================================================== -->
+  <section class="methodology-hero" id="methodology">
+    <div class="wrap">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+        <div class="eyebrow">SYSTEM INTEGRATION & CALIBRATION ARCHITECTURE · MMAR-ESP-001</div>
+        <div class="cost-badge" data-i18n="cost_badge">⚡ أعلى كفاءة بأقل تكلفة: مُعاير ميداني ذاتي منخفض التكلفة (Low-Cost Autonomous Ground-Truth Calibrator)</div>
+      </div>
+
+      <div class="intro-banner">
+        <h1 data-i18n="hero_title">منهجية ربط ومعايرة ذكية لإيجاد <span>نظائر القمر والمريخ على الأرض</span> وبناء خرائط الفوهات والكهوف</h1>
+
+        <p class="narrative-lead" data-i18n="hero_narrative">
+          لقد ابتكرنا منهجية ربط متكاملة (<b>System Integration & Calibration Architecture</b>) هدفها إيجاد مناطق جديدة على الأرض تشبه بيئات القمر والمريخ بالاعتماد على ركيزتين أساسيتين (<b>الجيولوجيا الأرضية والفضائية</b> + <b>الموارد وظروف المعيشة</b>). يقوم الروبوت الميداني (<b>Ground-Truth Calibration Node</b>) بجمع هذه المعلومات وإرسالها لبرمجية مدربة بالذكاء الاصطناعي (<b>AI</b>) على قواعد بيانات <b>NASA</b>، لتُخرج لنا أكثر منطقة مشابهة على الأرض مع نسب التشابه الدقيقة، وترسم خريطة نقطية ثلاثية الأبعاد <b>Dot Map: Z = f(X,Y)</b> تقيس الميلان وتمسح التضاريس للفوهات والكهوف وتُظهر كل منطقة ومعادنها وجوها. ومستقبلاً، نستخدم تحليل البيانات (<b>Data Analytics</b>) لتدريب نموذج يقوم بـ <b>عملية عكسية (Reverse Prediction)</b> يتوقع فيها تلقائياً مواقع جديدة لم يزرها الروبوت!
+        </p>
+
+        <!-- 14 Parameters Matrix: 9 Geology + 5 Resources -->
+        <div class="pillars-grid">
+          <!-- Pillar 1: 9 Geology Parameters -->
+          <div class="pillar-box">
+            <div class="pillar-head">
+              <h3 data-i18n="p1_title">🪐 أولاً: معايير الجيولوجيا والتضاريس (Geological Parameters)</h3>
+              <span class="pillar-count">9 PARAMETERS</span>
+            </div>
+            <div class="param-tags">
+              <span class="p-chip"><i>01</i> <span data-i18n="g1">الضغط الجوي (Pressure)</span></span>
+              <span class="p-chip"><i>02</i> <span data-i18n="g2">درجة الحرارة (Temperature)</span></span>
+              <span class="p-chip"><i>03</i> <span data-i18n="g3">نسبة الغازات (Gas Ratio)</span></span>
+              <span class="p-chip"><i>04</i> <span data-i18n="g4">سرعة الرياح (Wind Speed)</span></span>
+              <span class="p-chip"><i>05</i> <span data-i18n="g5">الانحدار والميلان (Slope)</span></span>
+              <span class="p-chip"><i>06</i> <span data-i18n="g6">مساحة التشابه (Similarity Area)</span></span>
+              <span class="p-chip"><i>07</i> <span data-i18n="g7">خشونة السطح (Surface Roughness)</span></span>
+              <span class="p-chip"><i>08</i> <span data-i18n="g8">نسبة الظل (Shadow Ratio)</span></span>
+              <span class="p-chip"><i>09</i> <span data-i18n="g9">طول الفواصل والشقوق (Joint Length)</span></span>
+            </div>
+          </div>
+
+          <!-- Pillar 2: 5 Resource & Habitability Parameters -->
+          <div class="pillar-box resources">
+            <div class="pillar-head">
+              <h3 data-i18n="p2_title">💎 ثانياً: الموارد وظروف المعيشة (Resources & Habitability)</h3>
+              <span class="pillar-count">5 PARAMETERS</span>
+            </div>
+            <div class="param-tags">
+              <span class="p-chip"><i>10</i> <span data-i18n="r1">أنواع الصخور (Rock Types)</span></span>
+              <span class="p-chip"><i>11</i> <span data-i18n="r2">نسبة الحموضة (Acidity / pH)</span></span>
+              <span class="p-chip"><i>12</i> <span data-i18n="r3">الرطوبة والمياه (Moisture)</span></span>
+              <span class="p-chip"><i>13</i> <span data-i18n="r4">تشابه المعادن (Mineral Similarity)</span></span>
+              <span class="p-chip"><i>14</i> <span data-i18n="r5">الظروف المناسبة للمعيشة (Habitability)</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Core Architecture Pillars -->
+        <div class="story-steps">
+          <div class="story-card">
+            <span class="sc-tag">01 / GROUND-TRUTH NODE</span>
+            <h4 data-i18n="st1_h">مُعاير ميداني منخفض التكلفة</h4>
+            <p data-i18n="st1_p">روبوت 6 عجلات (Low-Cost Autonomous Calibrator) يقيس الـ 14 متغيراً مباشرة من التربة والجو بدقة عالية وتكلفة منخفضة.</p>
+          </div>
+          <div class="story-card">
+            <span class="sc-tag">02 / NASA DB + AI MATCHING</span>
+            <h4 data-i18n="st2_h">مطابقة AI مع داتابيس NASA</h4>
+            <p data-i18n="st2_p">يرسل الروبوت القراءات لبرمجية مدربة بالـ AI على قواعد بيانات ناسا لتحديد أكثر منطقة أرضية مشابهة مع النسب المئوية.</p>
+          </div>
+          <div class="story-card">
+            <span class="sc-tag">03 / 3D DOT MAP Z=f(X,Y)</span>
+            <h4 data-i18n="st3_h">خريطة دوت ماب للفوهات والكهوف</h4>
+            <p data-i18n="st3_p">يمسح التضاريس ويقيس الميلان لبناء السطح الثلاثي Z=f(X,Y) للفوهات والكهوف مع إظهار المعادن والغازات في كل نقطة.</p>
+          </div>
+          <div class="story-card">
+            <span class="sc-tag">04 / REVERSE AI PREDICTION</span>
+            <h4 data-i18n="st4_h">العملية العكسية (Data Analytics)</h4>
+            <p data-i18n="st4_p">نحلل البيانات المجمعة وندرب موديل ذكاء اصطناعي يتوقع تلقائياً مواقع جديدة لم يزرها الروبوت وتشابهها مع الأرض.</p>
+          </div>
+        </div>
+
+        <!-- Comparison Section: Why Our Methodology is Unique vs CubeSats & Satellites -->
+        <div class="comparison-wrap" id="comparison">
+          <div class="comp-head">
+            <div>
+              <div class="kicker">WHY OUR METHODOLOGY IS DIFFERENT</div>
+              <h3 data-i18n="comp_title">هل توجد روبوتات أو أنظمة أخرى؟ نعم، ولكن ليس بالمنهجية التكاملية التي ابتكرناها!</h3>
+            </div>
+            <p data-i18n="comp_sub">مقارنة علمية مبسطة توضح الفرق الجوهري بين منهجيتنا وبين الأقمار الصناعية المكعبة (CubeSats) والروبوتات التقليدية:</p>
+          </div>
+
+          <div class="comp-grid">
+            <div class="comp-card">
+              <span class="comp-badge">ORBITAL / CUBESATS</span>
+              <h4 data-i18n="c1_h">الأقمار المكعبة (CubeSats) وصور الأقمار الصناعية</h4>
+              <p data-i18n="c1_p">تلتقط صوراً طيفية واسعة من المدار، لكنها تعاني من قيود فيزيائية كبيرة عند دراسة الفوهات الصغيرة والكهوف:</p>
+              <ul class="comp-list">
+                <li data-i18n="c1_l1">لا تستطيع دخول الكهوف أو الفوهات المظلمة (Shadowed Craters).</li>
+                <li data-i18n="c1_l2">لا تلمس التربة لقياس الحموضة (pH) أو الرطوبة تحت السطحية والغازات الدقيقة.</li>
+                <li data-i18n="c1_l3">تحتاج إلى معايرة أرضية (Ground-Truth) لتصحيح أخطاء الغلاف الجوي.</li>
+              </ul>
+            </div>
+
+            <div class="comp-card">
+              <span class="comp-badge">CONVENTIONAL ROVERS</span>
+              <h4 data-i18n="c2_h">الروبوتات الفضائية التقليدية (Traditional Rovers)</h4>
+              <p data-i18n="c2_p">موجودة لأغراض الاستكشاف العام، لكنها تختلف عن منهجيتنا في التكلفة وطريقة الربط التحليلي:</p>
+              <ul class="comp-list">
+                <li data-i18n="c2_l1">تكلفة باهظة جداً وبنية معقدة يصعب نشرها بأعداد كبيرة (Swarm/Nodes).</li>
+                <li data-i18n="c2_l2">لا تربط الـ 14 معياراً (جيولوجيا + موارد) مباشرة بمحرك بحث عن نظائر الأرض.</li>
+                <li data-i18n="c2_l3">تعمل كوحدات منفصلة وليست كعقدة معايرة عكسية للأقمار الصناعية.</li>
+              </ul>
+            </div>
+
+            <div class="comp-card ours">
+              <span class="comp-badge">OUR ARCHITECTURE · MMAR-ESP-001</span>
+              <h4 data-i18n="c3_h">منهجيتنا (Ground-Truth Calibration Node)</h4>
+              <p data-i18n="c3_p">تكامل فريد يجمع بين القياس الميداني منخفض التكلفة والذكاء الاصطناعي المرتبط بقواعد بيانات NASA:</p>
+              <ul class="comp-list">
+                <li data-i18n="c3_l1">أعلى كفاءة بأقل تكلفة (Low-Cost Calibrator) يدخل الفوهات والكهوف.</li>
+                <li data-i18n="c3_l2">يرسم خريطة Dot Map ثلاثية Z=f(X,Y) مدمجة مع المعادن والجو والحموضة.</li>
+                <li data-i18n="c3_l3">يعالج ضعف CubeSats بمعايرة صورها المدارية وتدريب موديل التنبؤ العكسي.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;">
+          <a class="btn primary" href="#simulation" data-i18n="btn_try_sim">▶ جرّب برمجية الـ AI وخريطة Z=f(X,Y) أدناه</a>
+          <a class="btn" href="#blueprint" data-i18n="btn_try_3d">استعراض المجسم الهندسي للروبوت 3D</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUMMARY STRIP -->
+  <div class="summary">
+    <div class="wrap summary-row">
+      <div class="sum"><strong>9 + 5 = 14</strong><span data-i18n="sum_1">معياراً (9 جيولوجيا + 5 موارد ومعيشة)</span></div>
+      <div class="sum"><strong>Z = f(X,Y)</strong><span data-i18n="sum_2">خريطة Dot Map للفوهات والكهوف والمعادن</span></div>
+      <div class="sum"><strong>NASA DB + AI</strong><span data-i18n="sum_3">مطابقة فورية مع نظائر الأرض + تنبؤ عكسي</span></div>
+      <div class="sum"><strong>LOW-COST NODE</strong><span data-i18n="sum_4">أعلى كفاءة بأقل تكلفة (ESP32 + 9 حساسات)</span></div>
+    </div>
+  </div>
+
+  <!-- 01 / SYSTEM WORKFLOW -->
+  <section id="system">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="kicker">01 / SYSTEM DATA PIPELINE</div>
+          <h2 data-i18n="sys_h2">كيف تنتقل البيانات من الروبوت إلى برمجية الـ AI وخريطة التضاريس</h2>
+        </div>
+        <p data-i18n="sys_p">اضغط على أي مرحلة أو حساس أدناه لمعرفة دوره المباشر وكيفية انتقال البيانات داخل المنظومة.</p>
+      </div>
+
+      <div class="workflow" id="workflowCards">
+        <article class="flow active" data-step="0">
+          <span class="n"><span>01 — IN-SITU SENSE</span><span>●</span></span>
+          <h3 data-i18n="wf1_h">جمع الـ 14 معياراً ميدانياً</h3>
+          <p data-i18n="wf1_p">قياس الضغط، الحرارة، الغازات، الانحدار، الخشونة، الصخور، الحموضة pH، الرطوبة، والمعادن.</p>
+        </article>
+        <article class="flow" data-step="1">
+          <span class="n"><span>02 — LOCALIZE & TILT</span><span>●</span></span>
+          <h3 data-i18n="wf2_h">قياس الميلان ومسح الفوهات</h3>
+          <p data-i18n="wf2_p">ليدار TFmini Plus + حساس الميلان MPU-6050 لمسح الفوهات والكهوف وتحديد الإحداثيات.</p>
+        </article>
+        <article class="flow" data-step="2">
+          <span class="n"><span>03 — DOT MAP Z=f(X,Y)</span><span>●</span></span>
+          <h3 data-i18n="wf3_h">بناء خريطة النقاط 3D</h3>
+          <p data-i18n="wf3_p">بناء السطح الثلاثي Z=f(X,Y) وربط كل منطقة بمعادنها والجو والمعلومات الخاصة بها.</p>
+        </article>
+        <article class="flow" data-step="3">
+          <span class="n"><span>04 — NASA AI & REVERSE</span><span>●</span></span>
+          <h3 data-i18n="wf4_h">مطابقة NASA والتنبؤ العكسي</h3>
+          <p data-i18n="wf4_p">إخراج أكثر منطقة أرضية مشابهة بالنسب المئوية وتدريب موديل التنبؤ العكسي للمستقبل.</p>
+        </article>
+      </div>
+
+      <div class="sensorline">
+        <div>
+          <b id="stepExplainTitle">المرحلة 01 (جمع الـ 14 معياراً):</b>
+          <span id="stepExplainText">يجمع الروبوت بيانات التربة (الحموضة pH، الرطوبة، العناصر) عبر مسبار RS485 السباعي ومطياف المعادن AS7265x، بالتزامن مع قراءات سارية الغازات والمناخ.</span>
+        </div>
+        <div class="sensor-badges">
+          <span class="s-badge" data-focus="soil">AS7265x Spectral (Minerals)</span>
+          <span class="s-badge" data-focus="soil">RS485 Soil 7-in-1 (pH/Moist)</span>
+          <span class="s-badge" data-focus="mast">BME280 + SCD41</span>
+          <span class="s-badge" data-focus="mast">ME2-O2 + MQ-135 + MQ-4</span>
+          <span class="s-badge" data-focus="nav">TFmini Plus LiDAR</span>
+          <span class="s-badge" data-focus="nav">MPU-6050 IMU (Slope)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 / INTERACTIVE SIMULATION & 3D DOT MAP Z=f(X,Y) -->
+  <section class="simulation" id="simulation">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="kicker">02 / NASA DB AI MATCHER & 3D DOT MAP Z=f(X,Y)</div>
+          <h2 data-i18n="sim_h2">محاكاة برمجية الـ AI وخريطة الدوت ماب Z = f(X,Y) للفوهات والكهوف</h2>
+        </div>
+        <p data-i18n="sim_p">عدّل قراءات الجيولوجيا والموارد التي يجمعها الروبوت؛ سيقوم السوفتوير بمقارنتها مع قاعدة بيانات NASA وإخراج نسب التشابه مع مناطق الأرض، مع رسم خريطة الـ Dot Map وإظهار المعادن والجو لكل منطقة.</p>
+      </div>
+
+      <div class="simgrid">
+        <!-- Left Card: Sliders & NASA AI Analog Matching -->
+        <article class="card">
+          <div class="card-head">
+            <h3 data-i18n="sim_card1_h">قراءات الروبوت ومطابقة داتابيس NASA بالـ AI</h3>
+            <span class="tag" id="simModeTag">NASA AI MATCHER</span>
+          </div>
+
+          <div class="preset-bar">
+            <span data-i18n="preset_lbl">بيئات قياس سريعة:</span>
+            <button class="preset-pill active" data-preset="atacama" data-i18n="pre_atacama">صحراء أتاكاما</button>
+            <button class="preset-pill" data-preset="wadirum" data-i18n="pre_wadirum">وادي رم (الأردن)</button>
+            <button class="preset-pill" data-preset="deathvalley" data-i18n="pre_death">وادي الموت</button>
+            <button class="preset-pill" data-preset="mars" data-i18n="pre_mars">فوهة/كهف المريخ</button>
+          </div>
+
+          <div class="inputs">
+            <div class="range-row">
+              <div class="range-label"><span data-i18n="sl_moist">الرطوبة في التربة (Moisture - RS485)</span><b><span id="moistVal">14</span>%</b></div>
+              <input id="moist" class="range" type="range" min="0" max="100" value="14">
+            </div>
+            <div class="range-row">
+              <div class="range-label"><span data-i18n="sl_temp">درجة الحرارة والضغط (Temp - BME280)</span><b><span id="tempVal">-8</span>°C</b></div>
+              <input id="temp" class="range" type="range" min="-80" max="60" value="-8">
+            </div>
+            <div class="range-row">
+              <div class="range-label"><span data-i18n="sl_slope">الانحدار والميلان (Slope - MPU-6050)</span><b><span id="slopeVal">11</span>°</b></div>
+              <input id="slope" class="range" type="range" min="0" max="45" value="11">
+            </div>
+            <div class="range-row">
+              <div class="range-label"><span data-i18n="sl_rough">خشونة السطح وطول الفواصل (Roughness & Joints)</span><b><span id="roughVal">52</span>%</b></div>
+              <input id="rough" class="range" type="range" min="10" max="100" value="52">
+            </div>
+            <div class="range-row">
+              <div class="range-label"><span data-i18n="sl_ph">نسبة الحموضة وتشابه المعادن (Soil pH & Minerals)</span><b>pH <span id="phVal">6.2</span></b></div>
+              <input id="ph" class="range" type="range" min="3.0" max="9.5" step="0.1" value="6.2">
+            </div>
+            <div class="range-row">
+              <div class="range-label"><span data-i18n="sl_gas">نسبة الغازات CO₂ / الميثان (Atmospheric Gases)</span><b><span id="gasVal">415</span> ppm</b></div>
+              <input id="gas" class="range" type="range" min="200" max="2000" value="415">
+            </div>
+          </div>
+
+          <div class="results">
+            <div>
+              <div class="result-label">
+                <span id="interpretation">أكثر المناطق الأرضية مشابهة حسب داتابيس NASA</span>
+                <span style="font:10px var(--mono);color:var(--mint)" data-i18n="click_to_apply">اضغط لتطبيق البيئة</span>
+              </div>
+              <div class="candidate best" data-preset="atacama" id="cand0">
+                <div class="candidate-title"><span data-i18n="cand1_name">صحراء أتاكاما · تشيلي (نظير مريخي فائق الجفاف)</span><b id="score1">—%</b></div>
+                <div class="bar"><i id="bar1"></i></div>
+              </div>
+              <div class="candidate" data-preset="wadirum" id="cand1">
+                <div class="candidate-title"><span data-i18n="cand2_name">وادي رم · الأردن (أحجار رملية وأكاسيد حديد بازلتية)</span><b id="score2">—%</b></div>
+                <div class="bar"><i id="bar2"></i></div>
+              </div>
+              <div class="candidate" data-preset="deathvalley" id="cand2">
+                <div class="candidate-title"><span data-i18n="cand3_name">وادي الموت · كاليفورنيا (سبخات ملحية وفواصل صخرية)</span><b id="score3">—%</b></div>
+                <div class="bar"><i id="bar3"></i></div>
+              </div>
+            </div>
+
+            <div class="formula">
+              Z = f(X, Y) &nbsp;|&nbsp; d = √ Σ wᵢ((xᵢ − μᵢ)/σᵢ)² &nbsp;→&nbsp; Match = 100·e<sup>−1.8d</sup>
+              <small data-i18n="formula_note">الروبوت يعمل كـ Ground-Truth Calibration Node يربط الـ 14 متغيراً مع الإحداثيات المكانية.</small>
+            </div>
+          </div>
+        </article>
+
+        <!-- Right Card: Interactive 3D Dot Map Z=f(X,Y) for Craters & Caves -->
+        <article class="card">
+          <div class="card-head">
+            <h3 data-i18n="sim_card2_h">خريطة الدوت ماب الثلاثية Z = f(X,Y) للفوهات والكهوف</h3>
+            <span class="tag" id="mapStatus">Z = f(X,Y) DOT MAP</span>
+          </div>
+
+          <div class="map-toolbar">
+            <div class="tool-group">
+              <button class="tool-btn active" data-render="both" data-i18n="rm_both">دوت ماب + شبكة</button>
+              <button class="tool-btn" data-render="points" data-i18n="rm_pts">نقاط Dot Map فقط</button>
+              <button class="tool-btn" data-render="mesh" data-i18n="rm_mesh">سطح Z=f(X,Y)</button>
+              <button class="tool-btn" data-render="heatmap" data-i18n="rm_heat">توزيع المعادن والظل</button>
+            </div>
+            <div class="tool-group">
+              <select class="tool-select" id="terrainType" aria-label="نوع التضاريس">
+                <option value="crater" data-i18n="t_crater">تضاريس: فوهة صدمية (Crater)</option>
+                <option value="cave" data-i18n="t_cave">تضاريس: كهف / أنبوب حمم (Lunar/Mars Cave)</option>
+                <option value="valley" data-i18n="t_valley">تضاريس: وادي رسوبي وفواصل (Valley)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="map-wrap">
+            <canvas id="map" aria-label="محاكاة خريطة نقاط ثلاثية الأبعاد Z=f(X,Y)"></canvas>
+            <div class="map-stats">
+              <span class="map-stat">DOTS: <b id="pointCount">1156</b></span>
+              <span class="map-stat">SCAN: <b id="scanPct">100%</b></span>
+              <span class="map-stat">MAX Z: <b id="maxElevVal">+4.2m</b></span>
+            </div>
+            <span class="map-key">SURFACE: Z = f(X, Y) · TILT + LiDAR</span>
+            <span class="map-note" data-i18n="map_drag_note">اسحب لتدوير خريطة الفوهة/الكهف 3D · عجلة الفأرة للتكبير</span>
+            <div class="map-actions">
+              <button id="scanBtn" class="primary-scan" data-i18n="btn_rescan">▶ مسح التضاريس وبناء Z=f(X,Y)</button>
+              <button id="roverPathBtn" class="tool-btn active" data-i18n="btn_rpath">مسار الروبوت</button>
+              <button id="mapReset" data-i18n="btn_mreset">إعادة ضبط الزاوية</button>
+            </div>
+          </div>
+
+          <!-- Live Zone Mineral, Rock, Shadow & Atmosphere Telemetry Bar -->
+          <div class="zone-telemetry-bar">
+            <span><span data-i18n="zt_min">المعادن والصخور المكتشفة:</span> <b id="zoneMineralTxt">Basalt / Iron Oxide (Hematite)</b></span>
+            <span><span data-i18n="zt_shd">نسبة الظل والفواصل:</span> <b id="zoneShadowTxt">Shadow 34% · Joints 1.4m</b></span>
+            <span><span data-i18n="zt_hab">مؤشر المعيشة والموارد:</span> <b id="zoneHabTxt">78% (pH 6.2)</b></span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 / TRUE 3D ROVER BLUEPRINT (THREE.JS CAD MODEL) -->
+  <section class="blueprint" id="blueprint">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="kicker">03 / INTERACTIVE 3D CAD ROVER BLUEPRINT</div>
+          <h2 data-i18n="bp_h2">المجسم الهندسي ثلاثي الأبعاد للروبوت (MMAR-ESP-001 REV 02)</h2>
+        </div>
+        <p data-i18n="bp_p">مجسم ثلاثي الأبعاد حقيقي مبني بالكامل وفق المخطط المرفق. يمكنك تدويره بـ 360°، استعراض المنظور الجانبي والأمامي والعلوي، تفكيك الأجزاء، أو الضغط على أي وحدة لفحصها.</p>
+      </div>
+
+      <div class="blue-layout">
+        <!-- Left Column: Subsystems List & Inspector -->
+        <div class="blue-copy">
+          <div>
+            <p data-i18n="bp_sub_p">اضغط على أي منظومة فرعية لتسليط الضوء عليها في المجسم الثلاثي الأبعاد وعرض أطراف توصيلها مع وحدة <b>ESP32 DevKit V1</b>:</p>
+            <ul class="parts" id="subsystemList">
+              <li class="active" data-part="all">
+                <div><b data-i18n="part_all_b">المنظومة الكاملة (Full Rover Assembly)</b><span data-i18n="part_all_s">هيكل ألمنيوم بطول 60cm مع كافة الوحدات</span></div>
+                <span class="part-pin">ALL SYS</span>
+              </li>
+              <li data-part="chassis">
+                <div><b data-i18n="part_ch_b">الشاسيه ونظام الحركة (6-Wheel Rocker-Bogie)</b><span data-i18n="part_ch_s">6 عجلات محززة + 6 محركات تروس + تعليق مفصلي</span></div>
+                <span class="part-pin">12V / PWM</span>
+              </li>
+              <li data-part="electronics">
+                <div><b data-i18n="part_el_b">صندوق الإلكترونيات المركزي (Central Enclosure)</b><span data-i18n="part_el_s">ESP32 DevKit V1 + MAX485 + I2C Hub + LiPo 12V</span></div>
+                <span class="part-pin">CORE HUB</span>
+              </li>
+              <li data-part="mast">
+                <div><b data-i18n="part_ma_b">سارية المراقبة الجوية (Atmospheric Mast)</b><span data-i18n="part_ma_s">BME280 · SCD41 (CO₂) · ME2-O₂ · MQ-135 · MQ-4</span></div>
+                <span class="part-pin">I2C / ADC</span>
+              </li>
+              <li data-part="soil">
+                <div><b data-i18n="part_so_b">وحدة التربة والجيولوجيا (Soil & Geology Bay)</b><span data-i18n="part_so_s">مطياف AS7265x مع LED + مسبار التربة 7-in-1 RS485</span></div>
+                <span class="part-pin">RS485 / I2C</span>
+              </li>
+              <li data-part="nav">
+                <div><b data-i18n="part_na_b">وحدة الملاحة والطبوغرافيا (Navigation Suite)</b><span data-i18n="part_na_s">ليدار TFmini Plus + حساس الميلان MPU-6050 IMU</span></div>
+                <span class="part-pin">UART2 / I2C</span>
+              </li>
+            </ul>
+
+            <div class="part-inspector" id="partInspector">
+              <div class="pi-head">
+                <span id="piTitle">MMAR-ESP-001 · FULL ASSEMBLY</span>
+                <span id="piPin">REV 02 · 60CM</span>
+              </div>
+              <p id="piDesc">يتكون الروبوت من إطار ألمنيوم معياري بطول 60 سم محمول على 6 عجلات بنظام تعليق Rocker-Bogie لتجاوز الصخور، مع فصل واضح بين سارية الغازات الخلفية، صندوق المعالجة الأوسط، ووحدات التربة والملاحة الأمامية.</p>
+            </div>
+          </div>
+
+          <div class="small-note" data-i18n="bp_tip">تلميح: استخدم أزرار المنظور أو اسحب المجسم مباشرة بالفأرة أو اللمس للتدوير والتكبير.</div>
+        </div>
+
+        <!-- Right Column: True WebGL 3D Stage -->
+        <div class="rover-card">
+          <div class="rover-top-controls">
+            <div class="tool-group" id="cameraViewBtns">
+              <button class="tool-btn active" data-cam="iso" data-i18n="cam_iso">منظور 3D</button>
+              <button class="tool-btn" data-cam="front" data-i18n="cam_front">أمامي</button>
+              <button class="tool-btn" data-cam="side" data-i18n="cam_side">جانبي</button>
+              <button class="tool-btn" data-cam="top" data-i18n="cam_top">علوي</button>
+            </div>
+            <div class="tool-group">
+              <button class="tool-btn" id="btnExplode" data-i18n="btn_explode">تفكيك الأجزاء (Explode)</button>
+              <button class="tool-btn" id="btnWireframe" data-i18n="btn_wire">وضع المخطط CAD</button>
+              <button class="tool-btn active" id="btnDrive" data-i18n="btn_drive">تشغيل الحركة والليدار</button>
+              <button class="tool-btn active" id="btnLabels" data-i18n="btn_labels">التسميات</button>
+            </div>
+          </div>
+
+          <div class="rover-stage" id="roverStage">
+            <div class="rover-hud">
+              <span class="hud-pill">DRAWING: <b>MMAR-ESP-001 REV 02</b></span>
+              <span class="hud-pill">SCALE: <b>60cm LENGTH</b></span>
+              <span class="hud-pill">VIEW: <b id="hudViewName">ISOMETRIC 3D</b></span>
+            </div>
+
+            <div class="callout-layer" id="calloutLayer">
+              <div class="callout-tag" data-part="mast" id="lbl-mast">ATMOSPHERIC MAST (5 SENSORS)</div>
+              <div class="callout-tag" data-part="electronics" id="lbl-elec">CENTRAL ELECTRONICS (ESP32)</div>
+              <div class="callout-tag" data-part="soil" id="lbl-soil">SOIL PROBE RS485 + AS7265x</div>
+              <div class="callout-tag" data-part="nav" id="lbl-nav">TFmini LiDAR + MPU-6050</div>
+              <div class="callout-tag" data-part="chassis" id="lbl-chassis">6-WHEEL ROCKER-BOGIE (60cm)</div>
+            </div>
+
+            <div class="rover-bottom-bar">
+              <span class="hud-pill" data-i18n="rover_drag_hint">اسحب لتدوير المجسم 3D · عجلة الفأرة للتقريب</span>
+              <button class="tool-btn" id="btnResetRoverCam" data-i18n="btn_reset_cam">إعادة ضبط الكاميرا</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Logical Wiring Schematic -->
+      <div class="schematic-box" id="wiring">
+        <div class="schem-head">
+          <h4>
+            <span style="color:var(--mint)">⚡</span>
+            <span data-i18n="schem_h4">مخطط التوصيل المنطقي التفاعلي (ESP32 WIRING SCHEMATIC - LOGICAL)</span>
+          </h4>
+          <div class="tool-group" id="busFilterBtns">
+            <button class="tool-btn active" data-bus="all" data-i18n="bus_all">كل المسارات</button>
+            <button class="tool-btn" data-bus="i2c">I2C (SDA/SCL)</button>
+            <button class="tool-btn" data-bus="uart">UART2 (TX2/RX2)</button>
+            <button class="tool-btn" data-bus="rs485">RS485 (MAX485)</button>
+            <button class="tool-btn" data-bus="analog">ADC / Power</button>
+          </div>
+        </div>
+
+        <div class="schem-grid">
+          <div class="schem-svg-wrap">
+            <svg viewBox="0 0 680 310" aria-label="ESP32 Logical Wiring Schematic">
+              <defs>
+                <pattern id="sgrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(185,242,119,0.05)" stroke-width="1"/>
+                </pattern>
+              </defs>
+              <rect width="680" height="310" fill="url(#sgrid)"/>
+
+              <g class="wire-group" data-bus="i2c">
+                <path class="wire-line" stroke="#b9f277" d="M210 110 H310 V42 H430"/>
+                <path class="wire-line" stroke="#b9f277" d="M310 78 H430"/>
+                <path class="wire-line" stroke="#b9f277" d="M310 150 H430"/>
+                <path class="wire-line" stroke="#b9f277" d="M310 222 H430"/>
+                <circle cx="310" cy="110" r="3.5" fill="#b9f277"/>
+                <circle cx="310" cy="78" r="3.5" fill="#b9f277"/>
+                <circle cx="310" cy="150" r="3.5" fill="#b9f277"/>
+              </g>
+
+              <g class="wire-group" data-bus="analog">
+                <path class="wire-line" stroke="#f7b955" d="M210 135 H350 V114 H430"/>
+                <path class="wire-line" stroke="#f7b955" d="M60 100 H90"/>
+                <path class="wire-line" stroke="#ff6b6b" d="M60 82 H90"/>
+              </g>
+
+              <g class="wire-group" data-bus="uart">
+                <path class="wire-line" stroke="#7bcfff" d="M210 185 H430"/>
+                <path class="wire-line" stroke="#7bcfff" stroke-dasharray="4 3" d="M210 193 H430"/>
+              </g>
+
+              <g class="wire-group" data-bus="rs485">
+                <path class="wire-line" stroke="#57d5a0" d="M210 245 H340 V265 H430"/>
+                <path class="wire-line" stroke="#57d5a0" d="M210 255 H330 V275 H430"/>
+              </g>
+
+              <g class="wire-node" data-part="electronics">
+                <rect x="90" y="52" width="120" height="220" rx="8" fill="#0d221a" stroke="#b9f277" stroke-width="2"/>
+                <rect x="122" y="52" width="56" height="22" fill="#183529" stroke="#b9f277" stroke-width="1.5"/>
+                <text x="150" y="67" text-anchor="middle" fill="#b9f277" font-family="Space Mono" font-size="9">ANTENNA</text>
+                <text x="150" y="155" text-anchor="middle" fill="#ffffff" font-family="Space Mono" font-weight="700" font-size="13">ESP32</text>
+                <text x="150" y="172" text-anchor="middle" fill="#8fa898" font-family="Space Mono" font-size="9">DEVKIT V1</text>
+
+                <text x="98" y="85" fill="#ff6b6b" font-family="Space Mono" font-size="9">3V3 / 5V</text>
+                <text x="98" y="103" fill="#f7b955" font-family="Space Mono" font-size="9">GND</text>
+                <text x="20" y="85" fill="#ff6b6b" font-family="Space Mono" font-size="9">12V LiPo</text>
+                <text x="20" y="103" fill="#f7b955" font-family="Space Mono" font-size="9">BUCK 5V</text>
+
+                <text x="202" y="113" text-anchor="end" fill="#b9f277" font-family="Space Mono" font-size="9">SDA (D21) / SCL (D22)</text>
+                <text x="202" y="138" text-anchor="end" fill="#f7b955" font-family="Space Mono" font-size="9">ADC1 (GASES)</text>
+                <text x="202" y="188" text-anchor="end" fill="#7bcfff" font-family="Space Mono" font-size="9">TX2 (D17) / RX2 (D16)</text>
+                <text x="202" y="250" text-anchor="end" fill="#57d5a0" font-family="Space Mono" font-size="9">MAX485 (DI/RO/DE)</text>
+              </g>
+
+              <g class="wire-node" data-part="mast">
+                <rect x="430" y="26" width="215" height="30" rx="6" fill="#10261e" stroke="#b9f277" stroke-width="1.5"/>
+                <text x="442" y="45" fill="#edf5ec" font-family="Space Mono" font-size="11">BME280 (PRESS/TEMP/HUM)</text>
+              </g>
+
+              <g class="wire-node" data-part="mast">
+                <rect x="430" y="62" width="215" height="30" rx="6" fill="#10261e" stroke="#b9f277" stroke-width="1.5"/>
+                <text x="442" y="81" fill="#edf5ec" font-family="Space Mono" font-size="11">SCD41 (CO2 SENSOR)</text>
+              </g>
+
+              <g class="wire-node" data-part="mast">
+                <rect x="430" y="98" width="215" height="30" rx="6" fill="#10261e" stroke="#f7b955" stroke-width="1.5"/>
+                <text x="442" y="117" fill="#edf5ec" font-family="Space Mono" font-size="11">ME2-O2 / MQ-135 / MQ-4</text>
+              </g>
+
+              <g class="wire-node" data-part="nav">
+                <rect x="430" y="134" width="215" height="30" rx="6" fill="#10261e" stroke="#b9f277" stroke-width="1.5"/>
+                <text x="442" y="153" fill="#edf5ec" font-family="Space Mono" font-size="11">MPU-6050 (IMU / TILT)</text>
+              </g>
+
+              <g class="wire-node" data-part="nav">
+                <rect x="430" y="172" width="215" height="30" rx="6" fill="#10261e" stroke="#7bcfff" stroke-width="1.5"/>
+                <text x="442" y="191" fill="#edf5ec" font-family="Space Mono" font-size="11">TFmini Plus (LiDAR UART)</text>
+              </g>
+
+              <g class="wire-node" data-part="soil">
+                <rect x="430" y="208" width="215" height="30" rx="6" fill="#10261e" stroke="#b9f277" stroke-width="1.5"/>
+                <text x="442" y="227" fill="#edf5ec" font-family="Space Mono" font-size="11">AS7265x (18-CH SPECTRAL)</text>
+              </g>
+
+              <g class="wire-node" data-part="soil">
+                <rect x="430" y="248" width="215" height="38" rx="6" fill="#10261e" stroke="#57d5a0" stroke-width="1.5"/>
+                <text x="442" y="266" fill="#edf5ec" font-family="Space Mono" font-size="11">RS485 7-IN-1 SOIL PROBE</text>
+                <text x="442" y="279" fill="#57d5a0" font-family="Space Mono" font-size="8.5">VIA MAX485 TRANSCEIVER</text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="schem-details">
+            <h5>ESP32 DATA BUS ARCHITECTURE</h5>
+            <p style="margin:0;color:#b2c4b7" data-i18n="schem_desc">اضغط على أي حساس في المخطط لتسليط الضوء على موقعه في المجسم الثلاثي الأبعاد أعلاه. تستخدم المنظومة موزع I2C لتفادي تعارض العناوين، ومحول MAX485 لقراءة مسبار التربة السباعي.</p>
+            <table class="pin-table">
+              <thead>
+                <tr><th>BUS / PIN</th><th>PROTOCOL</th><th>CONNECTED MODULES</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>GPIO 21 / 22</td><td>I2C + Hub</td><td>BME280, SCD41, MPU6050, AS7265x</td></tr>
+                <tr><td>GPIO 16 / 17</td><td>UART2</td><td>TFmini Plus LiDAR (115200 baud)</td></tr>
+                <tr><td>GPIO 18/19/4</td><td>RS485</td><td>MAX485 → 7-in-1 Soil Probe</td></tr>
+                <tr><td>GPIO 32/33/34</td><td>ADC1</td><td>ME2-O2, MQ-135 (VOC), MQ-4 (CH4)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 / FUTURE REVERSE PREDICTIVE AI -->
+  <section class="ai" id="ai">
+    <div class="wrap">
+      <div class="ai-panel">
+        <div class="ai-content">
+          <div class="kicker">04 / DATA ANALYTICS & REVERSE PREDICTIVE AI</div>
+          <h2 data-i18n="ai_h2">العملية العكسية (Reverse Process): التنبؤ بمواقع لم يزرها الروبوت</h2>
+          <p data-i18n="ai_p">في المستقبل، نستثمر البيانات الميدانية التي جمعها الروبوت ونجري عليها تحليل بيانات متقدم (Data Analytics) لتدريب موديل ذكاء اصطناعي. يقوم هذا الموديل بعملية عكسية: يتوقع تلقائياً مواقع جديدة لم يزرها الروبوت على القمر أو المريخ ويكتشف مدى تشابهها مع مناطق الأرض قبل إرسال أي مهمة إليها.</p>
+          <div class="actions">
+            <button class="btn primary" id="runAiPredictBtn" data-i18n="btn_ai_run">⚡ تشغيل التنبؤ العكسي لموقع جديد</button>
+          </div>
+        </div>
+
+        <div class="ai-predictor-box">
+          <div class="ai-target-btns" id="aiTargetBtns">
+            <button class="preset-pill active" data-aitarget="jezero" data-i18n="ait_1">موقع لم يُزر A: دلتا جيزيرو الشرقية</button>
+            <button class="preset-pill" data-aitarget="shackleton" data-i18n="ait_2">موقع لم يُزر B: فوهة شاكلتون (القمر)</button>
+            <button class="preset-pill" data-aitarget="valles" data-i18n="ait_3">موقع لم يُزر C: كهوف وادي مارينر</button>
+          </div>
+          <div class="ai-metrics">
+            <div class="ai-metric">
+              <span data-i18n="aim_1">أقرب نظير أرضي متوقع عكسياً</span>
+              <strong id="aiAnalogPred">Atacama Core (93%)</strong>
+            </div>
+            <div class="ai-metric">
+              <span data-i18n="aim_2">توقع الرطوبة والحموضة pH</span>
+              <strong id="aiMoistPred">6.4% · pH 6.5</strong>
+            </div>
+            <div class="ai-metric">
+              <span data-i18n="aim_3">تشابه المعادن وظروف المعيشة</span>
+              <strong id="aiMineralPred">88% Clay / Habitable</strong>
+            </div>
+            <div class="ai-metric">
+              <span data-i18n="aim_4">دقة المعايرة العكسية (Confidence)</span>
+              <strong id="aiUncertPred" style="color:var(--blue)">95.8% (±4.2%)</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <strong>MMAR-ESP-001 · REV 02</strong>
+    <span data-i18n="foot_mid">منهجية ربط ومعايرة ميدانية منخفضة التكلفة (Low-Cost Autonomous Ground-Truth Calibrator)</span>
+    <span data-i18n="foot_right">جميع الخرائط الثلاثية Z=f(X,Y) والمجسمات الهندسية تفاعلية بالكامل</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const $$ = s => document.querySelectorAll(s);
+
+  /* ==========================================================================
+     0. BILINGUAL TRANSLATION DICTIONARY (ARABIC <-> ENGLISH)
+     ========================================================================== */
+  let currentLang = 'ar';
+
+  const i18n = {
+    ar: {
+      nav_meth: 'المنهجية والـ 14 معياراً',
+      nav_comp: 'مقارنة مع CubeSats',
+      nav_sim: 'خريطة Z=f(X,Y) والـ AI',
+      nav_3d: 'المجسم الهندسي 3D',
+      nav_wire: 'مخطط ESP32',
+      nav_ai: 'التنبؤ العكسي',
+      nav_cta: 'فحص الروبوت 3D ↓',
+      cost_badge: '⚡ أعلى كفاءة بأقل تكلفة: مُعاير ميداني ذاتي منخفض التكلفة (Low-Cost Autonomous Ground-Truth Calibrator)',
+      hero_title: 'منهجية ربط ومعايرة ذكية لإيجاد <span>نظائر القمر والمريخ على الأرض</span> وبناء خرائط الفوهات والكهوف',
+      hero_narrative: 'لقد ابتكرنا منهجية ربط متكاملة (<b>System Integration & Calibration Architecture</b>) هدفها إيجاد مناطق جديدة على الأرض تشبه بيئات القمر والمريخ بالاعتماد على ركيزتين أساسيتين (<b>الجيولوجيا الأرضية والفضائية</b> + <b>الموارد وظروف المعيشة</b>). يقوم الروبوت الميداني (<b>Ground-Truth Calibration Node</b>) بجمع هذه المعلومات وإرسالها لبرمجية مدربة بالذكاء الاصطناعي (<b>AI</b>) على قواعد بيانات <b>NASA</b>، لتُخرج لنا أكثر منطقة مشابهة على الأرض مع نسب التشابه الدقيقة، وترسم خريطة نقطية ثلاثية الأبعاد <b>Dot Map: Z = f(X,Y)</b> تقيس الميلان وتمسح التضاريس للفوهات والكهوف وتُظهر كل منطقة ومعادنها وجوها. ومستقبلاً، نستخدم تحليل البيانات (<b>Data Analytics</b>) لتدريب موديل يقوم بـ <b>عملية عكسية (Reverse Prediction)</b> يتوقع فيها تلقائياً مواقع جديدة لم يزرها الروبوت!',
+      p1_title: '🪐 أولاً: معايير الجيولوجيا والتضاريس (Geological Parameters)',
+      g1: 'الضغط الجوي (Pressure)',
+      g2: 'درجة الحرارة (Temperature)',
+      g3: 'نسبة الغازات (Gas Ratio)',
+      g4: 'سرعة الرياح (Wind Speed)',
+      g5: 'الانحدار والميلان (Slope)',
+      g6: 'مساحة التشابه (Similarity Area)',
+      g7: 'خشونة السطح (Surface Roughness)',
+      g8: 'نسبة الظل (Shadow Ratio)',
+      g9: 'طول الفواصل والشقوق (Joint Length)',
+      p2_title: '💎 ثانياً: الموارد وظروف المعيشة (Resources & Habitability)',
+      r1: 'أنواع الصخور (Rock Types)',
+      r2: 'نسبة الحموضة (Acidity / pH)',
+      r3: 'الرطوبة والمياه (Moisture)',
+      r4: 'تشابه المعادن (Mineral Similarity)',
+      r5: 'الظروف المناسبة للمعيشة (Habitability)',
+      st1_h: 'مُعاير ميداني منخفض التكلفة',
+      st1_p: 'روبوت 6 عجلات (Low-Cost Autonomous Calibrator) يقيس الـ 14 متغيراً مباشرة من التربة والجو بدقة عالية وتكلفة منخفضة.',
+      st2_h: 'مطابقة AI مع داتابيس NASA',
+      st2_p: 'يرسل الروبوت القراءات لبرمجية مدربة بالـ AI على قواعد بيانات ناسا لتحديد أكثر منطقة أرضية مشابهة مع النسب المئوية.',
+      st3_h: 'خريطة دوت ماب للفوهات والكهوف',
+      st3_p: 'يمسح التضاريس ويقيس الميلان لبناء السطح الثلاثي Z=f(X,Y) للفوهات والكهوف مع إظهار المعادن والغازات في كل نقطة.',
+      st4_h: 'العملية العكسية (Data Analytics)',
+      st4_p: 'نحلل البيانات المجمعة وندرب موديل ذكاء اصطناعي يتوقع تلقائياً مواقع جديدة لم يزرها الروبوت وتشابهها مع الأرض.',
+      comp_title: 'هل توجد روبوتات أو أنظمة أخرى؟ نعم، ولكن ليس بالمنهجية التكاملية التي ابتكرناها!',
+      comp_sub: 'مقارنة علمية مبسطة توضح الفرق الجوهري بين منهجيتنا وبين الأقمار الصناعية المكعبة (CubeSats) والروبوتات التقليدية:',
+      c1_h: 'الأقمار المكعبة (CubeSats) وصور الأقمار الصناعية',
+      c1_p: 'تلتقط صوراً طيفية واسعة من المدار، لكنها تعاني من قيود فيزيائية كبيرة عند دراسة الفوهات الصغيرة والكهوف:',
+      c1_l1: 'لا تستطيع دخول الكهوف أو الفوهات المظلمة (Shadowed Craters).',
+      c1_l2: 'لا تلمس التربة لقياس الحموضة (pH) أو الرطوبة تحت السطحية والغازات الدقيقة.',
+      c1_l3: 'تحتاج إلى معايرة أرضية (Ground-Truth) لتصحيح أخطاء الغلاف الجوي.',
+      c2_h: 'الروبوتات الفضائية التقليدية (Traditional Rovers)',
+      c2_p: 'موجودة لأغراض الاستكشاف العام، لكنها تختلف عن منهجيتنا في التكلفة وطريقة الربط التحليلي:',
+      c2_l1: 'تكلفة باهظة جداً وبنية معقدة يصعب نشرها بأعداد كبيرة (Swarm/Nodes).',
+      c2_l2: 'لا تربط الـ 14 معياراً (جيولوجيا + موارد) مباشرة بمحرك بحث عن نظائر الأرض.',
+      c2_l3: 'تعمل كوحدات منفصلة وليست كعقدة معايرة عكسية للأقمار الصناعية.',
+      c3_h: 'منهجيتنا (Ground-Truth Calibration Node)',
+      c3_p: 'تكامل فريد يجمع بين القياس الميداني منخفض التكلفة والذكاء الاصطناعي المرتبط بقواعد بيانات NASA:',
+      c3_l1: 'أعلى كفاءة بأقل تكلفة (Low-Cost Calibrator) يدخل الفوهات والكهوف.',
+      c3_l2: 'يرسم خريطة Dot Map ثلاثية Z=f(X,Y) مدمجة مع المعادن والجو والحموضة.',
+      c3_l3: 'يعالج ضعف CubeSats بمعايرة صورها المدارية وتدريب موديل التنبؤ العكسي.',
+      btn_try_sim: '▶ جرّب برمجية الـ AI وخريطة Z=f(X,Y) أدناه',
+      btn_try_3d: 'استعراض المجسم الهندسي للروبوت 3D',
+      sum_1: 'معياراً (9 جيولوجيا + 5 موارد ومعيشة)',
+      sum_2: 'خريطة Dot Map للفوهات والكهوف والمعادن',
+      sum_3: 'مطابقة فورية مع نظائر الأرض + تنبؤ عكسي',
+      sum_4: 'أعلى كفاءة بأقل تكلفة (ESP32 + 9 حساسات)',
+      sys_h2: 'كيف تنتقل البيانات من الروبوت إلى برمجية الـ AI وخريطة التضاريس',
+      sys_p: 'اضغط على أي مرحلة أو حساس أدناه لمعرفة دوره المباشر وكيفية انتقال البيانات داخل المنظومة.',
+      wf1_h: 'جمع الـ 14 معياراً ميدانياً',
+      wf1_p: 'قياس الضغط، الحرارة، الغازات، الانحدار، الخشونة، الصخور، الحموضة pH، الرطوبة، والمعادن.',
+      wf2_h: 'قياس الميلان ومسح الفوهات',
+      wf2_p: 'ليدار TFmini Plus + حساس الميلان MPU-6050 لمسح الفوهات والكهوف وتحديد الإحداثيات.',
+      wf3_h: 'بناء خريطة النقاط 3D',
+      wf3_p: 'بناء السطح الثلاثي Z=f(X,Y) وربط كل منطقة بمعادنها والجو والمعلومات الخاصة بها.',
+      wf4_h: 'مطابقة NASA والتنبؤ العكسي',
+      wf4_p: 'إخراج أكثر منطقة أرضية مشابهة بالنسب المئوية وتدريب موديل التنبؤ العكسي للمستقبل.',
+      sim_h2: 'محاكاة برمجية الـ AI وخريطة الدوت ماب Z = f(X,Y) للفوهات والكهوف',
+      sim_p: 'عدّل قراءات الجيولوجيا والموارد التي يجمعها الروبوت؛ سيقوم السوفتوير بمقارنتها مع قاعدة بيانات NASA وإخراج نسب التشابه مع مناطق الأرض، مع رسم خريطة الـ Dot Map وإظهار المعادن والجو لكل منطقة.',
+      sim_card1_h: 'قراءات الروبوت ومطابقة داتابيس NASA بالـ AI',
+      preset_lbl: 'بيئات قياس سريعة:',
+      pre_atacama: 'صحراء أتاكاما',
+      pre_wadirum: 'وادي رم (الأردن)',
+      pre_death: 'وادي الموت',
+      pre_mars: 'فوهة/كهف المريخ',
+      sl_moist: 'الرطوبة في التربة (Moisture - RS485)',
+      sl_temp: 'درجة الحرارة والضغط (Temp - BME280)',
+      sl_slope: 'الانحدار والميلان (Slope - MPU-6050)',
+      sl_rough: 'خشونة السطح وطول الفواصل (Roughness & Joints)',
+      sl_ph: 'نسبة الحموضة وتشابه المعادن (Soil pH & Minerals)',
+      sl_gas: 'نسبة الغازات CO₂ / الميثان (Atmospheric Gases)',
+      click_to_apply: 'اضغط لتطبيق البيئة',
+      cand1_name: 'صحراء أتاكاما · تشيلي (نظير مريخي فائق الجفاف)',
+      cand2_name: 'وادي رم · الأردن (أحجار رملية وأكاسيد حديد بازلتية)',
+      cand3_name: 'وادي الموت · كاليفورنيا (سبخات ملحية وفواصل صخرية)',
+      formula_note: 'الروبوت يعمل كـ Ground-Truth Calibration Node يربط الـ 14 متغيراً مع الإحداثيات المكانية.',
+      sim_card2_h: 'خريطة الدوت ماب الثلاثية Z = f(X,Y) للفوهات والكهوف',
+      rm_both: 'دوت ماب + شبكة',
+      rm_pts: 'نقاط Dot Map فقط',
+      rm_mesh: 'سطح Z=f(X,Y)',
+      rm_heat: 'توزيع المعادن والظل',
+      t_crater: 'تضاريس: فوهة صدمية (Crater)',
+      t_cave: 'تضاريس: كهف / أنبوب حمم (Lunar/Mars Cave)',
+      t_valley: 'تضاريس: وادي رسوبي وفواصل (Valley)',
+      map_drag_note: 'اسحب لتدوير خريطة الفوهة/الكهف 3D · عجلة الفأرة للتكبير',
+      btn_rescan: '▶ مسح التضاريس وبناء Z=f(X,Y)',
+      btn_rpath: 'مسار الروبوت',
+      btn_mreset: 'إعادة ضبط الزاوية',
+      zt_min: 'المعادن والصخور المكتشفة:',
+      zt_shd: 'نسبة الظل والفواصل:',
+      zt_hab: 'مؤشر المعيشة والموارد:',
+      bp_h2: 'المجسم الهندسي ثلاثي الأبعاد للروبوت (MMAR-ESP-001 REV 02)',
+      bp_p: 'مجسم ثلاثي الأبعاد حقيقي مبني بالكامل وفق المخطط المرفق. يمكنك تدويره بـ 360°، استعراض المنظور الجانبي والأمامي والعلوي، تفكيك الأجزاء، أو الضغط على أي وحدة لفحصها.',
+      bp_sub_p: 'اضغط على أي منظومة فرعية لتسليط الضوء عليها في المجسم الثلاثي الأبعاد وعرض أطراف توصيلها مع وحدة ESP32 DevKit V1:',
+      part_all_b: 'المنظومة الكاملة (Full Rover Assembly)',
+      part_all_s: 'هيكل ألمنيوم بطول 60cm مع كافة الوحدات',
+      part_ch_b: 'الشاسيه ونظام الحركة (6-Wheel Rocker-Bogie)',
+      part_ch_s: '6 عجلات محززة + 6 محركات تروس + تعليق مفصلي',
+      part_el_b: 'صندوق الإلكترونيات المركزي (Central Enclosure)',
+      part_el_s: 'ESP32 DevKit V1 + MAX485 + I2C Hub + LiPo 12V',
+      part_ma_b: 'سارية المراقبة الجوية (Atmospheric Mast)',
+      part_ma_s: 'BME280 · SCD41 (CO₂) · ME2-O₂ · MQ-135 · MQ-4',
+      part_so_b: 'وحدة التربة والجيولوجيا (Soil & Geology Bay)',
+      part_so_s: 'مطياف AS7265x مع LED + مسبار التربة 7-in-1 RS485',
+      part_na_b: 'وحدة الملاحة والطبوغرافيا (Navigation Suite)',
+      part_na_s: 'ليدار TFmini Plus + حساس الميلان MPU-6050 IMU',
+      bp_tip: 'تلميح: استخدم أزرار المنظور أو اسحب المجسم مباشرة بالفأرة أو اللمس للتدوير والتكبير.',
+      cam_iso: 'منظور 3D',
+      cam_front: 'أمامي',
+      cam_side: 'جانبي',
+      cam_top: 'علوي',
+      btn_explode: 'تفكيك الأجزاء (Explode)',
+      btn_wire: 'وضع المخطط CAD',
+      btn_drive: 'تشغيل الحركة والليدار',
+      btn_labels: 'التسميات',
+      rover_drag_hint: 'اسحب لتدوير المجسم 3D · عجلة الفأرة للتقريب',
+      btn_reset_cam: 'إعادة ضبط الكاميرا',
+      schem_h4: 'مخطط التوصيل المنطقي التفاعلي (ESP32 WIRING SCHEMATIC - LOGICAL)',
+      bus_all: 'كل المسارات',
+      schem_desc: 'اضغط على أي حساس في المخطط لتسليط الضوء على موقعه في المجسم الثلاثي الأبعاد أعلاه. تستخدم المنظومة موزع I2C لتفادي تعارض العناوين، ومحول MAX485 لقراءة مسبار التربة السباعي.',
+      ai_h2: 'العملية العكسية (Reverse Process): التنبؤ بمواقع لم يزرها الروبوت',
+      ai_p: 'في المستقبل، نستثمر البيانات الميدانية التي جمعها الروبوت ونجري عليها تحليل بيانات متقدم (Data Analytics) لتدريب موديل ذكاء اصطناعي. يقوم هذا الموديل بعملية عكسية: يتوقع تلقائياً مواقع جديدة لم يزرها الروبوت على القمر أو المريخ ويكتشف مدى تشابهها مع مناطق الأرض قبل إرسال أي مهمة إليها.',
+      btn_ai_run: '⚡ تشغيل التنبؤ العكسي لموقع جديد',
+      ait_1: 'موقع لم يُزر A: دلتا جيزيرو الشرقية',
+      ait_2: 'موقع لم يُزر B: فوهة شاكلتون (القمر)',
+      ait_3: 'موقع لم يُزر C: كهوف وادي مارينر',
+      aim_1: 'أقرب نظير أرضي متوقع عكسياً',
+      aim_2: 'توقع الرطوبة والحموضة pH',
+      aim_3: 'تشابه المعادن وظروف المعيشة',
+      aim_4: 'دقة المعايرة العكسية (Confidence)',
+      foot_mid: 'منهجية ربط ومعايرة ميدانية منخفضة التكلفة (Low-Cost Autonomous Ground-Truth Calibrator)',
+      foot_right: 'جميع الخرائط الثلاثية Z=f(X,Y) والمجسمات الهندسية تفاعلية بالكامل'
+    },
+    en: {
+      nav_meth: 'Methodology & 14 Params',
+      nav_comp: 'vs. CubeSats & Rovers',
+      nav_sim: 'Z=f(X,Y) Map & NASA AI',
+      nav_3d: '3D CAD Rover',
+      nav_wire: 'ESP32 Schematic',
+      nav_ai: 'Reverse AI Prediction',
+      nav_cta: 'Inspect 3D Rover ↓',
+      cost_badge: '⚡ Max Efficiency at Min Cost: Low-Cost Autonomous Ground-Truth Calibrator',
+      hero_title: 'System Integration & Calibration Architecture to Find <span>Earth Analogs of Moon & Mars</span> & Map Craters/Caves',
+      hero_narrative: 'We developed a novel <b>System Integration & Calibration Architecture</b> designed to discover terrestrial regions on Earth that resemble Lunar and Martian environments based on two core pillars: <b>Planetary/Terrestrial Geology (9 Parameters)</b> and <b>In-Situ Resources & Habitability (5 Parameters)</b>. Our rover acts as a <b>Ground-Truth Calibration Node</b> that collects these 14 parameters and transmits them to an <b>AI Software trained on NASA Databases</b>, outputting the closest Earth analog regions with exact similarity percentages (%). Simultaneously, the software builds a 3D <b>Dot Map: Z = f(X,Y)</b> (measuring tilt & scanning terrain) for craters and caves, displaying each zone’s minerals, atmosphere, and sensor telemetry. Using <b>Data Analytics</b>, we train a model to perform a <b>Reverse Prediction Process</b>—autonomously predicting unvisited sites on the Moon/Mars that match terrestrial analogs!',
+      p1_title: '🪐 Pillar 1: Terrestrial & Planetary Geology (9 Parameters)',
+      g1: 'Atmospheric Pressure',
+      g2: 'Surface Temperature',
+      g3: 'Gas Percentage / Ratio',
+      g4: 'Wind Speed',
+      g5: 'Slope & Tilt Angle',
+      g6: 'Similarity Area',
+      g7: 'Surface Roughness',
+      g8: 'Shadow Ratio',
+      g9: 'Joint & Fracture Length',
+      p2_title: '💎 Pillar 2: Resources & Habitability (5 Parameters)',
+      r1: 'Rock Types',
+      r2: 'Acidity Ratio (Soil pH)',
+      r3: 'Subsurface Moisture',
+      r4: 'Mineral Similarity',
+      r5: 'Habitability Conditions',
+      st1_h: 'Low-Cost Ground-Truth Node',
+      st1_p: '6-wheel autonomous rover measuring all 14 geological & resource parameters directly in-situ at minimal cost.',
+      st2_h: 'NASA Database AI Matcher',
+      st2_p: 'Transmits rover telemetry to AI software trained on NASA datasets to rank the closest Earth analogs with % scores.',
+      st3_h: '3D Dot Map Z=f(X,Y) for Caves',
+      st3_p: 'Scans terrain & tilt to construct a 3D surface Z=f(X,Y) of craters & caves, tagging minerals and gases per zone.',
+      st4_h: 'Reverse Predictive AI Process',
+      st4_p: 'Data analytics on rover logs trains a reverse AI model to predict unvisited sites on Moon/Mars before landing.',
+      comp_title: 'Do other rovers or satellites exist? Yes—but NOT with our integrated methodology!',
+      comp_sub: 'A clear comparison showing how our Ground-Truth Calibration Architecture differs from CubeSats, orbital imagery, and conventional rovers:',
+      c1_h: 'CubeSats & Orbital Satellite Imagery',
+      c1_p: 'Capture wide macro-level images from orbit, but face severe physical limitations in craters and caves:',
+      c1_l1: 'Cannot enter caves, lava tubes, or permanently shadowed craters.',
+      c1_l2: 'Cannot physically touch soil to measure subsurface pH, moisture, or trace gases.',
+      c1_l3: 'Require a Ground-Truth node on the surface to calibrate orbital spectral distortions.',
+      c2_h: 'Conventional Flagship Rovers',
+      c2_p: 'Built for single-site deep exploration, differing fundamentally in cost and analytical integration:',
+      c2_l1: 'Extremely expensive and complex—cannot be deployed as scalable low-cost calibration nodes.',
+      c2_l2: 'Do not directly couple 14 geology/resource parameters into a live Earth-Analog AI matcher.',
+      c2_l3: 'Operate standalone rather than as a reverse-calibration loop for orbital datasets.',
+      c3_h: 'Our Solution (MMAR-ESP-001 Node)',
+      c3_p: 'Unique integration combining a Low-Cost Autonomous Calibrator with NASA-trained AI & 3D Dot Mapping:',
+      c3_l1: 'Maximum efficiency at minimum cost—navigates inside craters and caves.',
+      c3_l2: 'Builds a 3D Dot Map Z=f(X,Y) fused with mineral, pH, and atmospheric telemetry.',
+      c3_l3: 'Complements CubeSats by calibrating orbital data and enabling Reverse AI Prediction.',
+      btn_try_sim: '▶ Try the NASA AI Software & Z=f(X,Y) Dot Map Below',
+      btn_try_3d: 'Inspect Interactive 3D CAD Rover',
+      sum_1: 'Parameters (9 Geology + 5 Resources)',
+      sum_2: '3D Dot Map for Craters, Caves & Minerals',
+      sum_3: 'Instant Earth-Analog Match & Reverse AI',
+      sum_4: 'Low-Cost Autonomous Calibrator (ESP32)',
+      sys_h2: 'How Telemetry Flows from the Rover to the AI Software & 3D Dot Map',
+      sys_p: 'Click any stage or sensor badge below to inspect its role in the calibration pipeline.',
+      wf1_h: 'In-Situ 14-Parameter Sensing',
+      wf1_p: 'Measures pressure, temp, gases, slope, roughness, rocks, pH acidity, moisture, and minerals.',
+      wf2_h: 'Tilt & Crater/Cave Scanning',
+      wf2_p: 'TFmini Plus LiDAR + MPU-6050 IMU measure slope and scan interior geometry of craters & caves.',
+      wf3_h: '3D Dot Map Z=f(X,Y) Builder',
+      wf3_p: 'Constructs the 3D surface Z=f(X,Y) and binds every point with its minerals, atmosphere, and pH.',
+      wf4_h: 'NASA AI Match & Reverse Model',
+      wf4_p: 'Outputs closest Earth analogs with % similarity and trains the Reverse Prediction AI model.',
+      sim_h2: 'Interactive NASA AI Matcher & 3D Dot Map Z = f(X,Y) Simulator',
+      sim_p: 'Adjust the geological and resource parameters collected by the rover; the AI software matches them against NASA databases and updates the 3D Crater/Cave Dot Map live.',
+      sim_card1_h: 'Rover Telemetry & NASA Database AI Analog Matcher',
+      preset_lbl: 'Quick Presets:',
+      pre_atacama: 'Atacama Desert',
+      pre_wadirum: 'Wadi Rum (Jordan)',
+      pre_death: 'Death Valley',
+      pre_mars: 'Mars Crater / Cave',
+      sl_moist: 'Soil Moisture (RS485 Probe)',
+      sl_temp: 'Surface Temp & Pressure (BME280)',
+      sl_slope: 'Slope & Tilt Angle (MPU-6050)',
+      sl_rough: 'Surface Roughness & Joint Length (LiDAR)',
+      sl_ph: 'Acidity pH & Mineral Similarity',
+      sl_gas: 'Gas Concentration CO₂ / CH₄ (ppm)',
+      click_to_apply: 'Click to apply preset',
+      cand1_name: 'Atacama Desert · Chile (Hyper-Arid Martian Analog)',
+      cand2_name: 'Wadi Rum · Jordan (Sandstone & Basaltic Iron Oxides)',
+      cand3_name: 'Death Valley · USA (Salt Flats & Rock Fractures)',
+      formula_note: 'The rover acts as a Ground-Truth Calibration Node linking all 14 parameters to spatial coordinates.',
+      sim_card2_h: '3D Dot Map Z = f(X,Y) for Craters & Caves',
+      rm_both: 'Dot Map + Mesh',
+      rm_pts: '3D Dots Only',
+      rm_mesh: 'Z=f(X,Y) Surface',
+      rm_heat: 'Minerals & Shadow Map',
+      t_crater: 'Terrain: Impact Crater',
+      t_cave: 'Terrain: Lunar/Mars Cave (Lava Tube)',
+      t_valley: 'Terrain: Sedimentary Valley & Joints',
+      map_drag_note: 'Drag to rotate 3D Crater/Cave Map · Scroll wheel to zoom',
+      btn_rescan: '▶ Scan Terrain & Build Z=f(X,Y)',
+      btn_rpath: 'Rover Path',
+      btn_mreset: 'Reset Angle',
+      zt_min: 'Detected Rocks & Minerals:',
+      zt_shd: 'Shadow Ratio & Joints:',
+      zt_hab: 'Habitability & Resource Index:',
+      bp_h2: 'Interactive 3D CAD Rover Blueprint (MMAR-ESP-001 REV 02)',
+      bp_p: 'True WebGL 3D CAD model built to match the attached blueprint. Orbit 360°, switch orthographic views, explode parts, or click any subsystem to inspect.',
+      bp_sub_p: 'Click any subsystem below to highlight it on the 3D rover and inspect its ESP32 DevKit V1 wiring:',
+      part_all_b: 'Full Rover Assembly (MMAR-ESP-001)',
+      part_all_s: '60cm Aluminum Extrusion Frame with all payload bays',
+      part_ch_b: 'Chassis & Mobility (6-Wheel Rocker-Bogie)',
+      part_ch_s: '6 grooved wheels + 6 gear motors + articulated links',
+      part_el_b: 'Central Electronics Enclosure',
+      part_el_s: 'ESP32 DevKit V1 + MAX485 + I2C Hub + 12V LiPo',
+      part_ma_b: 'Atmospheric Monitoring Mast',
+      part_ma_s: 'BME280 · SCD41 (CO₂) · ME2-O₂ · MQ-135 · MQ-4',
+      part_so_b: 'Soil & Geology Payload Bay',
+      part_so_s: 'AS7265x Spectral + White LED + RS485 7-in-1 Probe',
+      part_na_b: 'Navigation & Topography Suite',
+      part_na_s: 'TFmini Plus LiDAR + MPU-6050 IMU Tilt Sensor',
+      bp_tip: 'Tip: Use view buttons or drag the 3D model directly with mouse/touch to orbit and zoom.',
+      cam_iso: '3D Isometric',
+      cam_front: 'Front View',
+      cam_side: 'Side View',
+      cam_top: 'Top View',
+      btn_explode: 'Explode Parts',
+      btn_wire: 'CAD Wireframe',
+      btn_drive: 'Drive & LiDAR Scan',
+      btn_labels: '3D Callouts',
+      rover_drag_hint: 'Drag to orbit 3D model · Scroll wheel to zoom',
+      btn_reset_cam: 'Reset Camera',
+      schem_h4: 'Interactive Logical Wiring Schematic (ESP32 DEVKIT V1)',
+      bus_all: 'All Buses',
+      schem_desc: 'Click any sensor block in the schematic to highlight its physical location on the 3D rover above. Uses an I2C Multiplexer and MAX485 transceiver.',
+      ai_h2: 'Reverse Predictive AI Process: Predicting Unvisited Sites',
+      ai_p: 'By applying Data Analytics to the ground-truth dataset collected by the rover, we train a predictive AI model to execute a Reverse Process: autonomously predicting unvisited regions on the Moon or Mars that match Earth analogs before sending a rover.',
+      btn_ai_run: '⚡ Run Reverse Prediction on New Site',
+      ait_1: 'Unvisited Site A: East Jezero Delta',
+      ait_2: 'Unvisited Site B: Shackleton Crater (Moon)',
+      ait_3: 'Unvisited Site C: Valles Marineris Caves',
+      aim_1: 'Predicted Earth Analog Match',
+      aim_2: 'Predicted Moisture & Soil pH',
+      aim_3: 'Mineral Similarity & Habitability',
+      aim_4: 'Reverse Calibration Confidence',
+      foot_mid: 'System Integration & Calibration Architecture · Low-Cost Autonomous Ground-Truth Calibrator',
+      foot_right: 'All 3D Z=f(X,Y) Dot Maps & CAD Models are fully interactive'
+    }
+  };
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    $('#langBtnTxt').textContent = lang === 'ar' ? 'English' : 'عربي';
+
+    $$('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (i18n[lang][key]) {
+        el.innerHTML = i18n[lang][key];
+      }
+    });
+
+    // Update dynamic texts
+    updateWorkflowExplanation(activeWorkflowStep);
+    updateSimilarity();
+    selectSubsystem(selectedSubsystem);
+  }
+
+  $('#langToggleBtn').addEventListener('click', () => {
+    setLanguage(currentLang === 'ar' ? 'en' : 'ar');
+  });
+
+  /* ==========================================================================
+     1. SYSTEM WORKFLOW INTERACTIVITY
+     ========================================================================== */
+  let activeWorkflowStep = 0;
+  const stepData = {
+    ar: [
+      {
+        title: 'المرحلة 01 (جمع الـ 14 معياراً ميدانياً):',
+        text: 'يقيس الروبوت الجيولوجيا والموارد: الرطوبة والحموضة pH عبر مسبار RS485، المعادن والصخور عبر مطياف AS7265x، والضغط والحرارة والغازات عبر السارية.'
+      },
+      {
+        title: 'المرحلة 02 (قياس الميلان ومسح الفوهات والكهوف):',
+        text: 'يربط النظام كل قراءة بموقعها وزاوية الانحدار عبر حساس MPU-6050 IMU وليدار المسافات TFmini Plus LiDAR حتى داخل الكهوف والفوهات المظلمة.'
+      },
+      {
+        title: 'المرحلة 03 (بناء خريطة الدوت ماب Z = f(X,Y)):',
+        text: 'تتحول نقاط المسح إلى سطح ثلاثي الأبعاد Z=f(X,Y) يوضح تضاريس الفوهة أو الكهف ويعرض لكل منطقة معادنها، نسبة الظل، وطول الفواصل الصخرية.'
+      },
+      {
+        title: 'المرحلة 04 (مطابقة NASA والعملية العكسية):',
+        text: 'تُقارن البصمة الميدانية بقواعد بيانات NASA بالـ AI لإخراج أقرب منطقة مشابهة على الأرض بالنسب المئوية، وتدريب موديل التنبؤ العكسي للمواقع غير المزارة.'
+      }
+    ],
+    en: [
+      {
+        title: 'Stage 01 (In-Situ 14-Parameter Sensing):',
+        text: 'The rover measures geology & resources: soil pH and moisture via the RS485 7-in-1 probe, rock/mineral spectra via AS7265x, and pressure/temp/gases via the atmospheric mast.'
+      },
+      {
+        title: 'Stage 02 (Tilt & Crater/Cave Scanning):',
+        text: 'Every reading is localized with tilt/slope from the MPU-6050 IMU and range topography from the TFmini Plus LiDAR inside craters and caves.'
+      },
+      {
+        title: 'Stage 03 (3D Dot Map Z = f(X,Y) Construction):',
+        text: 'Scanned points form a 3D elevation surface Z=f(X,Y) displaying each zone with its detected minerals, shadow ratio, and rock joint length.'
+      },
+      {
+        title: 'Stage 04 (NASA AI Matching & Reverse Prediction):',
+        text: 'Telemetry is matched against NASA databases via AI to output the closest Earth analogs with % scores, while training the Reverse Prediction model.'
+      }
+    ]
+  };
+
+  function updateWorkflowExplanation(stepIdx) {
+    activeWorkflowStep = stepIdx;
+    const info = stepData[currentLang][stepIdx];
+    $('#stepExplainTitle').textContent = info.title;
+    $('#stepExplainText').textContent = info.text;
+  }
+
+  $$('#workflowCards .flow').forEach(card => {
+    card.addEventListener('click', () => {
+      $$('#workflowCards .flow').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      updateWorkflowExplanation(+card.dataset.step);
+    });
+  });
+
+  /* ==========================================================================
+     2. INTERACTIVE SIMULATION, NASA AI MATCHER & 3D DOT MAP Z=f(X,Y)
+     ========================================================================== */
+  const ranges = {
+    moist: $('#moist'),
+    temp: $('#temp'),
+    slope: $('#slope'),
+    rough: $('#rough'),
+    ph: $('#ph'),
+    gas: $('#gas')
+  };
+
+  const presets = {
+    atacama:     { m: 14, t: -8,  s: 11, r: 52, ph: 6.2, g: 415, terrain: 'crater' },
+    wadirum:     { m: 24, t: 26,  s: 18, r: 68, ph: 7.1, g: 430, terrain: 'valley' },
+    deathvalley: { m: 7,  t: 41,  s: 6,  r: 34, ph: 8.1, g: 490, terrain: 'valley' },
+    mars:        { m: 3,  t: -62, s: 21, r: 82, ph: 5.4, g: 1650, terrain: 'cave' }
+  };
+
+  const refSites = [
+    { m: 14, t: -8, s: 11, r: 52, ph: 6.2, g: 415, nameAr: 'صحراء أتاكاما (تشيلي)', nameEn: 'Atacama Desert (Chile)' },
+    { m: 24, t: 26, s: 18, r: 68, ph: 7.1, g: 430, nameAr: 'وادي رم (الأردن)', nameEn: 'Wadi Rum (Jordan)' },
+    { m: 7,  t: 41, s: 6,  r: 34, ph: 8.1, g: 490, nameAr: 'وادي الموت (كاليفورنيا)', nameEn: 'Death Valley (USA)' }
+  ];
+
+  let renderMode = 'both';
+  let terrainKind = 'crater';
+  let showRoverPath = true;
+
+  function updateSimilarity() {
+    const v = {
+      m: +ranges.moist.value,
+      t: +ranges.temp.value,
+      s: +ranges.slope.value,
+      r: +ranges.rough.value,
+      ph: +ranges.ph.value,
+      g: +ranges.gas.value
+    };
+    $('#moistVal').textContent = v.m;
+    $('#tempVal').textContent = (v.t < 0 ? '−' : '') + Math.abs(v.t);
+    $('#slopeVal').textContent = v.s;
+    $('#roughVal').textContent = v.r;
+    $('#phVal').textContent = v.ph.toFixed(1);
+    $('#gasVal').textContent = v.g;
+
+    const scores = refSites.map(q => {
+      const dm = (v.m - q.m) / 35;
+      const dt = (v.t - q.t) / 50;
+      const ds = (v.s - q.s) / 20;
+      const dr = (v.r - q.r) / 40;
+      const dph = (v.ph - q.ph) / 2.5;
+      const dg = (v.g - q.g) / 800;
+      const d = Math.sqrt(0.22*dm*dm + 0.24*dt*dt + 0.18*ds*ds + 0.14*dr*dr + 0.12*dph*dph + 0.10*dg*dg);
+      return Math.max(3, Math.min(99, Math.round(100 * Math.exp(-1.82 * d))));
+    });
+
+    const maxScore = Math.max(...scores);
+    const bestIdx = scores.indexOf(maxScore);
+
+    scores.forEach((sc, i) => {
+      $('#score' + (i + 1)).textContent = sc + '%';
+      $('#bar' + (i + 1)).style.width = sc + '%';
+      $('#cand' + i).classList.toggle('best', i === bestIdx);
+    });
+
+    const bestName = currentLang === 'ar' ? refSites[bestIdx].nameAr : refSites[bestIdx].nameEn;
+    $('#interpretation').textContent = currentLang === 'ar'
+      ? `الأقرب حالياً حسب NASA AI: ${bestName} (${maxScore}%)`
+      : `Top NASA AI Analog Match: ${bestName} (${maxScore}%)`;
+
+    // Update live zone mineral, shadow, joint length & habitability bar
+    const mineralType = v.ph < 5.8
+      ? 'Sulfate / Jarosite (Volcanic)'
+      : v.ph > 7.6
+      ? 'Carbonate / Halite Evaporites'
+      : 'Basalt / Iron Oxide (Hematite & Olivine)';
+    const shadowRatio = Math.min(95, Math.round(18 + v.s * 1.1 + v.r * 0.25 + (terrainKind === 'cave' ? 28 : 0)));
+    const jointLen = (0.4 + (v.r / 100) * 2.4).toFixed(1);
+    const habScore = Math.max(12, Math.min(96, Math.round(100 - Math.abs(v.t - 15) * 0.7 - Math.abs(v.ph - 7.0) * 11 + v.m * 0.25)));
+
+    $('#zoneMineralTxt').textContent = mineralType;
+    $('#zoneShadowTxt').textContent = `Shadow ${shadowRatio}% · Joints ${jointLen}m`;
+    $('#zoneHabTxt').textContent = `${habScore}% (pH ${v.ph.toFixed(1)} · ${v.m}% H₂O)`;
+
+    drawTerrainMap();
+  }
+
+  Object.values(ranges).forEach(input => input.addEventListener('input', () => {
+    $$('.simulation .preset-pill').forEach(p => p.classList.remove('active'));
+    updateSimilarity();
+  }));
+
+  function applyPreset(key) {
+    const p = presets[key];
+    if (!p) return;
+    ranges.moist.value = p.m;
+    ranges.temp.value = p.t;
+    ranges.slope.value = p.s;
+    ranges.rough.value = p.r;
+    ranges.ph.value = p.ph;
+    ranges.gas.value = p.g;
+    terrainKind = p.terrain;
+    $('#terrainType').value = p.terrain;
+
+    $$('.simulation .preset-pill').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.preset === key);
+    });
+    updateSimilarity();
+  }
+
+  $$('.simulation [data-preset]').forEach(el => {
+    el.addEventListener('click', () => applyPreset(el.dataset.preset));
+  });
+
+  $('#terrainType').addEventListener('change', e => {
+    terrainKind = e.target.value;
+    updateSimilarity();
+  });
+
+  $$('[data-render]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('[data-render]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderMode = btn.dataset.render;
+      drawTerrainMap();
+    });
+  });
+
+  $('#roverPathBtn').addEventListener('click', e => {
+    showRoverPath = !showRoverPath;
+    e.currentTarget.classList.toggle('active', showRoverPath);
+    drawTerrainMap();
+  });
+
+  // 3D Terrain Dot Map Z = f(X,Y) Canvas
+  const mapCanvas = $('#map');
+  const ctx = mapCanvas.getContext('2d');
+  let yaw = -0.68, pitch = 0.78, zoom = 1.0, scanProgress = 100, mapDrag = false, mapLast = { x: 0, y: 0 }, scanRaf;
+
+  const GRID_N = 34;
+
+  function getElevation(x, y) {
+    const slopeDeg = +ranges.slope.value;
+    const roughPct = +ranges.rough.value / 100;
+    const moistPct = +ranges.moist.value / 100;
+
+    const r = Math.hypot(x, y);
+    let base = 0;
+
+    if (terrainKind === 'crater') {
+      const rim = Math.exp(-(((r - 0.58) / 0.14) ** 2)) * (0.28 + roughPct * 0.25);
+      const bowl = Math.max(0, 1 - (r / 0.58) ** 2) * (0.18 + roughPct * 0.14);
+      const centralPeak = Math.exp(-((r / 0.14) ** 2)) * (0.12 * roughPct);
+      base = 0.08 + rim - bowl + centralPeak;
+    } else if (terrainKind === 'cave') {
+      // Lava Tube / Subsurface Cave Roof + Collapsed Skylight Pit
+      const skylight = Math.exp(-((r / 0.35) ** 2)) * 0.38;
+      const arch = 0.26 * Math.cos(y * 2.1) - skylight + 0.08 * Math.sin(x * 6) * roughPct;
+      base = arch;
+    } else {
+      // Sedimentary Valley & Fractures
+      const channel = Math.exp(-(((y - 0.18 * Math.sin(x * 3.2)) / 0.28) ** 2)) * (0.26 + roughPct * 0.15);
+      const terraces = 0.18 * Math.abs(y) + 0.06 * Math.cos(x * 5);
+      base = 0.22 - channel + terraces - moistPct * 0.05;
+    }
+
+    const microRough = (Math.sin(x * 11 + y * 5) * 0.03 + Math.cos(y * 13 - x * 4) * 0.025) * (0.4 + roughPct);
+    const tilt = (x * Math.sin(slopeDeg * Math.PI / 180) * 0.45);
+    return base + microRough + tilt;
+  }
+
+  function projectPoint(p, w, h) {
+    const cy = Math.cos(yaw), sy = Math.sin(yaw);
+    const x1 = p.x * cy - p.y * sy;
+    const y1 = p.x * sy + p.y * cy;
+    const z1 = p.z;
+
+    const cp = Math.cos(pitch), sp = Math.sin(pitch);
+    const y2 = y1 * cp - z1 * sp;
+    const z2 = y1 * sp + z1 * cp;
+
+    const scale = Math.min(w, h) * 0.42 * zoom;
+    return {
+      x: w * 0.5 + x1 * scale,
+      y: h * 0.55 + y2 * scale * 0.78 - z1 * scale * 0.65,
+      depth: z2,
+      elev: p.z
+    };
+  }
+
+  function elevColor(z, moist, temp) {
+    if (renderMode === 'heatmap') {
+      const n = Math.max(0, Math.min(1, (z + 0.15) / 0.65));
+      if (n > 0.75) return '#ff6b6b';
+      if (n > 0.5) return '#f7b955';
+      if (n > 0.25) return '#b9f277';
+      return '#7bcfff';
+    }
+    if (z > 0.34) return '#c8f784';
+    if (z > 0.18) return '#6ee0a4';
+    if (moist > 45 && z < 0.1) return '#58b8ff';
+    return '#74c7e3';
+  }
+
+  function drawTerrainMap() {
+    const w = mapCanvas.clientWidth, h = mapCanvas.clientHeight;
+    if (!w || !h) return;
+    ctx.clearRect(0, 0, w, h);
+
+    const moist = +ranges.moist.value;
+    const temp = +ranges.temp.value;
+
+    const grid = [];
+    let maxZ = -99;
+    const maxCol = Math.ceil((GRID_N - 1) * (scanProgress / 100));
+
+    for (let i = 0; i < GRID_N; i++) {
+      const row = [];
+      const x = -0.95 + (i / (GRID_N - 1)) * 1.9;
+      for (let j = 0; j < GRID_N; j++) {
+        const y = -0.95 + (j / (GRID_N - 1)) * 1.9;
+        const z = getElevation(x, y);
+        if (z > maxZ) maxZ = z;
+        const proj = projectPoint({ x, y, z }, w, h);
+        row.push({ x, y, z, proj, visible: i <= maxCol });
+      }
+      grid.push(row);
+    }
+
+    if (renderMode === 'both' || renderMode === 'mesh' || renderMode === 'heatmap') {
+      ctx.lineWidth = renderMode === 'mesh' ? 0.95 : 0.65;
+      for (let i = 0; i < maxCol; i++) {
+        for (let j = 0; j < GRID_N - 1; j++) {
+          const p1 = grid[i][j].proj;
+          const p2 = grid[i + 1][j].proj;
+          const p3 = grid[i][j + 1].proj;
+          const zAvg = (grid[i][j].z + grid[i + 1][j].z + grid[i][j + 1].z) / 3;
+
+          if (renderMode === 'heatmap' || renderMode === 'mesh') {
+            ctx.fillStyle = elevColor(zAvg, moist, temp);
+            ctx.globalAlpha = renderMode === 'heatmap' ? 0.34 : 0.16;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.lineTo(p3.x, p3.y);
+            ctx.closePath();
+            ctx.fill();
+          }
+
+          ctx.globalAlpha = renderMode === 'both' ? 0.18 : 0.35;
+          ctx.strokeStyle = elevColor(zAvg, moist, temp);
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.lineTo(p3.x, p3.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    let visibleCount = 0;
+    if (renderMode === 'both' || renderMode === 'points' || renderMode === 'heatmap') {
+      const flat = [];
+      for (let i = 0; i <= maxCol; i++) {
+        for (let j = 0; j < GRID_N; j++) {
+          flat.push(grid[i][j]);
+          visibleCount++;
+        }
+      }
+      flat.sort((a, b) => a.proj.depth - b.proj.depth);
+
+      for (const item of flat) {
+        const { proj, z } = item;
+        ctx.fillStyle = elevColor(z, moist, temp);
+        ctx.globalAlpha = 0.55 + Math.max(0, Math.min(0.45, (z + 0.1) * 0.9));
+        const rad = (renderMode === 'points' ? 2.1 : 1.55) * zoom;
+        ctx.beginPath();
+        ctx.arc(proj.x, proj.y, rad, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    } else {
+      visibleCount = (maxCol + 1) * GRID_N;
+    }
+
+    ctx.globalAlpha = 1;
+
+    if (showRoverPath) {
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      let roverPos = null;
+      const pathSteps = Math.max(2, Math.floor(40 * (scanProgress / 100)));
+      for (let k = 0; k <= pathSteps; k++) {
+        const t = k / 40;
+        const px = -0.82 + t * 1.64;
+        const py = 0.32 * Math.sin(t * Math.PI * 2.2);
+        const pz = getElevation(px, py) + 0.025;
+        const pp = projectPoint({ x: px, y: py, z: pz }, w, h);
+        if (k === 0) ctx.moveTo(pp.x, pp.y);
+        else ctx.lineTo(pp.x, pp.y);
+        roverPos = { x: px, y: py, z: pz, pp };
+      }
+      ctx.stroke();
+
+      if (roverPos) {
+        if (scanProgress < 100) {
+          ctx.strokeStyle = '#b9f277';
+          ctx.lineWidth = 1;
+          for (let a = -0.4; a <= 0.4; a += 0.2) {
+            const tx = Math.min(0.95, roverPos.x + 0.28);
+            const ty = roverPos.y + a;
+            const tz = getElevation(tx, ty);
+            const tp = projectPoint({ x: tx, y: ty, z: tz }, w, h);
+            ctx.beginPath();
+            ctx.moveTo(roverPos.pp.x, roverPos.pp.y);
+            ctx.lineTo(tp.x, tp.y);
+            ctx.stroke();
+          }
+        }
+        ctx.fillStyle = '#b9f277';
+        ctx.beginPath();
+        ctx.arc(roverPos.pp.x, roverPos.pp.y, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#06100d';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+    }
+
+    // 3D Orientation Axes Gizmo
+    const gx = w - 46, gy = h - 58, glen = 22;
+    const axes = [
+      { v: { x: 1, y: 0, z: 0 }, c: '#ff6b6b', lbl: 'X' },
+      { v: { x: 0, y: 1, z: 0 }, c: '#57d5a0', lbl: 'Y' },
+      { v: { x: 0, y: 0, z: 1 }, c: '#7bcfff', lbl: 'Z' }
+    ];
+    const originP = projectPoint({ x: 0, y: 0, z: 0 }, w, h);
+    axes.forEach(ax => {
+      const tipP = projectPoint({ x: ax.v.x * 0.2, y: ax.v.y * 0.2, z: ax.v.z * 0.2 }, w, h);
+      const dx = tipP.x - originP.x, dy = tipP.y - originP.y;
+      const mag = Math.hypot(dx, dy) || 1;
+      const ex = gx + (dx / mag) * glen, ey = gy + (dy / mag) * glen;
+      ctx.strokeStyle = ax.c;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(gx, gy);
+      ctx.lineTo(ex, ey);
+      ctx.stroke();
+      ctx.fillStyle = ax.c;
+      ctx.font = '700 9px Space Mono';
+      ctx.fillText(ax.lbl, ex + 3, ey + 3);
+    });
+
+    $('#pointCount').textContent = visibleCount;
+    $('#scanPct').textContent = scanProgress + '%';
+    $('#maxElevVal').textContent = (maxZ >= 0 ? '+' : '') + (maxZ * 10).toFixed(1) + 'm';
+  }
+
+  function resizeMap() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = mapCanvas.clientWidth, h = mapCanvas.clientHeight;
+    if (!w || !h) return;
+    mapCanvas.width = Math.round(w * dpr);
+    mapCanvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    drawTerrainMap();
+  }
+
+  function runLaserScan() {
+    cancelAnimationFrame(scanRaf);
+    scanProgress = 4;
+    $('#mapStatus').textContent = 'SCANNING Z=f(X,Y)…';
+    function step() {
+      scanProgress = Math.min(100, scanProgress + 2);
+      drawTerrainMap();
+      if (scanProgress < 100) {
+        scanRaf = requestAnimationFrame(step);
+      } else {
+        $('#mapStatus').textContent = 'Z = f(X,Y) COMPLETE';
+      }
+    }
+    step();
+  }
+
+  $('#scanBtn').addEventListener('click', runLaserScan);
+  $('#mapReset').addEventListener('click', () => {
+    cancelAnimationFrame(scanRaf);
+    scanProgress = 100;
+    yaw = -0.68;
+    pitch = 0.78;
+    zoom = 1.0;
+    $('#mapStatus').textContent = 'Z = f(X,Y) DOT MAP';
+    drawTerrainMap();
+  });
+
+  mapCanvas.addEventListener('pointerdown', e => {
+    mapDrag = true;
+    mapLast = { x: e.clientX, y: e.clientY };
+    mapCanvas.setPointerCapture(e.pointerId);
+  });
+  mapCanvas.addEventListener('pointermove', e => {
+    if (!mapDrag) return;
+    yaw += (e.clientX - mapLast.x) * 0.009;
+    pitch = Math.max(0.25, Math.min(1.38, pitch + (e.clientY - mapLast.y) * 0.007));
+    mapLast = { x: e.clientX, y: e.clientY };
+    drawTerrainMap();
+  });
+  mapCanvas.addEventListener('pointerup', () => mapDrag = false);
+  mapCanvas.addEventListener('pointercancel', () => mapDrag = false);
+  mapCanvas.addEventListener('wheel', e => {
+    e.preventDefault();
+    zoom = Math.max(0.65, Math.min(1.65, zoom - e.deltaY * 0.001));
+    drawTerrainMap();
+  }, { passive: false });
+
+  new ResizeObserver(resizeMap).observe(mapCanvas);
+
+  /* ==========================================================================
+     3. TRUE 3D CAD ROVER MODEL (THREE.JS WEBGL) MATCHING MMAR-ESP-001 REV 02
+     ========================================================================== */
+  const stageEl = $('#roverStage');
+  let scene, camera, renderer;
+  const partGroups = {};
+  const wheelMeshes = [];
+  let lidarBeamMesh = null;
+  let isExploded = false;
+  let isWireframe = false;
+  let isDriving = true;
+  let showLabels = true;
+  let selectedSubsystem = 'all';
+
+  let camTargetSpherical = { theta: -0.68, phi: 1.08, radius: 9.2 };
+  let camCurrentSpherical = { theta: -0.68, phi: 1.08, radius: 9.2 };
+  let camLookTarget = new THREE.Vector3(0, 0.25, 0);
+
+  const subsystemDetails = {
+    all: {
+      title: 'MMAR-ESP-001 · FULL ROVER ASSEMBLY',
+      pin: 'REV 02 · 60CM',
+      ar: 'يتكون الروبوت من إطار ألمنيوم معياري بطول 60 سم محمول على 6 عجلات بنظام تعليق Rocker-Bogie لتجاوز الصخور، مع فصل واضح بين سارية الغازات الخلفية، صندوق المعالجة الأوسط، ووحدات التربة والملاحة الأمامية.',
+      en: 'Modular 60cm aluminum extrusion rover frame carried by a 6-wheel Rocker-Bogie suspension, integrating the rear atmospheric mast, central ESP32 electronics bay, and front soil/navigation suites.'
+    },
+    chassis: {
+      title: 'CHASSIS & 6-WHEEL ROCKER-BOGIE',
+      pin: '6x GEAR MOTORS · 12V LiPo',
+      ar: 'إطار ألمنيوم (Aluminum Extrusion Frame) بطول 60 سم مع نظام تعليق Rocker-Bogie بست عجلات محززة و6 محركات تروس يحافظ على ثبات الروبوت داخل الفوهات والكهوف الوعرة.',
+      en: '60cm Aluminum Extrusion Frame with articulated 6-wheel Rocker-Bogie suspension and 6 high-torque gear motors for traversing rough craters and caves.'
+    },
+    electronics: {
+      title: 'CENTRAL ELECTRONICS ENCLOSURE',
+      pin: 'ESP32 DEVKIT V1 · I2C HUB · MAX485',
+      ar: 'صندوق إلكترونيات مركزي في وسط الشاسيه يضم وحدة ESP32 DevKit V1، وحدة MAX485 للاتصال الصناعي، موزع I2C Multiplexer، ولوحة توزيع الطاقة من بطارية LiPo 12V.',
+      en: 'Central open-top electronics bay housing the ESP32 DevKit V1, MAX485 transceiver, I2C Multiplexer/Hub, and 12V LiPo power distribution board.'
+    },
+    mast: {
+      title: 'ATMOSPHERIC MONITORING MAST',
+      pin: 'BME280 · SCD41 · ME2-O2 · MQ-135 · MQ-4',
+      ar: 'سارية مراقبة جوية خلفية مرتفعة تحمل رأس BME280 (ضغط/حرارة/رطوبة)، وحساس SCD41 (CO2)، بالإضافة إلى 3 حساسات غازية أسطوانية مرتبة عمودياً: ME2-O2، MQ-135 (VOCs)، وMQ-4 (الميثان).',
+      en: 'Rear atmospheric tower carrying top-mounted BME280 (Pressure/Temp/Humidity), SCD41 (CO2), and 3 vertically stacked gas sensors: Grove ME2-O2, MQ-135 (VOCs), and MQ-4 (Methane).'
+    },
+    soil: {
+      title: 'SOIL & GEOLOGY PAYLOAD BAY',
+      pin: 'AS7265x SPECTRAL + RS485 7-IN-1 PROBE',
+      ar: 'وحدة التربة والجيولوجيا الأمامية: تضم حساس التحليل الطيفي للمعادن AS7265x مع مصفوفة إضاءة White LED، ومسبار التربة السفلي (RS485 7-in-1 Subsurface Probe) لقياس الحموضة pH والرطوبة والعناصر.',
+      en: 'Front payload bay integrating the AS7265x 18-channel spectroscopy sensor (with White LED array) and the downward RS485 7-in-1 subsurface soil probe (pH, moisture, NPK).'
+    },
+    nav: {
+      title: 'NAVIGATION & TOPOGRAPHY SUITE',
+      pin: 'TFmini PLUS LiDAR (UART2) + MPU-6050',
+      ar: 'وحدة الملاحة والطبوغرافيا في مقدمة الروبوت السفلية: تجمع بين ليدار TFmini Plus وحساس الميلان MPU-6050 IMU لبناء خريطة النقاط Z=f(X,Y).',
+      en: 'Front lower navigation gimbal combining the TFmini Plus LiDAR and MPU-6050 IMU tilt sensor to scan craters/caves and construct the 3D Dot Map Z=f(X,Y).'
+    }
+  };
+
+  function createCadEdges(geometry, color = 0xb9f277, opacity = 0.65) {
+    const edges = new THREE.EdgesGeometry(geometry, 18);
+    const lineMat = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
+    return new THREE.LineSegments(edges, lineMat);
+  }
+
+  function addCadMesh(parent, geometry, material, edgeColor = 0xb9f277, edgeOpacity = 0.6) {
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    mesh.add(createCadEdges(geometry, edgeColor, edgeOpacity));
+    parent.add(mesh);
+    return mesh;
+  }
+
+  function initRover3D() {
+    scene = new THREE.Scene();
+
+    const w = stageEl.clientWidth || 640;
+    const h = stageEl.clientHeight || 460;
+    camera = new THREE.PerspectiveCamera(36, w / h, 0.1, 100);
+
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    stageEl.insertBefore(renderer.domElement, stageEl.firstChild);
+
+    const ambient = new THREE.AmbientLight(0xd4f2dc, 0.75);
+    scene.add(ambient);
+
+    const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.85);
+    dirLight1.position.set(6, 10, 7);
+    scene.add(dirLight1);
+
+    const dirLight2 = new THREE.DirectionalLight(0x7bcfff, 0.4);
+    dirLight2.position.set(-7, 4, -6);
+    scene.add(dirLight2);
+
+    const gridHelper = new THREE.GridHelper(12, 24, 0x3b6e52, 0x173327);
+    gridHelper.position.y = -1.25;
+    scene.add(gridHelper);
+
+    const mats = {
+      frame: new THREE.MeshStandardMaterial({ color: 0x20382c, roughness: 0.45, metalness: 0.45 }),
+      deck: new THREE.MeshStandardMaterial({ color: 0x2b4a3a, roughness: 0.5, metalness: 0.3 }),
+      darkMetal: new THREE.MeshStandardMaterial({ color: 0x14241c, roughness: 0.5, metalness: 0.6 }),
+      suspension: new THREE.MeshStandardMaterial({ color: 0x3a5c47, roughness: 0.35, metalness: 0.55 }),
+      wheelTire: new THREE.MeshStandardMaterial({ color: 0x16221c, roughness: 0.75, metalness: 0.2 }),
+      wheelHub: new THREE.MeshStandardMaterial({ color: 0x314e3d, roughness: 0.4, metalness: 0.5 }),
+      pcbEsp: new THREE.MeshStandardMaterial({ color: 0x103b29, roughness: 0.3, metalness: 0.4 }),
+      sensorHead: new THREE.MeshStandardMaterial({ color: 0x365944, roughness: 0.35, metalness: 0.4 }),
+      mintGlow: new THREE.MeshBasicMaterial({ color: 0xb9f277 }),
+      blueGlow: new THREE.MeshBasicMaterial({ color: 0x7bcfff })
+    };
+
+    const groupDefs = {
+      chassis:     { explode: new THREE.Vector3(0, -0.55, 0) },
+      electronics: { explode: new THREE.Vector3(0,  0.85, 0) },
+      mast:        { explode: new THREE.Vector3(0.75, 0.95, 0) },
+      soil:        { explode: new THREE.Vector3(-0.75, 0.45, 0) },
+      nav:         { explode: new THREE.Vector3(-1.05, -0.35, 0) }
+    };
+
+    Object.keys(groupDefs).forEach(k => {
+      const g = new THREE.Group();
+      g.userData = { key: k, explodeOffset: groupDefs[k].explode };
+      scene.add(g);
+      partGroups[k] = g;
+    });
+
+    // A. CHASSIS & 6-WHEEL ROCKER-BOGIE
+    const gChassis = partGroups.chassis;
+    addCadMesh(gChassis, new THREE.BoxGeometry(4.2, 0.52, 2.2), mats.frame, 0xb9f277, 0.75);
+    const topDeck = addCadMesh(gChassis, new THREE.BoxGeometry(4.05, 0.06, 2.05), mats.deck, 0xb9f277, 0.5);
+    topDeck.position.y = 0.28;
+
+    [-1.11, 1.11].forEach(zSide => {
+      const rail = addCadMesh(gChassis, new THREE.BoxGeometry(4.18, 0.14, 0.05), mats.suspension, 0x8ad696, 0.5);
+      rail.position.set(0, 0, zSide);
+    });
+
+    [[-1.3, 0.34, -0.68], [-0.55, 0.34, 0.68]].forEach(([x, y, z]) => {
+      const mount = addCadMesh(gChassis, new THREE.CylinderGeometry(0.18, 0.2, 0.1, 16), mats.suspension, 0xb9f277, 0.7);
+      mount.position.set(x, y, z);
+    });
+
+    const wheelXPositions = [-1.65, 0.0, 1.65];
+    [-1, 1].forEach(side => {
+      const zWheel = side * 1.48;
+      const zArm = side * 1.22;
+
+      const mainPivot = addCadMesh(gChassis, new THREE.CylinderGeometry(0.16, 0.16, 0.22, 16), mats.suspension, 0xb9f277, 0.8);
+      mainPivot.rotation.x = Math.PI / 2;
+      mainPivot.position.set(-0.55, -0.05, zArm);
+
+      const bogiePivot = addCadMesh(gChassis, new THREE.CylinderGeometry(0.13, 0.13, 0.18, 16), mats.suspension, 0xb9f277, 0.8);
+      bogiePivot.rotation.x = Math.PI / 2;
+      bogiePivot.position.set(0.82, -0.28, zArm);
+
+      function addLinkRod(p1, p2) {
+        const dir = new THREE.Vector3().subVectors(p2, p1);
+        const len = dir.length();
+        const rodGeo = new THREE.BoxGeometry(len, 0.09, 0.09);
+        const rod = addCadMesh(gChassis, rodGeo, mats.suspension, 0xb9f277, 0.75);
+        rod.position.copy(p1).add(p2).multiplyScalar(0.5);
+        rod.lookAt(p2);
+        rod.rotateY(Math.PI / 2);
+      }
+
+      addLinkRod(new THREE.Vector3(-0.55, -0.05, zArm), new THREE.Vector3(-1.65, -0.52, zArm));
+      addLinkRod(new THREE.Vector3(-0.55, -0.05, zArm), new THREE.Vector3(0.82, -0.28, zArm));
+      addLinkRod(new THREE.Vector3(0.82, -0.28, zArm), new THREE.Vector3(0.0, -0.52, zArm));
+      addLinkRod(new THREE.Vector3(0.82, -0.28, zArm), new THREE.Vector3(1.65, -0.52, zArm));
+
+      wheelXPositions.forEach(wx => {
+        const strut = addCadMesh(gChassis, new THREE.CylinderGeometry(0.09, 0.09, 0.34, 12), mats.suspension, 0xb9f277, 0.7);
+        strut.position.set(wx, -0.62, zArm);
+
+        const motor = addCadMesh(gChassis, new THREE.CylinderGeometry(0.14, 0.14, 0.28, 12), mats.darkMetal, 0x7bcfff, 0.5);
+        motor.rotation.x = Math.PI / 2;
+        motor.position.set(wx, -0.82, side * 1.25);
+
+        const wheelGroup = new THREE.Group();
+        wheelGroup.position.set(wx, -0.82, zWheel);
+        gChassis.add(wheelGroup);
+        wheelMeshes.push(wheelGroup);
+
+        const tireGeo = new THREE.CylinderGeometry(0.44, 0.44, 0.34, 24);
+        tireGeo.rotateX(Math.PI / 2);
+        addCadMesh(wheelGroup, tireGeo, mats.wheelTire, 0xb9f277, 0.75);
+
+        const hubGeo = new THREE.CylinderGeometry(0.28, 0.28, 0.36, 16);
+        hubGeo.rotateX(Math.PI / 2);
+        addCadMesh(wheelGroup, hubGeo, mats.wheelHub, 0x8ad696, 0.5);
+
+        for (let t = 0; t < 12; t++) {
+          const angle = (t / 12) * Math.PI * 2;
+          const cleat = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.04, 0.35), mats.suspension);
+          cleat.position.set(Math.cos(angle) * 0.44, Math.sin(angle) * 0.44, 0);
+          cleat.rotation.z = angle;
+          wheelGroup.add(cleat);
+        }
+      });
+    });
+
+    // B. CENTRAL ELECTRONICS ENCLOSURE
+    const gElec = partGroups.electronics;
+    const wallThick = 0.08, boxW = 1.65, boxH = 0.45, boxD = 1.45;
+    const baseTray = addCadMesh(gElec, new THREE.BoxGeometry(boxW, 0.06, boxD), mats.darkMetal, 0xb9f277, 0.8);
+    baseTray.position.set(-0.05, 0.33, 0);
+
+    const wFront = addCadMesh(gElec, new THREE.BoxGeometry(wallThick, boxH, boxD), mats.frame, 0xb9f277, 0.85);
+    wFront.position.set(-0.05 - boxW/2 + wallThick/2, 0.52, 0);
+    const wBack = addCadMesh(gElec, new THREE.BoxGeometry(wallThick, boxH, boxD), mats.frame, 0xb9f277, 0.85);
+    wBack.position.set(-0.05 + boxW/2 - wallThick/2, 0.52, 0);
+    const wLeft = addCadMesh(gElec, new THREE.BoxGeometry(boxW - 0.16, boxH, wallThick), mats.frame, 0xb9f277, 0.85);
+    wLeft.position.set(-0.05, 0.52, -boxD/2 + wallThick/2);
+    const wRight = addCadMesh(gElec, new THREE.BoxGeometry(boxW - 0.16, boxH, wallThick), mats.frame, 0xb9f277, 0.85);
+    wRight.position.set(-0.05, 0.52, boxD/2 - wallThick/2);
+
+    const espBoard = addCadMesh(gElec, new THREE.BoxGeometry(0.62, 0.08, 0.42), mats.pcbEsp, 0xb9f277, 0.95);
+    espBoard.position.set(-0.25, 0.42, -0.22);
+    const espChip = addCadMesh(gElec, new THREE.BoxGeometry(0.26, 0.06, 0.24), mats.darkMetal, 0x7bcfff, 0.9);
+    espChip.position.set(-0.22, 0.48, -0.22);
+
+    const i2cHub = addCadMesh(gElec, new THREE.BoxGeometry(0.38, 0.07, 0.32), mats.pcbEsp, 0x7bcfff, 0.85);
+    i2cHub.position.set(-0.32, 0.41, 0.32);
+
+    const max485Mod = addCadMesh(gElec, new THREE.BoxGeometry(0.34, 0.07, 0.22), mats.pcbEsp, 0xf7b955, 0.85);
+    max485Mod.position.set(0.32, 0.41, -0.32);
+
+    const lipoPack = addCadMesh(gElec, new THREE.BoxGeometry(0.52, 0.22, 0.48), mats.sensorHead, 0xb9f277, 0.8);
+    lipoPack.position.set(0.35, 0.46, 0.24);
+
+    // C. ATMOSPHERIC MONITORING MAST
+    const gMast = partGroups.mast;
+    const mastX = 1.55, mastZ = 0.42;
+    const mastBase = addCadMesh(gMast, new THREE.BoxGeometry(0.48, 0.14, 0.48), mats.suspension, 0xb9f277, 0.85);
+    mastBase.position.set(mastX, 0.36, mastZ);
+
+    const mastCol = addCadMesh(gMast, new THREE.BoxGeometry(0.18, 1.95, 0.18), mats.frame, 0xb9f277, 0.85);
+    mastCol.position.set(mastX, 1.38, mastZ);
+
+    const mastTopCap = addCadMesh(gMast, new THREE.BoxGeometry(0.48, 0.26, 0.48), mats.sensorHead, 0xb9f277, 0.95);
+    mastTopCap.position.set(mastX, 2.42, mastZ);
+
+    const scd41Box = addCadMesh(gMast, new THREE.BoxGeometry(0.32, 0.22, 0.32), mats.deck, 0x7bcfff, 0.85);
+    scd41Box.position.set(mastX, 2.08, mastZ);
+
+    [1.76, 1.44, 1.12].forEach((gy, idx) => {
+      const bracket = addCadMesh(gMast, new THREE.BoxGeometry(0.22, 0.05, 0.08), mats.suspension, 0xb9f277, 0.7);
+      bracket.position.set(mastX - 0.16, gy + 0.08, mastZ);
+
+      const gasCyl = addCadMesh(
+        gMast,
+        new THREE.CylinderGeometry(0.11, 0.11, 0.18, 16),
+        mats.sensorHead,
+        idx === 0 ? 0x7bcfff : idx === 1 ? 0xb9f277 : 0xf7b955,
+        0.9
+      );
+      gasCyl.position.set(mastX - 0.26, gy, mastZ);
+    });
+
+    // D. SOIL & GEOLOGY PAYLOAD BAY
+    const gSoil = partGroups.soil;
+    const soilBay = addCadMesh(gSoil, new THREE.BoxGeometry(0.68, 0.56, 0.88), mats.sensorHead, 0xb9f277, 0.9);
+    soilBay.position.set(-2.38, 0.08, 0);
+
+    const soilTopCap = addCadMesh(gSoil, new THREE.BoxGeometry(0.45, 0.14, 0.55), mats.deck, 0xb9f277, 0.85);
+    soilTopCap.position.set(-2.38, 0.42, 0);
+
+    const specSensor = addCadMesh(gSoil, new THREE.BoxGeometry(0.38, 0.08, 0.44), mats.pcbEsp, 0x7bcfff, 0.9);
+    specSensor.position.set(-1.35, 0.34, 0.05);
+
+    const probeShaft = addCadMesh(gSoil, new THREE.CylinderGeometry(0.06, 0.05, 0.85, 12), mats.suspension, 0x57d5a0, 0.9);
+    probeShaft.position.set(-2.15, -0.52, -0.52);
+
+    const probeTip = addCadMesh(gSoil, new THREE.ConeGeometry(0.06, 0.2, 12), mats.mintGlow, 0xb9f277, 0.9);
+    probeTip.rotation.x = Math.PI;
+    probeTip.position.set(-2.15, -1.02, -0.52);
+
+    // E. NAVIGATION & TOPOGRAPHY SENSOR SUITE
+    const gNav = partGroups.nav;
+    const navArm = addCadMesh(gNav, new THREE.BoxGeometry(0.65, 0.1, 0.36), mats.suspension, 0xb9f277, 0.85);
+    navArm.position.set(-2.85, -0.18, 0);
+
+    const imuPlate = addCadMesh(gNav, new THREE.BoxGeometry(0.56, 0.08, 0.56), mats.frame, 0x7bcfff, 0.9);
+    imuPlate.position.set(-3.18, -0.42, 0);
+
+    const lidarBody = addCadMesh(gNav, new THREE.BoxGeometry(0.34, 0.38, 0.34), mats.sensorHead, 0xb9f277, 0.95);
+    lidarBody.position.set(-3.18, -0.19, 0);
+
+    [-0.08, 0.08].forEach(lz => {
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.06, 16), mats.blueGlow);
+      lens.rotation.z = Math.PI / 2;
+      lens.position.set(-3.36, -0.16, lz);
+      gNav.add(lens);
+    });
+
+    const coneGeo = new THREE.ConeGeometry(0.85, 2.2, 24, 1, true);
+    coneGeo.rotateZ(-Math.PI / 2);
+    coneGeo.translate(-1.1, 0, 0);
+    const coneMat = new THREE.MeshBasicMaterial({
+      color: 0xb9f277,
+      transparent: true,
+      opacity: 0.16,
+      side: THREE.DoubleSide,
+      wireframe: true
+    });
+    lidarBeamMesh = new THREE.Mesh(coneGeo, coneMat);
+    lidarBeamMesh.position.set(-3.38, -0.18, 0);
+    gNav.add(lidarBeamMesh);
+
+    let rDrag = false, rPrev = { x: 0, y: 0 };
+    stageEl.addEventListener('pointerdown', e => {
+      if (e.target.closest('button') || e.target.closest('.callout-tag')) return;
+      rDrag = true;
+      rPrev = { x: e.clientX, y: e.clientY };
+      stageEl.setPointerCapture(e.pointerId);
+    });
+    stageEl.addEventListener('pointermove', e => {
+      if (!rDrag) return;
+      camTargetSpherical.theta -= (e.clientX - rPrev.x) * 0.0085;
+      camTargetSpherical.phi = Math.max(0.18, Math.min(1.48, camTargetSpherical.phi - (e.clientY - rPrev.y) * 0.007));
+      rPrev = { x: e.clientX, y: e.clientY };
+      $$('#cameraViewBtns button').forEach(b => b.classList.remove('active'));
+      $('#hudViewName').textContent = 'FREE ORBIT 3D';
+    });
+    stageEl.addEventListener('pointerup', () => rDrag = false);
+    stageEl.addEventListener('pointercancel', () => rDrag = false);
+    stageEl.addEventListener('wheel', e => {
+      e.preventDefault();
+      camTargetSpherical.radius = Math.max(5.2, Math.min(14.5, camTargetSpherical.radius + e.deltaY * 0.005));
+    }, { passive: false });
+
+    new ResizeObserver(() => {
+      const rw = stageEl.clientWidth, rh = stageEl.clientHeight;
+      if (!rw || !rh) return;
+      camera.aspect = rw / rh;
+      camera.updateProjectionMatrix();
+      renderer.setSize(rw, rh);
+    }).observe(stageEl);
+
+    animateRover3D();
+  }
+
+  const labelAnchors = [
+    { id: '#lbl-mast',    pos: new THREE.Vector3(1.55, 2.75, 0.42),  key: 'mast' },
+    { id: '#lbl-elec',    pos: new THREE.Vector3(-0.05, 1.05, 0.0),  key: 'electronics' },
+    { id: '#lbl-soil',    pos: new THREE.Vector3(-2.35, 0.85, 0.0),  key: 'soil' },
+    { id: '#lbl-nav',     pos: new THREE.Vector3(-3.25, 0.25, 0.0),  key: 'nav' },
+    { id: '#lbl-chassis', pos: new THREE.Vector3(0.1, -1.05, 1.48),  key: 'chassis' }
+  ];
+
+  function updateCalloutPositions() {
+    const w = stageEl.clientWidth, h = stageEl.clientHeight;
+    labelAnchors.forEach(item => {
+      const el = $(item.id);
+      if (!el) return;
+      if (!showLabels) {
+        el.style.display = 'none';
+        return;
+      }
+      const worldPos = item.pos.clone();
+      if (isExploded && partGroups[item.key]) {
+        worldPos.add(partGroups[item.key].userData.explodeOffset);
+      }
+      worldPos.project(camera);
+      if (worldPos.z > 1) {
+        el.style.display = 'none';
+        return;
+      }
+      el.style.display = 'block';
+      const sx = (worldPos.x * 0.5 + 0.5) * w;
+      const sy = (-worldPos.y * 0.5 + 0.5) * h;
+      el.style.left = `${sx}px`;
+      el.style.top = `${sy}px`;
+    });
+  }
+
+  function animateRover3D() {
+    requestAnimationFrame(animateRover3D);
+
+    camCurrentSpherical.theta += (camTargetSpherical.theta - camCurrentSpherical.theta) * 0.12;
+    camCurrentSpherical.phi += (camTargetSpherical.phi - camCurrentSpherical.phi) * 0.12;
+    camCurrentSpherical.radius += (camTargetSpherical.radius - camCurrentSpherical.radius) * 0.12;
+
+    const r = camCurrentSpherical.radius;
+    const phi = camCurrentSpherical.phi;
+    const theta = camCurrentSpherical.theta;
+
+    camera.position.x = camLookTarget.x + r * Math.sin(phi) * Math.sin(theta);
+    camera.position.y = camLookTarget.y + r * Math.cos(phi);
+    camera.position.z = camLookTarget.z + r * Math.sin(phi) * Math.cos(theta);
+    camera.lookAt(camLookTarget);
+
+    Object.values(partGroups).forEach(grp => {
+      const targetPos = isExploded ? grp.userData.explodeOffset : new THREE.Vector3(0, 0, 0);
+      grp.position.lerp(targetPos, 0.1);
+    });
+
+    if (isDriving) {
+      wheelMeshes.forEach(w => { w.rotation.z += 0.025; });
+      if (lidarBeamMesh) {
+        lidarBeamMesh.visible = true;
+        lidarBeamMesh.rotation.y = Math.sin(Date.now() * 0.004) * 0.25;
+      }
+    } else if (lidarBeamMesh) {
+      lidarBeamMesh.visible = false;
+    }
+
+    renderer.render(scene, camera);
+    updateCalloutPositions();
+  }
+
+  const camViews = {
+    iso:   { theta: -0.68, phi: 1.08, radius: 9.2,  name: 'ISOMETRIC 3D' },
+    front: { theta: -Math.PI / 2, phi: 1.32, radius: 8.6, name: 'FRONT VIEW (LiDAR & SOIL)' },
+    side:  { theta: 0.0,   phi: 1.36, radius: 9.4,  name: 'SIDE VIEW (60cm PROFILE)' },
+    top:   { theta: 0.0,   phi: 0.18, radius: 10.2, name: 'TOP ORTHOGRAPHIC VIEW' }
+  };
+
+  $$('#cameraViewBtns button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('#cameraViewBtns button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const v = camViews[btn.dataset.cam];
+      if (v) {
+        camTargetSpherical = { theta: v.theta, phi: v.phi, radius: v.radius };
+        $('#hudViewName').textContent = v.name;
+      }
+    });
+  });
+
+  $('#btnResetRoverCam').addEventListener('click', () => {
+    camTargetSpherical = { ...camViews.iso };
+    $('#hudViewName').textContent = camViews.iso.name;
+    $$('#cameraViewBtns button').forEach(b => b.classList.toggle('active', b.dataset.cam === 'iso'));
+    selectSubsystem('all');
+  });
+
+  $('#btnExplode').addEventListener('click', e => {
+    isExploded = !isExploded;
+    e.currentTarget.classList.toggle('active', isExploded);
+  });
+
+  $('#btnWireframe').addEventListener('click', e => {
+    isWireframe = !isWireframe;
+    e.currentTarget.classList.toggle('active', isWireframe);
+    Object.values(partGroups).forEach(grp => {
+      grp.traverse(obj => {
+        if (obj.isMesh && obj.material && obj !== lidarBeamMesh) {
+          obj.material.wireframe = isWireframe;
+        }
+      });
+    });
+  });
+
+  $('#btnDrive').addEventListener('click', e => {
+    isDriving = !isDriving;
+    e.currentTarget.classList.toggle('active', isDriving);
+  });
+
+  $('#btnLabels').addEventListener('click', e => {
+    showLabels = !showLabels;
+    e.currentTarget.classList.toggle('active', showLabels);
+  });
+
+  function selectSubsystem(partKey) {
+    selectedSubsystem = partKey;
+
+    $$('#subsystemList li').forEach(li => {
+      li.classList.toggle('active', li.dataset.part === partKey);
+    });
+    $$('.callout-tag').forEach(tag => {
+      tag.classList.toggle('active', tag.dataset.part === partKey);
+    });
+
+    const info = subsystemDetails[partKey] || subsystemDetails.all;
+    $('#piTitle').textContent = info.title;
+    $('#piPin').textContent = info.pin;
+    $('#piDesc').textContent = currentLang === 'ar' ? info.ar : info.en;
+
+    Object.entries(partGroups).forEach(([k, grp]) => {
+      const isHighlighted = (partKey === 'all' || k === partKey);
+      grp.traverse(obj => {
+        if (obj.isMesh && obj !== lidarBeamMesh) {
+          obj.material.transparent = !isHighlighted;
+          obj.material.opacity = isHighlighted ? 1.0 : 0.22;
+        }
+      });
+    });
+  }
+
+  $$('#subsystemList li').forEach(li => {
+    li.addEventListener('click', () => selectSubsystem(li.dataset.part));
+  });
+  $$('.callout-tag').forEach(tag => {
+    tag.addEventListener('click', () => selectSubsystem(tag.dataset.part));
+  });
+  $$('.s-badge').forEach(badge => {
+    badge.addEventListener('click', () => {
+      selectSubsystem(badge.dataset.focus);
+      $('#blueprint').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+  $$('.wire-node').forEach(node => {
+    node.addEventListener('click', () => {
+      selectSubsystem(node.dataset.part);
+      $('#blueprint').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  $$('#busFilterBtns button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('#busFilterBtns button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const bus = btn.dataset.bus;
+      $$('.wire-group').forEach(wg => {
+        wg.style.opacity = (bus === 'all' || wg.dataset.bus === bus) ? '1' : '0.15';
+      });
+    });
+  });
+
+  /* ==========================================================================
+     4. REVERSE PREDICTIVE AI SIMULATOR
+     ========================================================================== */
+  const aiTargets = {
+    jezero:     { analog: 'Atacama Core (93%)', moist: '6.4% · pH 6.5', mineral: '88% Clay / Habitable', uncert: '95.8% (±4.2%)' },
+    shackleton: { analog: 'Devon Island (89%)', moist: '19.8% · pH 6.1', mineral: '92% Water Ice / Basalt', uncert: '93.9% (±6.1%)' },
+    valles:     { analog: 'Wadi Rum Caves (91%)', moist: '4.2% · pH 5.6', mineral: '85% Iron Oxide / Shielded', uncert: '95.0% (±5.0%)' }
+  };
+
+  function applyAiTarget(key) {
+    const t = aiTargets[key];
+    if (!t) return;
+    $('#aiAnalogPred').textContent = t.analog;
+    $('#aiMoistPred').textContent = t.moist;
+    $('#aiMineralPred').textContent = t.mineral;
+    $('#aiUncertPred').textContent = t.uncert;
+    $$('#aiTargetBtns button').forEach(b => b.classList.toggle('active', b.dataset.aitarget === key));
+  }
+
+  $$('#aiTargetBtns button').forEach(btn => {
+    btn.addEventListener('click', () => applyAiTarget(btn.dataset.aitarget));
+  });
+
+  $('#runAiPredictBtn').addEventListener('click', () => {
+    const keys = Object.keys(aiTargets);
+    const current = $('#aiTargetBtns button.active')?.dataset.aitarget || 'jezero';
+    const next = keys[(keys.indexOf(current) + 1) % keys.length];
+    applyAiTarget(next);
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    resizeMap();
+    updateSimilarity();
+    initRover3D();
+  });
+})();
+</script>
+</body>
+</html>
