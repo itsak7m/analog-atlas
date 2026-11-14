@@ -272,6 +272,8 @@ export class Globe {
         });
     }
 
+    this.applyFocus();
+
     // 3. Real 3D terrain as 3D Tiles (needs the Cesium ion token).
     if (HAS_ION) {
       this.tilesReady = new Promise((resolve) => {
@@ -280,6 +282,7 @@ export class Globe {
             if (this.viewer !== viewer) { resolve(false); return; } // the user switched body meanwhile
             this.tileset = tileset;
             scene.primitives.add(tileset);
+            this.applyFocus();
             tileset.initialTilesLoaded.addEventListener(() => {
               if (this.viewer !== viewer) { resolve(false); return; }
               scene.globe.show = false; // the tiles replace the flat globe
@@ -489,6 +492,37 @@ export class Globe {
     });
   }
 
+  // The base view: draw only a square block of ground around the base (half = metres from the centre to an
+  // edge), and draw it in full detail. Everything outside the block is left out, so the tiles of the rest of
+  // the planet are not loaded at all. setFocus(null) brings the whole planet back. Kept across world swaps:
+  // a new world applies it when its globe and its 3D tiles are created.
+  setFocus(place, half = 1500) {
+    this.focus = place ? { lon: place.lon, lat: place.lat, half } : null;
+    this.applyFocus();
+  }
+
+  applyFocus() {
+    const viewer = this.viewer;
+    if (!viewer || viewer.isDestroyed()) return;
+    const f = this.focus;
+    const ok = f && Cesium.ClippingPolygonCollection.isSupported(viewer.scene);
+    const block = () => {
+      const dLat = Cesium.Math.toDegrees(f.half / this.ellipsoid.maximumRadius);
+      const dLon = dLat / Math.max(0.05, Math.cos(Cesium.Math.toRadians(f.lat)));
+      const positions = Cesium.Cartesian3.fromDegreesArray([
+        f.lon - dLon, f.lat - dLat, f.lon + dLon, f.lat - dLat, f.lon + dLon, f.lat + dLat, f.lon - dLon, f.lat + dLat,
+      ], this.ellipsoid);
+      // inverse: keep what is INSIDE the square, clip everything else. One collection per owner.
+      return new Cesium.ClippingPolygonCollection({ polygons: [new Cesium.ClippingPolygon({ positions, ellipsoid: this.ellipsoid })], inverse: true });
+    };
+    viewer.scene.globe.clippingPolygons = ok ? block() : undefined;
+    if (this.tileset) {
+      this.tileset.clippingPolygons = ok ? block() : undefined;
+      // Default 16; 2 loads much finer tiles, which is cheap when only the block is drawn.
+      this.tileset.maximumScreenSpaceError = ok ? 2 : 16;
+    }
+  }
+
   // Height of the 3D terrain at a place, or null when there is no 3D terrain (yet) or sampling failed.
   // On the Moon and Mars it first waits for the 3D tiles to show (groundHeight limits the wait).
   async sampleHeight(lon, lat) {
@@ -502,7 +536,9 @@ export class Globe {
       }
       if (!(await this.tilesReady) || this.viewer !== viewer || !viewer.scene.sampleHeightSupported) return null;
       // Leave out our own entities (the 3D base), so the sample is the ground and not the top of the base.
-      const [p] = await viewer.scene.sampleHeightMostDetailed([carto], viewer.entities.values.slice());
+      // Sampled from 30 km up, above the highest ground (Olympus Mons is about 22 km): from height 0 the sample
+      // misses ground that is far above the reference sphere (Arsia Mons is about 10 km up).
+      const [p] = await viewer.scene.sampleHeightMostDetailed([Cesium.Cartographic.fromDegrees(lon, lat, 30000)], viewer.entities.values.slice());
       return p && Number.isFinite(p.height) ? p.height : null;
     } catch (err) {
       console.warn('height sampling failed', err);

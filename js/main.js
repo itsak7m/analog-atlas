@@ -600,8 +600,9 @@ const api = {
   backToGlobe,
   // Base plan world swap: show a place's close-up at once (no flight), with the camera at the given
   // heading, pitch and range. Returns the ground height of the place, or null.
-  async jumpTo(sel, view) {
-    const place = sel.kind === 'box' ? findBox(sel.id) : placeOf(sel);
+  // at: an exact point to look at instead of the place's own pin (the base beside a cave skylight).
+  async jumpTo(sel, view, at = null) {
+    const place = at || (sel.kind === 'box' ? findBox(sel.id) : placeOf(sel));
     if (!place || !globe.viewer) return null;
     const world = worldOf(sel, place);
     if (state.world !== world) await showWorld(world, { preserveBase: true });
@@ -674,7 +675,8 @@ async function main() {
   const knownGroundHeight = (body, lon, lat) => {
     const box = state.selected?.kind === 'box' && body === 'earth' ? findBox(state.selected.id) : null;
     if (box?.lat === lat && box.lon === lon && Number.isFinite(box.screen.terrain?.centre_elev_m)) return box.screen.terrain.centre_elev_m;
-    const p = Object.values(state.data.terrain || {}).find((t) => t.body === body && Math.abs(t.lat - lat) < 0.005 && Math.abs(t.lon - lon) < 0.005);
+    // 0.02° (about 0.6 km on the Moon, 1.2 km on Mars) also covers the base spot beside a cave skylight (base.js).
+    const p = Object.values(state.data.terrain || {}).find((t) => t.body === body && Math.abs(t.lat - lat) < 0.02 && Math.abs(t.lon - lon) < 0.02);
     return p && Number.isFinite(p.centre_elev_m) ? p.centre_elev_m : null;
   };
 

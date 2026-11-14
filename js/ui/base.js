@@ -10,6 +10,7 @@ import { $, esc, fmt, fmtCoord, toast, BODY_LABEL } from '../util.js';
 import { pct, PILLARS } from '../scoring.js';
 import { openOverlay } from './overlay.js';
 import { drawBase, BASE_INTERIORS } from '../globe/base3d.js';
+import { ellipsoidFor } from '../globe/globe.js';
 import { marsDelaySeconds, marsDistanceKm, nextConjunction, formatDelay, LIGHT_KM_S } from '../orbits.js';
 import { tourRunning } from './tour.js';
 import { corridorActive } from './corridor.js';
@@ -44,6 +45,15 @@ export function delayLine(body, now = new Date()) {
 
 // ---------- 3D base + card ----------
 let active = null;
+// A cave skylight is a hole (about 100-150 m across): the base stands on the flat plain beside it, not over it.
+// SKYLIGHT_GAP_M east of the pit centre, a concept choice (the platform is 88 m wide).
+const SKYLIGHT_GAP_M = 300;
+function baseSpot(place) {
+  if (!/-cave$/.test(place?.group || '') || place.beside) return place;
+  const R = ellipsoidFor(place.body).maximumRadius;
+  const dLon = Cesium.Math.toDegrees(SKYLIGHT_GAP_M / (R * Math.cos(Cesium.Math.toRadians(place.lat))));
+  return { ...place, lon: place.lon + dLon, beside: true };
+}
 let request = 0;
 const previewOrbit = () => ({ heading: Cesium.Math.toRadians(32), pitch: Cesium.Math.toRadians(-27), range: 150 });
 export const baseActive = () => !!active;
@@ -57,18 +67,21 @@ export async function startBase(api, { sel, place, target, result, here, onAsk, 
   try { await baseData(); } catch (err) { toast(`Base plan data could not load: ${err.message}`, 5000); return; }
   if (request !== run) return;
   const body = planBodyOf(place, target);
-  const ctx = { sel, place, target, result, body, onAsk, swapTo: pair || swapTarget(api, sel, place, target) };
+  const spot = baseSpot(place);
+  const ctx = { sel, place: spot, target, result, body, onAsk, swapTo: pair || swapTarget(api, sel, place, target) };
   let h;
+  // Only the ground around the base is drawn, in full detail (see setFocus in globe.js).
+  api.globe.setFocus(spot);
   try {
     if (api.globe.viewer) {
-      if (here && api.globe.has3D) h = await api.globe.closeOrbit(150, -27);
-      else h = await api.jumpTo(sel, previewOrbit());
+      if (here && api.globe.has3D && spot === place) h = await api.globe.closeOrbit(150, -27);
+      else h = await api.jumpTo(sel, previewOrbit(), spot === place ? null : spot);
     }
   } catch (err) {
     console.error('Base preview failed', err);
   }
   if (request !== run) return;
-  if (h == null || !api.globe.viewer) { openBaseDetails(ctx); return; }
+  if (h == null || !api.globe.viewer) { api.globe.setFocus(null); openBaseDetails(ctx); return; }
   showBase(api, ctx, h);
   api.globe.resumeOrbit();
 }
@@ -90,6 +103,7 @@ function settleOnGround(base) {
   const { lon, lat } = ctx.place;
   const viewer = base.viewer;
   const stillHere = () => active === base && globe.viewer === viewer;
+  let seen = false; // the on-screen reading has placed the base: it wins over the slower detailed sample
   const moveTo = (real) => {
     if (!stillHere() || base.motion || !Number.isFinite(real)) return false;
     const dh = real - base.h;
@@ -109,20 +123,20 @@ function settleOnGround(base) {
     }
     return true;
   };
-  let done = false;
   // Fast path: the Moon and Mars tiles are drawn on screen well before they count as fully loaded, so read the
   // height of what is on screen every second (leaving out the base itself) and move once two readings agree.
   if (globe.body !== 'earth') {
-    const carto = Cesium.Cartographic.fromDegrees(lon, lat);
     let last = null;
     (async () => {
-      for (let i = 0; i < 120 && !done && stillHere(); i += 1) {
+      // Runs while the base is open: finer tiles keep arriving (and can show a different height) after the first answer.
+      while (stillHere()) {
         await new Promise((r) => setTimeout(r, 1000));
-        if (done || !stillHere() || base.motion || !viewer.scene.sampleHeightSupported) continue;
+        if (!stillHere() || base.motion || !viewer.scene.sampleHeightSupported) continue;
         let q = null;
-        try { q = viewer.scene.sampleHeight(carto, viewer.entities.values.slice()); } catch (err) { q = null; }
+        // Asked from 30 km up (see sampleHeight in globe.js): from height 0 it misses ground far above the sphere.
+        try { q = viewer.scene.sampleHeight(Cesium.Cartographic.fromDegrees(lon, lat, 30000), viewer.entities.values.slice()); } catch (err) { q = null; }
         if (!Number.isFinite(q)) { last = null; continue; }
-        if (last !== null && Math.abs(q - last) < 3) moveTo(q);
+        if (last !== null && Math.abs(q - last) < 3) seen = moveTo(q) || seen;
         last = q;
       }
     })();
@@ -133,7 +147,7 @@ function settleOnGround(base) {
     for (let i = 0; i < 60 && stillHere() && base.motion; i += 1) await new Promise((r) => setTimeout(r, 500));
     // No 3D ground after all (no tiles or they failed): the base belongs on the flat globe, height 0.
     if (!Number.isFinite(real) && !globe.has3D) real = 0;
-    if (moveTo(real)) done = true;
+    if (!seen) moveTo(real);
   });
 }
 
@@ -275,10 +289,12 @@ async function swapWorld() {
     cover = await coverScreen(api, `${worldOf(ctx.place)} → ${worldOf(to.place)} · ${shortPlace(to.place)}`);
     if (request !== run || active !== from) return;
     clearBase();
-    const h = await api.jumpTo(to.sel, view);
+    const spot = baseSpot(to.place);
+    api.globe.setFocus(spot);
+    const h = await api.jumpTo(to.sel, view, spot === to.place ? null : spot);
     if (request !== run) return;
     if (h == null) { toast('The other world could not be shown.'); return; }
-    const next = { ...to, body: planBodyOf(to.place, to.target), onAsk: ctx.onAsk, swapTo: { sel: ctx.sel, place: ctx.place, target: ctx.target, result: ctx.result } };
+    const next = { ...to, place: spot, body: planBodyOf(to.place, to.target), onAsk: ctx.onAsk, swapTo: { sel: ctx.sel, place: ctx.place, target: ctx.target, result: ctx.result } };
     showBase(api, next, h, { render: !room });
     if (room) await enterRoom(room, { instant: true, look });
     if (request !== run || !active) return;
@@ -309,7 +325,7 @@ function showCard(focus) {
   el.hidden = false;
   el.classList.add('base-card');
   el.setAttribute('aria-busy', String(Boolean(motion)));
-  el.innerHTML = `<div class="k" title="${esc(fmtCoord(place.lat, place.lon))}">Base concept · ${esc(worldOf(place))} · ${esc(shortPlace(place))}</div>
+  el.innerHTML = `<div class="k" title="${esc(fmtCoord(place.lat, place.lon))}">Base concept · ${esc(worldOf(place))} · ${esc(shortPlace(place))}${place.beside ? ` · ${SKYLIGHT_GAP_M} m from the skylight` : ''}</div>
     <div class="t">${motion === 'entry' ? 'Moving inside…' : interior ? `Inside the ${interior.label.toLowerCase()}${room === 'comm' ? ' room' : ''}` : 'Base exterior'}</div>
     ${interior && !motion ? `<div class="s">${interior.description} Drag the view or use the arrow keys to look around.</div>` : ''}
     <div class="ctl">${room ? `<button type="button" class="btn small primary" data-b="outside"${disabled}>Back outside</button>${roomButtons}` : `<button type="button" class="btn small primary" data-b="enter"${disabled}>Enter habitat</button>`}
@@ -339,6 +355,7 @@ function clearBase() {
     if (base.near != null) globe.camera.frustum.near = base.near;
   }
   base.remove();
+  globe.setFocus(null);
   document.body.classList.remove('basing');
   const el = $('#caption');
   el.classList.remove('base-card');
