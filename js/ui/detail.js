@@ -32,6 +32,7 @@ export function setPanel(el, html) {
   const had = a && a !== el && el.contains(a);
   const action = had && a.dataset.action;
   el.innerHTML = html;
+  el.querySelector('details.more')?.addEventListener('toggle', (e) => { moreOpen = e.currentTarget.open; });
   if (!had) return;
   const same = action && [...el.querySelectorAll('[data-action]')].find((b) => b.dataset.action === action && b.dataset.id === a.dataset.id);
   (same || el.querySelector('h2.title'))?.focus({ preventScroll: true });
@@ -74,6 +75,28 @@ export function mbar(score) {
   if (score == null) return '<span class="src">not used</span>';
   return `<span class="mbar" aria-hidden="true"><i style="width:${Math.round(score * 100)}%"></i></span>${pct(score)}%`;
 }
+
+// ---------- the short view ----------
+// A panel first shows what is needed to judge a match: the score, the pillars side by side and one limit.
+// Everything else (factor tables, orbit data, climate facts, caveats, sources) is one press away under
+// "Full data & sources". Its open/closed state is kept while the visitor moves between places.
+let moreOpen = false;
+export function moreSection(html) {
+  return `<details class="more"${moreOpen ? ' open' : ''}><summary>Full data &amp; sources <span class="src">every number, its source and the caveats</span></summary><div class="more-body">${html}</div></details>`;
+}
+
+// rows: [label, here, there, score]; there === null joins the two value cells. score: a 0-1 number, null
+// ("not used") or the string 'context' (shown, not scored).
+export function quickTable(hereName, thereName, rows) {
+  const match = (s) => (s === 'context' ? '<span class="src">Context</span>' : mbar(s));
+  const body = rows.map(([label, a, b, s]) => (b === null
+    ? `<tr><td>${label}</td><td colspan="2">${a}</td><td class="match">${match(s)}</td></tr>`
+    : `<tr><td>${label}</td><td>${a}</td><td>${b}</td><td class="match">${match(s)}</td></tr>`)).join('');
+  return `<div class="section quick"><span class="label">The match in short</span>
+    <table class="facts"><thead><tr><th scope="col"><span class="sr-only">Pillar</span></th><th scope="col">${esc(hereName)}</th><th scope="col">${esc(thereName)}</th><th scope="col">Match</th></tr></thead><tbody>${body}</tbody></table></div>`;
+}
+
+export const LIMIT_LINE = '<p class="src limit">Screening from satellite and climate data, not a field visit. Every number and its source is under <b>Full data &amp; sources</b>.</p>';
 
 export function panoramasFor(id) {
   const p = state.data.panoramas;
@@ -213,17 +236,26 @@ export function renderSite(site, target, result, extra = {}) {
   }).join('');
   const targetSources = [...new Set(result.climate.rows.map((r) => r.source).filter(Boolean))].map(srcLink).join(' · ');
 
+  // Terrain values are read directly, so each side still shows when the other side has no data.
+  const terrain = state.data.terrain || {};
+  const st = (!site.terrainExclude && terrain[site.id]) || {};
+  const tt = terrain[target.id] || {};
+  const notComputed = '<span class="src">not computed</span>';
+  const slope = (x) => (x.median_slope_deg != null ? fmt(x.median_slope_deg, 1, '°') : notComputed);
+  const flat = (x) => (x.max_flat_square_km != null ? `${fmt(x.max_flat_square_km, 1)} km` : notComputed);
+  const rockOf = (x) => (x.geology?.primary ? esc(ROCK_LABEL[x.geology.primary] || x.geology.primary) : '<span class="src">not measured</span>');
+  const climateRow = ['Climate', `<span class="src">${result.climate.used} comparable factors: temperature, rain${state.mode === 'full' ? '' : ', albedo'}…</span>`, null, strictDropsClimate(result) ? null : result.climate.score];
+  const quick = quickTable(site.name.split(',')[0], target.name.split(' (')[0], state.mode === 'full' ? [
+    climateRow,
+    ['Ground slope', slope(st), slope(tt), result.terrain ? result.terrain.score : null],
+    ['Main rock', rockOf(site), rockOf(target), result.geology ? result.geology.score : null],
+    ['Resources', resourcesText(site, target, result.resources), null, result.resources ? result.resources.score : null],
+  ] : [climateRow]);
+
   let pillars = '';
   if (state.mode === 'full') {
     const t = result.terrain;
     const g = result.geology;
-    // Terrain values are read directly, so each side still shows when the other side has no data.
-    const terrain = state.data.terrain || {};
-    const st = (!site.terrainExclude && terrain[site.id]) || {};
-    const tt = terrain[target.id] || {};
-    const notComputed = '<span class="src">not computed</span>';
-    const slope = (x) => (x.median_slope_deg != null ? fmt(x.median_slope_deg, 1, '°') : notComputed);
-    const flat = (x) => (x.max_flat_square_km != null ? `${fmt(x.max_flat_square_km, 1)} km` : notComputed);
     pillars = `<div class="section"><span class="label">Terrain and geology</span>
       <table class="facts"><thead><tr><th>Pillar</th><th>${esc(site.name.split(',')[0])}</th><th>${esc(target.name.split(' (')[0])}</th><th>Match</th></tr></thead><tbody>
       <tr><td>Climate</td><td colspan="2" class="src">${result.climate.used} comparable factors</td><td class="match">${mbar(result.climate.score)}</td></tr>
@@ -265,7 +297,10 @@ export function renderSite(site, target, result, extra = {}) {
       ${baseAllowed({ kind: 'site', id: site.id }, target.id) ? '<button type="button" class="btn primary" data-action="base" title="A test base here for the starred target: 3D concept, crops, communication room">⭐ Explore base in 3D</button>' : ''}
     </div>
     ${baseAllowed({ kind: 'site', id: site.id }, target.id) ? `<p class="star-note">⭐ Strongest Earth match on the ${esc(BODY_LABEL[target.body])}: the one pair we plan a base for.</p>` : ''}
-    ${photoNote(site.id)}
+    ${quick}
+    ${site.why ? `<p class="why">${esc(site.why)}</p>` : ''}
+    ${LIMIT_LINE}
+    ${moreSection(`${photoNote(site.id)}
     ${twinOfSection(site)}
     <div class="section"><span class="label">Factor by factor</span>
       <table class="facts"><thead><tr><th>Factor</th><th>This site</th><th>${esc(target.name.split(' (')[0].split(',')[0])}</th><th>Match</th></tr></thead><tbody>${rows}</tbody></table>
@@ -274,11 +309,11 @@ export function renderSite(site, target, result, extra = {}) {
     </div>
     ${pillars}
     ${orbitSiteHTML(site)}
-    <div class="section"><span class="label">Why it matters</span><p class="why">${esc(site.why)}</p><ul class="links">${sources}</ul>${caveats}</div>
+    <div class="section"><span class="label">Sources and caveats</span><ul class="links">${sources}</ul>${caveats}</div>
     ${testsSection(site)}
     <div class="section"><span class="label">Climate facts · NASA POWER</span>
       <table class="facts"><tbody>${facts}</tbody></table>
-      <p class="src">Highest/lowest values are the extreme hourly values in 2001–2020; the others are 20-year averages.</p></div>`);
+      <p class="src">Highest/lowest values are the extreme hourly values in 2001–2020; the others are 20-year averages.</p></div>`)}`);
 }
 
 export function renderTarget(target, twins, extra = {}) {
@@ -311,13 +346,13 @@ export function renderTarget(target, twins, extra = {}) {
       ${isStarTarget(target.id) ? '<button type="button" class="btn primary" data-action="base" title="A base here: 3D concept, problems and solutions, crops, communication room">⭐ Explore base in 3D</button>' : ''}
     </div>
     ${isStarTarget(target.id) ? `<p class="star-note">⭐ Its closest Earth twin is the strongest match of any ${esc(BODY_LABEL[target.body])} target (default screening score), so this is where we plan the base.</p>` : `<p class="src">The 3D base is planned only at the starred ⭐ target of each world: ${Object.values(starPairs()).map((s) => esc(state.data.targets.find((t) => t.id === s.targetId)?.name || s.targetId)).join(' and ')}.</p>`}
-    ${photoNote(target.id)}
-    ${measured < TARGET_MIN_MEASURED ? `<p class="caveat">⚑ Only ${measured} of the ${CLIMATE_FACTORS.length} original climate factors ${measured === 1 ? 'has' : 'have'} site-level data. See the factor sources below.</p>` : ''}
     <div class="section"><span class="label">Closest Earth twins</span>${twinList}
       <p class="src">${scoreLabel()}${gapText ? ` · ${esc(gapText)}` : ''}.${scored.length ? ' Click a twin to fly there on Earth.' : ''}${scored.length && state.mode === 'full' ? ` ${pillarKey().join(' = ')}.` : ''}</p></div>
+    ${measured < TARGET_MIN_MEASURED ? `<p class="caveat">⚑ Only ${measured} of the ${CLIMATE_FACTORS.length} original climate factors ${measured === 1 ? 'has' : 'have'} site-level data. See the factor sources under Full data &amp; sources.</p>` : ''}
+    ${moreSection(`${photoNote(target.id)}
     <div class="section"><span class="label">Environment used in the score${state.strict ? ' · strict data' : ''}</span>
       <table class="facts"><tbody>${rows}</tbody></table></div>
-    <div class="section"><span class="label">More measured facts</span><table class="facts"><tbody>${facts}</tbody></table></div>`);
+    <div class="section"><span class="label">More measured facts</span><table class="facts"><tbody>${facts}</tbody></table></div>`)}`);
 }
 
 export function hideDetail() {

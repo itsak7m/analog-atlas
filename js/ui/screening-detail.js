@@ -7,7 +7,7 @@ import { state } from '../state.js';
 import { ROCK_LABEL, R_SLOPE, SAFE_SLOPE_DEG, pct } from '../scoring.js';
 import { esc, fmt, fmtCoord, BODY_LABEL, CELL_GAP_LIMIT_M, distanceKm, scoreColor } from '../util.js';
 import { noScoreText, gapWords, strictDropsClimate, scoreLabel } from './ranking.js';
-import { setPanel, mbar, POWER_FACTS, srcLink, artemisLink } from './detail.js';
+import { setPanel, mbar, POWER_FACTS, srcLink, artemisLink, moreSection, quickTable, LIMIT_LINE } from './detail.js';
 import { currentResult, screenDoc, nearText, containedSite, whyWords } from './discover.js';
 import { findBox, neighbours, siteScoreNoResources, getScreening, SCREEN_LABEL } from '../screening.js';
 import { earthCell, targetCell, earthTempLine, orbitBoxHTML } from './orbit.js';
@@ -99,6 +99,22 @@ function pillarsSection(box, rec, target, row, doc) {
     <tr><td>Resources</td><td colspan="2"><span class="src">not available for screening boxes (pillar left out)</span></td><td class="match">${mbar(null)}</td></tr>
     </tbody></table>
     <p class="src">${g ? `${esc(g.reason)}. ` : ''}Slopes are estimated over 1 km on a 500 m grid. A ${R_SLOPE}° difference scores 0. The flat-zone estimate uses that same grid. ${artemisLink()} uses 100 m slopes.${terrainNote(rec)}</p></div>`;
+}
+
+// The short view: climate, slope and rock side by side (boxes have no resources pillar).
+function quickHTML(box, rec, target, row) {
+  if (!row) return '';
+  const bt = (!rec.terrainExclude && rec.terrain) || {};
+  const tt = (state.data.terrain || {})[target.id] || {};
+  const slope = (x) => (x.median_slope_deg != null ? fmt(x.median_slope_deg, 1, '°') : '<span class="src">not computed</span>');
+  const rock = (x) => (x?.primary ? esc(ROCK_LABEL[x.primary] || x.primary) : '<span class="src">not mapped</span>');
+  const climate = ['Climate', `<span class="src">${row.climate.used} comparable factors: temperature, rain…</span>`, null, strictDropsClimate(row) ? null : row.climate.score];
+  return quickTable('This box', shortName(target.name), state.mode === 'full' ? [
+    climate,
+    ['Ground slope', slope(bt), slope(tt), row.terrain ? row.terrain.score : null],
+    ['Main rock', rock(box.geology), rock(target.geology), row.geology ? row.geology.score : null],
+    ['Resources', '<span class="src">not available for boxes (left out)</span>', null, null],
+  ] : [climate]);
 }
 
 // ---------- caveats ----------
@@ -237,10 +253,10 @@ function roverCaseHTML(box, target) {
       <div><dt>Jordan candidate</dt><dd>${fmt(candidate.metrics[0].medianDeg, 1, '°')}</dd></div>
       <div><dt>Shackleton ridge</dt><dd>${fmt(lunar.metrics[0].medianDeg, 1, '°')}</dd></div>
     </dl>
-    <p class="src">Median slope in two 10 km areas, using a 1 km baseline.</p>
-    <p><b>Future field trial (not done yet).</b> With a test rover, repeat passes on a surveyed slope and a nearby flat track with similar soil. Log wheel rotations, battery voltage and current. Measure distance separately to estimate slip and energy per metre.</p>
-    <p class="src">Satellite screening. Field access, surface roughness and traction still need checking. Lunar gravity, soil and temperatures differ.</p>
-    <details><summary>Compare slope statistics and sources</summary>
+    <p class="src">Median slope in two 10 km areas, using a 1 km baseline. Satellite screening: not checked on the ground yet.</p>
+    <details><summary>Slope statistics, sources and the planned field trial</summary>
+      <p><b>Future field trial (not done yet).</b> With a test rover, repeat passes on a surveyed slope and a nearby flat track with similar soil. Log wheel rotations, battery voltage and current. Measure distance separately to estimate slip and energy per metre.</p>
+      <p class="src">Field access, surface roughness and traction still need checking. Lunar gravity, soil and temperatures differ.</p>
       <p class="src">The medians are close at both scales. The Jordan box has a steeper upper tail at 1 km. P90 is the slope below which 90% of samples fall.</p>
       <div class="scroll-x"><table class="facts"><thead><tr><th>Area</th><th>Baseline</th><th>Median</th><th>P90</th><th>Under 10°</th></tr></thead><tbody>${rows}</tbody></table></div>
       <p class="src">Central differences on a 500 m grid. ${candidate.metrics[0].samples} slopes at 1 km and ${candidate.metrics[1].samples} at 2 km per area. ${link(candidate.source, 'Copernicus DEM samples')} · ${link(lunar.source, 'NASA LRO LOLA samples')}.</p>
@@ -296,7 +312,9 @@ export function renderBox(box, target, row) {
       <button type="button" class="btn" data-action="stand">Stand here · 3D terrain</button>
     </div>
     ${navHTML(box)}
-    ${row ? `<div class="section"><span class="label">Factor by factor</span>
+    ${quickHTML(box, rec, target, row)}
+    ${LIMIT_LINE}
+    ${moreSection(`${row ? `<div class="section"><span class="label">Factor by factor</span>
       <table class="facts"><thead><tr><th>Factor</th><th>This box</th><th>${esc(shortName(target.name))}</th><th>Match</th></tr></thead><tbody>${factors}</tbody></table>
       <p class="src">Earth: ${climateSource(box, doc)}. Target: ${targetSources}</p>
       ${earthTempLine('box')}
@@ -308,7 +326,7 @@ export function renderBox(box, target, row) {
     <div class="section"><span class="label">Climate facts · NASA POWER</span>
       <table class="facts"><tbody>${facts}</tbody></table>
       <p class="src">For the whole climate cell, not only this box. Highest/lowest values are the extreme hourly values in 2001–2020; the others are 20-year averages.</p></div>
-    ${provenanceHTML(doc, box, rec)}`);
+    ${provenanceHTML(doc, box, rec)}`)}`);
   if (focusDir) {
     const b = el.querySelector(`[data-dir="${focusDir}"]:not([disabled])`);
     if (b) b.focus({ preventScroll: true });

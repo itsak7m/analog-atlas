@@ -1185,3 +1185,14 @@ body.story-on .top-actions > .more { display: block !important; }
   .topbar { gap: 5px; }
   .feature-actions .btn { min-height: 37px; }
 }
+
+/* The short view of a detail panel and the "Full data & sources" drawer under it (detail.js moreSection). */
+.section.quick .facts td:first-child { white-space: nowrap; color: var(--muted); }
+.limit { margin: 8px 0 0; }
+details.more { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 10px; }
+details.more > summary { cursor: pointer; font-weight: 600; color: var(--text); list-style: none; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; padding: 6px 0; }
+details.more > summary::-webkit-details-marker { display: none; }
+details.more > summary::before { content: '▸'; color: var(--cyan); transition: transform .15s; }
+details.more[open] > summary::before { transform: rotate(90deg); }
+details.more > summary .src { font-weight: 400; }
+details.more > summary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px; }
