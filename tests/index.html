@@ -1171,12 +1171,12 @@ test('docs agree with the data: test count, site/target/box counts and the short
   }
   // The deck's "What we found" rows: each % is the named site's default screening score for each target in the row.
   const deckRows = {
+    '⭐ MOON · MARE TRANQUILLITATIS PIT': [['harrat', 'tranquillitatis-pit']],
+    '⭐ MARS · ARSIA MONS CAVE SKYLIGHT': [['harrat', 'arsia-skylight']],
     'MARS · JEZERO CRATER': [['harrat', 'jezero']],
-    '⭐ MOON + MARS · CAVE SKYLIGHTS': [['harrat', 'tranquillitatis-pit'], ['harrat', 'arsia-skylight']],
-    'MARS · GALE CRATER + PHOENIX': [['qaidam-dalangtan', 'gale'], ['tso-kar-ladakh', 'phoenix']],
     'MOON · APOLLO 11 + APOLLO 17': [['harrat', 'apollo11'], ['harrat', 'apollo17']],
-    'MARS · ICE-RICH LANDING ZONES': [['tso-kar-ladakh', 'deuteronilus'], ['tso-kar-ladakh', 'erebus-montes']],
-    'MOON · 3 PERMANENT BASE SITES': [['dry-valleys', 'malapert'], ['haughton', 'mons-mouton'], ['wadi-rum', 'shackleton-ridge']],
+    'MOON · SHACKLETON CONNECTING RIDGE': [['wadi-rum', 'shackleton-ridge']],
+    'MARS · GALE CRATER + PHOENIX': [['qaidam-dalangtan', 'gale'], ['tso-kar-ladakh', 'phoenix']],
   };
   const items = deck.slides.flatMap((s) => s.items || []).filter((it) => it.type === 'row');
   for (const [tag, pairs] of Object.entries(deckRows)) {
