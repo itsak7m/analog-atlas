@@ -1,6 +1,6 @@
 // Story mode: a short animated story for judges and first-time visitors (about 2 minutes).
 // Few words, one number per scene, real camera flights: Earth -> Jordan (Harrat al-Shaam) -> Mars (Jezero) ->
-// a concept floor plan -> food grown in water -> a message home crossing space -> the crew's mind.
+// a 3D concept base that builds itself -> food grown in water -> a message home crossing space -> the crew's mind.
 // Every number is computed from the app's data when the scene is shown (match from the ranking, signal delay from
 // JPL planet positions); the base layout and the drawings are our concept (SI-assisted, see README section 10).
 // Keys: → next, ← back, Space pause, Esc exit.
@@ -10,8 +10,8 @@ import { $, esc, toast } from '../util.js';
 import { pct, screeningDefaults } from '../scoring.js';
 import { findSite, findTarget } from '../data.js';
 import { REDUCED_MOTION } from '../config.js';
-import { baseData } from './base.js';
-import { basePlanImage } from './base-plan.js';
+import { baseData, coverScreen, revealCover } from './base.js';
+import { drawBase, BASE_PARTS } from '../globe/base3d.js';
 import { marsDelaySeconds, formatDelay } from '../orbits.js';
 import { makePixelCat } from '../../pitch/pixelcat.js';
 
@@ -46,8 +46,52 @@ const until = (check) => new Promise((resolve) => { const step = () => (check() 
 const limit = (promise, ms) => Promise.race([promise, new Promise((r) => setTimeout(r, ms))]);
 const words = (text) => text.split(' ').map((w, i) => `<span class="w" style="--i:${i}">${esc(w)}</span>`).join(' ');
 
-function planImage() {
-  return `<img class="st-base-plan" src="${esc(basePlanImage)}" alt="Roof-off base plan with habitat, greenhouse and communications rooms">`;
+// ---------- the 3D base (separate from the Base plan button, so the two never fight) ----------
+function removeBase() {
+  if (run?.base) { run.base.remove(); run.base = null; }
+}
+
+// The same base, the same camera, another world: a picture of the view covers the globe while the other
+// place loads under it, then opens from the base outward (see coverScreen in base.js).
+async function swapBase(api, sel, place, text) {
+  const o = api.globe.orbit;
+  if (!o || !api.globe.viewer) return false;
+  const view = { heading: o.heading, pitch: o.pitch, range: o.range };
+  const cover = await coverScreen(api, text);
+  try {
+    removeBase();
+    const h = await api.jumpTo(sel, view);
+    if (h == null) return false;
+    run.base = { remove: drawBase(api.globe.viewer, api.globe.ellipsoid, place, h), viewer: api.globe.viewer, at: place.id };
+    await api.globe.waitForTiles(8000);
+    return true;
+  } finally {
+    await revealCover(cover);
+    api.globe.resumeOrbit();
+  }
+}
+
+async function ensureBase(api, live, { build }) {
+  const viewer = api.globe.viewer;
+  if (run.base && run.base.viewer === viewer && run.base.at === TARGET) return true;
+  const target = findTarget(state.data, TARGET);
+  // The base is in Jordan (the scene before): swap the world back to Mars under the same base.
+  if (run.base && run.base.viewer === viewer && state.view === 'closeup') {
+    return swapBase(api, { kind: 'target', id: TARGET }, target, `${findSite(state.data, SITE).name}, Earth  →  ${target.name}, Mars`);
+  }
+  removeBase();
+  if (!viewer) return false;
+  if (!(state.world === 'mars' && state.view === 'closeup' && state.selected?.id === TARGET)) {
+    const ok = await api.flyTo({ kind: 'target', id: TARGET });
+    if (!ok || !live()) return false;
+  }
+  const h = await api.globe.closeOrbit(240, -24);
+  if (h == null || !live()) return false;
+  const place = findTarget(state.data, TARGET);
+  const remove = drawBase(api.globe.viewer, api.globe.ellipsoid, place, h, { build: true, reducedMotion: REDUCED_MOTION });
+  run.base = { remove, viewer: api.globe.viewer, at: TARGET };
+  if (!build) BASE_PARTS.forEach((p) => remove.reveal(p.id));
+  return true;
 }
 
 // ---------- the scenes ----------
@@ -67,13 +111,13 @@ function buildScenes(api, docs) {
       k: 'Mission', t: 'Before people live on Mars, they practise on Earth.',
       s: 'But where on Earth is the best place to practise?',
       hold: 5000,
-      run: async (live) => { await api.showWorld('earth'); if (live()) await api.home(); },
+      run: async (live) => { removeBase(); await api.showWorld('earth'); if (live()) await api.home(); },
     },
     {
       k: 'Earth · Jordan', t: 'This black lava desert is in Jordan.',
       s: `${esc(site.name)}: black basalt, the same kind of rock as large parts of Mars.`,
       hold: 4000,
-      run: async () => { await api.flyTo({ kind: 'site', id: SITE }); },
+      run: async () => { removeBase(); await api.flyTo({ kind: 'site', id: SITE }); },
     },
     {
       k: 'Mars · Jezero Crater', t: 'And this is Jezero Crater, on Mars.',
@@ -85,25 +129,36 @@ function buildScenes(api, docs) {
         return `<div class="st-match"><span>Jordan</span><i class="st-link"></i><span>Mars</span><b><em data-count="${m.p}">0</em>%</b><small>match: ${esc(best)}</small></div>`;
       },
       hold: 5500,
-      run: async () => { await api.flyTo({ kind: 'target', id: TARGET }); },
+      run: async () => { removeBase(); await api.flyTo({ kind: 'target', id: TARGET }); },
       play: (el) => countUp(el),
     },
     {
       k: 'The future', t: "Now imagine the crew's home.",
-      s: 'A shared passage connects the habitat, greenhouse and communications room.',
-      viz: planImage,
-      hold: 7500,
+      s: 'A concept base: our idea, not built yet.',
+      viz: () => `<div class="st-parts">${BASE_PARTS.map((p) => `<span data-part="${p.id}" style="--c:${p.colour}">${esc(p.label)}</span>`).join('')}</div>`,
+      hold: 2500,
+      run: async (live) => {
+        if (!(await ensureBase(api, live, { build: true }))) return;
+        for (const p of BASE_PARTS) {
+          if (!live()) return;
+          run.base.remove.reveal(p.id);
+          $(`#story [data-part="${p.id}"]`)?.classList.add('on');
+          await wait(1300);
+        }
+      },
     },
     {
       k: 'Back on Earth', t: 'The same base, in Jordan.',
-      s: `${esc(site.name)} is where a crew can rehearse for a mission first.`,
-      viz: planImage,
+      s: `${esc(site.name)}: where a crew can practise for Jezero first. Only the world around the base changed.`,
       hold: 5000,
-      run: async () => { await api.flyTo({ kind: 'site', id: SITE }); },
+      run: async (live) => {
+        if (!(await ensureBase(api, live, { build: false })) || !live()) return;
+        await swapBase(api, { kind: 'site', id: SITE }, site, `${target.name}, Mars  →  ${site.name}, Earth`);
+      },
     },
     {
       k: 'Food', t: 'Mars soil is toxic, so they grow food in water.',
-      s: 'The floor plan shows two leafy greens. A larger greenhouse could add crops for energy and protein.',
+      s: 'Hydroponics: no soil at all. NASA has grown all three of these without soil.',
       viz: () => `<div class="st-farm">${docs.base.best_set.crops.map((id, i) => {
         const c = docs.base.crops[id];
         const icon = { potato: '🥔', soybean: '🌱', lettuce: '🥬' }[id] || '🌱';
@@ -111,6 +166,7 @@ function buildScenes(api, docs) {
         return `<div class="st-crop" style="--i:${i}"><div class="st-plant">${icon}</div><div class="st-water"></div><b>${esc(c.name)}</b><span>${esc(role)}</span></div>`;
       }).join('')}</div>`,
       hold: 6500,
+      run: async (live) => { await ensureBase(api, live, { build: false }); },
       play: (el) => el.querySelector('.st-farm')?.classList.add('grow'),
     },
     {
@@ -131,6 +187,7 @@ function buildScenes(api, docs) {
         </div>`;
       },
       hold: MSG_MS + 3500,
+      run: async (live) => { await ensureBase(api, live, { build: false }); },
       play: (el) => sendMessage(el, delay()),
     },
     {
@@ -139,6 +196,7 @@ function buildScenes(api, docs) {
       viz: () => `<div class="st-hazards">${HAZARDS.map((h, i) => `<span class="${i === 1 ? 'hot' : ''}" style="--i:${i}">${esc(h)}</span>`).join('')}</div>
         ${hazardSrc ? `<a class="st-src" href="${esc(hazardSrc.url)}" target="_blank" rel="noopener">Source: ${esc(hazardSrc.label)}</a>` : ''}`,
       hold: 7000,
+      run: async (live) => { await ensureBase(api, live, { build: false }); },
     },
     {
       k: 'Analog Atlas', t: 'We find where to practise on Earth.',
@@ -147,6 +205,7 @@ function buildScenes(api, docs) {
         return m.rank === 1 ? `For Jezero Crater, the best place is ${esc(site.name)}, in Jordan.` : `For Jezero Crater, ${esc(site.name)} in Jordan ranks #${m.rank}.`;
       },
       end: true,
+      run: async (live) => { await ensureBase(api, live, { build: false }); },
     },
   ];
 }
@@ -291,7 +350,7 @@ export async function playStory(api) {
   try { docs = await baseData(); } catch (err) { toast(`The story could not load its data: ${err.message}`, 5000); return; }
   const saved = { ...api.settings(), targetId: state.targetId };
   const detail = api.detailState();
-  run = { index: 0, target: 0, paused: false, jump: false, stopped: false, after: null };
+  run = { index: 0, target: 0, paused: false, jump: false, stopped: false, base: null, after: null };
   document.body.classList.add('story-on');
   $('#story-btn')?.setAttribute('aria-pressed', 'true');
   document.addEventListener('keydown', onKey);
@@ -309,8 +368,7 @@ export async function playStory(api) {
       const my = run;
       const live = () => run === my && !my.jump && !my.stopped && my.index === i;
       let done = false;
-      const action = Promise.resolve().then(() => sc.run?.(live)).catch((err) => console.warn('story scene', err));
-      const work = limit(action, 25000).then(() => { done = true; });
+      const work = limit(sc.run(live).catch((err) => console.warn('story scene', err)), 25000).then(() => { done = true; });
       await Promise.race([work, until(() => done || !live())]);
       if (run.stopped) break;
       if (!run.jump) {
@@ -327,6 +385,7 @@ export async function playStory(api) {
     }
   } finally {
     const after = run?.after;
+    removeBase();
     catStop?.();
     document.removeEventListener('keydown', onKey);
     const el = $('#story');
