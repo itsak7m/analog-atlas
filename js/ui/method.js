@@ -5,7 +5,7 @@ import { CLIMATE_FACTORS, EXTRA_FACTORS, SUN_TILT, factorsFor, PILLARS, R_SLOPE,
 import { esc, fmt, fmtCoord, cellGap, CELL_GAP_LIMIT_M, STATUS_LABEL, BODY_LABEL } from '../util.js';
 import { openOverlay } from './overlay.js';
 import { TARGET_GROUPS } from './topbar.js';
-import { computeRanking, displayRanks, gapWords, rankingBasis, basisText, TWIN_MIN_PCT, BASE_GROUP, BASE_TOP_N, baseConsensus, baseConsensusText } from './ranking.js';
+import { computeRanking, displayRanks, gapWords, rankingBasis, basisText, TWIN_MIN_PCT, BASE_GROUP, BASE_TOP_N, baseConsensus, baseConsensusText, starPairs } from './ranking.js';
 import { fromOrbit } from './detail.js';
 import { loadScreening, getScreening, scoreBoxes, statusText, FLAG_WORDS, SCREEN_LABEL, TOP_N } from '../screening.js';
 import { exclusionsText } from './discover.js';
@@ -690,7 +690,26 @@ export function openMethod() {
   const rechecked = Object.keys(EXPECTED).map((id) => esc(nameOf(id)));
   const own = d.targets.filter((t) => !BRIEF_TARGETS.includes(t.id)).map((t) => esc(t.name));
   const gaps = flaggedSites().map(({ s, q }) => `${esc(s.name)} (cell ${fmt(Math.abs(q.gap), 0)} m ${q.gap > 0 ? 'higher' : 'lower'})`);
+  // The short view: what a visitor needs to judge the method. Everything else is under "Full method, data and checks".
+  const pairs = Object.entries(starPairs()).sort(([a], [b]) => (a === 'moon' ? -1 : b === 'moon' ? 1 : 0)).map(([body, sp]) => {
+    const t = d.targets.find((x) => x.id === sp.targetId);
+    const site = d.sites.find((x) => x.id === sp.siteId);
+    return `<li><b>${esc(BODY_LABEL[body])}:</b> ${esc(t?.name || sp.targetId)} ↔ ${esc(site?.name || sp.siteId)}, ${esc(site?.country || '')} · ${pct(sp.score)}%</li>`;
+  }).join('');
+  const short = `<h3 class="label">In short</h3>
+    <p>We compare <b>${d.sites.length} Earth sites</b> with <b>${d.targets.length} Moon and Mars targets</b>, and we split Jordan into 10 km boxes (<b>Discover Jordan</b>) to look for new candidates. Each place gets one <b>screening score</b>: the average of the pillars that have data.</p>
+    <table class="facts"><thead><tr><th>Pillar</th><th>What we compare</th></tr></thead><tbody>
+      <tr><td>Climate</td><td>Temperature (mean, daily swing, coldest ground) and rain. Earth: NASA POWER and MODIS. Targets: orbiter and rover measurements.</td></tr>
+      <tr><td>Ground slope</td><td>Median slope over 1 km from elevation models. A ${R_SLOPE}° difference scores 0.</td></tr>
+      <tr><td>Rock type</td><td>Main rock from geological maps and papers: the same rock scores 1, a related rock 0.5.</td></tr>
+      <tr><td>Resources</td><td>Sourced tags a base needs: water ice, natural shelter (caves), regolith, salts.</td></tr>
+    </tbody></table>
+    <p><span class="formula">factor score = max(0, 1 − |Earth value − target value| ÷ R)</span></p>
+    <p><b>⭐ The strongest Earth match on each world</b> (the only pairs that get the 3D base):</p><ul>${pairs}</ul>
+    <p><b>Honest limits.</b> This is satellite screening, not a field visit. Earth cannot test low gravity, vacuum or space radiation. Differences of 1–2 points are within the resolution of the data. If a value was not measured, the app says <i>not measured</i>; it never invents one.</p>`;
   const body = `<div class="sheet-body method">
+    ${short}
+    <details class="more"><summary>Full method, data and checks <span class="src">formulas, every value with its source, self-checks, limits and credits</span></summary><div class="more-body">
     <h3 class="label">Screening defaults</h3>
     <p>The map ranks candidates with site-specific evidence and pairs air with air and surface with surface. Read each temperature with its sampling period and resolution. Lunar thermal swings and early Jezero extremes are listed as context because they measure different statistics from Earth’s typical daily range.</p>
     <p>The Shackleton rover case compares slope statistics on common 1 km and 2 km baselines with the ${link('data/rover_case.json', 'computed results')} and ${link('scripts/rover_case.py', 'reproduction script')} available for review.</p>
@@ -745,7 +764,7 @@ export function openMethod() {
     <h3 class="label">Credits</h3>${creditsSection()}
     <h3 class="label">Use of Super Intelligence (SI)</h3>
     <p>Claude (Anthropic) assisted the original app, data scripts, tests, firmware and research. OpenAI Codex assisted the updated interface, base walkthrough and rover case. The scientific inputs are cited and the derived slope data can be reproduced from the raw files. The archived slides and promo video carry an SI disclosure. See README section 10.</p>
-  </div>`;
+  </div></details></div>`;
   const el = openOverlay({ title: 'Method & data', body });
   el.querySelector('[data-action="matrix-csv"]')?.addEventListener('click', downloadMatrix);
   fillScreening(el);
