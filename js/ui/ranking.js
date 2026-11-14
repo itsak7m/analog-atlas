@@ -1,22 +1,20 @@
 // Ranking panel: all Earth sites sorted by similarity to the chosen target.
 
 import { state } from '../state.js';
-import { rankSites, pct, PILLARS, factorsFor, CLIMATE_FACTORS, FULL_MIN_PILLARS, measuredFactors, STRICT_MIN_FACTORS } from '../scoring.js';
+import { rankSites, pct, PILLARS, factorsFor, CLIMATE_FACTORS, STRICT_MIN_FACTORS } from '../scoring.js';
 import { esc, scoreColor, scoreGlow, STATUS_LABEL, cellGap, CELL_GAP_LIMIT_M } from '../util.js';
 import { findTarget } from '../data.js';
 
 // Full match: the five pillar scores of one ranked row, as letters C T L G R with a small bar each.
 // A pillar with no data, or set to ×0 in Tune factors, is grey ("not used"). Numbers come from the row itself.
 const PILLAR_LETTER = { climate: 'C', terrain: 'T', landing: 'L', geology: 'G', resources: 'R' };
+export const scoreLabel = () => state.mode === 'full' ? 'Screening score' : 'Climate match';
+const activePillars = () => PILLARS.filter((p) => state.pillars[p.id] > 0);
 export function pillarParts(r) {
-  return PILLARS.map((p) => {
-    const s = r[p.id]?.score ?? null;
-    const used = s != null && (state.pillars?.[p.id] ?? 1) > 0;
-    return { id: p.id, label: p.label, letter: PILLAR_LETTER[p.id] || p.label[0], score: used ? s : null };
-  });
+  return activePillars().map((p) => ({ ...p, letter: PILLAR_LETTER[p.id], score: r[p.id]?.score ?? null }));
 }
 // "C T L G R = climate, terrain, landing zone, geology, resources (grey = not used)" as [letters, words].
-export const pillarKey = () => [PILLARS.map((p) => PILLAR_LETTER[p.id]).join(' '), `${PILLARS.map((p) => p.label.toLowerCase()).join(', ')} (grey = not used)`];
+export const pillarKey = () => [activePillars().map((p) => PILLAR_LETTER[p.id]).join(' '), `${activePillars().map((p) => p.label.toLowerCase()).join(', ')} (grey = not used)`];
 export const pillarText = (r) => pillarParts(r).map((x) => `${x.label.toLowerCase()} ${x.score == null ? 'not used' : `${pct(x.score)}%`}`).join(', ');
 // The strip itself. Inside a button that has its own aria-label, pass hidden = true (the label already says it).
 export function pillarStrip(r, hidden = false) {
@@ -41,29 +39,30 @@ export const strictDropsClimate = (row) => !!(state.strict && row?.climate && !r
 // e.g. "Malapert Massif: rock type and resources not measured · 3 of 5 pillars". Empty when nothing is missing.
 export function targetGapText(ranked, target) {
   if (state.mode !== 'full' || !ranked[0]) return '';
-  const gaps = ranked[0].targetGaps || [];
-  const noClimate = strictDropsClimate(ranked[0]);
-  if (!gaps.length && !noClimate) return '';
-  const why = [gaps.length ? `${gapWords(gaps)} not measured` : '', noClimate ? 'climate left out (too few measured factors for strict data)' : ''].filter(Boolean).join('; ');
-  return `${target.name.split(' (')[0]}: ${why} · ${PILLARS.length - new Set(gaps).size - (noClimate ? 1 : 0)} of ${PILLARS.length} pillars`;
+  const gaps = new Set(ranked[0].targetGaps);
+  if (strictDropsClimate(ranked[0])) gaps.add('climate');
+  const active = activePillars();
+  const missing = active.filter((p) => gaps.has(p.id)).map((p) => p.id);
+  if (!missing.length) return '';
+  return `${target.name.split(' (')[0]}: insufficient ${gapWords(missing)} data · ${active.length - missing.length} of ${active.length} enabled pillars available`;
 }
 
 // Why these rows have no score (returns HTML): too few pillars, too few strict values, or every weight at ×0.
 export function noScoreText(rows, target) {
+  if (state.mode === 'full' && !activePillars().length) return 'All pillars are off. Restore the screening defaults in Tune factors.';
   if (rows.length && rows.every((r) => r.reason === 'few-pillars')) {
     const most = Math.max(...rows.map((r) => r.pillarsUsed ?? 0));
     const gaps = rows.length === 1 ? gapWords([...(strictDropsClimate(rows[0]) ? ['climate'] : []), ...(rows[0].targetGaps || []), ...(rows[0].siteGaps || [])]) : '';
-    return `Not enough data: ${rows.length > 1 ? 'at most' : 'only'} ${most} of the ${PILLARS.length} pillars can be computed${gaps ? ` (no data for ${esc(gaps)})` : ''}. A fair score needs at least ${FULL_MIN_PILLARS}.`;
+    return `Not enough data: ${rows.length > 1 ? 'at most' : 'only'} ${most} of ${rows[0].pillarsEnabled} enabled pillars have data${gaps ? ` (${esc(gaps)} unavailable)` : ''}. A screening score needs at least ${rows[0].minPillars}.`;
   }
-  const measured = measuredFactors(target);
-  if (state.strict && state.mode !== 'full' && measured < STRICT_MIN_FACTORS) {
-    return `Strict data: ${esc(target.name)} has ${measured ? `only ${measured}` : 'no'} factor${measured === 1 ? '' : 's'} measured at the site itself, and a strict score needs at least ${STRICT_MIN_FACTORS}, so no site gets a score. Turn strict data off in Tune factors to use the reference values, or use the full analog match.`;
+  if (state.mode === 'climate' && rows.length && (state.strict || state.earthTemp === 'matched')) {
+    return `A climate match for ${esc(target.name)} needs at least ${STRICT_MIN_FACTORS} comparable factors. See the factor table or choose Reference settings in Tune factors.`;
   }
-  return `No score: every ${state.mode === 'full' ? 'pillar' : 'factor'} that has data is set to ×0 in Tune factors. Raise a weight there, or press Reset all to ×1.`;
+  return 'No enabled factors with data. Check Tune factors.';
 }
 
 // ' · surface temperature (MODIS)' while Earth temperature is set to the ground surface (Tune factors), else ''.
-export const surfaceHint = () => (state.earthTemp === 'surface' ? ' · surface temperature (MODIS)' : '');
+export const surfaceHint = () => ({ matched: ' · matched temperatures', surface: ' · Earth surface temperature (MODIS)' }[state.earthTemp] || '');
 
 export function computeRanking(targetId = state.targetId, extra = {}) {
   const d = state.data;
@@ -211,7 +210,7 @@ export function baseConsensusText(c, { short = false } = {}) {
   if (!c || !c.rows.length) return '';
   const n = c.targets.length;
   const ranksOf = (r) => { const k = r.ranks.map((x) => `#${x}`); return `${k.slice(0, -1).join(', ')} and ${k[k.length - 1]}`; };
-  const head = `All ${n} base sites together${short ? '' : ' (full match, default weights)'}: `;
+  const head = `All ${n} base sites together${short ? '' : ' (reference settings)'}: `;
   if (c.steady.length === 1) return `${head}${c.steady[0].site.name} is the only Earth site in the top ${BASE_TOP_N} for each (${ranksOf(c.steady[0])}).`;
   if (c.steady.length) {
     const names = c.steady.map((r) => `${r.site.name} (${ranksOf(r)})`);
@@ -302,7 +301,7 @@ export function renderRanking({ ranked, target, selectedId, onPick, onTwins }) {
   if (key !== shownFor) { showAll = false; shownFor = key; }
   const ranks = displayRanks(ranked);
   const counts = ranks.reduce((m, r) => m.set(r, (m.get(r) || 0) + 1), new Map());
-  const modeText = state.mode === 'full' ? 'full analog match' : 'climate match';
+  const modeText = scoreLabel().toLowerCase();
   const strongShown = visibleRows(ranked, selectedId);
   const preview = weakPreview(ranked).filter((r) => !strongShown.includes(r));
   const shown = ranked.filter((r) => strongShown.includes(r) || preview.includes(r));
@@ -320,20 +319,20 @@ export function renderRanking({ ranked, target, selectedId, onPick, onTwins }) {
     const tie = counts.get(ranks[i]) > 1;
     // In the full match, show when a pillar is missing because THIS SITE has no data
     // (pillars missing on the target side are named once, in the hint above the list).
-    const siteOnly = (r.siteGaps || []).filter((g) => !(r.targetGaps || []).includes(g));
-    const gapTag = state.mode === 'full' && r.pillarsUsed != null && siteOnly.length
-      ? `<span class="tag" title="Only ${r.pillarsUsed} of ${PILLARS.length} pillars: ${esc(gapWords(siteOnly))} not available for this site">${r.pillarsUsed}/${PILLARS.length}</span>` : '';
+    const limited = state.mode === 'full' && r.pillarsUsed < r.pillarsEnabled;
+    const coverage = p != null && limited
+      ? `<span class="tag" title="${r.pillarsUsed} of ${r.pillarsEnabled} enabled pillars used">${r.pillarsUsed}/${r.pillarsEnabled} pillars</span>` : '';
     const q = cellGap(s, state.data.terrain);
     const flag = q && q.flagged ? `<span class="tag flag" title="Data quality: the NASA POWER cell is ${Math.round(Math.abs(q.gap))} m ${q.gap > 0 ? 'higher' : 'lower'} than the ground here, so its climate describes a wider area">⚑</span>` : '';
     const full = state.mode === 'full';
-    const aria = `${isWeak ? `Weaker twin, under ${TWIN_MIN_PCT} percent. ` : ''}${q && q.flagged ? 'Data quality warning. ' : ''}${tie ? 'Tied rank ' : 'Rank '}${ranks[i]}: ${s.name}, ${s.country}, ${p == null ? 'not enough data' : `${p} percent ${modeText}`}. ${label}.${full ? ` Pillars: ${pillarText(r)}.` : ''}`;
+    const aria = `${isWeak ? `Weaker twin, under ${TWIN_MIN_PCT} percent. ` : ''}${q && q.flagged ? 'Data quality warning. ' : ''}${tie ? 'Tied rank ' : 'Rank '}${ranks[i]}: ${s.name}, ${s.country}, ${p == null ? 'not enough data' : `${p} percent ${modeText}`}. ${label}.${full ? ` ${r.pillarsUsed} of ${r.pillarsEnabled} enabled pillars used. ${pillarText(r)}.` : ''}`;
     const score = p == null
       ? '<span class="pc null" style="grid-column:3/-1">not enough data</span>'
       : `<span class="bar" aria-hidden="true"><i style="width:${p}%"></i></span><span class="pc">${p}%</span>`;
-    return `${divider}<li><button type="button" class="rank-row${full ? ' two' : ''}${isWeak ? ' weak' : ''}" data-id="${esc(s.id)}" aria-current="${s.id === selectedId}" aria-label="${esc(aria)}" style="--c:${isWeak ? 'var(--dim)' : scoreColor(r.score)}">
+    return `${divider}<li><button type="button" class="rank-row${isWeak ? ' weak' : ''}" data-id="${esc(s.id)}" aria-current="${s.id === selectedId}" aria-label="${esc(aria)}" style="--c:${isWeak ? 'var(--dim)' : scoreColor(r.score)}">
       <span class="n">${tie ? '=' : ''}${ranks[i]}</span>
-      <span class="who"><span class="nm">${esc(s.name)}</span><span class="meta"><span>${esc(s.country)}</span><span class="tag ${cls}">${esc(short)}</span>${flag}${gapTag}</span></span>
-      ${score}${full ? pillarStrip(r, true) : ''}
+    <span class="who"><span class="nm">${esc(s.name)}</span><span class="meta"><span>${esc(s.country)}</span><span class="tag ${cls}">${esc(short)}</span>${flag}${coverage}</span></span>
+      ${score}
     </button></li>`;
   }).join('') + moreHTML(ranked, shown, target, modeText, preview);
   renderLegend(ranked.some((r) => r.score != null) ? shown : []);
@@ -345,23 +344,20 @@ export function renderRanking({ ranked, target, selectedId, onPick, onTwins }) {
 
   document.getElementById('rank-target').textContent = target.name;
   const gapText = targetGapText(ranked, target);
-  // Full match: the hint names the pillars with their letters, so it is also the key of the C T L G R strips.
-  const pillarWords = PILLARS.map((p) => `<span class="k">${PILLAR_LETTER[p.id]}</span>&nbsp;${esc(p.label.toLowerCase().split(' ')[0])}`).join(' · ');
-  const extra = esc((state.strict ? ' · strict data' : '') + surfaceHint());
+  const extra = esc(surfaceHint());
   // What the ranking rests on (full match only; empty when it is spread out and rests on several pillars).
   const basis = basisText(rankingBasis(ranked));
   // Base targets also use Sun height, which is computed from the latitude, not taken from NASA POWER.
   const sunNote = factorsFor(target).length > CLIMATE_FACTORS.length ? ' + Sun height from latitude' : '';
   // A base site: one line that combines the 3 base sites (same in both modes, it always uses the default full match).
-  const together = target.group === BASE_GROUP ? baseConsensusText(baseConsensus()) : '';
+  const together = target.group === BASE_GROUP && !state.strict && state.earthTemp === 'air' && Object.values(state.pillars).every((w) => w === 1) && Object.values(state.weights).every((w) => w === 1) ? baseConsensusText(baseConsensus()) : '';
   const togetherHTML = together ? `<span class="caveat" style="display:block">${esc(together)}</span>` : '';
   document.getElementById('rank-hint').innerHTML = state.mode === 'full'
-    ? `Full match: ${pillarWords} · grey = not used${extra}${gapText ? `<br>${esc(gapText)}` : ''}${basis ? `<span class="caveat" style="display:block">${esc(basis)}</span>` : ''}${togetherHTML}`
-    : `Climate match · NASA POWER 2001–2020${sunNote}${extra}${togetherHTML}`;
+    ? `Screening score${gapText ? `<br>${esc(gapText)}` : ''}${basis && !gapText ? `<br>${esc(basis)}` : ''}${togetherHTML}`
+    : `Climate match${sunNote}${extra}${togetherHTML}`;
   if (ranked.length && ranked.every((r) => r.score == null)) {
     list.innerHTML = `<li class="caveat" style="list-style:none">${noScoreText(ranked, target)}</li>`;
   }
-  document.querySelectorAll('.mode-toggle button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === state.mode)));
 }
 
 export function markSelected(id) {
