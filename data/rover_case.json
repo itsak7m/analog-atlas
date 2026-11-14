@@ -1,0 +1,82 @@
+{
+  "targetId": "shackleton-ridge",
+  "boxId": "jo-r06c01",
+  "places": {
+    "jo-r06c01": {
+      "source": "data/raw/screening/dem/samples_jordan.json.gz",
+      "metrics": [
+        {
+          "baselineKm": 1.0,
+          "samples": 361,
+          "medianDeg": 8.44,
+          "p90Deg": 20.36,
+          "under10Pct": 59.6
+        },
+        {
+          "baselineKm": 2.0,
+          "samples": 289,
+          "medianDeg": 7.91,
+          "p90Deg": 16.22,
+          "under10Pct": 64.0
+        }
+      ]
+    },
+    "shackleton-ridge": {
+      "source": "data/raw/terrain/shackleton-ridge.json",
+      "metrics": [
+        {
+          "baselineKm": 1.0,
+          "samples": 361,
+          "medianDeg": 8.56,
+          "p90Deg": 17.11,
+          "under10Pct": 64.0
+        },
+        {
+          "baselineKm": 2.0,
+          "samples": 289,
+          "medianDeg": 7.67,
+          "p90Deg": 16.18,
+          "under10Pct": 69.9
+        }
+      ]
+    },
+    "wadi-rum": {
+      "source": "data/raw/screening/dem/samples_jordan.json.gz",
+      "metrics": [
+        {
+          "baselineKm": 1.0,
+          "samples": 361,
+          "medianDeg": 10.46,
+          "p90Deg": 24.03,
+          "under10Pct": 48.2
+        },
+        {
+          "baselineKm": 2.0,
+          "samples": 289,
+          "medianDeg": 8.69,
+          "p90Deg": 16.19,
+          "under10Pct": 57.8
+        }
+      ]
+    },
+    "harrat": {
+      "source": "data/raw/screening/dem/samples_jordan.json.gz",
+      "metrics": [
+        {
+          "baselineKm": 1.0,
+          "samples": 361,
+          "medianDeg": 0.82,
+          "p90Deg": 1.27,
+          "under10Pct": 100.0
+        },
+        {
+          "baselineKm": 2.0,
+          "samples": 289,
+          "medianDeg": 0.79,
+          "p90Deg": 1.14,
+          "under10Pct": 100.0
+        }
+      ]
+    }
+  }
+}
