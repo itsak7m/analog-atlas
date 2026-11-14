@@ -861,6 +861,19 @@ const needLst = () => { if (lstDoc.loadError || !lstDoc.places) throw new Error(
 // The sites as data.js gives them to the app: with .lst attached.
 const lstSites = sites.map((s) => ({ ...s, lst: (lstDoc.places || {})[s.id] || null }));
 const LS = (id) => lstSites.find((s) => s.id === id);
+
+// The star (js/ui/ranking.js starPairs): per world, the target whose #1 Earth twin has the highest default
+// screening score. Only that pair gets the 3D base, and the talk and README name these pairs.
+test('star pairs: Tranquillitatis pit + Harrat al-Shaam (Moon), Arsia skylight + Craters of the Moon (Mars)', () => {
+  needLst();
+  const best = {};
+  for (const t of targets) {
+    const top = rankSites(lstSites, t, { ...fullOpts, ...screeningDefaults() }).find((r) => r.score != null);
+    if (top && (!best[t.body] || top.score > best[t.body].score)) best[t.body] = { t: t.id, s: top.site.id, score: top.score };
+  }
+  eq(`${best.moon.t}/${best.moon.s}/${pct(best.moon.score)}`, 'tranquillitatis-pit/harrat/71');
+  eq(`${best.mars.t}/${best.mars.s}/${pct(best.mars.score)}`, 'arsia-skylight/craters-of-the-moon/85');
+});
 const TEMP_IDS = Object.keys(LST_FIELD);
 const handPower = { annual: { T2M: 99, T2M_RANGE: 99, TS_MIN: 99, PRECTOTCORR: 0.1, ALLSKY_SRF_ALB: 0.3 }, gridElevation_m: 0 };
 

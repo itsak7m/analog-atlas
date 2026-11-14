@@ -2,6 +2,7 @@
 
 import { esc, BODY_LABEL } from '../util.js';
 import { measuredFactors, TARGET_MIN_MEASURED } from '../scoring.js';
+import { isStarTarget } from './ranking.js';
 
 // Groups in the target list, in this order: the Moon column first, then the Mars column. The challenge asks for
 // permanent Moon base locations and Mars. 'short' is the heading inside the menu; 'label' is the full name.
@@ -31,7 +32,8 @@ let menu, picker, select, chooseTarget, targetBody;
 
 function optionHTML(t) {
   const flag = flagged(t) ? '<span class="fl" title="Fewer than 3 of the 5 factors are measured at the site itself">⚑</span>' : '';
-  return `<button type="button" class="tm-opt" role="option" aria-selected="false" data-id="${esc(t.id)}">${flag}<span>${esc(shortName(t.name))}</span></button>`;
+  const star = isStarTarget(t.id) ? '<span class="star" title="Strongest Earth match on this world: the base is planned here">⭐</span>' : '';
+  return `<button type="button" class="tm-opt" role="option" aria-selected="false" data-id="${esc(t.id)}">${flag}<span>${esc(shortName(t.name))}</span>${star}</button>`;
 }
 
 function buildMenu(targets) {
@@ -123,7 +125,7 @@ export function setTarget(target) {
   if (menu && !menu.hidden) closeMenu(false);
   if (select) select.value = target.id;
   if (picker) {
-    picker.querySelector('.tp-name').textContent = `${flagged(target) ? '⚑ ' : ''}${shortName(target.name)}`;
+    picker.querySelector('.tp-name').textContent = `${flagged(target) ? '⚑ ' : ''}${shortName(target.name)}${isStarTarget(target.id) ? ' ⭐' : ''}`;
     picker.title = target.name;
     picker.setAttribute('aria-label', `Compare with: ${target.name}, ${BODY_LABEL[target.body]}. Open the list of places.`);
     menu.querySelectorAll('.tm-opt').forEach((o) => o.setAttribute('aria-selected', String(o.dataset.id === target.id)));

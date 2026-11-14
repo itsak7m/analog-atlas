@@ -8,7 +8,7 @@ import { screeningDefaults } from './scoring.js';
 import { loadData, findSite, findTarget } from './data.js';
 import { Globe, BODIES, SOUTH_POLE_VIEW } from './globe/globe.js';
 import { Pins } from './globe/pins.js';
-import { computeRanking, renderRanking, markSelected, earthPinItems } from './ui/ranking.js';
+import { computeRanking, renderRanking, markSelected, earthPinItems, starPairs, baseAllowed } from './ui/ranking.js';
 import { renderSite, renderTarget, hideDetail, focusDetail } from './ui/detail.js';
 import { initTopbar, setWorld, setTarget, setBackVisible, DEFAULT_TARGET } from './ui/topbar.js';
 import { openPano, openTwin, openStreet } from './ui/pano.js';
@@ -178,21 +178,14 @@ async function openRoverCase() {
 
 async function explorePair(body) {
   if (!need3D('Explore the base') || baseActive() || tourRunning() || storyRunning()) return;
-  if (body === 'moon') {
-    const rover = state.data.roverCase;
-    if (!rover) return;
-    await openRoverCase();
-    const sel = state.selected;
-    if (sel?.kind === 'box' && sel.id === rover.boxId && state.targetId === rover.targetId) {
-      return openBase(sel, placeOf(sel));
-    }
-    return;
-  }
+  // The starred pair of this world: the target whose closest Earth twin scores highest (see starPairs).
+  const star = starPairs()[body];
+  if (!star) return;
   api.closePanels();
   api.setSettings({ mode: 'full', ...screeningDefaults() });
-  api.setTarget(DEFAULT_TARGET.mars);
-  const top = ranked.find((row) => row.score != null);
-  if (top) return openBase({ kind: 'site', id: top.site.id }, top.site);
+  api.setTarget(star.targetId);
+  const site = findSite(state.data, star.siteId);
+  if (site) return openBase({ kind: 'site', id: site.id }, site);
 }
 
 // N/E/S/W on a box page. Keyboard focus stays on the same direction button (renderBox keeps it there).
@@ -461,7 +454,7 @@ function need3D(what) {
 // Base plan (future work): the 3D concept base at a site or target, with its plan. At an Earth site the
 // plan is a test base for the current target; at a target it is the base itself.
 function openBase(sel, place) {
-  if (!place) return;
+  if (!place || !baseAllowed(sel)) return;
   const target = sel.kind === 'target' ? place : findTarget(state.data, state.targetId);
   const result = sel.kind === 'box' ? state.screenRanked?.byId.get(sel.id)
     : sel.kind === 'site' ? ranked.find((r) => r.site.id === sel.id) : null;

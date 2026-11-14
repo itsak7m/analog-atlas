@@ -1,7 +1,7 @@
 // Ranking panel: all Earth sites sorted by similarity to the chosen target.
 
 import { state } from '../state.js';
-import { rankSites, pct, PILLARS, factorsFor, CLIMATE_FACTORS, STRICT_MIN_FACTORS } from '../scoring.js';
+import { rankSites, pct, PILLARS, factorsFor, CLIMATE_FACTORS, STRICT_MIN_FACTORS, screeningDefaults } from '../scoring.js';
 import { esc, scoreColor, scoreGlow, STATUS_LABEL, cellGap, CELL_GAP_LIMIT_M } from '../util.js';
 import { findTarget } from '../data.js';
 
@@ -77,6 +77,30 @@ export function computeRanking(targetId = state.targetId, extra = {}) {
     resources: d.resources,
     ...extra,
   });
+}
+
+// The star: on each world, the target whose closest Earth twin scores highest with the default screening score
+// (full match). Only that pair gets the 3D base. It always uses the defaults, so Tune factors does not move it.
+// { moon: { targetId, siteId, score }, mars: {...} }
+let stars = null;
+export function starPairs() {
+  if (stars) return stars;
+  const d = state.data;
+  const out = {};
+  for (const t of d.targets) {
+    const top = rankSites(d.sites, t, { mode: 'full', ...screeningDefaults(), terrain: d.terrain, resources: d.resources }).find((r) => r.score != null);
+    if (top && (!out[t.body] || top.score > out[t.body].score)) out[t.body] = { targetId: t.id, siteId: top.site.id, score: top.score };
+  }
+  stars = out;
+  return out;
+}
+export const isStarTarget = (id) => Object.values(starPairs()).some((s) => s.targetId === id);
+// The base is only offered for a starred target, or for its #1 Earth twin while that target is chosen.
+export function baseAllowed(sel, targetId = state.targetId) {
+  if (!sel) return false;
+  if (sel.kind === 'target') return isStarTarget(sel.id);
+  if (sel.kind === 'site') return Object.values(starPairs()).some((s) => s.targetId === targetId && s.siteId === sel.id);
+  return false;
 }
 
 // Only the strong twins are listed (and pinned) by default: sites at TWIN_MIN_PCT or more. The others stay one

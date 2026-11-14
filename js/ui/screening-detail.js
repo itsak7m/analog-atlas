@@ -238,7 +238,6 @@ function roverCaseHTML(box, target) {
       <div><dt>Shackleton ridge</dt><dd>${fmt(lunar.metrics[0].medianDeg, 1, '°')}</dd></div>
     </dl>
     <p class="src">Median slope in two 10 km areas, using a 1 km baseline.</p>
-    <button type="button" class="btn primary" data-action="base">Explore base in 3D</button>
     <p><b>Future field trial (not done yet).</b> With a test rover, repeat passes on a surveyed slope and a nearby flat track with similar soil. Log wheel rotations, battery voltage and current. Measure distance separately to estimate slip and energy per metre.</p>
     <p class="src">Satellite screening. Field access, surface roughness and traction still need checking. Lunar gravity, soil and temperatures differ.</p>
     <details><summary>Compare slope statistics and sources</summary>
@@ -293,7 +292,6 @@ export function renderBox(box, target, row) {
       <span class="of">${esc(modeText)} with<br><b>${esc(target.name)}</b> · ${esc(BODY_LABEL[target.body])}${row ? scoreLines(row, result) : ''}</span></div>
     ${score == null && row ? `<p class="caveat">${noScoreText([row], target).replace('no site gets a score', 'no box gets a score')}</p>` : ''}
     <div class="actions" style="margin-top:0">
-      ${box.id === state.data.roverCase?.boxId && target.id === state.data.roverCase?.targetId ? '' : '<button type="button" class="btn primary" data-action="base">Explore base in 3D</button>'}
       ${inCloseup ? '<button type="button" class="btn" data-action="back">Back to globe</button>' : '<button type="button" class="btn" data-action="fly">Fly down</button>'}
       <button type="button" class="btn" data-action="stand">Stand here · 3D terrain</button>
     </div>

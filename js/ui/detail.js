@@ -3,7 +3,7 @@
 import { state } from '../state.js';
 import { CLIMATE_FACTORS, factorsFor, ROCK_LABEL, R_SLOPE, SAFE_SLOPE_DEG, RESOURCES, pct, targetValue, measuredFactors, TARGET_MIN_MEASURED } from '../scoring.js';
 import { esc, fmt, fmtCoord, STATUS_LABEL, BODY_LABEL, cellGap, CELL_GAP_LIMIT_M } from '../util.js';
-import { noScoreText, targetGapText, gapWords, strictDropsClimate, computeRanking, displayRanks, pillarStrip, pillarKey, scoreLabel } from './ranking.js';
+import { noScoreText, targetGapText, gapWords, strictDropsClimate, computeRanking, displayRanks, pillarStrip, pillarKey, scoreLabel, baseAllowed, isStarTarget, starPairs } from './ranking.js';
 import { earthCell, targetCell, earthTempLine, orbitSiteHTML } from './orbit.js';
 import { HAS_ION } from '../config.js';
 
@@ -262,8 +262,9 @@ export function renderSite(site, target, result, extra = {}) {
       ${inCloseup ? '<button type="button" class="btn" data-action="back">Back to globe</button>' : '<button type="button" class="btn primary" data-action="fly">Fly down</button>'}
       ${standButtons(site.id)}
       ${hasImagery(site.id) || hasImagery(target.id) ? '<button type="button" class="btn" data-action="twin">Twin view</button>' : ''}
-      <button type="button" class="btn" data-action="base" title="A test base here for the current target: 3D concept, crops, communication room">Explore base in 3D</button>
+      ${baseAllowed({ kind: 'site', id: site.id }, target.id) ? '<button type="button" class="btn primary" data-action="base" title="A test base here for the starred target: 3D concept, crops, communication room">⭐ Explore base in 3D</button>' : ''}
     </div>
+    ${baseAllowed({ kind: 'site', id: site.id }, target.id) ? `<p class="star-note">⭐ Strongest Earth match on the ${esc(BODY_LABEL[target.body])}: the one pair we plan a base for.</p>` : ''}
     ${photoNote(site.id)}
     ${twinOfSection(site)}
     <div class="section"><span class="label">Factor by factor</span>
@@ -307,8 +308,9 @@ export function renderTarget(target, twins, extra = {}) {
     <div class="actions" style="margin-top:0">
       ${inCloseup ? '<button type="button" class="btn" data-action="back">Back to globe</button>' : '<button type="button" class="btn primary" data-action="fly">Fly down</button>'}
       ${standButtons(target.id)}
-      <button type="button" class="btn" data-action="base" title="A base here: 3D concept, problems and solutions, crops, communication room">Explore base in 3D</button>
+      ${isStarTarget(target.id) ? '<button type="button" class="btn primary" data-action="base" title="A base here: 3D concept, problems and solutions, crops, communication room">⭐ Explore base in 3D</button>' : ''}
     </div>
+    ${isStarTarget(target.id) ? `<p class="star-note">⭐ Its closest Earth twin is the strongest match of any ${esc(BODY_LABEL[target.body])} target (default screening score), so this is where we plan the base.</p>` : `<p class="src">The 3D base is planned only at the starred ⭐ target of each world: ${Object.values(starPairs()).map((s) => esc(state.data.targets.find((t) => t.id === s.targetId)?.name || s.targetId)).join(' and ')}.</p>`}
     ${photoNote(target.id)}
     ${measured < TARGET_MIN_MEASURED ? `<p class="caveat">⚑ Only ${measured} of the ${CLIMATE_FACTORS.length} original climate factors ${measured === 1 ? 'has' : 'have'} site-level data. See the factor sources below.</p>` : ''}
     <div class="section"><span class="label">Closest Earth twins</span>${twinList}
