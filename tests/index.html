@@ -1175,8 +1175,8 @@ test('docs agree with the data: test count, site/target/box counts and the short
     '⭐ MARS · ARSIA MONS CAVE SKYLIGHT': [['harrat', 'arsia-skylight']],
     'MARS · JEZERO CRATER': [['harrat', 'jezero']],
     'MOON · APOLLO 11 + APOLLO 17': [['harrat', 'apollo11'], ['harrat', 'apollo17']],
-    'MOON · SHACKLETON CONNECTING RIDGE': [['wadi-rum', 'shackleton-ridge']],
     'MARS · GALE CRATER + PHOENIX': [['qaidam-dalangtan', 'gale'], ['tso-kar-ladakh', 'phoenix']],
+    'MARS · ICE-RICH LANDING ZONES': [['tso-kar-ladakh', 'deuteronilus'], ['tso-kar-ladakh', 'erebus-montes']],
   };
   const items = deck.slides.flatMap((s) => s.items || []).filter((it) => it.type === 'row');
   for (const [tag, pairs] of Object.entries(deckRows)) {

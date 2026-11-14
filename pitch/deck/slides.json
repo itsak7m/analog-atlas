@@ -236,7 +236,7 @@
     },
     {
       "bg": "bg5.png",
-      "notes": "Why these two places? Harrat al-Shaam, the black basalt desert in north-east Jordan, is the best match in the world for the lava-tube pit in Mare Tranquillitatis on the Moon, 71 percent. For the cave skylight on Arsia Mons on Mars it scores 84 percent, one point behind Craters of the Moon in the USA, which is within the resolution of the data. One Jordanian lava field, two worlds. It also comes first for Jezero Crater and Apollo 11.\nWadi Rum comes first for the Shackleton connecting ridge near the Moon's south pole. And when we scored all of Jordan, 886 boxes of 10 kilometres, one box 37 kilometres north-west of Wadi Rum has a median slope of 8.44 degrees; the Shackleton ridge has 8.56.\nWe also show where Jordan loses: for Gale and Phoenix the best twins are in China and India. A score is not proof; it tells you where to test first.",
+      "notes": "Why these two places? We chose the two cave sites: the lava-tube pit in Mare Tranquillitatis on the Moon and the cave skylight on Arsia Mons on Mars. A lava tube shields a base from radiation, micrometeorites and the big temperature swing between day and night.\nFor both, the best Jordan twin is Harrat al-Shaam, the black basalt desert in north-east Jordan, with its own lava caves. For the Moon pit it is number one in the world, 71 percent. For the Mars skylight it scores 84 percent, one point behind Craters of the Moon in the USA, which is within the resolution of the data. One Jordanian lava field, two worlds. It also comes first for Jezero Crater and Apollo 11.\nWe also show where Jordan loses: for Gale, Phoenix and the ice-rich zones the best twins are in China and India. A score is not proof; it tells you where to test first.",
       "items": [
         {
           "type": "text",
@@ -256,7 +256,7 @@
           "y": 72,
           "w": 460,
           "h": 44,
-          "text": "Harrat al-Shaam and Wadi Rum",
+          "text": "Two cave sites, one Jordan twin",
           "size": 26,
           "color": "#F6F8FC",
           "bold": true
@@ -292,16 +292,16 @@
         {
           "type": "row",
           "y": 334,
-          "tag": "MOON · SHACKLETON CONNECTING RIDGE",
-          "site": "Wadi Rum · #1",
-          "pct": "54 %"
+          "tag": "MARS · GALE CRATER + PHOENIX",
+          "site": "Not Jordan: Dalangtan, China · Tso Kar, India",
+          "pct": "68 · 73 %"
         },
         {
           "type": "row",
           "y": 386,
-          "tag": "MARS · GALE CRATER + PHOENIX",
-          "site": "Not Jordan: Dalangtan, China · Tso Kar, India",
-          "pct": "68 · 73 %"
+          "tag": "MARS · ICE-RICH LANDING ZONES",
+          "site": "Not Jordan: Tso Kar basin, India",
+          "pct": "63 · 62 %"
         },
         {
           "type": "text",
@@ -309,7 +309,7 @@
           "y": 444,
           "w": 450,
           "h": 44,
-          "text": "Screening score, default settings: 4 pillars. A match says where to test first, not proof. ⭐ = strongest Jordan match on each world. Mars cave: Craters of the Moon, USA, is #1 at 85 %, within the resolution of the data. We show where Jordan loses too (last row).",
+          "text": "Why caves: a lava tube shields a base from radiation, micrometeorites and the big day–night temperature swing. ⭐ = strongest Jordan match on each world. Mars cave: Craters of the Moon, USA, is #1 at 85 %, within the resolution of the data. Screening score, 4 pillars; a match says where to test first, not proof.",
           "size": 9.5,
           "color": "#9AA6BD"
         },
@@ -330,7 +330,7 @@
           "y": 150,
           "w": 400,
           "h": 40,
-          "text": "We scored all of Jordan the same way: 886 boxes of 10 km. One box 37 km north-west of Wadi Rum has a median slope of 8.44°; the Shackleton connecting ridge on the Moon has 8.56°. Found by satellite data, not field-checked yet.",
+          "text": "We scored all of Jordan the same way, 886 boxes of 10 km, to find more candidates around our sites. Found by satellite data, not field-checked yet.",
           "size": 11,
           "color": "#DDE3EE"
         },
