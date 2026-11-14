@@ -1196,3 +1196,5 @@ details.more > summary::before { content: '▸'; color: var(--cyan); transition:
 details.more[open] > summary::before { transform: rotate(90deg); }
 details.more > summary .src { font-weight: 400; }
 details.more > summary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; border-radius: 4px; }
+details.more.small { margin-top: 6px; padding-top: 4px; }
+details.more.small > summary { font-size: 12.5px; font-weight: 500; color: var(--muted); }

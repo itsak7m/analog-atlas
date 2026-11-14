@@ -89,7 +89,7 @@ function compareHTML(result) {
   const best = result && (result.sites || []).find((s) => s.score != null);
   if (!best) return '';
   const how = state.mode === 'full' ? 'same method, no resources' : 'same climate match';
-  return `<br><b>Compare:</b> ${esc(shortName(best.site.name))} <b>${best.pct}%</b> (best hand-picked Jordan site, ${how})`;
+  return ` <b>Compare:</b> ${esc(shortName(best.site.name))} <b>${best.pct}%</b> <span class="src">(best hand-picked Jordan site, ${how})</span>`;
 }
 
 // One Top 10 row: the lead box of a cluster, "+N nearby" at the same %, and the nearest Atlas site.
@@ -110,8 +110,7 @@ function rowHTML(c, selectedId) {
   return `<li><button type="button" class="rank-row" data-id="${esc(r.id)}" aria-current="${current}" aria-label="${esc(aria)}" title="${esc(box.name)}" style="--c:${esc(r.fill.css)}">
       <span class="n">${c.tie ? '=' : ''}${c.rank}</span><span class="nm">${esc(near || box.name)}</span>
       <span class="bar" aria-hidden="true"><i style="width:${r.pct}%"></i></span><span class="pc">${r.pct}%</span>
-      <span class="meta"><span class="co">${esc(where)}</span>${rock ? `<span class="tag rock">${esc(rock)}</span>` : ''}${coverage ? `<span class="tag" title="${coverage}">${r.pillarsUsed}/${r.pillarsEnabled}</span>` : ''}</span>
-      ${nearby ? `<span class="meta">${nearby}</span>` : ''}
+      ${rock || nearby ? `<span class="meta">${rock ? `<span class="tag rock">${esc(rock)}</span>` : ''}${nearby}</span>` : ''}
     </button></li>`;
 }
 
@@ -133,10 +132,14 @@ export function exclusionsText(result) {
 }
 
 // (The fair comparison with the best hand-picked site is above the list: compareHTML.)
-function notesHTML(result) {
+// The short line stays visible; the listing rules and settings are one press away.
+function notesHTML(result, target) {
   const excl = exclusionsText(result) || 'Every box with a score is listed';
-  return `<p>${esc(excl)}. <span title="⚑ = the NASA POWER cell is more than 400 m higher or lower than the ground at the box centre">⚑ = climate cell height differs.</span></p>
-    <p>Differences of 1–2 points are within the resolution of the data.</p>`;
+  return `<p>Differences of 1–2 points are within the resolution of the data.</p>
+    <details class="more small"><summary>About this list</summary><div class="more-body">
+    <p>${esc(hintText(target, result))}.</p>
+    <p>${esc(excl)}. <span title="⚑ = the NASA POWER cell is more than 400 m higher or lower than the ground at the box centre">⚑ = climate cell height differs.</span></p>
+    <p>For each target the colours run from the left number of the scale (grey-blue) to its best box (amber, the right number). Faded boxes are left out of the list: missing data, a ⚑ data warning, or a box that already holds a hand-picked site.</p></div></details>`;
 }
 
 // Render the Top 10 for the current target and settings. result: a scoreBoxes() result (default: the
@@ -145,7 +148,7 @@ export function renderDiscover({ result = currentResult(), target = currentTarge
   if (onPick) lastPick = onPick;
   const list = $('#discover-list');
   $('#rank-target').textContent = target.name;
-  $('#discover-hint').innerHTML = `${esc(hintText(target, result))}${compareHTML(result)}`;
+  $('#discover-hint').innerHTML = `Candidates found from satellite data, not field-checked yet.${compareHTML(result)}`;
   if (!result) {
     list.innerHTML = '<li class="msg hint">Loading the Jordan boxes…</li>';
     $('#discover-notes').innerHTML = '';
@@ -161,7 +164,7 @@ export function renderDiscover({ result = currentResult(), target = currentTarge
     list.innerHTML = `<li class="msg caveat">${why}</li>`;
   }
   list.querySelectorAll('.rank-row').forEach((b) => b.addEventListener('click', () => pick(b.dataset.id)));
-  $('#discover-notes').innerHTML = notesHTML(result);
+  $('#discover-notes').innerHTML = notesHTML(result, target);
   setLegend(result.colourRange);
   return { listed: result.listed.length, top: result.listed.length ? result.listed[0].pct : null };
 }

@@ -52,12 +52,14 @@ export function openTune(onChange) {
   const el = openOverlay({
     title: 'Tune the factors',
     wide: false,
-    body: `<div class="sheet-body"><label class="score-mode">Ranking by <select id="score-mode"><option value="full" ${state.mode === 'full' ? 'selected' : ''}>Screening score</option><option value="climate" ${state.mode === 'climate' ? 'selected' : ''}>Climate only</option></select></label>${tempSwitch()}<div class="tune-grid">
-      <div><span class="label">Climate factors</span>${climate}</div>
+    body: `<div class="sheet-body"><label class="score-mode">Ranking by <select id="score-mode"><option value="full" ${state.mode === 'full' ? 'selected' : ''}>Screening score</option><option value="climate" ${state.mode === 'climate' ? 'selected' : ''}>Climate only</option></select></label>
       <div><span class="label">Pillars · screening score</span>${pillars}
         ${state.mode === 'climate' ? '<p class="src">Switch to Screening score to apply pillar weights.</p>' : ''}</div>
-      </div>
+      <details class="more"><summary>Advanced <span class="src">climate factor weights, Earth temperature, strict data</span></summary><div class="more-body">
+      ${tempSwitch()}
+      <div><span class="label">Climate factors</span>${climate}</div>
       <label class="strict-row"><input type="checkbox" id="strict-toggle" ${state.strict ? 'checked' : ''}> <span><b>Strict data:</b> use only target values measured at the site itself. Values that are Moon-wide or Mars-wide averages, midpoints or general statements are left out (see Method &amp; data). The reference rankings of the brief use the normal values.</span></label>
+      </div></details>
       <div class="actions"><button type="button" class="btn" data-preset="screening">Screening defaults</button><button type="button" class="btn" data-preset="reference">Reference settings</button><button type="button" class="btn primary" data-stab>Run stability check</button></div>
       <div class="section"><span class="label">Stability check</span><div id="stab-out">${stabilityHTML()}</div></div>
     </div>`,
