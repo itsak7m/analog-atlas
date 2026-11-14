@@ -694,7 +694,8 @@ export function openMethod() {
   const pairs = Object.entries(starPairs()).sort(([a], [b]) => (a === 'moon' ? -1 : b === 'moon' ? 1 : 0)).map(([body, sp]) => {
     const t = d.targets.find((x) => x.id === sp.targetId);
     const site = d.sites.find((x) => x.id === sp.siteId);
-    return `<li><b>${esc(BODY_LABEL[body])}:</b> ${esc(t?.name || sp.targetId)} ↔ ${esc(site?.name || sp.siteId)}, ${esc(site?.country || '')} · ${pct(sp.score)}%</li>`;
+    const w = sp.world && sp.world.siteId !== sp.siteId ? d.sites.find((x) => x.id === sp.world.siteId) : null;
+    return `<li><b>${esc(BODY_LABEL[body])}:</b> ${esc(t?.name || sp.targetId)} ↔ ${esc(site?.name || sp.siteId)}, ${esc(site?.country || '')} · ${pct(sp.score)}%${w ? ` <span class="src">(world #1: ${esc(w.name)}, ${esc(w.country)} · ${pct(sp.world.score)}%)</span>` : ''}</li>`;
   }).join('');
   const short = `<h3 class="label">In short</h3>
     <p>We compare <b>${d.sites.length} Earth sites</b> with <b>${d.targets.length} Moon and Mars targets</b>, and we split Jordan into 10 km boxes (<b>Discover Jordan</b>) to look for new candidates. Each place gets one <b>screening score</b>: the average of the pillars that have data.</p>
@@ -705,7 +706,7 @@ export function openMethod() {
       <tr><td>Resources</td><td>Sourced tags a base needs: water ice, natural shelter (caves), regolith, salts.</td></tr>
     </tbody></table>
     <p><span class="formula">factor score = max(0, 1 − |Earth value − target value| ÷ R)</span></p>
-    <p><b>⭐ The strongest Earth match on each world</b> (the only pairs that get the base plan):</p><ul>${pairs}</ul>
+    <p><b>⭐ The strongest Jordan match on each world</b> (the only pairs that get the base plan):</p><ul>${pairs}</ul>
     <p><b>Honest limits.</b> This is satellite screening, not a field visit. Earth cannot test low gravity, vacuum or space radiation. Differences of 1–2 points are within the resolution of the data. If a value was not measured, the app says <i>not measured</i>; it never invents one.</p>`;
   const body = `<div class="sheet-body method">
     ${short}

@@ -32,7 +32,7 @@ let menu, picker, select, chooseTarget, targetBody;
 
 function optionHTML(t) {
   const flag = flagged(t) ? '<span class="fl" title="Fewer than 3 of the 5 factors are measured at the site itself">⚑</span>' : '';
-  const star = isStarTarget(t.id) ? '<span class="star" title="Strongest Earth match on this world: the base is planned here">⭐</span>' : '';
+  const star = isStarTarget(t.id) ? '<span class="star" title="Strongest Jordan match on this world: the base is planned here">⭐</span>' : '';
   return `<button type="button" class="tm-opt" role="option" aria-selected="false" data-id="${esc(t.id)}">${flag}<span>${esc(shortName(t.name))}</span>${star}</button>`;
 }
 

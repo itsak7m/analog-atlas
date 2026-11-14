@@ -296,7 +296,7 @@ export function renderSite(site, target, result, extra = {}) {
       ${hasImagery(site.id) || hasImagery(target.id) ? '<button type="button" class="btn" data-action="twin">Twin view</button>' : ''}
       ${baseAllowed({ kind: 'site', id: site.id }, target.id) ? '<button type="button" class="btn primary" data-action="base" title="A test base here for the starred target: floor plan, crops, communications">⭐ Explore base plan</button>' : ''}
     </div>
-    ${baseAllowed({ kind: 'site', id: site.id }, target.id) ? `<p class="star-note">⭐ Strongest Earth match on the ${esc(BODY_LABEL[target.body])}: the one pair we plan a base for.</p>` : ''}
+    ${baseAllowed({ kind: 'site', id: site.id }, target.id) ? `<p class="star-note">⭐ Strongest Jordan match on the ${esc(BODY_LABEL[target.body])}: the one pair we plan a base for.</p>` : ''}
     ${quick}
     ${site.why ? `<p class="why">${esc(site.why)}</p>` : ''}
     ${LIMIT_LINE}
@@ -345,7 +345,7 @@ export function renderTarget(target, twins, extra = {}) {
       ${standButtons(target.id)}
       ${isStarTarget(target.id) ? '<button type="button" class="btn primary" data-action="base" title="A base here: floor plan, crops, communications">⭐ Explore base plan</button>' : ''}
     </div>
-    ${isStarTarget(target.id) ? `<p class="star-note">⭐ Its closest Earth twin is the strongest match of any ${esc(BODY_LABEL[target.body])} target (default screening score), so this is where we plan the base.</p>` : `<p class="src">The base plan is available only at the starred ⭐ target of each world: ${Object.values(starPairs()).map((s) => esc(state.data.targets.find((t) => t.id === s.targetId)?.name || s.targetId)).join(' and ')}.</p>`}
+    ${isStarTarget(target.id) ? `<p class="star-note">⭐ Of all ${esc(BODY_LABEL[target.body])} targets, this one has the strongest match with a Jordan site (default screening score), so this is where we plan the base.</p>` : `<p class="src">The base plan is available only at the starred ⭐ target of each world: ${Object.values(starPairs()).map((s) => esc(state.data.targets.find((t) => t.id === s.targetId)?.name || s.targetId)).join(' and ')}.</p>`}
     <div class="section"><span class="label">Closest Earth twins</span>${twinList}
       <p class="src">${scoreLabel()}${gapText ? ` · ${esc(gapText)}` : ''}.${scored.length ? ' Click a twin to fly there on Earth.' : ''}${scored.length && state.mode === 'full' ? ` ${pillarKey().join(' = ')}.` : ''}</p></div>
     ${measured < TARGET_MIN_MEASURED ? `<p class="caveat">⚑ Only ${measured} of the ${CLIMATE_FACTORS.length} original climate factors ${measured === 1 ? 'has' : 'have'} site-level data. See the factor sources under Full data &amp; sources.</p>` : ''}
