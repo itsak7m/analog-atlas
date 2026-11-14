@@ -7,7 +7,7 @@
 
 import { state } from '../state.js';
 import { $, esc, toast } from '../util.js';
-import { pct, CLIMATE_FACTORS, PILLARS } from '../scoring.js';
+import { pct, screeningDefaults } from '../scoring.js';
 import { findSite, findTarget } from '../data.js';
 import { REDUCED_MOTION } from '../config.js';
 import { baseData, coverScreen, revealCover } from './base.js';
@@ -23,13 +23,8 @@ const HAZARDS = ['Radiation', 'Isolation and confinement', 'Distance from Earth'
 let run = null;
 export const storyRunning = () => !!run;
 
-const defaults = () => ({
-  mode: 'full',
-  strict: false,
-  earthTemp: 'air',
-  weights: Object.fromEntries(CLIMATE_FACTORS.map((f) => [f.id, 1])),
-  pillars: Object.fromEntries(PILLARS.map((p) => [p.id, 1])),
-});
+// The same settings the app opens with, so the story's numbers match the ranking panel.
+const defaults = () => ({ mode: 'full', ...screeningDefaults() });
 
 // ---------- timing helpers (pause-aware, end early on Next / Back / Exit) ----------
 function wait(ms) {

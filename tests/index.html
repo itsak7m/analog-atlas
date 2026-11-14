@@ -1146,6 +1146,16 @@ test('docs agree with the data: test count, site/target/box counts and the short
     if (!row) bad.push(`${name}: no "all 3 base sites" row`);
     else same(`${name} all 3 base sites`, [...row[3].matchAll(/(\d+) ?%/g)].map((m) => m[1]).join(','), c.steady[0]?.pcts.join(','));
   }
+  // README's default screening table: the top 3 percentages with the settings the app opens with.
+  const scrPart = readme.split('## Results with the default screening score')[1]?.split('## Reference results')[0] || '';
+  const scrRows = rowsOf(scrPart);
+  if (!scrRows.length) bad.push('README: no default screening table');
+  for (const [label, id] of Object.entries(tables[0][2])) {
+    const row = scrRows.find((c) => c[1] === label);
+    if (!row) { bad.push(`README screening: no row "${label}"`); continue; }
+    const p = rankSites(lstSites, T(id), { ...fullOpts, ...screeningDefaults() }).map((x) => (x.score == null ? null : pct(x.score)));
+    same(`README screening ${label} top 3`, dedup([...row[2].matchAll(/(\d+) ?%/g)].map((m) => +m[1])), dedup(p.slice(0, 3)));
+  }
   // The deck's "What we found" rows: each % is the named site's score for each target in the row.
   const deckRows = {
     'MARS · JEZERO CRATER': ['harrat', ['jezero']],

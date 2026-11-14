@@ -18,6 +18,28 @@ The data is real and sourced: measured where possible, and shown as "not measure
 >
 > **Also here:** `JUDGE_GUIDE_AR.md`, a short guide for the jury (in Arabic), `pitch/`, with the deck, the 30 s and 60 s promo videos and the video guide, and `hardware/cosmic-cat/`, a 3D-printed case for the field kit (section 8).
 
+## Results with the default screening score
+
+This is what the app shows when it opens: the **Screening score** with strict data on (only target values measured at the site itself), Earth temperature matched to how each target value was measured (air or ground), all factors ×1, and four pillars: climate, terrain, rock type and resources. The flat landing zone is shown as context, not scored, because it comes from the same slope grid as terrain (section 3). At least 2 pillars with data are needed. Equal percentages share a rank. ⚑ after a site: its NASA POWER cell is more than 400 m above or below the real ground (section 9). The test page recomputes this table from the data, so it cannot go stale.
+
+| Target | Closest Earth twins (top 3, default screening score) | Read with care |
+|---|---|---|
+| Malapert Massif | McMurdo Dry Valleys ⚑ 52 %, Haughton Crater 23 %, **Wadi Rum (Jordan) 21 %** | Only 1 site reaches 50 %. |
+| Mons Mouton | Haughton Crater 58 %, Rio Tinto and Atacama 55 % (shared 2nd) | 4 of 19 sites reach 50 %. Rests mainly on slope. |
+| Shackleton connecting ridge | **Wadi Rum (Jordan) 54 %**, McMurdo Dry Valleys ⚑ 48 %, Haughton Crater 38 % | Only 1 site reaches 50 %. Rests mainly on slope. |
+| Shackleton crater floor | Mistastin 33 %, McMurdo Dry Valleys ⚑ 30 %, Haughton Crater 21 % | No site reaches 50 %. |
+| Jezero Crater | **Harrat al-Shaam (Jordan) 66 %**, Craters of the Moon 65 %, North Pole Dome (Pilbara) 64 % | The top 3 lie within 2 points; 14 of 19 sites reach 50 %. |
+| Gale Crater | Dalangtan playa 68 %, Tso Kar ⚑ 67 %, Death Valley 65 % | Jordan's best is the Lisan Peninsula ⚑ (#4, 64 %). |
+| Deuteronilus Mensae | Tso Kar ⚑ 63 %, Haughton Crater 47 %, Dalangtan playa 38 % | Only 1 site reaches 50 %. |
+| Erebus Montes | Tso Kar ⚑ 62 %, **Harrat al-Shaam (Jordan) 48 %**, Haughton Crater 47 % | Only 1 site reaches 50 %. |
+| Phoenix (lander) | Tso Kar ⚑ 73 %, Dalangtan playa and Death Valley 66 % (shared 2nd) | Jordan's best is the Lisan Peninsula ⚑ (#4, 64 %). |
+| Mare Tranquillitatis pit (Moon) | **Harrat al-Shaam (Jordan) 71 %**, Craters of the Moon 68 %, Holuhraun 55 % | Nobody has measured inside the cave. |
+| Arsia Mons skylight (Mars) | Craters of the Moon 85 %, **Harrat al-Shaam (Jordan) 84 %**, North Pole Dome and SP Crater 58 % (shared 3rd) | Nobody has measured inside the cave. |
+| Apollo 11 | **Harrat al-Shaam (Jordan) 67 %**, Holuhraun 66 %, North Pole Dome and Craters of the Moon 65 % (shared 3rd) | ⚑ target: only 1 of its 5 factors is measured at the site. Rests mainly on rock type. |
+| Apollo 17 | Craters of the Moon 58 %, **Harrat al-Shaam (Jordan) 57 %**, SP Crater 56 % | |
+
+**What changed from the reference settings below.** The reference preset (the numbers in our earlier deck and video) also scores the flat landing zone and compares air temperature everywhere. The default is stricter, so most percentages are lower: Jezero's Harrat al-Shaam goes from 71 % to 66 % and stays first; Malapert's Dry Valleys from 62 % to 52 %. Jordan's Wadi Rum becomes the only #1 for the Shackleton connecting ridge (with the reference settings it shares first place with Rio Tinto). Both settings are in **Tune factors**.
+
 ## Reference results
 
 These tables use the historical **Reference settings** preset in Tune factors. **Method & data** includes the reference table and the matrix for the current settings. Equal percentages share a rank. The score helps shortlist locations for a field investigation. ⚑ after a site: its NASA POWER cell is more than 400 m above or below the real ground (section 9).
@@ -136,10 +158,10 @@ CesiumJS, Pannellum and the fonts are local copies in `vendor/`.
 | **Measured from orbit** | A card on every site page and box page: the MODIS ground surface temperature (mean, day-night swing, coldest 8-day night with its date), and what the top of the ground is made of: MODIS emissivity e29 with a plain-words reading, Sentinel-2 iron and clay/carbonate ratios with the picture dates, the ASTER silica index (relative only), flags such as plants or water, and for the five Jordan sites a check against our rock map. NASA EMIT minerals are shown where `data/emit.json` has them. Composition and minerals are display only: never used in the score. |
 | **3D concept base** | **Explore base in 3D** is available from site, target and screening box details. From the exterior, enter the habitat and move between the greenhouse and communications room. **View on Moon**, **View on Mars** or **View on Earth** holds the same camera framing and room during a world swap. **Plan details** covers sourced requirements, crop choices and communication delay. |
 | **Method & data** | The formula, every value with its source, a self-check of the reference rankings, all sites against all targets (with a CSV download), credits, limits and the AI-use note. |
-| **▶ Story** | The optional animated story is under **More**. It covers a Jordan–Mars pairing, a concept base and sending a message home. Data tour and Jordan corridor are also available there. |
-| **⋯ More → ▶ Data tour** | A guided data tour of about 2 minutes ("Play the 2-minute data tour"): 14 steps, from the targets to Jezero, the full match, Jordan's closest twin of the Apollo 17 site, the Moon base site Malapert, the Jordan corridor, photos, the field kit and the method. Every number in it is computed from the data when the step is shown. It uses the default settings and puts yours back at the end. While it runs, the button reads **■ Stop tour** (in the **⋯ More** menu, next to the **◆ Jordan corridor** and the **3D** button); **Next**, **Back** and `Esc` act at once, even during a camera flight. |
+| **▶ Story** | The animated story is the first button in the top bar. It covers a Jordan–Mars pairing (with the default screening score, the same number as the ranking panel), a concept base and sending a message home. Data tour and Jordan corridor are under **⋯ More**. |
+| **⋯ More → ▶ Data tour** | A guided data tour of about 2 minutes ("Play the 2-minute data tour"): 13 steps, from the targets to Jezero, the full match, Jordan's closest twin of the Apollo 17 site, the Moon base site Malapert, the Jordan corridor, photos and the method. Every number in it is computed from the data when the step is shown. It uses the Reference settings (so its numbers match the reference tables in this README) and puts yours back at the end. While it runs, the button reads **■ Stop tour** (in the **⋯ More** menu, next to the **◆ Jordan corridor** and the **3D** button); **Next**, **Back** and `Esc` act at once, even during a camera flight. |
 | **◆ Jordan** | The Jordan Analog Corridor: five Jordan sites as one story (Harrat al-Shaam, Waqf as Suwwan, Lisan Peninsula at the Dead Sea, Qa' al-Jafr, Wadi Rum), with a route line on the globe. All five are pinned while it runs, and each card gives the site's best computed rank over all targets. While it runs, the button reads **■ Stop**. |
-| **Field kit** | Open **More → Field kit** for readings, the kit location and the NASA POWER log comparison. Without a connected ESP32 the panel labels the snapshot and charts as simulated. |
+| **Field kit** | Hidden for the event: the team cancelled the hardware on 14 November 2026 for lack of time, so no kit was built and no field reading exists. The code and firmware stay as future work (section 6). |
 
 On phones the map stays visible above a sheet. The ranking and site details share that space. The main controls are keyboard accessible, and the 3D experience respects the system reduced-motion preference.
 
@@ -284,6 +306,8 @@ Climate on Earth comes from NASA POWER, which is not on the list.
 ---
 
 ## 6. ESP32 field kit
+
+> **Cancelled for the event (14 November 2026).** We did not build or test the kit, so the app hides its button and no reading in this project comes from it. This section describes the planned design, kept as future work.
 
 See **`firmware/WIRING.md`** for parts, wiring, a test for each sensor and the 24-hour test. See **`firmware/PROTOCOL.md`** for the serial format.
 
