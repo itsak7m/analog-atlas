@@ -1,10 +1,10 @@
 // Detail panel: one Earth site, one Moon/Mars target, or the welcome card.
 
 import { state } from '../state.js';
-import { CLIMATE_FACTORS, factorsFor, PILLARS, ROCK_LABEL, R_SLOPE, SAFE_SLOPE_DEG, RESOURCES, pct, targetValue, measuredFactors, TARGET_MIN_MEASURED, STRICT_MIN_FACTORS } from '../scoring.js';
+import { CLIMATE_FACTORS, factorsFor, ROCK_LABEL, R_SLOPE, SAFE_SLOPE_DEG, RESOURCES, pct, targetValue, measuredFactors, TARGET_MIN_MEASURED } from '../scoring.js';
 import { esc, fmt, fmtCoord, STATUS_LABEL, BODY_LABEL, cellGap, CELL_GAP_LIMIT_M } from '../util.js';
-import { noScoreText, targetGapText, gapWords, strictDropsClimate, computeRanking, displayRanks, pillarStrip, pillarKey } from './ranking.js';
-import { earthCell, earthTempLine, orbitSiteHTML } from './orbit.js';
+import { noScoreText, targetGapText, gapWords, strictDropsClimate, computeRanking, displayRanks, pillarStrip, pillarKey, scoreLabel } from './ranking.js';
+import { earthCell, targetCell, earthTempLine, orbitSiteHTML } from './orbit.js';
 import { HAS_ION } from '../config.js';
 
 export const POWER_FACTS = [
@@ -153,43 +153,10 @@ function testsSection(site) {
     <p class="src">${esc(key)}</p></div>`;
 }
 
-const NUM_WORD = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
-const numWord = (n) => NUM_WORD[n] || String(n);
-
-export function renderWelcome() {
-  const el = panel();
-  el.hidden = false;
-  document.body.classList.remove('sheet-detail');
-  // Cave targets are counted from data/targets.json (groups moon-cave and mars-cave), so the text stays true.
-  const caves = state.data.targets.filter((t) => /-cave$/.test(t.group || ''));
-  const caveWorlds = ['moon', 'mars'].filter((b) => caves.some((t) => t.body === b)).map((b) => (b === 'moon' ? 'the Moon' : BODY_LABEL[b])).join(' and ');
-  // Reference landing sites (groups moon-ref and mars in data/targets.json), named short: "Phoenix, Apollo 11 and Apollo 17".
-  const refs = state.data.targets.filter((t) => t.group === 'moon-ref' || t.group === 'mars').map((t) => t.name.split(/ landing site| site|,/)[0]);
-  const refText = refs.length > 1 ? `${refs.slice(0, -1).join(', ')} and ${refs[refs.length - 1]}` : refs[0] || '';
-  // On a phone the brief opens short (title and buttons), so the globe stays in view; "More" shows the rest.
-  setPanel(el, `<div class="welcome">
-    <button type="button" class="btn small close" data-action="close" aria-label="Close the mission brief">✕</button>
-    <span class="label">Mission brief</span>
-    <h2 class="title" tabindex="-1">Places on Earth that behave like the Moon and Mars</h2>
-    <div class="welcome-more" id="welcome-more">
-    <p>Analog Atlas ranks ${state.data.sites.length} Earth places by how closely their climate, ground and rocks match places on the Moon and Mars: base and ice sites at the Moon's south pole, proposed Mars landing zones and reference landing sites${refText ? ` (${esc(refText)})` : ''}.${caves.length ? ` It also compares them with ${numWord(caves.length)} cave opening${caves.length === 1 ? '' : 's'} (pit${caves.length === 1 ? '' : 's'}) on ${esc(caveWorlds)}, possible natural shelter${caves.length === 1 ? '' : 's'} for crews.` : ''}</p>
-    <p>The <b>Discover Jordan</b> tab scores 10 km boxes across Jordan in the same way. For most targets it confirms our hand-picked Jordan sites and maps the ground around them (found by data, not yet checked in the field).</p>
-    <ol>
-      <li>Choose a target in the top bar (<b>Compare with</b>).</li>
-      <li>Click a site in the list or a pin on the globe.</li>
-      <li>Press <b>Fly down</b> to land there in 3D, then <b>Stand here</b>.</li>
-      <li>Connect the ESP32 field kit to compare this spot right now.</li>
-    </ol>
-    <p class="src">Climate: NASA POWER 2001–2020 averages (from satellites and weather models). Targets: measurements from Perseverance, Curiosity and Phoenix on Mars, two Mars orbiters (MRO Mars Climate Sounder, MGS TES), LRO Diviner and Apollo 17 on the Moon, and NASA fact sheets. Every number links to its source in <b>Method &amp; data</b>.</p>
-    </div>
-    <div class="actions"><button type="button" class="btn primary" data-action="story">▶ Play the 2-minute story</button><button type="button" class="btn brief-more" data-action="brief-more" aria-expanded="false" aria-controls="welcome-more">More</button></div>
-  </div>`);
-}
-
 // "Twin of": the targets where this site is in the top 3, scored live with the ranking's own code and the
 // current settings (the bold cells of the Method & data matrix). Each row makes that target the comparison.
 function twinOfSection(site) {
-  const modeText = state.mode === 'full' ? 'full analog match' : 'climate match';
+  const modeText = scoreLabel().toLowerCase();
   const hits = state.data.targets.map((t) => {
     const ranked = computeRanking(t.id);
     const ranks = displayRanks(ranked);
@@ -235,14 +202,14 @@ export function renderSite(site, target, result, extra = {}) {
   const [statusText, statusCls] = STATUS_LABEL[site.status] || ['', ''];
   const p = site.power;
   const score = result.score;
-  const modeText = state.mode === 'full' ? 'full analog match' : 'climate match';
+  const modeText = scoreLabel().toLowerCase();
   const rows = result.climate.rows.map((r) => {
     const f = r.factor;
     return `<tr>
       <td>${esc(f.short)}${r.weight !== 1 ? ` <span class="src">×${r.weight.toFixed(1)}</span>` : ''}</td>
       <td class="num">${earthCell(r)}</td>
-      <td class="num">${r.target == null ? '<span class="src">not measured</span>' : fmt(r.target, f.digits, f.unit)}</td>
-      <td class="match">${mbar(r.score)}</td></tr>`;
+      <td class="num">${targetCell(r)}</td>
+      <td class="match">${r.excluded ? `<span class="src" title="${esc(r.excluded)}">Not scored</span>` : mbar(r.score)}</td></tr>`;
   }).join('');
   const targetSources = [...new Set(result.climate.rows.map((r) => r.source).filter(Boolean))].map(srcLink).join(' · ');
 
@@ -259,12 +226,13 @@ export function renderSite(site, target, result, extra = {}) {
     const flat = (x) => (x.max_flat_square_km != null ? `${fmt(x.max_flat_square_km, 1)} km` : notComputed);
     pillars = `<div class="section"><span class="label">Terrain and geology</span>
       <table class="facts"><thead><tr><th>Pillar</th><th>${esc(site.name.split(',')[0])}</th><th>${esc(target.name.split(' (')[0])}</th><th>Match</th></tr></thead><tbody>
+      <tr><td>Climate</td><td colspan="2" class="src">${result.climate.used} comparable factors</td><td class="match">${mbar(result.climate.score)}</td></tr>
       <tr><td>Median slope</td><td class="num">${slope(st)}</td><td class="num">${slope(tt)}</td><td class="match">${mbar(t ? t.score : null)}</td></tr>
-      <tr><td>Largest flat zone (&lt;${SAFE_SLOPE_DEG}°)</td><td class="num">${flat(st)}</td><td class="num">${flat(tt)}</td><td class="match">${mbar(result.landing ? result.landing.score : null)}</td></tr>
+      <tr><td>Largest flat zone (&lt;${SAFE_SLOPE_DEG}°)</td><td class="num">${flat(st)}</td><td class="num">${flat(tt)}</td><td class="match">${state.pillars.landing > 0 ? mbar(result.landing?.score) : '<span class="src">Context</span>'}</td></tr>
       <tr><td>Main rock</td><td>${site.geology?.primary ? esc(ROCK_LABEL[site.geology.primary] || site.geology.primary) + (site.geology.unsourced?.includes(site.geology.primary) ? ' <span class="src">(no source yet)</span>' : '') : '<span class="src">not measured</span>'}</td><td>${target.geology?.primary ? esc(ROCK_LABEL[target.geology.primary] || target.geology.primary) : '<span class="src">not measured</span>'}</td><td class="match">${mbar(g ? g.score : null)}</td></tr>
       <tr><td>Resources</td><td colspan="2">${resourcesText(site, target, result.resources)}</td><td class="match">${mbar(result.resources ? result.resources.score : null)}</td></tr>
       </tbody></table>
-      <p class="src">${g ? esc(g.reason) + '. ' : ''}Slope: 10 km box, 500 m grid; a ${R_SLOPE}° difference scores 0. Largest flat zone: side of the biggest square in the box where all ground is under ${SAFE_SLOPE_DEG}° (${artemisLink()}); a zone as large as the target's scores 1.${terrainNote(site)}</p>
+      <p class="src">${g ? esc(g.reason) + '. ' : ''}Slopes are estimated over 1 km on a 500 m grid. A ${R_SLOPE}° difference scores 0. The flat-zone estimate uses that same grid. ${artemisLink()} uses 100 m slopes.${terrainNote(site)}</p>
       ${rockSources(site)}</div>`;
   }
 
@@ -281,9 +249,9 @@ export function renderSite(site, target, result, extra = {}) {
   // Full match: how many pillars this site really uses, and which have no data (on either side).
   const missing = gapWords([...(strictDropsClimate(result) ? ['climate'] : []), ...(result.targetGaps || []), ...(result.siteGaps || [])]);
   const gapText = state.mode === 'full' && score != null && result.pillarsUsed != null
-    ? `${result.pillarsUsed} of ${PILLARS.length} pillars used${missing ? ` · no data for ${missing}` : ''}` : '';
+    ? `${result.pillarsUsed} of ${result.pillarsEnabled} enabled pillars used${missing ? ` · insufficient ${missing} data` : ''}` : '';
   setPanel(el, `
-    <button type="button" class="btn small close" data-action="close" aria-label="Close details">✕</button>
+    <button type="button" class="btn small close" data-action="close" aria-label="Close details" title="Back to results">←</button>
     <div class="kicker"><span class="tag ${esc(statusCls)}">${esc(statusText)}</span>${site.jordan ? '<span class="tag jo">Jordan</span>' : ''}<span class="body-chip earth">Earth</span></div>
     <h2 class="title" tabindex="-1">${esc(site.name)}</h2>
     <p class="where">${esc(site.country)} · ${fmtCoord(site.lat, site.lon)} · ${esc(site.terrain)}</p>
@@ -294,7 +262,7 @@ export function renderSite(site, target, result, extra = {}) {
       ${inCloseup ? '<button type="button" class="btn" data-action="back">Back to globe</button>' : '<button type="button" class="btn primary" data-action="fly">Fly down</button>'}
       ${standButtons(site.id)}
       ${hasImagery(site.id) || hasImagery(target.id) ? '<button type="button" class="btn" data-action="twin">Twin view</button>' : ''}
-      <button type="button" class="btn" data-action="base" title="A test base here for the current target: 3D concept, crops, communication room">Base plan</button>
+      <button type="button" class="btn" data-action="base" title="A test base here for the current target: 3D concept, crops, communication room">Explore base in 3D</button>
     </div>
     ${photoNote(site.id)}
     ${twinOfSection(site)}
@@ -332,19 +300,19 @@ export function renderTarget(target, twins, extra = {}) {
   const measured = measuredFactors(target);
   const inCloseup = state.view !== 'globe'; // also during the fly-down, so Back to globe shows
   setPanel(el, `
-    <button type="button" class="btn small close" data-action="close" aria-label="Close details">✕</button>
+    <button type="button" class="btn small close" data-action="close" aria-label="Close details" title="Back to results">←</button>
     <div class="kicker"><span class="label">Target site</span><span class="body-chip ${esc(target.body)}">${esc(BODY_LABEL[target.body])}</span></div>
     <h2 class="title" tabindex="-1">${esc(target.name)}</h2>
     <p class="where">${esc(target.mission)} · ${fmtCoord(target.lat, target.lon)}</p>
     <div class="actions" style="margin-top:0">
       ${inCloseup ? '<button type="button" class="btn" data-action="back">Back to globe</button>' : '<button type="button" class="btn primary" data-action="fly">Fly down</button>'}
       ${standButtons(target.id)}
-      <button type="button" class="btn" data-action="base" title="A base here: 3D concept, problems and solutions, crops, communication room">Base plan</button>
+      <button type="button" class="btn" data-action="base" title="A base here: 3D concept, problems and solutions, crops, communication room">Explore base in 3D</button>
     </div>
     ${photoNote(target.id)}
-    ${measured < TARGET_MIN_MEASURED ? `<p class="caveat">⚑ Data quality: only ${measured} of the ${CLIMATE_FACTORS.length} factors ${measured === 1 ? 'is' : 'are'} measured at this site itself; the others in the reference values are ${esc(BODY_LABEL[target.body])}-wide averages or general statements (see "Environment used in the score"). Read its ranking with care${measured >= STRICT_MIN_FACTORS ? ', or switch on Strict data in Tune factors.' : `. Strict data will not help here: a strict climate score needs at least ${STRICT_MIN_FACTORS} factors measured at the site, and this target has ${measured ? `only ${measured}` : 'none'}, so the strict climate match gives no scores (the full analog match then leaves climate out).`}</p>` : ''}
+    ${measured < TARGET_MIN_MEASURED ? `<p class="caveat">⚑ Only ${measured} of the ${CLIMATE_FACTORS.length} original climate factors ${measured === 1 ? 'has' : 'have'} site-level data. See the factor sources below.</p>` : ''}
     <div class="section"><span class="label">Closest Earth twins</span>${twinList}
-      <p class="src">${state.mode === 'full' ? 'Full analog match' : 'Climate match'}${gapText ? ` · ${esc(gapText)}` : ''}.${scored.length ? ' Click a twin to fly there on Earth.' : ''}${scored.length && state.mode === 'full' ? ` ${pillarKey().join(' = ')}.` : ''}</p></div>
+      <p class="src">${scoreLabel()}${gapText ? ` · ${esc(gapText)}` : ''}.${scored.length ? ' Click a twin to fly there on Earth.' : ''}${scored.length && state.mode === 'full' ? ` ${pillarKey().join(' = ')}.` : ''}</p></div>
     <div class="section"><span class="label">Environment used in the score${state.strict ? ' · strict data' : ''}</span>
       <table class="facts"><tbody>${rows}</tbody></table></div>
     <div class="section"><span class="label">More measured facts</span><table class="facts"><tbody>${facts}</tbody></table></div>`);
