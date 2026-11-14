@@ -1,20 +1,12 @@
-/* global Cesium */
-// Base plan (future work, a concept): what a base needs at a place on the Moon or Mars, or what a test base
-// at an Earth analog site can practise. Problem -> solution cards, a hydroponic greenhouse with real crop
-// nutrients (USDA), a communication room with the real signal delay (JPL orbits), and a 3D concept of the base
-// drawn on the globe. Numbers come from data/base.json and data/crops.json (each with a source) or are
-// computed from them; the layout of the base is our concept, not a measurement.
-
+// Concept layout and the sourced requirements for an Earth rehearsal, Moon or Mars base.
 import { state } from '../state.js';
-import { $, esc, fmt, fmtCoord, toast, BODY_LABEL } from '../util.js';
+import { esc, fmt, toast, BODY_LABEL } from '../util.js';
 import { pct, PILLARS } from '../scoring.js';
-import { openOverlay } from './overlay.js';
-import { drawBase, BASE_INTERIORS } from '../globe/base3d.js';
-import { ellipsoidFor } from '../globe/globe.js';
+import { closeOverlay, openOverlay } from './overlay.js';
+import { basePlanMarkup, bindBasePlan } from './base-plan.js';
 import { marsDelaySeconds, marsDistanceKm, nextConjunction, formatDelay, LIGHT_KM_S } from '../orbits.js';
 import { tourRunning } from './tour.js';
 import { corridorActive } from './corridor.js';
-import { HAS_ION, REDUCED_MOTION } from '../config.js';
 
 let docs = null;
 export async function baseData() {
@@ -36,339 +28,47 @@ const timeText = (d) => d.toLocaleTimeString('en-GB', { hour: '2-digit', minute:
 // The world the base is planned for: the target's own body, or (at an Earth site) the body of the target it is compared with.
 export const planBodyOf = (place, target) => (place.body && place.body !== 'earth' ? place.body : target?.body || 'mars');
 
-// One line for the signal delay to Earth, used on the card and in the Ask answers.
+// One line for the signal delay to Earth, used in the requirements and Ask answers.
 export function delayLine(body, now = new Date()) {
   if (body === 'moon') { const [a, b] = moonDelay(); return `${formatDelay(a)} to ${formatDelay(b)} each way: live calls work`; }
   const [a, b] = marsRange();
   return `${formatDelay(marsDelaySeconds(now))} each way today (${formatDelay(a)} to ${formatDelay(b)} over the years): video messages, not live calls`;
 }
 
-// ---------- 3D base + card ----------
-let active = null;
-// A cave skylight is a hole (about 100-150 m across): the base stands on the flat plain beside it, not over it.
-// SKYLIGHT_GAP_M east of the pit centre, a concept choice (the platform is 88 m wide).
-const SKYLIGHT_GAP_M = 300;
-function baseSpot(place) {
-  if (!/-cave$/.test(place?.group || '') || place.beside) return place;
-  const R = ellipsoidFor(place.body).maximumRadius;
-  const dLon = Cesium.Math.toDegrees(SKYLIGHT_GAP_M / (R * Math.cos(Cesium.Math.toRadians(place.lat))));
-  return { ...place, lon: place.lon + dLon, beside: true };
-}
 let request = 0;
-const previewOrbit = () => ({ heading: Cesium.Math.toRadians(32), pitch: Cesium.Math.toRadians(-27), range: 150 });
-export const baseActive = () => !!active;
+let dialog = null;
 
-// pair, when supplied, is the opposite side of a specific Earth/target comparison.
-// The same link is reversed after the swap, even if the Earth side isn't the first ranked site.
-export async function startBase(api, { sel, place, target, result, here, onAsk, pair }) {
+export const baseActive = () => !!dialog;
+
+export async function startBase({ place, target, result }) {
   if (tourRunning() || corridorActive()) { toast('Exit the tour or the Jordan corridor first (Esc).'); return; }
   stopBase();
-  const run = ++request;
+  const run = request;
   try { await baseData(); } catch (err) { toast(`Base plan data could not load: ${err.message}`, 5000); return; }
   if (request !== run) return;
+
   const body = planBodyOf(place, target);
-  const spot = baseSpot(place);
-  const ctx = { sel, place: spot, target, result, body, onAsk, swapTo: pair || swapTarget(api, sel, place, target) };
-  let h;
-  // Only the ground around the base is drawn, in full detail (see setFocus in globe.js).
-  api.globe.setFocus(spot);
-  try {
-    if (api.globe.viewer) {
-      if (here && api.globe.has3D && spot === place) h = await api.globe.closeOrbit(150, -27);
-      else h = await api.jumpTo(sel, previewOrbit(), spot === place ? null : spot);
-    }
-  } catch (err) {
-    console.error('Base preview failed', err);
-  }
-  if (request !== run) return;
-  if (h == null || !api.globe.viewer) { api.globe.setFocus(null); openBaseDetails(ctx); return; }
-  showBase(api, ctx, h);
-  api.globe.resumeOrbit();
-}
-
-function showBase(api, ctx, h, { render = true } = {}) {
-  active = { ctx, api, h, viewer: api.globe.viewer, remove: drawBase(api.globe.viewer, api.globe.ellipsoid, ctx.place, h), room: null, motion: null };
-  document.body.classList.add('basing');
-  if (render) showCard();
-  settleOnGround(active);
-}
-
-// The 3D ground of the Moon and Mars can load after the base was drawn: groundHeight() stops waiting after
-// 8 s and then uses a stored height, and before the tiles show the base is drawn on the flat globe (height 0),
-// which on Mars is kilometres above the real ground (the base then floats).
-// When the real height arrives, move the base onto it, and the camera with it, by the same amount.
-function settleOnGround(base) {
-  const { api, ctx } = base;
-  const globe = api.globe;
-  const { lon, lat } = ctx.place;
-  const viewer = base.viewer;
-  const stillHere = () => active === base && globe.viewer === viewer;
-  let seen = false; // the on-screen reading has placed the base: it wins over the slower detailed sample
-  const moveTo = (real) => {
-    if (!stillHere() || base.motion || !Number.isFinite(real)) return false;
-    const dh = real - base.h;
-    if (Math.abs(dh) < 1) return true;
-    base.remove();
-    base.remove = drawBase(viewer, globe.ellipsoid, ctx.place, real);
-    base.h = real;
-    if (base.room) {
-      base.remove.openRoom(base.room);
-      const cam = globe.camera;
-      const c = cam.positionCartographic;
-      cam.setView({ destination: Cesium.Cartesian3.fromRadians(c.longitude, c.latitude, c.height + dh, globe.ellipsoid), orientation: { heading: cam.heading, pitch: cam.pitch, roll: cam.roll } });
-    } else if (globe.orbit) {
-      const o = globe.orbit;
-      o.center = Cesium.Cartesian3.fromDegrees(lon, lat, real, globe.ellipsoid);
-      globe.camera.lookAt(o.center, new Cesium.HeadingPitchRange(o.heading, o.pitch, o.range));
-    }
-    return true;
-  };
-  // Fast path: the Moon and Mars tiles are drawn on screen well before they count as fully loaded, so read the
-  // height of what is on screen every second (leaving out the base itself) and move once two readings agree.
-  if (globe.body !== 'earth') {
-    let last = null;
-    (async () => {
-      // Runs while the base is open: finer tiles keep arriving (and can show a different height) after the first answer.
-      while (stillHere()) {
-        await new Promise((r) => setTimeout(r, 1000));
-        if (!stillHere() || base.motion || !viewer.scene.sampleHeightSupported) continue;
-        let q = null;
-        // Asked from 30 km up (see sampleHeight in globe.js): from height 0 it misses ground far above the sphere.
-        try { q = viewer.scene.sampleHeight(Cesium.Cartographic.fromDegrees(lon, lat, 30000), viewer.entities.values.slice()); } catch (err) { q = null; }
-        if (!Number.isFinite(q)) { last = null; continue; }
-        if (last !== null && Math.abs(q - last) < 3) seen = moveTo(q) || seen;
-        last = q;
-      }
-    })();
-  }
-  // Final answer: the most detailed height once the tiles have loaded. No has3D check: the base may have been
-  // drawn on the flat globe (height 0) just before the 3D tiles replaced it. sampleHeight() gives null without tiles.
-  globe.sampleHeight(lon, lat).then(async (real) => {
-    for (let i = 0; i < 60 && stillHere() && base.motion; i += 1) await new Promise((r) => setTimeout(r, 500));
-    // No 3D ground after all (no tiles or they failed): the base belongs on the flat globe, height 0.
-    if (!Number.isFinite(real) && !globe.has3D) real = 0;
-    if (!seen) moveTo(real);
+  const siteBody = place.body || 'earth';
+  const location = `${BODY_LABEL[siteBody]} · ${place.name}`;
+  const destination = siteBody === 'earth' && target ? `Rehearsal for ${target.name}, ${BODY_LABEL[body]}` : '';
+  const familyText = body === 'moon'
+    ? `The crew can schedule private video calls with family. One-way signal delay to Earth is ${moonDelay().map(formatDelay).join(' to ')}.`
+    : `The crew records private video messages for family. Today the one-way signal delay to Earth is ${formatDelay(marsDelaySeconds(new Date()))}.`;
+  let dispose;
+  dialog = openOverlay({
+    title: 'Base floor plan',
+    body: basePlanMarkup({ location, destination }),
+    onClose: () => { dispose?.(); dialog = null; },
   });
-}
-
-// ---------- world swap: the same base, the same view, another world around it ----------
-// A Moon or Mars target swaps to its closest Earth twin (the first site of its ranking); an Earth site swaps
-// to the target it is compared with. Nothing about the base or the camera changes, only the place around it.
-function swapTarget(api, sel, place, target) {
-  if (sel.kind === 'target') {
-    const top = api.rankingFor?.(place.id)?.find((r) => r.score != null);
-    return top ? { sel: { kind: 'site', id: top.site.id }, place: top.site, target: place, result: top } : null;
-  }
-  return target ? { sel: { kind: 'target', id: target.id }, place: target, target, result: null } : null;
-}
-
-const worldOf = (place) => BODY_LABEL[place.body || 'earth'];
-const shortPlace = (place) => place.name.split(' (')[0];
-
-// A picture of the view as it is now covers the globe while the other world loads under it.
-export async function coverScreen(api, text) {
-  const shot = await api.globe.snapshot();
-  const el = document.createElement('div');
-  el.className = 'swap-cover';
-  el.innerHTML = `${shot ? `<img alt="" src="${shot}">` : ''}<div class="swap-label"><i></i>${esc(text)}</div>`;
-  document.body.appendChild(el);
-  return el;
-}
-
-// Opens the cover from the base outwards, with the same camera framing on the new world.
-export function revealCover(el) {
-  return new Promise((resolve) => {
-    if (!el?.isConnected) { resolve(); return; }
-    el.classList.add('opening');
-    if (REDUCED_MOTION) { el.remove(); resolve(); return; }
-    const t0 = performance.now();
-    const far = Math.hypot(innerWidth, innerHeight) * 0.75;
-    const step = (now) => {
-      const t = Math.min(1, Math.max(0, (now - t0) / 1700));
-      const r = far * t * t * (3 - 2 * t);
-      const mask = `radial-gradient(circle at 50% 50%, transparent ${r}px, #000 ${r + 160}px)`;
-      el.style.webkitMaskImage = mask;
-      el.style.maskImage = mask;
-      if (t < 1) requestAnimationFrame(step); else { el.remove(); resolve(); }
-    };
-    requestAnimationFrame(step);
-  });
-}
-
-const flyRoom = (camera, view, duration, maximumHeight) => new Promise((resolve) => {
-  camera.flyTo({ ...view, duration: REDUCED_MOTION ? 0 : duration, maximumHeight, easingFunction: Cesium.EasingFunction.QUADRATIC_IN_OUT, complete: () => resolve(true), cancel: () => resolve(false) });
-});
-
-async function enterRoom(id, { instant = false, look = null } = {}) {
-  const base = active;
-  if (!base || base.motion || base.room === id) return;
-  const { globe } = base.api;
-  const view = base.remove.roomView(id);
-  if (!view || !globe.orbit) return;
-  const camera = globe.camera;
-  const controller = globe.scene.screenSpaceCameraController;
-  const controlsWereEnabled = controller.enableInputs;
-  base.controlsWereEnabled = controlsWereEnabled;
-  const current = () => active === base && globe.viewer === base.viewer;
-  const first = !base.room;
-  globe.orbit.paused = true;
-  globe.exitLook();
-  camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-  const near = base.near ?? camera.frustum.near;
-  base.near = near;
-  camera.frustum.near = 0.15;
-  base.collision ??= controller.enableCollisionDetection;
-  controller.enableCollisionDetection = false;
-  base.motion = 'entry';
-  controller.enableInputs = false;
-  showCard();
-  try {
-    if (!instant && !REDUCED_MOTION) {
-      if (!(await flyRoom(camera, view.above, first ? 1.15 : 0.7, Math.max(base.h + 45, camera.positionCartographic.height))) || !current()) return;
-      base.remove.openRoom(id);
-      if (!(await flyRoom(camera, view.approach, 0.52, base.h + 45)) || !current()) return;
-      if (!(await flyRoom(camera, view.inside, 0.64, base.h + 4)) || !current()) return;
-    } else {
-      base.remove.openRoom(id);
-      camera.setView(view.inside);
-    }
-    if (look) camera.setView({ orientation: look });
-    globe.enterLook();
-    if (globe.look) camera.frustum.fov = look?.fov ?? Cesium.Math.toRadians(86);
-    base.room = id;
-  } catch (err) {
-    console.error('Base room entry failed', err);
-    if (current()) toast('This room could not be opened.');
-  } finally {
-    if (current()) {
-      controller.enableInputs = controlsWereEnabled;
-      base.controlsWereEnabled = null;
-      if (base.room !== id) restoreExterior(base);
-      base.motion = null;
-      showCard(base.room ? 'outside' : 'enter');
-    }
-  }
-}
-
-function restoreExterior(base) {
-  const { globe } = base.api;
-  globe.exitLook();
-  if (base.near != null) globe.camera.frustum.near = base.near;
-  if (base.collision != null) globe.scene.screenSpaceCameraController.enableCollisionDetection = base.collision;
-  base.near = null;
-  base.remove.openRoom(null);
-  base.room = null;
-  if (globe.orbit) {
-    const { center, heading, pitch, range } = globe.orbit;
-    globe.camera.lookAt(center, new Cesium.HeadingPitchRange(heading, pitch, range));
-    globe.resumeOrbit();
-  }
-}
-
-function leaveRoom() {
-  if (!active?.room || active.motion) return;
-  restoreExterior(active);
-  showCard('enter');
-}
-
-async function swapWorld() {
-  const from = active;
-  if (!from || from.motion || !from.ctx.swapTo) return;
-  const { api, ctx, room } = from;
-  const to = ctx.swapTo;
-  const orbit = api.globe.orbit;
-  const view = orbit ? { heading: orbit.heading, pitch: orbit.pitch, range: orbit.range } : previewOrbit();
-  const camera = api.globe.camera;
-  const look = room ? { heading: camera.heading, pitch: camera.pitch, roll: camera.roll, fov: camera.frustum.fov } : null;
-  if (orbit) orbit.paused = true;
-  from.motion = 'swap';
-  showCard();
-  const run = request;
-  let cover;
-  try {
-    cover = await coverScreen(api, `${worldOf(ctx.place)} → ${worldOf(to.place)} · ${shortPlace(to.place)}`);
-    if (request !== run || active !== from) return;
-    clearBase();
-    const spot = baseSpot(to.place);
-    api.globe.setFocus(spot);
-    const h = await api.jumpTo(to.sel, view, spot === to.place ? null : spot);
-    if (request !== run) return;
-    if (h == null) { toast('The other world could not be shown.'); return; }
-    const next = { ...to, place: spot, body: planBodyOf(to.place, to.target), onAsk: ctx.onAsk, swapTo: { sel: ctx.sel, place: ctx.place, target: ctx.target, result: ctx.result } };
-    showBase(api, next, h, { render: !room });
-    if (room) await enterRoom(room, { instant: true, look });
-    if (request !== run || !active) return;
-    active.motion = 'swap';
-    showCard();
-    await api.globe.waitForTiles(HAS_ION ? 3200 : 450);
-  } catch (err) {
-    console.error('Base world transition failed', err);
-    if (request === run) toast('The other world could not be shown.');
-  } finally {
-    if (request === run) await revealCover(cover);
-    else cover?.remove();
-    if (request === run && active) {
-      active.motion = null;
-      if (!active.room) api.globe.resumeOrbit();
-      showCard('swap');
-    }
-  }
-}
-
-function showCard(focus) {
-  const { ctx, room, motion, api } = active;
-  const { place } = ctx;
-  const interior = BASE_INTERIORS.find((r) => r.id === room);
-  const disabled = motion ? ' disabled' : '';
-  const roomButtons = room ? BASE_INTERIORS.filter((r) => r.id !== room).map((r) => `<button type="button" class="btn small" data-room="${r.id}"${disabled}>${r.label}</button>`).join('') : '';
-  const el = $('#caption');
-  el.hidden = false;
-  el.classList.add('base-card');
-  el.setAttribute('aria-busy', String(Boolean(motion)));
-  el.innerHTML = `<div class="k" title="${esc(fmtCoord(place.lat, place.lon))}">Base concept · ${esc(worldOf(place))} · ${esc(shortPlace(place))}${place.beside ? ` · ${SKYLIGHT_GAP_M} m from the skylight` : ''}</div>
-    <div class="t">${motion === 'entry' ? 'Moving inside…' : interior ? `Inside the ${interior.label.toLowerCase()}${room === 'comm' ? ' room' : ''}` : 'Base exterior'}</div>
-    ${interior && !motion ? `<div class="s">${interior.description} Drag the view or use the arrow keys to look around.</div>` : ''}
-    <div class="ctl">${room ? `<button type="button" class="btn small primary" data-b="outside"${disabled}>Back outside</button>${roomButtons}` : `<button type="button" class="btn small primary" data-b="enter"${disabled}>Enter habitat</button>`}
-      ${ctx.swapTo ? `<button type="button" class="btn small" data-b="swap" title="${esc(shortPlace(ctx.swapTo.place))}"${disabled}>View on ${esc(worldOf(ctx.swapTo.place))}</button>` : ''}
-      <button type="button" class="btn small" data-b="plan"${disabled}>Plan details</button>
-      <button type="button" class="btn small" data-b="exit">Exit base</button></div>`;
-  el.querySelector('[data-b="enter"]')?.addEventListener('click', () => enterRoom('habitat'));
-  el.querySelector('[data-b="outside"]')?.addEventListener('click', leaveRoom);
-  for (const b of el.querySelectorAll('[data-room]')) b.addEventListener('click', () => enterRoom(b.dataset.room));
-  el.querySelector('[data-b="plan"]').addEventListener('click', () => openBaseDetails(ctx));
-  el.querySelector('[data-b="swap"]')?.addEventListener('click', swapWorld);
-  el.querySelector('[data-b="exit"]').addEventListener('click', () => api.backToGlobe());
-  if (interior && !motion && api.globe.look) el.querySelector('.ctl').addEventListener('keydown', api.globe.look.keys);
-  if (!motion) (el.querySelector(`[data-b="${focus || 'enter'}"]`) || el.querySelector('[data-b="outside"]'))?.focus({ preventScroll: true });
-}
-
-function clearBase() {
-  if (!active) return;
-  const base = active;
-  active = null;
-  const { globe } = base.api;
-  if (globe.viewer === base.viewer && !base.viewer.isDestroyed()) {
-    if (base.motion === 'entry') globe.camera.cancelFlight();
-    globe.exitLook();
-    if (base.controlsWereEnabled != null) globe.scene.screenSpaceCameraController.enableInputs = base.controlsWereEnabled;
-    if (base.collision != null) globe.scene.screenSpaceCameraController.enableCollisionDetection = base.collision;
-    if (base.near != null) globe.camera.frustum.near = base.near;
-  }
-  base.remove();
-  globe.setFocus(null);
-  document.body.classList.remove('basing');
-  const el = $('#caption');
-  el.classList.remove('base-card');
-  el.removeAttribute('aria-busy');
-  el.hidden = true;
+  dispose = bindBasePlan(dialog, { familyText, onDetails: () => openBaseDetails({ place, target, result, body }) });
 }
 
 export function stopBase() {
   request += 1;
-  clearBase();
+  if (dialog) closeOverlay();
 }
 
-// ---------- the plan (overlay) ----------
+// ---------- plan details ----------
 function problems(body, ctx) {
   const b = docs.base.bodies;
   const e = b.earth;
@@ -519,11 +219,11 @@ function bindSender(el) {
 
 export async function openBaseDetails(ctx) {
   try { await baseData(); } catch (err) { toast(`Base plan data could not load: ${err.message}`, 5000); return; }
-  const { place, target, body } = ctx;
+  const { place, body } = ctx;
   const test = !place.body || place.body === 'earth';
   const name = BODY_LABEL[body];
   const html = `<div class="sheet-body method base-plan">
-    <p class="caveat">Concept for future work: the layout is ours, not a design. Every number below has a source or is computed from one.</p>
+    <p class="caveat">Concept layout for future work. The requirements below use cited measurements and calculations.</p>
     ${test ? testSection(ctx) : ''}
     <h3 class="label">${esc(name)}: problems and the part of the base that solves each</h3>${problems(body, ctx)}
     <h3 class="label">What makes ${esc(name)} ${esc(name)}</h3>${madeOf(body)}
