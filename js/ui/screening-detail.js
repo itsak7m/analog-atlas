@@ -231,15 +231,15 @@ function roverCaseHTML(box, target) {
   const names = [[box.id, 'Candidate'], [target.id, 'Shackleton ridge'], ['wadi-rum', 'Wadi Rum reference'], ['harrat', 'Harrat flat reference']];
   const rows = names.flatMap(([id, name]) => rover.places[id].metrics.map((m) =>
     `<tr><th scope="row">${name}</th><td>${m.baselineKm} km</td><td class="num">${fmt(m.medianDeg, 2, '°')}</td><td class="num">${fmt(m.p90Deg, 2, '°')}</td><td class="num">${fmt(m.under10Pct, 1, '%')}</td></tr>`)).join('');
-  return `<section class="rover-case" aria-label="Rover mobility case">
-    <h3>Rover mobility near Wadi Rum</h3>
+  return `<section class="rover-case" aria-label="Terrain slope case">
+    <h3>Terrain slope near Wadi Rum</h3>
     <dl class="rover-stats">
       <div><dt>Jordan candidate</dt><dd>${fmt(candidate.metrics[0].medianDeg, 1, '°')}</dd></div>
       <div><dt>Shackleton ridge</dt><dd>${fmt(lunar.metrics[0].medianDeg, 1, '°')}</dd></div>
     </dl>
     <p class="src">Median slope in two 10 km areas, using a 1 km baseline.</p>
     <button type="button" class="btn primary" data-action="base">Explore base in 3D</button>
-    <p><b>Proposed trial.</b> Repeat passes on a surveyed slope and a nearby flat track with similar soil. Log wheel rotations, battery voltage and current. Measure distance separately to estimate slip and energy per metre.</p>
+    <p><b>Future field trial (not done yet).</b> With a test rover, repeat passes on a surveyed slope and a nearby flat track with similar soil. Log wheel rotations, battery voltage and current. Measure distance separately to estimate slip and energy per metre.</p>
     <p class="src">Satellite screening. Field access, surface roughness and traction still need checking. Lunar gravity, soil and temperatures differ.</p>
     <details><summary>Compare slope statistics and sources</summary>
       <p class="src">The medians are close at both scales. The Jordan box has a steeper upper tail at 1 km. P90 is the slope below which 90% of samples fall.</p>

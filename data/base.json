@@ -23,7 +23,10 @@
   "plants-mind": { "label": "Odeh and Guy 2017, Open Agriculture 2: gardening for therapeutic people-plant interactions during long space missions (a review)", "url": "https://doi.org/10.1515/opag-2017-0001" },
   "mco-1999": { "label": "NASA press release, 10 November 1999: Mars Climate Orbiter failure board releases report (metric vs English units)", "url": "https://nssdc.gsfc.nasa.gov/planetary/text/mco_pr_19991110.txt" },
   "apollo13": { "label": "NASA: Apollo 13 mission page (the crew fitting the carbon dioxide 'mail box' in the lunar module)", "url": "https://www.nasa.gov/mission/apollo-13/" },
-  "ingenuity-2024": { "label": "NASA JPL, 25 January 2024: after three years on Mars, NASA's Ingenuity helicopter mission ends", "url": "https://www.jpl.nasa.gov/news/after-three-years-on-mars-nasas-ingenuity-helicopter-mission-ends/" }
+  "ingenuity-2024": { "label": "NASA JPL, 25 January 2024: after three years on Mars, NASA's Ingenuity helicopter mission ends", "url": "https://www.jpl.nasa.gov/news/after-three-years-on-mars-nasas-ingenuity-helicopter-mission-ends/" },
+  "pathfinder-1997": { "label": "Glenn Reeves (JPL flight software lead), December 1997: what really happened on Mars Pathfinder (copy hosted by Cornell University)", "url": "https://www.cs.cornell.edu/courses/cs614/1999sp/papers/pathfinder2.html" },
+  "wamelink-2014": { "label": "Wamelink et al. 2014, PLOS ONE 9: Can plants grow on Mars and the Moon? A growth experiment on Mars and Moon soil simulants", "url": "https://doi.org/10.1371/journal.pone.0103138" },
+  "esa-melissa": { "label": "ESA: MELiSSA life support project (Micro-Ecological Life Support System Alternative)", "url": "https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/Research/Life_support" }
  },
  "bodies": {
   "earth": {
@@ -90,6 +93,7 @@
  ],
  "lessons": [
    { "topic": "Mars Climate Orbiter, 1999", "text": "Lost because one team's software used English units (pound-force) and another's expected metric (newtons).", "source": "mco-1999", "base": "Check every number and every unit, end to end, on Earth before flight." },
+   { "topic": "Mars Pathfinder, 1997", "text": "On Mars its computer kept resetting. Engineers made the same fault happen on an identical copy on Earth, found a software timing bug, and sent the fix by radio.", "source": "pathfinder-1997", "base": "Keep a working copy of the base on Earth, to reproduce and fix faults safely." },
    { "topic": "Apollo 13, 1970", "text": "After an oxygen tank failed, the crew fitted a home-made 'mail box' to clear carbon dioxide from the lunar module and got home safely.", "source": "apollo13", "base": "A crew that has practised together can improvise when a plan fails." },
    { "topic": "Ingenuity, 2021 to 2024", "text": "Designed for up to 5 test flights on Mars, it flew 72.", "source": "ingenuity-2024", "base": "Hardware tested well on Earth can do far more than planned." }
  ]

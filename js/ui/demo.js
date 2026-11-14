@@ -5,7 +5,7 @@
 // Every number in the captions is read from the data at run time, never typed in.
 
 import { findSite, findTarget } from '../data.js';
-import { pct, PILLARS, referenceDefaults } from '../scoring.js';
+import { pct, PILLARS, screeningDefaults } from '../scoring.js';
 import { esc } from '../util.js';
 import { hideDetail } from './detail.js';
 import { SOUTH_POLE_VIEW as POLE } from '../globe/globe.js';
@@ -75,12 +75,12 @@ function facts(api, state) {
   };
 }
 
-// Same scoring settings for every run (the visitor's own settings come back at the end, as in the tour).
+// The settings the app opens with, so the video shows the same numbers as the live app. Same for every run (the visitor's own settings come back at the end, as in the tour).
 function defaults(api) {
   const saved = api.settings();
   api.closePanels();
   api.setTarget('jezero');
-  api.setSettings({ mode: 'full', ...referenceDefaults() });
+  api.setSettings({ mode: 'full', ...screeningDefaults() });
   return saved;
 }
 
@@ -122,7 +122,8 @@ async function sequence(api, helpers, state) {
 
   // 9–13 s: the Earth sites (the one change of world).
   await at(9);
-  caption(`${f.sites} Earth sites scored on <b>${PILLARS.length} pillars in Reference settings</b><small>${PILLARS.map((p) => p.label.toLowerCase()).join(' · ')} (NASA, ESA and USGS open data)</small>`);
+  const scored = PILLARS.filter((p) => screeningDefaults().pillars[p.id] > 0);
+  caption(`${f.sites} Earth sites, one <b>screening score from ${scored.length} pillars</b><small>${scored.map((p) => p.label.toLowerCase()).join(' · ')} (NASA, ESA and USGS open data)</small>`);
   await api.showWorld('earth');
   api.lookAt({ lat: 31.6, lon: 36.9 }, 1.9e6);
 
@@ -214,7 +215,7 @@ export async function runDemo(api, helpers, state) {
   };
   if (params.has('auto')) { await sleep(2500); return go(); }
   const start = el('demo-start');
-  start.innerHTML = `<div><b>Reference rankings demo (30 seconds)</b><br>1. Press F11 for full screen.  2. Start recording (Win + Alt + R).  3. Press Start.<br><button type="button">Start</button></div>`;
+  start.innerHTML = `<div><b>Analog Atlas demo (30 seconds, default screening score)</b><br>1. Press F11 for full screen.  2. Start recording (Win + Alt + R).  3. Press Start.<br><button type="button">Start</button></div>`;
   start.querySelector('button').addEventListener('click', async () => {
     start.remove();
     await sleep(1200);

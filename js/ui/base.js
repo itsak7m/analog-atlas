@@ -366,6 +366,8 @@ function greenhouse(body) {
   const plate = base.best_set.crops.map((id, i) => `<label class="plate-row">${esc(base.crops[id].name)} <input type="range" min="0" max="600" step="50" value="${[400, 100, 150][i] ?? 100}" data-crop="${esc(id)}"><output>0 g</output></label>`).join('');
   return `<p><b>Why water, not soil:</b> plants grow in water with nutrients (hydroponics), so the base does not depend on the soil${body === 'mars' ? ', and Martian soil holds toxic perchlorate' : ''}. ${esc(light)}</p>
     <p><b>Best low-cost set:</b> ${esc(base.best_set.why)} ${src('bpc-1996')}</p>
+    <p><b>Why not the local soil?</b> In a 2014 experiment, plants grew for 50 days in Mars and Moon soil simulants without added nutrients: best in the Mars simulant, worst in the Moon simulant. ${src('wamelink-2014')} A simulant is not the real soil${body === 'mars' ? ', and real Martian soil also holds perchlorate' : ''}, so the base starts with hydroponics.</p>
+    <p><b>Nothing is waste:</b> ESA's MELiSSA project works on a closed loop, where microbes and plants turn the crew's waste and exhaled CO₂ back into oxygen, water and food. ${src('esa-melissa')}</p>
     <div class="scroll-x"><table class="facts crops"><thead><tr><th>Crop (per 100 g, raw)</th>${NUTRIENTS.map(([, l, u]) => `<th>${esc(l)} <span class="src">${esc(u)}</span></th>`).join('')}<th>Grown by NASA</th></tr></thead><tbody>${rows}</tbody></table></div>
     <p class="src">Nutrients: ${link(crops.source.url, crops.source.label)} (each crop links its record). Raw food, before cooking.</p>
     <h4 class="label">Build a daily plate from the best set</h4>
