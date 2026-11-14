@@ -1169,20 +1169,20 @@ test('docs agree with the data: test count, site/target/box counts and the short
     const p = rankSites(lstSites, T(id), { ...fullOpts, ...screeningDefaults() }).map((x) => (x.score == null ? null : pct(x.score)));
     same(`README screening ${label} top 3`, dedup([...row[2].matchAll(/(\d+) ?%/g)].map((m) => +m[1])), dedup(p.slice(0, 3)));
   }
-  // The deck's "What we found" rows: each % is the named site's score for each target in the row.
+  // The deck's "What we found" rows: each % is the named site's default screening score for each target in the row.
   const deckRows = {
-    'MARS · JEZERO CRATER': ['harrat', ['jezero']],
-    'MOON + MARS · CAVE SKYLIGHTS': ['harrat', ['tranquillitatis-pit', 'arsia-skylight']],
-    'MARS · GALE CRATER + PHOENIX': ['qaidam-dalangtan', ['gale', 'phoenix']],
-    'MOON · APOLLO 11 + APOLLO 17': ['harrat', ['apollo11', 'apollo17']],
-    'MARS · ICE-RICH LANDING ZONES': ['tso-kar-ladakh', ['deuteronilus', 'erebus-montes']],
-    'MOON · ALL 3 PERMANENT BASE SITES': ['haughton', ['malapert', 'mons-mouton', 'shackleton-ridge']],
+    'MARS · JEZERO CRATER': [['harrat', 'jezero']],
+    '⭐ MOON + MARS · CAVE SKYLIGHTS': [['harrat', 'tranquillitatis-pit'], ['harrat', 'arsia-skylight']],
+    'MARS · GALE CRATER + PHOENIX': [['qaidam-dalangtan', 'gale'], ['tso-kar-ladakh', 'phoenix']],
+    'MOON · APOLLO 11 + APOLLO 17': [['harrat', 'apollo11'], ['harrat', 'apollo17']],
+    'MARS · ICE-RICH LANDING ZONES': [['tso-kar-ladakh', 'deuteronilus'], ['tso-kar-ladakh', 'erebus-montes']],
+    'MOON · 3 PERMANENT BASE SITES': [['dry-valleys', 'malapert'], ['haughton', 'mons-mouton'], ['wadi-rum', 'shackleton-ridge']],
   };
   const items = deck.slides.flatMap((s) => s.items || []).filter((it) => it.type === 'row');
-  for (const [tag, [siteId, ids]] of Object.entries(deckRows)) {
+  for (const [tag, pairs] of Object.entries(deckRows)) {
     const it = items.find((x) => x.tag === tag);
     if (!it) { bad.push(`deck: no row "${tag}"`); continue; }
-    same(`deck ${tag}`, [...it.pct.matchAll(/\d+/g)].join(','), ids.map((id) => pct(rankOf(id).find((x) => x.site.id === siteId).score)).join(','));
+    same(`deck ${tag}`, [...it.pct.matchAll(/\d+/g)].join(','), pairs.map(([siteId, id]) => pct(rankSites(lstSites, T(id), { ...fullOpts, ...screeningDefaults() }).find((x) => x.site.id === siteId).score)).join(','));
   }
   if (bad.length) throw new Error(`${bad.length} stale: ${bad.join('; ')}`);
 });
