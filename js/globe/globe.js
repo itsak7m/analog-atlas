@@ -501,7 +501,8 @@ export class Globe {
         return p && Number.isFinite(p.height) ? p.height : null;
       }
       if (!(await this.tilesReady) || this.viewer !== viewer || !viewer.scene.sampleHeightSupported) return null;
-      const [p] = await viewer.scene.sampleHeightMostDetailed([carto]);
+      // Leave out our own entities (the 3D base), so the sample is the ground and not the top of the base.
+      const [p] = await viewer.scene.sampleHeightMostDetailed([carto], viewer.entities.values.slice());
       return p && Number.isFinite(p.height) ? p.height : null;
     } catch (err) {
       console.warn('height sampling failed', err);
@@ -557,7 +558,10 @@ export class Globe {
     const { h: measuredHeight } = await this.groundHeight(place.lon, place.lat);
     if (!current()) return null;
     // Flat imagery is on the ellipsoid. The base model must sit on the same rendered surface as the camera.
-    const h = this.has3D ? measuredHeight : 0;
+    // While the Moon or Mars tiles are still loading, use the measured height too: the tiles replace the flat
+    // globe soon, and 0 would leave the base kilometres off the real ground (the base then settles; see base.js).
+    const tilesComing = this.body !== 'earth' && !!this.tilesReady;
+    const h = this.has3D || tilesComing ? measuredHeight : 0;
     const center = look(h);
     this.orbit = { center, heading, pitch, range, paused: true }; // resumeOrbit() once the new world is shown
     this.mode = 'closeup';

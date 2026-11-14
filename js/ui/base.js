@@ -77,6 +77,64 @@ function showBase(api, ctx, h, { render = true } = {}) {
   active = { ctx, api, h, viewer: api.globe.viewer, remove: drawBase(api.globe.viewer, api.globe.ellipsoid, ctx.place, h), room: null, motion: null };
   document.body.classList.add('basing');
   if (render) showCard();
+  settleOnGround(active);
+}
+
+// The 3D ground of the Moon and Mars can load after the base was drawn: groundHeight() stops waiting after
+// 8 s and then uses a stored height, and before the tiles show the base is drawn on the flat globe (height 0),
+// which on Mars is kilometres above the real ground (the base then floats).
+// When the real height arrives, move the base onto it, and the camera with it, by the same amount.
+function settleOnGround(base) {
+  const { api, ctx } = base;
+  const globe = api.globe;
+  const { lon, lat } = ctx.place;
+  const viewer = base.viewer;
+  const stillHere = () => active === base && globe.viewer === viewer;
+  const moveTo = (real) => {
+    if (!stillHere() || base.motion || !Number.isFinite(real)) return false;
+    const dh = real - base.h;
+    if (Math.abs(dh) < 1) return true;
+    base.remove();
+    base.remove = drawBase(viewer, globe.ellipsoid, ctx.place, real);
+    base.h = real;
+    if (base.room) {
+      base.remove.openRoom(base.room);
+      const cam = globe.camera;
+      const c = cam.positionCartographic;
+      cam.setView({ destination: Cesium.Cartesian3.fromRadians(c.longitude, c.latitude, c.height + dh, globe.ellipsoid), orientation: { heading: cam.heading, pitch: cam.pitch, roll: cam.roll } });
+    } else if (globe.orbit) {
+      const o = globe.orbit;
+      o.center = Cesium.Cartesian3.fromDegrees(lon, lat, real, globe.ellipsoid);
+      globe.camera.lookAt(o.center, new Cesium.HeadingPitchRange(o.heading, o.pitch, o.range));
+    }
+    return true;
+  };
+  let done = false;
+  // Fast path: the Moon and Mars tiles are drawn on screen well before they count as fully loaded, so read the
+  // height of what is on screen every second (leaving out the base itself) and move once two readings agree.
+  if (globe.body !== 'earth') {
+    const carto = Cesium.Cartographic.fromDegrees(lon, lat);
+    let last = null;
+    (async () => {
+      for (let i = 0; i < 120 && !done && stillHere(); i += 1) {
+        await new Promise((r) => setTimeout(r, 1000));
+        if (done || !stillHere() || base.motion || !viewer.scene.sampleHeightSupported) continue;
+        let q = null;
+        try { q = viewer.scene.sampleHeight(carto, viewer.entities.values.slice()); } catch (err) { q = null; }
+        if (!Number.isFinite(q)) { last = null; continue; }
+        if (last !== null && Math.abs(q - last) < 3) moveTo(q);
+        last = q;
+      }
+    })();
+  }
+  // Final answer: the most detailed height once the tiles have loaded. No has3D check: the base may have been
+  // drawn on the flat globe (height 0) just before the 3D tiles replaced it. sampleHeight() gives null without tiles.
+  globe.sampleHeight(lon, lat).then(async (real) => {
+    for (let i = 0; i < 60 && stillHere() && base.motion; i += 1) await new Promise((r) => setTimeout(r, 500));
+    // No 3D ground after all (no tiles or they failed): the base belongs on the flat globe, height 0.
+    if (!Number.isFinite(real) && !globe.has3D) real = 0;
+    if (moveTo(real)) done = true;
+  });
 }
 
 // ---------- world swap: the same base, the same view, another world around it ----------
