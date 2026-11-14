@@ -387,7 +387,7 @@ function comparableSites(data, target, scoreOpts) {
 function computeBoxes(screening, data, s, key) {
   const target = findTarget(data, s.targetId);
   if (!target) throw new Error(`Unknown target: ${s.targetId}`);
-  const scoreOpts = { mode: s.mode, strict: s.strict, earthTemp: s.earthTemp, weights: s.weights, pillars: s.pillars, terrain: terrainAll(screening, data), resources: data.resources };
+  const scoreOpts = { mode: s.mode, strict: s.strict, earthTemp: s.earthTemp, weights: s.weights, pillars: { ...s.pillars, resources: 0 }, terrain: terrainAll(screening, data), resources: data.resources };
   const rows = screening.boxes.map((box) => boxRow(box, target, scoreOpts, s));
   const range = colourRange(rows);
   rows.forEach((r) => { r.fill = boxFill(r.score, r.eligible, r.flags.includes('water'), range); });
