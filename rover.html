@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Field Method · Analog Atlas</title>
+<meta name="description" content="Analog Atlas field method: satellite screening, then a low-cost rover that measures the ground and calibrates the data. Concept, not built yet.">
+<style>
+:root{--bg:#0a0a0a;--panel:#111;--raised:#1a1a1a;--line:#262626;--text:#fff;--muted:#b4b4b4;--accent:#f5a623;--ok:#5ac8a0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:32px 16px 64px}
+a{color:var(--accent)}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:8px 0 12px}
+h2{font-size:24px;margin:48px 0 12px}
+h3{font-size:17px;margin:0 0 6px}
+p{color:var(--muted);margin:0 0 12px}
+.kicker{color:var(--accent);letter-spacing:.18em;font-size:13px;text-transform:uppercase}
+.badge{display:inline-block;border:1px solid var(--accent);color:var(--accent);padding:4px 10px;font-size:13px;margin:4px 0 16px}
+.lead{font-size:18px;color:#ddd}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:16px}
+.step{background:var(--panel);border:1px solid var(--line);padding:16px}
+.step .n{color:var(--accent);font-size:13px;letter-spacing:.12em}
+.step.live{border-color:var(--ok)}
+.step .tag{display:inline-block;font-size:12px;margin-top:8px;padding:2px 8px;border:1px solid var(--line);color:var(--muted)}
+.step.live .tag{border-color:var(--ok);color:var(--ok)}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:15px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.06em}
+td:first-child{white-space:nowrap;font-weight:600}
+.wrap{overflow-x:auto}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.box{background:var(--panel);border:1px solid var(--line);padding:16px}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.flow span{background:var(--raised);border:1px solid var(--line);padding:8px 12px;font-size:14px}
+.flow i{color:var(--accent);font-style:normal}
+details{background:var(--panel);border:1px solid var(--line);padding:12px 16px;margin-top:12px}
+summary{cursor:pointer;font-weight:600}
+.small{font-size:13px;color:var(--muted)}
+ul{color:var(--muted);padding-left:20px}
+li{margin:4px 0}
+footer{margin-top:56px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<main>
+<a href="./">← Back to Analog Atlas</a>
+<p class="kicker" style="margin-top:24px">Analog Atlas · Field method</p>
+<h1>From satellite screening to ground truth.</h1>
+<span class="badge">Concept · the rover is not built yet</span>
+<p class="lead">Satellites see a whole planet, but only from above. A rover sees one place, but up close. Our method uses both: the atlas finds Earth places that match a Moon or Mars target, and a low-cost rover goes there, measures the ground itself and calibrates the satellite data.</p>
+
+<h2>The method in 4 steps</h2>
+<div class="steps">
+  <div class="step"><div class="n">STEP 1</div><h3>Target profile</h3><p>What the Moon or Mars site is like: temperature, slope, rock type and resources, from NASA orbiter and rover data (LRO, MRO, MGS, PDS).</p><span class="tag">Live in the app</span></div>
+  <div class="step live"><div class="n">STEP 2</div><h3>Earth screening</h3><p>Analog Atlas scores 19 Earth sites and all of Jordan (886 boxes of 10 km) against each target, with every value sourced.</p><span class="tag">Live in the app</span></div>
+  <div class="step"><div class="n">STEP 3</div><h3>Field calibration</h3><p>The rover visits the best candidates and measures rock, soil, local climate and slope, each reading tagged with position and time.</p><span class="tag">Concept</span></div>
+  <div class="step"><div class="n">STEP 4</div><h3>Explained score</h3><p>The score is updated with the field data. Each pillar shows its match, its source and how sure we are, so an engineer sees where the analog works and where it fails.</p><span class="tag">Concept</span></div>
+</div>
+<p class="small" style="margin-top:12px">Steps 1 and 2 are the app you can open today. Steps 3 and 4 are the next phase.</p>
+<style>.steps .step:first-child{border-color:var(--ok)}.steps .step:first-child .tag{border-color:var(--ok);color:var(--ok)}</style>
+
+<h2>Why a rover</h2>
+<div class="two">
+  <div class="box"><h3>What orbit cannot see</h3><ul><li>Pixels of 10 m to 1 km mix rock, sand and shadow.</li><li>Dust and air blur the surface signal.</li><li>No view under the soil, or inside lava caves.</li></ul></div>
+  <div class="box"><h3>What the rover adds</h3><ul><li>Rock spectrum from 5 cm away.</li><li>Soil moisture, salt and pH under the surface.</li><li>Slope and roughness of the last metres, where a lander or rover actually moves.</li></ul></div>
+</div>
+
+<h2>The rover</h2>
+<p>A 60 cm, six-wheel rover with a <b>rocker-bogie</b> suspension, the design that has driven on Mars since Sojourner (1997), then Spirit, Opportunity, Curiosity and Perseverance. We keep the proven design and change the job: instead of exploring another planet, it measures Earth analog sites cheaply, with off-the-shelf parts.</p>
+<div class="wrap"><table>
+<thead><tr><th>Part</th><th>Measures</th><th>Feeds pillar</th></tr></thead>
+<tbody>
+<tr><td>AS7265x</td><td>Reflectance in 18 bands, 410–940 nm, from 5 cm: the mineral fingerprint of the rock</td><td>Geology</td></tr>
+<tr><td>RS485 soil probe</td><td>Soil moisture, temperature, salinity (EC) and pH under the surface</td><td>Resources</td></tr>
+<tr><td>BME280</td><td>Air pressure, temperature and humidity</td><td>Climate</td></tr>
+<tr><td>SCD41 · O₂ sensor</td><td>CO₂ and oxygen near the ground</td><td>Climate (context)</td></tr>
+<tr><td>TFmini Plus LiDAR + MPU-6050 IMU</td><td>Distance and tilt while driving: the local surface Z = f(X, Y), slope and roughness</td><td>Terrain</td></tr>
+<tr><td>GPS module</td><td>Position and time for every reading (to add)</td><td>All</td></tr>
+<tr><td>ESP32</td><td>Reads all sensors (I²C, UART, RS485) and sends the data packet</td><td>—</td></tr>
+</tbody></table></div>
+
+<h2>How the data travels</h2>
+<div class="flow"><span>Sensors</span><i>→</i><span>ESP32 packet (value, unit, position, time)</span><i>→</i><span>SD card log + upload to the server</span><i>→</i><span>Analog Atlas score</span></div>
+<p>Every value carries its unit, source and type: <b>measured</b> on site, <b>derived</b> from a map, or <b>not available</b>. The same rule as the app: nothing is invented.</p>
+
+<h2>How we use AI</h2>
+<div class="two">
+  <div class="box"><h3>Now: calibration</h3><p>Pairs of field readings and the satellite pixel over the same spot teach a model how much the satellite value differs from the ground. The corrected values then improve the score for every site of the same type.</p></div>
+  <div class="box"><h3>Later: reverse inference</h3><p>With enough pairs, the model can work the other way: from orbital data alone, it ranks Moon and Mars areas that no rover has visited, with an uncertainty for each, to suggest where missions look first. A ranking, not a fact.</p></div>
+</div>
+
+<details><summary>Working with satellites and CubeSats</summary>
+<p style="margin-top:10px">The rover does not replace orbiters or CubeSats. Satellites give the wide map; the rover is a ground-truth point that checks it. One field day can calibrate a whole scene of a satellite image over a similar terrain.</p></details>
+
+<details><summary>Sensor alternatives</summary>
+<ul style="margin-top:10px">
+<li>Low-cost spectrometer AS7265x → a lab or field spectroradiometer for higher spectral resolution.</li>
+<li>TFmini single-point LiDAR → a scanning LiDAR or stereo camera for a full 3D map faster.</li>
+<li>Hobby gas sensors → calibrated gas analysers if gases become part of the score.</li>
+</ul></details>
+
+<details><summary>Limits</summary>
+<ul style="margin-top:10px">
+<li>Gravity, radiation and vacuum cannot be copied on Earth; every analog breaks there.</li>
+<li>The map resolution of the LiDAR and IMU still has to be validated in the field.</li>
+<li>No rover data exists yet. The first field test is planned at Harrat al-Shaam and near Wadi Rum, Jordan.</li>
+</ul></details>
+
+<footer><p class="small">Team Cosmic Cats · NASA Space Apps Challenge 2026, Amman. Rover concept by the team. SI-assisted: this page was written with help from Claude (Anthropic).</p></footer>
+</main>
+</body>
+</html>

@@ -549,7 +549,7 @@
     },
     {
       "bg": "bg6.png",
-      "notes": "Our honest status: every match today comes from satellite data and published sources. Nobody has checked the Discover boxes on the ground yet. Our next step is a field visit in Jordan, to Harrat al-Shaam and the box near Wadi Rum, to measure temperature, slope and rock, and compare them with the data.\nAlready in the app, as a concept for future work: Base plan draws a 3D base at each starred pair, with a hydroponic greenhouse, where potato, soybean and lettuce are the best low-cost set, and a communications room: a message to Mars takes 3 to 22 minutes, so families send video messages.\nAfter that: more countries, and sharing the atlas with mission teams and students.",
+      "notes": "Our method has four steps: target profile, Earth screening, field calibration and an explained score. Steps one and two are the app. For step three we designed a low-cost rover with the rocker-bogie suspension used on Mars since Sojourner, carrying a spectrometer, a soil probe, LiDAR and climate sensors on an ESP32. Its field readings will calibrate the satellite data, and later train a model that ranks unvisited Moon and Mars areas. It is a concept; it is not built yet.\nOur honest status: every match today comes from satellite data and published sources. Nobody has checked the Discover boxes on the ground yet. Our next step is a field visit in Jordan, to Harrat al-Shaam and the box near Wadi Rum, to measure temperature, slope and rock, and compare them with the data.\nAlready in the app, as a concept for future work: Base plan draws a 3D base at each starred pair, with a hydroponic greenhouse, where potato, soybean and lettuce are the best low-cost set, and a communications room: a message to Mars takes 3 to 22 minutes, so families send video messages.\nAfter that: more countries, and sharing the atlas with mission teams and students.",
       "items": [
         {
           "type": "text",
@@ -603,7 +603,7 @@
           "y": 318,
           "w": 440,
           "h": 160,
-          "text": "Field-check the top Discover boxes in Jordan.\nBase plan (a concept, in the app): a 3D test base at each ⭐ pair, with a hydroponic greenhouse and a communications room.\nBring Discover to more countries; share it with mission teams and students.",
+          "text": "Field method: a low-cost rocker-bogie rover (ESP32, spectrometer, soil probe, LiDAR) measures the top candidates on site and calibrates the satellite data. Concept, not built yet.\nBase plan (a concept, in the app): a 3D test base at each ⭐ pair, with a hydroponic greenhouse and a communications room.\nBring Discover to more countries; share it with mission teams and students.",
           "size": 13,
           "color": "#DDE3EE",
           "numbered": true,

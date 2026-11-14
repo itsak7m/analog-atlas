@@ -707,7 +707,8 @@ export function openMethod() {
     </tbody></table>
     <p><span class="formula">factor score = max(0, 1 − |Earth value − target value| ÷ R)</span></p>
     <p><b>⭐ The strongest Jordan match on each world</b> (the only pairs that get the 3D base):</p><ul>${pairs}</ul>
-    <p><b>Honest limits.</b> This is satellite screening, not a field visit. Earth cannot test low gravity, vacuum or space radiation. Differences of 1–2 points are within the resolution of the data. If a value was not measured, the app says <i>not measured</i>; it never invents one.</p>`;
+    <p><b>Honest limits.</b> This is satellite screening, not a field visit. Earth cannot test low gravity, vacuum or space radiation. Differences of 1–2 points are within the resolution of the data. If a value was not measured, the app says <i>not measured</i>; it never invents one.</p>
+    <p><b>Next: ground truth.</b> A low-cost rover to measure the best candidates on site and calibrate the satellite data. <a href="rover.html" target="_blank" rel="noopener">Field method (concept)</a></p>`;
   const body = `<div class="sheet-body method">
     ${short}
     <details class="more"><summary>Full method, data and checks <span class="src">formulas, every value with its source, self-checks, limits and credits</span></summary><div class="more-body">
