@@ -217,7 +217,7 @@ function countUp(el) {
     const t0 = performance.now();
     const tick = (now) => {
       if (!n.isConnected) return;
-      const t = Math.min(1, (now - t0) / 1400);
+      const t = Math.min(1, Math.max(0, (now - t0) / 1400)); // the first frame time can be just before t0
       n.textContent = String(Math.round(to * (1 - (1 - t) ** 3)));
       if (t < 1) requestAnimationFrame(tick);
     };

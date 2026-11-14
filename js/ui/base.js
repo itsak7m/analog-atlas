@@ -112,7 +112,7 @@ export function revealCover(el) {
     const t0 = performance.now();
     const far = Math.hypot(innerWidth, innerHeight) * 0.75;
     const step = (now) => {
-      const t = Math.min(1, (now - t0) / 1700);
+      const t = Math.min(1, Math.max(0, (now - t0) / 1700));
       const r = far * t * t * (3 - 2 * t);
       const mask = `radial-gradient(circle at 50% 50%, transparent ${r}px, #000 ${r + 160}px)`;
       el.style.webkitMaskImage = mask;
