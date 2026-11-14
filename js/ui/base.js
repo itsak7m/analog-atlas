@@ -1,3 +1,4 @@
+/* global Cesium */
 // Base plan (future work, a concept): what a base needs at a place on the Moon or Mars, or what a test base
 // at an Earth analog site can practise. Problem -> solution cards, a hydroponic greenhouse with real crop
 // nutrients (USDA), a communication room with the real signal delay (JPL orbits), and a 3D concept of the base
@@ -5,14 +6,14 @@
 // computed from them; the layout of the base is our concept, not a measurement.
 
 import { state } from '../state.js';
-import { $, esc, fmt, toast, BODY_LABEL } from '../util.js';
+import { $, esc, fmt, fmtCoord, toast, BODY_LABEL } from '../util.js';
 import { pct, PILLARS } from '../scoring.js';
 import { openOverlay } from './overlay.js';
-import { drawBase, BASE_PARTS } from '../globe/base3d.js';
+import { drawBase, BASE_INTERIORS } from '../globe/base3d.js';
 import { marsDelaySeconds, marsDistanceKm, nextConjunction, formatDelay, LIGHT_KM_S } from '../orbits.js';
 import { tourRunning } from './tour.js';
 import { corridorActive } from './corridor.js';
-import { REDUCED_MOTION } from '../config.js';
+import { HAS_ION, REDUCED_MOTION } from '../config.js';
 
 let docs = null;
 export async function baseData() {
@@ -43,24 +44,39 @@ export function delayLine(body, now = new Date()) {
 
 // ---------- 3D base + card ----------
 let active = null;
+let request = 0;
+const previewOrbit = () => ({ heading: Cesium.Math.toRadians(32), pitch: Cesium.Math.toRadians(-27), range: 150 });
 export const baseActive = () => !!active;
 
-export async function startBase(api, { sel, place, target, result, here, onAsk }) {
+// pair, when supplied, is the opposite side of a specific Earth/target comparison.
+// The same link is reversed after the swap, even if the Earth side isn't the first ranked site.
+export async function startBase(api, { sel, place, target, result, here, onAsk, pair }) {
   if (tourRunning() || corridorActive()) { toast('Exit the tour or the Jordan corridor first (Esc).'); return; }
-  try { await baseData(); } catch (err) { toast(`Base plan data could not load: ${err.message}`, 5000); return; }
   stopBase();
+  const run = ++request;
+  try { await baseData(); } catch (err) { toast(`Base plan data could not load: ${err.message}`, 5000); return; }
+  if (request !== run) return;
   const body = planBodyOf(place, target);
-  const ctx = { sel, place, target, result, body, onAsk, swapTo: swapTarget(api, sel, place, target) };
-  let h = null;
-  if (api.globe.viewer) {
-    const flown = here || await api.flyTo(sel); // already in the close-up of this place: just come closer
-    if (flown) h = await api.globe.closeOrbit(240, -24);
+  const ctx = { sel, place, target, result, body, onAsk, swapTo: pair || swapTarget(api, sel, place, target) };
+  let h;
+  try {
+    if (api.globe.viewer) {
+      if (here && api.globe.has3D) h = await api.globe.closeOrbit(150, -27);
+      else h = await api.jumpTo(sel, previewOrbit());
+    }
+  } catch (err) {
+    console.error('Base preview failed', err);
   }
-  if (h == null) { openBaseDetails(ctx); return; } // no 3D globe (or the visitor moved the camera): the plan without the model
-  const viewer = api.globe.viewer;
-  active = { ctx, api, remove: drawBase(viewer, api.globe.ellipsoid, place, h) };
+  if (request !== run) return;
+  if (h == null || !api.globe.viewer) { openBaseDetails(ctx); return; }
+  showBase(api, ctx, h);
+  api.globe.resumeOrbit();
+}
+
+function showBase(api, ctx, h, { render = true } = {}) {
+  active = { ctx, api, h, viewer: api.globe.viewer, remove: drawBase(api.globe.viewer, api.globe.ellipsoid, ctx.place, h), room: null, motion: null };
   document.body.classList.add('basing');
-  showCard();
+  if (render) showCard();
 }
 
 // ---------- world swap: the same base, the same view, another world around it ----------
@@ -75,7 +91,7 @@ function swapTarget(api, sel, place, target) {
 }
 
 const worldOf = (place) => BODY_LABEL[place.body || 'earth'];
-const swapLabel = (to) => `${to.place.body && to.place.body !== 'earth' ? (to.place.body === 'mars' ? '🔴' : '🌕') : '🌍'} Same base on ${worldOf(to.place)}: ${to.place.name.split(' (')[0]}`;
+const shortPlace = (place) => place.name.split(' (')[0];
 
 // A picture of the view as it is now covers the globe while the other world loads under it.
 export async function coverScreen(api, text) {
@@ -87,7 +103,7 @@ export async function coverScreen(api, text) {
   return el;
 }
 
-// Opens the cover as a growing circle from the middle of the screen (where the base is), then removes it.
+// Opens the cover from the base outwards, with the same camera framing on the new world.
 export function revealCover(el) {
   return new Promise((resolve) => {
     if (!el?.isConnected) { resolve(); return; }
@@ -107,65 +123,174 @@ export function revealCover(el) {
   });
 }
 
-let swapping = false;
-async function swapWorld() {
-  if (!active || swapping || !active.ctx.swapTo) return;
-  swapping = true;
-  const { api, ctx } = active;
-  const to = ctx.swapTo;
-  const o = api.globe.orbit;
-  const view = o ? { heading: o.heading, pitch: o.pitch, range: o.range } : null;
-  const cover = await coverScreen(api, `${ctx.place.name.split(' (')[0]}, ${worldOf(ctx.place)}  →  ${to.place.name.split(' (')[0]}, ${worldOf(to.place)}`);
+const flyRoom = (camera, view, duration, maximumHeight) => new Promise((resolve) => {
+  camera.flyTo({ ...view, duration: REDUCED_MOTION ? 0 : duration, maximumHeight, easingFunction: Cesium.EasingFunction.QUADRATIC_IN_OUT, complete: () => resolve(true), cancel: () => resolve(false) });
+});
+
+async function enterRoom(id, { instant = false, look = null } = {}) {
+  const base = active;
+  if (!base || base.motion || base.room === id) return;
+  const { globe } = base.api;
+  const view = base.remove.roomView(id);
+  if (!view || !globe.orbit) return;
+  const camera = globe.camera;
+  const controller = globe.scene.screenSpaceCameraController;
+  const controlsWereEnabled = controller.enableInputs;
+  base.controlsWereEnabled = controlsWereEnabled;
+  const current = () => active === base && globe.viewer === base.viewer;
+  const first = !base.room;
+  globe.orbit.paused = true;
+  globe.exitLook();
+  camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+  const near = base.near ?? camera.frustum.near;
+  base.near = near;
+  camera.frustum.near = 0.15;
+  base.collision ??= controller.enableCollisionDetection;
+  controller.enableCollisionDetection = false;
+  base.motion = 'entry';
+  controller.enableInputs = false;
+  showCard();
   try {
-    stopBase();
-    const h = view ? await api.jumpTo(to.sel, view) : null;
-    if (h == null) { toast('The other world could not be shown.'); return; }
-    const next = { sel: to.sel, place: to.place, target: to.target, result: to.result, body: planBodyOf(to.place, to.target), onAsk: ctx.onAsk };
-    next.swapTo = swapTarget(api, next.sel, next.place, next.target);
-    active = { ctx: next, api, remove: drawBase(api.globe.viewer, api.globe.ellipsoid, to.place, h) };
-    document.body.classList.add('basing');
-    showCard();
-    await api.globe.waitForTiles(8000);
+    if (!instant && !REDUCED_MOTION) {
+      if (!(await flyRoom(camera, view.above, first ? 1.15 : 0.7, Math.max(base.h + 45, camera.positionCartographic.height))) || !current()) return;
+      base.remove.openRoom(id);
+      if (!(await flyRoom(camera, view.approach, 0.52, base.h + 45)) || !current()) return;
+      if (!(await flyRoom(camera, view.inside, 0.64, base.h + 4)) || !current()) return;
+    } else {
+      base.remove.openRoom(id);
+      camera.setView(view.inside);
+    }
+    if (look) camera.setView({ orientation: look });
+    globe.enterLook();
+    if (globe.look) camera.frustum.fov = look?.fov ?? Cesium.Math.toRadians(86);
+    base.room = id;
+  } catch (err) {
+    console.error('Base room entry failed', err);
+    if (current()) toast('This room could not be opened.');
   } finally {
-    await revealCover(cover);
-    api.globe.resumeOrbit();
-    swapping = false;
+    if (current()) {
+      controller.enableInputs = controlsWereEnabled;
+      base.controlsWereEnabled = null;
+      if (base.room !== id) restoreExterior(base);
+      base.motion = null;
+      showCard(base.room ? 'outside' : 'enter');
+    }
   }
 }
 
-function showCard() {
-  const { ctx } = active;
-  const { place, target, body } = ctx;
-  const test = !place.body || place.body === 'earth';
+function restoreExterior(base) {
+  const { globe } = base.api;
+  globe.exitLook();
+  if (base.near != null) globe.camera.frustum.near = base.near;
+  if (base.collision != null) globe.scene.screenSpaceCameraController.enableCollisionDetection = base.collision;
+  base.near = null;
+  base.remove.openRoom(null);
+  base.room = null;
+  if (globe.orbit) {
+    const { center, heading, pitch, range } = globe.orbit;
+    globe.camera.lookAt(center, new Cesium.HeadingPitchRange(heading, pitch, range));
+    globe.resumeOrbit();
+  }
+}
+
+function leaveRoom() {
+  if (!active?.room || active.motion) return;
+  restoreExterior(active);
+  showCard('enter');
+}
+
+async function swapWorld() {
+  const from = active;
+  if (!from || from.motion || !from.ctx.swapTo) return;
+  const { api, ctx, room } = from;
+  const to = ctx.swapTo;
+  const orbit = api.globe.orbit;
+  const view = orbit ? { heading: orbit.heading, pitch: orbit.pitch, range: orbit.range } : previewOrbit();
+  const camera = api.globe.camera;
+  const look = room ? { heading: camera.heading, pitch: camera.pitch, roll: camera.roll, fov: camera.frustum.fov } : null;
+  if (orbit) orbit.paused = true;
+  from.motion = 'swap';
+  showCard();
+  const run = request;
+  let cover;
+  try {
+    cover = await coverScreen(api, `${worldOf(ctx.place)} → ${worldOf(to.place)} · ${shortPlace(to.place)}`);
+    if (request !== run || active !== from) return;
+    clearBase();
+    const h = await api.jumpTo(to.sel, view);
+    if (request !== run) return;
+    if (h == null) { toast('The other world could not be shown.'); return; }
+    const next = { ...to, body: planBodyOf(to.place, to.target), onAsk: ctx.onAsk, swapTo: { sel: ctx.sel, place: ctx.place, target: ctx.target, result: ctx.result } };
+    showBase(api, next, h, { render: !room });
+    if (room) await enterRoom(room, { instant: true, look });
+    if (request !== run || !active) return;
+    active.motion = 'swap';
+    showCard();
+    await api.globe.waitForTiles(HAS_ION ? 3200 : 450);
+  } catch (err) {
+    console.error('Base world transition failed', err);
+    if (request === run) toast('The other world could not be shown.');
+  } finally {
+    if (request === run) await revealCover(cover);
+    else cover?.remove();
+    if (request === run && active) {
+      active.motion = null;
+      if (!active.room) api.globe.resumeOrbit();
+      showCard('swap');
+    }
+  }
+}
+
+function showCard(focus) {
+  const { ctx, room, motion, api } = active;
+  const { place } = ctx;
+  const interior = BASE_INTERIORS.find((r) => r.id === room);
+  const disabled = motion ? ' disabled' : '';
+  const roomButtons = room ? BASE_INTERIORS.filter((r) => r.id !== room).map((r) => `<button type="button" class="btn small" data-room="${r.id}"${disabled}>${r.label}</button>`).join('') : '';
   const el = $('#caption');
   el.hidden = false;
   el.classList.add('base-card');
-  const parts = BASE_PARTS.map((p) => `<span class="base-part" style="--c:${p.colour}">${esc(p.label)}</span>`).join('');
-  const strong = test && ctx.result ? PILLARS.filter((p) => (ctx.result[p.id]?.score ?? 0) >= 0.6).map((p) => p.label.toLowerCase()) : [];
-  const testLine = test
-    ? `<div class="s">Test base on Earth for <b>${esc(target.name)}</b>. ${strong.length ? `Good match here for ${esc(strong.join(', '))}: practise there.` : 'No pillar matches well (60 % or more) here.'} Gravity, vacuum and radiation cannot be tested on Earth.</div>`
-    : '';
-  el.innerHTML = `<div class="k">Base plan · concept, not built · ${esc(BODY_LABEL[body])}</div>
-    <div class="t">${test ? 'Test base at' : `${esc(BODY_LABEL[body])} base at`} ${esc(place.name)}</div>
-    <div class="base-parts">${parts}</div>${testLine}
-    <div class="s">Call home from the communication room: ${esc(delayLine(body))}.</div>
-    <div class="ctl">${ctx.swapTo ? `<button type="button" class="btn small primary" data-b="swap">${esc(swapLabel(ctx.swapTo))}</button>` : ''}
-      <button type="button" class="btn small${ctx.swapTo ? '' : ' primary'}" data-b="plan">Plan details</button>
+  el.setAttribute('aria-busy', String(Boolean(motion)));
+  el.innerHTML = `<div class="k" title="${esc(fmtCoord(place.lat, place.lon))}">Base concept · ${esc(worldOf(place))} · ${esc(shortPlace(place))}</div>
+    <div class="t">${motion === 'entry' ? 'Moving inside…' : interior ? `Inside the ${interior.label.toLowerCase()}${room === 'comm' ? ' room' : ''}` : 'Base exterior'}</div>
+    ${interior && !motion ? `<div class="s">${interior.description} Drag the view or use the arrow keys to look around.</div>` : ''}
+    <div class="ctl">${room ? `<button type="button" class="btn small primary" data-b="outside"${disabled}>Back outside</button>${roomButtons}` : `<button type="button" class="btn small primary" data-b="enter"${disabled}>Enter habitat</button>`}
+      ${ctx.swapTo ? `<button type="button" class="btn small" data-b="swap" title="${esc(shortPlace(ctx.swapTo.place))}"${disabled}>View on ${esc(worldOf(ctx.swapTo.place))}</button>` : ''}
+      <button type="button" class="btn small" data-b="plan"${disabled}>Plan details</button>
       <button type="button" class="btn small" data-b="exit">Exit base</button></div>`;
+  el.querySelector('[data-b="enter"]')?.addEventListener('click', () => enterRoom('habitat'));
+  el.querySelector('[data-b="outside"]')?.addEventListener('click', leaveRoom);
+  for (const b of el.querySelectorAll('[data-room]')) b.addEventListener('click', () => enterRoom(b.dataset.room));
   el.querySelector('[data-b="plan"]').addEventListener('click', () => openBaseDetails(ctx));
   el.querySelector('[data-b="swap"]')?.addEventListener('click', swapWorld);
-  el.querySelector('[data-b="exit"]').addEventListener('click', () => { const { api } = active; stopBase(); api.backToGlobe(); });
-  (el.querySelector('[data-b="swap"]') || el.querySelector('[data-b="plan"]')).focus();
+  el.querySelector('[data-b="exit"]').addEventListener('click', () => api.backToGlobe());
+  if (interior && !motion && api.globe.look) el.querySelector('.ctl').addEventListener('keydown', api.globe.look.keys);
+  if (!motion) (el.querySelector(`[data-b="${focus || 'enter'}"]`) || el.querySelector('[data-b="outside"]'))?.focus({ preventScroll: true });
 }
 
-export function stopBase() {
+function clearBase() {
   if (!active) return;
-  active.remove();
+  const base = active;
   active = null;
+  const { globe } = base.api;
+  if (globe.viewer === base.viewer && !base.viewer.isDestroyed()) {
+    if (base.motion === 'entry') globe.camera.cancelFlight();
+    globe.exitLook();
+    if (base.controlsWereEnabled != null) globe.scene.screenSpaceCameraController.enableInputs = base.controlsWereEnabled;
+    if (base.collision != null) globe.scene.screenSpaceCameraController.enableCollisionDetection = base.collision;
+    if (base.near != null) globe.camera.frustum.near = base.near;
+  }
+  base.remove();
   document.body.classList.remove('basing');
   const el = $('#caption');
   el.classList.remove('base-card');
+  el.removeAttribute('aria-busy');
   el.hidden = true;
+}
+
+export function stopBase() {
+  request += 1;
+  clearBase();
 }
 
 // ---------- the plan (overlay) ----------
@@ -201,11 +326,12 @@ function testSection(ctx) {
   if (place.body && place.body !== 'earth') return '';
   const rows = PILLARS.map((p) => {
     const s = result?.[p.id]?.score;
-    const use = s == null ? 'no data' : s >= 0.6 ? 'practise here' : 'weak match';
+    const context = p.id === 'landing' && !state.pillars.landing;
+    const use = s == null ? 'no data' : context ? 'Terrain context' : s >= 0.6 ? 'Candidate for a field check' : 'Weak match';
     return `<tr><td>${esc(p.label)}</td><td class="num">${s == null ? '<span class="src">not measured</span>' : `${pct(s)} %`}</td><td>${esc(use)}</td></tr>`;
   }).join('');
   return `<h3 class="label">What a test base here can practise for ${esc(target.name)}</h3>
-    <p>Our full analog match: ${result?.score == null ? 'no score' : `<b>${pct(result.score)} %</b>`}. Pillars at 60 % or more are good places to practise (our cut, a method choice).</p>
+    <p>Screening score: ${result?.score == null ? 'unavailable' : `<b>${pct(result.score)}%</b>`}. A pillar at 60% or higher can help prioritize a field check.</p>
     <table class="facts"><thead><tr><th>Pillar</th><th>Match</th><th>Use</th></tr></thead><tbody>${rows}</tbody></table>
     <p class="caveat">Cannot be tested anywhere on Earth: low gravity, vacuum or the thin Martian air, and space radiation.</p>`;
 }
