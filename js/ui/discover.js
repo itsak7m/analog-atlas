@@ -6,14 +6,14 @@ import { state } from '../state.js';
 import { ROCK_LABEL, pct } from '../scoring.js';
 import { $, $$, esc, fmtCoord, toast } from '../util.js';
 import { findSite, findTarget } from '../data.js';
-import { gapWords, noScoreText, strictDropsClimate, surfaceHint } from './ranking.js';
+import { gapWords, noScoreText, scoreLabel, surfaceHint } from './ranking.js';
 import { openOverlay, closeOverlay } from './overlay.js';
 import { scoreBoxes, getScreening, statusText, notListedText, boxesCsv, FLAG_WORDS, SCREEN_LABEL } from '../screening.js';
 
 let lastPick = null;
 
 const shortName = (name) => String(name || '').split(',')[0].split(' (')[0];
-const modeText = () => (state.mode === 'full' ? 'full analog match' : 'climate match');
+const modeText = () => scoreLabel().toLowerCase();
 const currentTarget = () => findTarget(state.data, state.targetId);
 
 // The scoreBoxes() result for the current settings (state.screenRanked when main.js keeps it), or null before loading.
@@ -76,13 +76,11 @@ export function initDiscover({ onTab, onPick } = {}) {
 
 function hintText(target, result) {
   const base = state.mode === 'full'
-    ? 'Found by data, not field-checked · climate, terrain, landing, geology (no resources data)'
-    : 'Found by data, not field-checked · climate match, NASA POWER 2001–2020';
+    ? 'Awaiting field checks · no resources data'
+    : 'Awaiting field checks · climate match';
   const first = result && result.rows[0];
-  const gaps = state.mode === 'full' && first ? (first.targetGaps || []).filter((g) => g !== 'resources') : [];
-  // Strict data can drop the climate pillar (too few factors measured at the target), as in the site list.
-  const noClimate = state.mode === 'full' && first && strictDropsClimate(first) ? ' · climate left out (too few measured factors for strict data)' : '';
-  return `${base}${gaps.length ? ` · ${shortName(target.name)} has no ${gapWords(gaps)} data` : ''}${noClimate}${state.strict ? ' · strict data' : ''}${surfaceHint()}`;
+  const gaps = state.mode === 'full' && first ? (first.targetGaps || []).filter((g) => g !== 'resources' && state.pillars[g] > 0) : [];
+  return `${base}${gaps.length ? ` · insufficient ${gapWords(gaps)} data at the target` : ''}${state.strict ? ' · strict data' : ''}${surfaceHint()}`;
 }
 
 // The fair comparison, above the list: the best hand-picked Jordan site scored like a box (a box % leaves
@@ -103,7 +101,8 @@ function rowHTML(c, selectedId) {
   const near = nearText(r.rec);
   const where = fmtCoord(box.lat, box.lon);
   const current = selectedId != null && c.members.some((m) => m.id === selectedId);
-  const aria = `${c.tie ? 'Tied rank ' : 'Rank '}${c.rank}: ${near ? `${near} (${box.name})` : box.name}, ${where}${rock ? `, ${rock}` : ''}, ${r.pct} percent ${modeText()}${more ? `, plus ${more} nearby ${more === 1 ? 'box' : 'boxes'} at the same percent` : ''}.`;
+  const coverage = state.mode === 'full' ? `${r.pillarsUsed} of ${r.pillarsEnabled} enabled pillars used` : '';
+  const aria = `${c.tie ? 'Tied rank ' : 'Rank '}${c.rank}: ${near ? `${near} (${box.name})` : box.name}, ${where}${rock ? `, ${rock}` : ''}, ${r.pct} percent ${modeText()}${coverage ? `, ${coverage}` : ''}${more ? `, plus ${more} nearby ${more === 1 ? 'box' : 'boxes'} at the same percent` : ''}.`;
   const nearby = more ? `<span class="tag near" title="${more} more ${more === 1 ? 'box' : 'boxes'} next to it ${more === 1 ? 'scores' : 'score'} the same %">+${more} nearby</span>` : '';
   // Name, bar and % on the first line; the details below use the full width of the row.
   // The readable name is the nearest Atlas site and the direction ("25 km SW of Harrat al-Shaam");
@@ -111,7 +110,7 @@ function rowHTML(c, selectedId) {
   return `<li><button type="button" class="rank-row" data-id="${esc(r.id)}" aria-current="${current}" aria-label="${esc(aria)}" title="${esc(box.name)}" style="--c:${esc(r.fill.css)}">
       <span class="n">${c.tie ? '=' : ''}${c.rank}</span><span class="nm">${esc(near || box.name)}</span>
       <span class="bar" aria-hidden="true"><i style="width:${r.pct}%"></i></span><span class="pc">${r.pct}%</span>
-      <span class="meta"><span class="co">${esc(where)}</span>${rock ? `<span class="tag rock">${esc(rock)}</span>` : ''}</span>
+      <span class="meta"><span class="co">${esc(where)}</span>${rock ? `<span class="tag rock">${esc(rock)}</span>` : ''}${coverage ? `<span class="tag" title="${coverage}">${r.pillarsUsed}/${r.pillarsEnabled}</span>` : ''}</span>
       ${nearby ? `<span class="meta">${nearby}</span>` : ''}
     </button></li>`;
 }
