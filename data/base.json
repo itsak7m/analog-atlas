@@ -16,7 +16,14 @@
   "usda-fdc": { "label": "USDA FoodData Central (SR Legacy), nutrients per 100 g of the raw food", "url": "https://fdc.nal.usda.gov/" },
   "speed-of-light": { "label": "BIPM, the SI Brochure: the speed of light in vacuum is exactly 299 792 458 m/s", "url": "https://www.bipm.org/en/publications/si-brochure" },
   "nasa-hazards": { "label": "NASA Human Research Program: 5 Hazards of Human Spaceflight (isolation and confinement, distance from Earth)", "url": "https://www.nasa.gov/hrp/hazards/" },
-  "nasa-hera": { "label": "NASA: HERA, Human Exploration Research Analog (an analog for isolation, confinement and remote conditions)", "url": "https://www.nasa.gov/mission/hera/" }
+  "nasa-hera": { "label": "NASA: HERA, Human Exploration Research Analog (an analog for isolation, confinement and remote conditions)", "url": "https://www.nasa.gov/mission/hera/" },
+  "iss-sleep": { "label": "Barger et al. 2014, Lancet Neurology 13: sleep deficiency and hypnotic use in astronauts before, during and after spaceflight", "url": "https://doi.org/10.1016/S1474-4422(14)70122-X" },
+  "mars500-sleep": { "label": "Basner et al. 2013, PNAS 110: the Mars 520-day mission simulation reveals crew hypokinesis and changes in sleep", "url": "https://doi.org/10.1073/pnas.1212646110" },
+  "antarctic-brain": { "label": "Stahn et al. 2019, NEJM 381: brain changes in response to long Antarctic expeditions", "url": "https://doi.org/10.1056/NEJMc1904905" },
+  "plants-mind": { "label": "Odeh and Guy 2017, Open Agriculture 2: gardening for therapeutic people-plant interactions during long space missions (a review)", "url": "https://doi.org/10.1515/opag-2017-0001" },
+  "mco-1999": { "label": "NASA press release, 10 November 1999: Mars Climate Orbiter failure board releases report (metric vs English units)", "url": "https://nssdc.gsfc.nasa.gov/planetary/text/mco_pr_19991110.txt" },
+  "apollo13": { "label": "NASA: Apollo 13 mission page (the crew fitting the carbon dioxide 'mail box' in the lunar module)", "url": "https://www.nasa.gov/mission/apollo-13/" },
+  "ingenuity-2024": { "label": "NASA JPL, 25 January 2024: after three years on Mars, NASA's Ingenuity helicopter mission ends", "url": "https://www.jpl.nasa.gov/news/after-three-years-on-mars-nasas-ingenuity-helicopter-mission-ends/" }
  },
  "bodies": {
   "earth": {
@@ -73,5 +80,17 @@
   "light_km_s": { "value": 299792.458, "source": "speed-of-light" },
   "isolation": { "text": "NASA lists isolation and confinement as one of the five hazards of human spaceflight: small groups far from Earth, in a small space, react to it, so crews must be chosen, trained and supported to work well as a team", "source": "nasa-hazards" },
   "conjunction": { "text": "About every two years the Sun passes between Earth and Mars (solar conjunction). Hot, ionised gas from the Sun can corrupt radio signals, so NASA holds off sending commands to its Mars fleet for about two weeks.", "source": "conjunction-2023" }
- }
+ },
+ "crew": [
+   { "topic": "Sleep", "text": "On the space station astronauts slept just over 6 hours a night on average, although 8.5 hours were planned.", "source": "iss-sleep", "base": "Private, dark and quiet bunks in the habitat; a fixed daily routine." },
+   { "topic": "Routine and light", "text": "In the 520-day Mars-500 simulation in Moscow the crew moved less and less, and their sleep times drifted, over the mission.", "source": "mars500-sleep", "base": "Timed lighting, daily exercise and a fixed schedule, planned with the crew." },
+   { "topic": "Long isolation", "text": "After 14 months at an Antarctic station, MRI scans of the crew showed a smaller dentate gyrus, a part of the brain used for memory, than in a control group (a small study).", "source": "antarctic-brain", "base": "Analog rehearsals on Earth first, so the crew learns how isolation affects them before a real mission." },
+   { "topic": "Plants and mood", "text": "A review of research suggests that tending plants can help the mind on long missions far from Earth.", "source": "plants-mind", "base": "The hydroponic greenhouse is also a place to work with living things, not only a food source." },
+   { "topic": "Family far away", "text": "NASA lists isolation and distance from Earth among the five hazards of human spaceflight.", "source": "nasa-hazards", "base": "The communication room: live calls from the Moon, recorded video messages from Mars." }
+ ],
+ "lessons": [
+   { "topic": "Mars Climate Orbiter, 1999", "text": "Lost because one team's software used English units (pound-force) and another's expected metric (newtons).", "source": "mco-1999", "base": "Check every number and every unit, end to end, on Earth before flight." },
+   { "topic": "Apollo 13, 1970", "text": "After an oxygen tank failed, the crew fitted a home-made 'mail box' to clear carbon dioxide from the lunar module and got home safely.", "source": "apollo13", "base": "A crew that has practised together can improvise when a plan fails." },
+   { "topic": "Ingenuity, 2021 to 2024", "text": "Designed for up to 5 test flights on Mars, it flew 72.", "source": "ingenuity-2024", "base": "Hardware tested well on Earth can do far more than planned." }
+ ]
 }

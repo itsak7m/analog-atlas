@@ -1088,7 +1088,7 @@ const cropCheck = await (async () => {
 test('Base plan: crop values match the raw USDA files', () => { if (cropCheck.length) throw new Error(cropCheck.join(', ')); });
 test('Base plan: every source named in data/base.json exists', () => {
   const ids = new Set(Object.keys(baseDoc.sources));
-  const used = [...JSON.stringify(baseDoc.bodies).matchAll(/"source":"([^"]+)"/g), ...JSON.stringify(baseDoc.comm).matchAll(/"source":"([^"]+)"/g)].map((m) => m[1]);
+  const used = [...JSON.stringify(baseDoc.bodies).matchAll(/"source":"([^"]+)"/g), ...JSON.stringify(baseDoc.comm).matchAll(/"source":"([^"]+)"/g), ...JSON.stringify([...baseDoc.crew, ...baseDoc.lessons]).matchAll(/"source":"([^"]+)"/g)].map((m) => m[1]);
   for (const c of Object.values(baseDoc.crops)) used.push(...(c.nasa?.sources || []));
   const missing = used.filter((u) => !ids.has(u));
   if (missing.length) throw new Error(`unknown: ${missing.join(', ')}`);

@@ -336,6 +336,12 @@ function testSection(ctx) {
     <p class="caveat">Cannot be tested anywhere on Earth: low gravity, vacuum or the thin Martian air, and space radiation.</p>`;
 }
 
+// Crew wellbeing and mission lessons (data/base.json): what was found, its source, and what the base does about it.
+function table(rows, found, first = 'Topic') {
+  const head = `<tr><th>${esc(first)}</th><th>${esc(found)}</th><th>What the base does (concept)</th></tr>`;
+  return `<div class="scroll-x"><table class="facts">${head}${rows.map((r) => `<tr><td><b>${esc(r.topic)}</b></td><td>${esc(r.text)} ${src(r.source)}</td><td>${esc(r.base)}</td></tr>`).join('')}</table></div>`;
+}
+
 function madeOf(body) {
   const b = docs.base.bodies[body];
   return `<ul>${b.made_of.map((x) => `<li>${esc(x.text)} ${src(x.source)}</li>`).join('')}</ul>`;
@@ -446,6 +452,8 @@ export async function openBaseDetails(ctx) {
     <h3 class="label">What makes ${esc(name)} ${esc(name)}</h3>${madeOf(body)}
     <h3 class="label">Hydroponic greenhouse</h3>${greenhouse(body)}
     <h3 class="label">Communication room</h3>${comm(body)}
+    <h3 class="label">Crew wellbeing: the human side</h3>${table(docs.base.crew, 'What research found')}
+    <h3 class="label">Lessons from past missions: why rehearse on Earth first</h3>${table(docs.base.lessons, 'What happened', 'Mission')}
     
   </div>`;
   const el = openOverlay({ title: `Base plan · ${test ? `test base at ${place.name}` : `${name} base at ${place.name}`}`, body: html });

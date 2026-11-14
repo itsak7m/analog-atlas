@@ -1,7 +1,7 @@
 /* global Cesium */
 // A 3D concept of a base, drawn with Cesium shapes (no model files) at a place on the ground: a round platform,
-// two habitat domes joined by a tunnel, a hydroponic greenhouse dome with growing racks, a communication room with
-// a lattice mast and a dish, and tilted solar arrays. The look follows a concept picture we made with an SI image
+// two habitat domes, a hydroponic greenhouse dome with growing racks, a communication room with
+// a lattice mast and a dish, pressurised tunnels that join the rooms, and tilted solar arrays. The look follows a concept picture we made with an SI image
 // model (Higgsfield, GPT Image 2.6); the shapes are drawn by code (SI-assisted, see README section 10). It is a
 // concept, not a design or a measurement. Sizes are rough, in metres, so the base reads at a glance from about 250 m.
 
@@ -13,9 +13,9 @@ export const BASE_PARTS = [
 ];
 
 export const BASE_INTERIORS = [
-  { id: 'habitat', label: 'Habitat', description: 'Crew bunks, a shared work table and equipment lockers.' },
-  { id: 'greenhouse', label: 'Greenhouse', description: 'Hydroponic growing racks with lights and a clear central aisle.' },
-  { id: 'comm', label: 'Communications', description: 'A console for mission planning and messages to Earth.' },
+  { id: 'habitat', label: 'Habitat', description: 'Crew bunks, a shared work table and equipment lockers. Private, quiet bunks matter: astronauts on the space station sleep about 6 hours a night (sources in Plan details).' },
+  { id: 'greenhouse', label: 'Greenhouse', description: 'Hydroponic growing racks with lights and a clear central aisle. Food, and a place to work with living things on a long mission (sources in Plan details).' },
+  { id: 'comm', label: 'Communications', description: 'A console for mission planning and messages to Earth. Family contact helps a crew far from home (sources in Plan details).' },
 ];
 
 // [east m, north m] positions on the platform (its centre is the centre of the base).
@@ -93,6 +93,25 @@ export function drawBase(viewer, ellipsoid, { lon, lat }, h, { build = false, re
     const pos = at(e, n, z);
     add({ position: pos, orientation: upright(pos), cylinder: { length, topRadius: top, bottomRadius: r, material: colour(css), outline: !!outline, outlineColor: colour(outline || '#000'), slices: 36 } });
   };
+  // A pressurised walkway tube lying flat between two rooms: from the wall of the first (centre a, radius ra)
+  // to the wall of the second, at height z. With roll 90 the cylinder lies along heading h (from north).
+  const tube = ([e1, n1], ra, [e2, n2], rb, z = 4.6, r = 2.2) => {
+    const de = e2 - e1;
+    const dn = n2 - n1;
+    const d = Math.hypot(de, dn);
+    const mid = (ra + (d - rb)) / 2;
+    const pos = at(e1 + de / d * mid, n1 + dn / d * mid, z);
+    const heading = Cesium.Math.toDegrees(Math.atan2(de, dn));
+    add({ position: pos, orientation: turned(pos, heading, 0, 90), cylinder: { length: d - ra - rb, topRadius: r, bottomRadius: r, material: colour('#a9afb9'), outline: true, outlineColor: colour('#6f7682'), slices: 24 } });
+    // Ribs every 3 m, so the tube reads as a walkway and not a pipe.
+    for (let s = ra + 1.5; s < d - rb - 0.5; s += 3) {
+      const rib = at(e1 + de / d * s, n1 + dn / d * s, z);
+      add({ position: rib, orientation: turned(rib, heading, 0, 90), cylinder: { length: 0.35, topRadius: r + 0.18, bottomRadius: r + 0.18, material: colour('#7b828e'), slices: 24 } });
+    }
+    // Footing under the tube, down to the platform.
+    const foot = at(e1 + de / d * mid, n1 + dn / d * mid, (1.25 + z - r) / 2);
+    add({ position: foot, orientation: turned(foot, heading), box: { dimensions: new Cesium.Cartesian3(1.6, d - ra - rb, Math.max(0.1, z - r - 1.25)), material: colour('#6f7682') } });
+  };
   const DOOR = '#4a515f';
   const DARK = '#2b313c';
   const WALL = '#dce2e8';
@@ -147,15 +166,14 @@ export function drawBase(viewer, ellipsoid, { lon, lat }, h, { build = false, re
     // Steps in front of the door.
     box(e, n - HAB_R - 1.4, 1.2 + 0.35, [2.6, 2.2, 0.7], '#6f7682', { outline: DOOR });
   });
-  // Pressurised tunnel between the two modules (a cylinder lying east-west).
-  {
-    const pos = at(0, HABITATS[0][1], 4.6);
-    add({ position: pos, orientation: turned(pos, 0, 0, 90), cylinder: { length: 2 * (HABITATS[1][0] - HAB_R) + 2, topRadius: 2.2, bottomRadius: 2.2, material: colour('#a9afb9'), outline: true, outlineColor: colour('#6f7682'), slices: 24 } });
-  }
+  // Pressurised tunnel between the two modules (lying east-west), so the crew never has to suit up to cross.
+  tube(HABITATS[0], HAB_R - 0.6, HABITATS[1], HAB_R - 0.6);
   add({ position: at(0, 15, 17), label: label('Habitat', '#eef2f8') });
 
   // ---------- hydroponic greenhouse: a ribbed glass dome with growing racks inside ----------
   part = 'greenhouse';
+  // Pressurised tunnel from the east habitat to the greenhouse (the dome is about 12 m wide at tunnel height).
+  tube(HABITATS[1], HAB_R - 0.4, GREENHOUSE, GH_R - 0.7);
   {
     const [e, n] = GREENHOUSE;
     cyl(e, n, 1.2 + 0.5, 1.0, GH_R + 0.5, '#5d6370');
@@ -181,6 +199,8 @@ export function drawBase(viewer, ellipsoid, { lon, lat }, h, { build = false, re
 
   // ---------- communication room: a box with a lattice mast and an orange dish ----------
   part = 'comm';
+  // Pressurised tunnel from the east habitat to the north wall of the communication room (about 5 m from its centre).
+  tube(HABITATS[1], HAB_R - 0.4, COMM, 5.1);
   {
     const [e, n] = COMM;
     const interiorBox = (x, y, z, dims, material, outline = '#5d6370') => box(...commPoint(x, y, z), dims, material, { heading: -20, outline });

@@ -11,7 +11,6 @@ import { $, esc, fmt, distanceKm, BODY_LABEL } from '../util.js';
 import { findSite, findTarget } from '../data.js';
 import { TARGET_GROUPS } from './topbar.js';
 import { displayRanks, baseConsensus, baseConsensusText } from './ranking.js';
-import { kit } from '../kit/kit.js';
 import { REDUCED_MOTION } from '../config.js';
 import { SOUTH_POLE_VIEW as POLE } from '../globe/globe.js';
 
@@ -316,14 +315,6 @@ function buildSteps(api) {
       after: () => api.closeOverlay(),
     },
     {
-      k: 'Field kit', t: 'Our ESP32 field kit measures the ground',
-      s: () => `Infrared ground temperature like Curiosity and Perseverance, plus albedo, UV, air and humidity. ${kit.source === 'usb' ? 'A kit is connected, so these are live readings.' : 'No kit is connected now, so the panel shows simulated numbers.'} Air and albedo are compared with the target right now; daily swing and coldest ground after a full day of logging.`,
-      ring: '#kit-panel',
-      dur: 9000,
-      run: async () => { api.openKit(); },
-      after: () => api.closeKit(),
-    },
-    {
       k: 'Validity', t: 'Every number has a source',
       s: 'Method & data links every value, re-checks the reference rankings automatically, and a strict mode uses only measurements made at the site itself.',
       ring: '#method-btn',
@@ -332,7 +323,7 @@ function buildSteps(api) {
     },
     {
       k: 'Analog Atlas', t: 'Places on Earth that behave like the Moon and Mars',
-      s: 'NASA data · open methods · an ESP32 field kit · made in Jordan',
+      s: 'NASA data · open methods · a 3D base concept · made in Jordan',
       end: true,
       dur: 6000,
       run: async () => { await api.home(); },
