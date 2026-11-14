@@ -5,103 +5,699 @@
       "bg": "bg1.png",
       "notes": "Hi, we are Team Cosmic Cats from Amman. Our project is Analog Atlas.\nIn one sentence: it finds the Moon and Mars on Earth, using real, sourced data, not guesses. Values are measured where possible; where they are not, the app says 'not measured'.",
       "items": [
-        { "type": "text", "x": 60, "y": 150, "w": 520, "h": 18, "text": "NASA SPACE APPS CHALLENGE 2026 · AMMAN", "size": 11, "color": "#FFB547", "font": "Segoe UI Semibold", "spacing": 2.5 },
-        { "type": "text", "x": 57, "y": 168, "w": 560, "h": 72, "text": "ANALOG ATLAS", "size": 50, "color": "#F6F8FC", "bold": true, "spacing": 2 },
-        { "type": "text", "x": 60, "y": 244, "w": 560, "h": 40, "text": "Find the Moon and Mars on Earth.", "size": 26, "color": "#FFB547", "font": "Segoe UI Semibold" },
-        { "type": "text", "x": 60, "y": 292, "w": 400, "h": 60, "text": "A 3D atlas of the places on Earth that behave like the Moon and Mars, built on real, sourced data.", "size": 15, "color": "#C9D1E0" },
-        { "type": "text", "x": 60, "y": 372, "w": 400, "h": 40, "text": "Challenge: Identify Earth Locations that Analog the Permanent Moon Base Locations and Mars", "size": 11, "color": "#9AA6BD" },
-        { "type": "text", "x": 60, "y": 438, "w": 400, "h": 26, "text": "Team Cosmic Cats", "size": 20, "color": "#F6F8FC", "bold": true },
-        { "type": "text", "x": 60, "y": 466, "w": 470, "h": 40, "text": "Mohammad Fathi Awni Ahmad · Ameer Hamam\nAbdalrhman Ali Samih Alhaj Hassan · Moath Abu Aisha", "size": 12, "color": "#9AA6BD", "spaceAfter": 2 },
-        { "type": "text", "x": 560, "y": 520, "w": 385, "h": 12, "text": "App screenshot · Earth: NASA Blue Marble and Black Marble (NASA GIBS)", "size": 7, "color": "#7D889C", "align": "r" }
+        {
+          "type": "text",
+          "x": 60,
+          "y": 150,
+          "w": 520,
+          "h": 18,
+          "text": "NASA SPACE APPS CHALLENGE 2026 · AMMAN",
+          "size": 11,
+          "color": "#FFB547",
+          "font": "Segoe UI Semibold",
+          "spacing": 2.5
+        },
+        {
+          "type": "text",
+          "x": 57,
+          "y": 168,
+          "w": 560,
+          "h": 72,
+          "text": "ANALOG ATLAS",
+          "size": 50,
+          "color": "#F6F8FC",
+          "bold": true,
+          "spacing": 2
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 244,
+          "w": 560,
+          "h": 40,
+          "text": "Find the Moon and Mars on Earth.",
+          "size": 26,
+          "color": "#FFB547",
+          "font": "Segoe UI Semibold"
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 292,
+          "w": 400,
+          "h": 60,
+          "text": "A 3D atlas of the places on Earth that behave like the Moon and Mars, built on real, sourced data.",
+          "size": 15,
+          "color": "#C9D1E0"
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 372,
+          "w": 400,
+          "h": 40,
+          "text": "Challenge: Identify Earth Locations that Analog the Permanent Moon Base Locations and Mars",
+          "size": 11,
+          "color": "#9AA6BD"
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 438,
+          "w": 400,
+          "h": 26,
+          "text": "Team Cosmic Cats",
+          "size": 20,
+          "color": "#F6F8FC",
+          "bold": true
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 466,
+          "w": 470,
+          "h": 40,
+          "text": "Mohammad Fathi Awni Ahmad · Ameer Hamam\nAbdalrhman Ali Samih Alhaj Hassan · Moath Abu Aisha",
+          "size": 12,
+          "color": "#9AA6BD",
+          "spaceAfter": 2
+        },
+        {
+          "type": "text",
+          "x": 560,
+          "y": 520,
+          "w": 385,
+          "h": 12,
+          "text": "App screenshot · Earth: NASA Blue Marble and Black Marble (NASA GIBS)",
+          "size": 7,
+          "color": "#7D889C",
+          "align": "r"
+        }
       ]
     },
     {
       "bg": "bg2.png",
       "notes": "To go to the Moon or Mars, NASA first tests everything on Earth, in places called analogs.\nLook at these two photos: one is the Moon, one is Iceland. Hard to tell!\nBut looking alike is not enough. Which places really match a Moon base site or a Mars landing zone, in temperature, ground and rock? The data exists, but it is spread over many datasets.",
       "items": [
-        { "type": "text", "x": 60, "y": 62, "w": 400, "h": 18, "text": "01 · THE PROBLEM", "size": 11, "color": "#FFB547", "font": "Segoe UI Semibold", "spacing": 2.5 },
-        { "type": "text", "x": 60, "y": 84, "w": 410, "h": 120, "text": "Before anyone flies, everything is tested on Earth.", "size": 32, "color": "#F6F8FC", "bold": true },
-        { "type": "text", "x": 60, "y": 222, "w": 400, "h": 220, "text": "Crews, rovers, suits and drills train in “analog” places on Earth.\nBut which places really behave like a Moon base site or a Mars landing zone?\nThe answer is spread over many NASA datasets, and analogs are often picked by how they look.", "size": 15, "color": "#DDE3EE", "bullets": true, "spaceAfter": 10 },
-        { "type": "text", "x": 505, "y": 46, "w": 420, "h": 24, "text": "One is the Moon. One is Iceland.", "size": 17, "color": "#F6F8FC", "font": "Segoe UI Semibold" },
-        { "type": "rect", "x": 517, "y": 234, "w": 158, "h": 18, "fill": "#FFB547", "radius": 0.15 },
-        { "type": "text", "x": 517, "y": 234, "w": 158, "h": 18, "text": "THE MOON · Apollo 11, 1969", "size": 9, "color": "#11141C", "bold": true, "align": "c", "valign": "m" },
-        { "type": "rect", "x": 517, "y": 439, "w": 158, "h": 18, "fill": "#5CE1E6", "radius": 0.15 },
-        { "type": "text", "x": 517, "y": 439, "w": 158, "h": 18, "text": "EARTH · Holuhraun, Iceland", "size": 9, "color": "#11141C", "bold": true, "align": "c", "valign": "m" },
-        { "type": "text", "x": 505, "y": 470, "w": 420, "h": 22, "text": "Photos: NASA / Neil Armstrong, Apollo 11 (panorama assembly Yuri Krasilnikov) · NASA Johnson Space Center / Robert Markowitz. Public domain.", "size": 7, "color": "#7D889C" }
+        {
+          "type": "text",
+          "x": 60,
+          "y": 62,
+          "w": 400,
+          "h": 18,
+          "text": "01 · THE PROBLEM",
+          "size": 11,
+          "color": "#FFB547",
+          "font": "Segoe UI Semibold",
+          "spacing": 2.5
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 84,
+          "w": 410,
+          "h": 120,
+          "text": "Before anyone flies, everything is tested on Earth.",
+          "size": 32,
+          "color": "#F6F8FC",
+          "bold": true
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 222,
+          "w": 400,
+          "h": 220,
+          "text": "Crews, rovers, suits and drills train in “analog” places on Earth.\nBut which places really behave like a Moon base site or a Mars landing zone?\nThe answer is spread over many NASA datasets, and analogs are often picked by how they look.",
+          "size": 15,
+          "color": "#DDE3EE",
+          "bullets": true,
+          "spaceAfter": 10
+        },
+        {
+          "type": "text",
+          "x": 505,
+          "y": 46,
+          "w": 420,
+          "h": 24,
+          "text": "One is the Moon. One is Iceland.",
+          "size": 17,
+          "color": "#F6F8FC",
+          "font": "Segoe UI Semibold"
+        },
+        {
+          "type": "rect",
+          "x": 517,
+          "y": 234,
+          "w": 158,
+          "h": 18,
+          "fill": "#FFB547",
+          "radius": 0.15
+        },
+        {
+          "type": "text",
+          "x": 517,
+          "y": 234,
+          "w": 158,
+          "h": 18,
+          "text": "THE MOON · Apollo 11, 1969",
+          "size": 9,
+          "color": "#11141C",
+          "bold": true,
+          "align": "c",
+          "valign": "m"
+        },
+        {
+          "type": "rect",
+          "x": 517,
+          "y": 439,
+          "w": 158,
+          "h": 18,
+          "fill": "#5CE1E6",
+          "radius": 0.15
+        },
+        {
+          "type": "text",
+          "x": 517,
+          "y": 439,
+          "w": 158,
+          "h": 18,
+          "text": "EARTH · Holuhraun, Iceland",
+          "size": 9,
+          "color": "#11141C",
+          "bold": true,
+          "align": "c",
+          "valign": "m"
+        },
+        {
+          "type": "text",
+          "x": 505,
+          "y": 470,
+          "w": 420,
+          "h": 22,
+          "text": "Photos: NASA / Neil Armstrong, Apollo 11 (panorama assembly Yuri Krasilnikov) · NASA Johnson Space Center / Robert Markowitz. Public domain.",
+          "size": 7,
+          "color": "#7D889C"
+        }
       ]
     },
     {
       "bg": "bg3.png",
       "notes": "Analog Atlas is a 3D globe of Earth, the Moon and Mars that runs in the browser.\nYou pick one of 13 targets, for example Jezero Crater on Mars or one of three permanent Moon base sites near the south pole, and the app ranks 19 Earth sites by how closely they match it.\nYou can fly to each place, stand there, and compare real photos side by side in Twin view.",
       "items": [
-        { "type": "text", "x": 60, "y": 62, "w": 340, "h": 18, "text": "02 · OUR SOLUTION", "size": 11, "color": "#FFB547", "font": "Segoe UI Semibold", "spacing": 2.5 },
-        { "type": "text", "x": 60, "y": 82, "w": 340, "h": 50, "text": "Analog Atlas", "size": 36, "color": "#F6F8FC", "bold": true },
-        { "type": "text", "x": 60, "y": 132, "w": 340, "h": 44, "text": "A 3D globe of Earth, the Moon and Mars, in the browser.", "size": 15, "color": "#FFB547", "font": "Segoe UI Semibold" },
-        { "type": "text", "x": 60, "y": 190, "w": 335, "h": 280, "text": "Pick one of 13 targets: 3 Moon base sites, Moon ice, a Moon cave, Apollo sites, Mars landing sites and a Mars cave.\nIt ranks 19 Earth analog sites on 6 continents, with open, sourced data.\nFly down to any place in 3D and stand there.\nTwin view: real photos of the Earth site and its target, side by side.", "size": 14, "color": "#DDE3EE", "bullets": true, "spaceAfter": 9 },
-        { "type": "text", "x": 415, "y": 388, "w": 230, "h": 26, "text": "Twin view · Harrat al-Shaam (Jordan) and Jezero Crater (Mars)", "size": 9, "color": "#9AA6BD" },
-        { "type": "text", "x": 660, "y": 492, "w": 240, "h": 14, "text": "The Moon’s south pole · Malapert Massif", "size": 9, "color": "#9AA6BD", "align": "c" },
-        { "type": "text", "x": 60, "y": 512, "w": 600, "h": 12, "text": "App screenshots. Photos: Mohammad hajeer / Wikimedia Commons, CC BY-SA 4.0 (cropped) · NASA/JPL-Caltech/MSSS/ASU · Moon: NASA LRO", "size": 7, "color": "#7D889C" }
+        {
+          "type": "text",
+          "x": 60,
+          "y": 62,
+          "w": 340,
+          "h": 18,
+          "text": "02 · OUR SOLUTION",
+          "size": 11,
+          "color": "#FFB547",
+          "font": "Segoe UI Semibold",
+          "spacing": 2.5
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 82,
+          "w": 340,
+          "h": 50,
+          "text": "Analog Atlas",
+          "size": 36,
+          "color": "#F6F8FC",
+          "bold": true
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 132,
+          "w": 340,
+          "h": 44,
+          "text": "A 3D globe of Earth, the Moon and Mars, in the browser.",
+          "size": 15,
+          "color": "#FFB547",
+          "font": "Segoe UI Semibold"
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 190,
+          "w": 335,
+          "h": 280,
+          "text": "Pick one of 13 targets: 3 Moon base sites, Moon ice, a Moon cave, Apollo sites, Mars landing sites and a Mars cave.\nIt ranks 19 Earth analog sites on 6 continents, with open, sourced data.\nFly down to any place in 3D and stand there.\nTwin view: real photos of the Earth site and its target, side by side.",
+          "size": 14,
+          "color": "#DDE3EE",
+          "bullets": true,
+          "spaceAfter": 9
+        },
+        {
+          "type": "text",
+          "x": 415,
+          "y": 388,
+          "w": 230,
+          "h": 26,
+          "text": "Twin view · Harrat al-Shaam (Jordan) and Jezero Crater (Mars)",
+          "size": 9,
+          "color": "#9AA6BD"
+        },
+        {
+          "type": "text",
+          "x": 660,
+          "y": 492,
+          "w": 240,
+          "h": 14,
+          "text": "The Moon’s south pole · Malapert Massif",
+          "size": 9,
+          "color": "#9AA6BD",
+          "align": "c"
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 512,
+          "w": 600,
+          "h": 12,
+          "text": "App screenshots. Photos: Mohammad hajeer / Wikimedia Commons, CC BY-SA 4.0 (cropped) · NASA/JPL-Caltech/MSSS/ASU · Moon: NASA LRO",
+          "size": 7,
+          "color": "#7D889C"
+        }
       ]
     },
     {
       "bg": "bg4.png",
-      "notes": "Each Earth site gets a score from five pillars: climate, terrain, landing zone, geology and resources.\nFor the Moon base sites, climate also compares Sun height, how high the Sun gets in the sky, computed from latitude on both sides.\nClimate, terrain and landing zone come from data: NASA POWER and MODIS on Earth, LRO on the Moon, NASA's orbiters and rovers on Mars, and elevation maps of all three worlds. Rock type and resources are sourced classifications: each one has a published source and an exact quote.\nWhere a value is a general figure and not a measurement at the site, the app labels it, and weak data gets a flag. If something was not measured, the app says 'not measured'. We never invent a number.\nSatellites also show what the ground is made of: MODIS, Sentinel-2, ASTER and NASA's EMIT. The app shows it next to the score, but it never changes the score.",
+      "notes": "Each Earth site gets a score from four pillars: climate, terrain, geology and resources. The flat landing zone is shown next to it, but by default it does not change the score.\nFor the Moon base sites, climate also compares Sun height, how high the Sun gets in the sky, computed from latitude on both sides.\nClimate, terrain and landing zone come from data: NASA POWER and MODIS on Earth, LRO on the Moon, NASA's orbiters and rovers on Mars, and elevation maps of all three worlds. Rock type and resources are sourced classifications: each one has a published source and an exact quote.\nWhere a value is a general figure and not a measurement at the site, the app labels it, and weak data gets a flag. If something was not measured, the app says 'not measured'. We never invent a number.\nSatellites also show what the ground is made of: MODIS, Sentinel-2, ASTER and NASA's EMIT. The app shows it next to the score, but it never changes the score.",
       "items": [
-        { "type": "text", "x": 60, "y": 52, "w": 400, "h": 18, "text": "03 · HOW WE SCORE", "size": 11, "color": "#FFB547", "font": "Segoe UI Semibold", "spacing": 2.5 },
-        { "type": "text", "x": 60, "y": 72, "w": 840, "h": 48, "text": "Five pillars, every value with its source.", "size": 32, "color": "#F6F8FC", "bold": true },
-        { "type": "card", "x": 60, "y": 140, "w": 160, "h": 240, "num": "01", "title": "Climate", "body": "Mean temperature, daily swing, coldest ground, rain and albedo. Moon base sites add Sun height.", "source": "NASA POWER 2001–2020 · MODIS · LRO Diviner · Mars Climate Sounder" },
-        { "type": "card", "x": 230, "y": 140, "w": 160, "h": 240, "num": "02", "title": "Terrain", "body": "How steep the ground is in a 10 km box, on the same 500 m grid on all three worlds.", "source": "Copernicus DEM · LRO LOLA · MGS MOLA" },
-        { "type": "card", "x": 400, "y": 140, "w": 160, "h": 240, "num": "03", "title": "Landing zone", "body": "The largest flat square where every slope is under 10°, after NASA’s Artemis landing rule (our slopes are over 1 km, NASA’s over 100 m).", "source": "The same elevation data" },
-        { "type": "card", "x": 570, "y": 140, "w": 160, "h": 240, "num": "04", "title": "Geology", "body": "The main rock type: the same, related or different.", "source": "Published geology · IGME5000 map (BGR)" },
-        { "type": "card", "x": 740, "y": 140, "w": 160, "h": 240, "num": "05", "title": "Resources", "body": "Water ice, caves for shelter, regolith to build with, salts and brines.", "source": "Every tag has a source and an exact quote" },
-        { "type": "rect", "x": 60, "y": 398, "w": 840, "h": 44, "fill": "#FFB547", "transparency": 0.82, "line": "#FFB547", "radius": 0.2 },
-        { "type": "text", "x": 76, "y": 398, "w": 810, "h": 44, "text": "No guessing: a value that was not measured is shown as “not measured”, and weak data gets a ⚑ flag.", "size": 14, "color": "#F6F8FC", "font": "Segoe UI Semibold", "valign": "m" },
-        { "type": "rect", "x": 60, "y": 452, "w": 840, "h": 30, "fill": "#070A12", "transparency": 0.2, "radius": 0.2 },
-        { "type": "text", "x": 76, "y": 452, "w": 810, "h": 30, "text": "Also measured from orbit, shown but never scored: MODIS, Sentinel-2, ASTER and NASA EMIT show what the top of the ground is made of.", "size": 11.5, "color": "#5CE1E6", "valign": "m" },
-        { "type": "text", "x": 560, "y": 520, "w": 385, "h": 12, "text": "Photo: Harrat al-Shaam, Mohammad hajeer / Wikimedia Commons, CC BY-SA 4.0 (cropped, darkened)", "size": 7, "color": "#E6EAF2", "align": "r" }
+        {
+          "type": "text",
+          "x": 60,
+          "y": 52,
+          "w": 400,
+          "h": 18,
+          "text": "03 · HOW WE SCORE",
+          "size": 11,
+          "color": "#FFB547",
+          "font": "Segoe UI Semibold",
+          "spacing": 2.5
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 72,
+          "w": 840,
+          "h": 48,
+          "text": "Four scored pillars, every value with its source.",
+          "size": 32,
+          "color": "#F6F8FC",
+          "bold": true
+        },
+        {
+          "type": "card",
+          "x": 60,
+          "y": 140,
+          "w": 160,
+          "h": 240,
+          "num": "01",
+          "title": "Climate",
+          "body": "Mean temperature, daily swing, coldest ground, rain and albedo. Moon base sites add Sun height.",
+          "source": "NASA POWER 2001–2020 · MODIS · LRO Diviner · Mars Climate Sounder"
+        },
+        {
+          "type": "card",
+          "x": 230,
+          "y": 140,
+          "w": 160,
+          "h": 240,
+          "num": "02",
+          "title": "Terrain",
+          "body": "How steep the ground is in a 10 km box, on the same 500 m grid on all three worlds.",
+          "source": "Copernicus DEM · LRO LOLA · MGS MOLA"
+        },
+        {
+          "type": "card",
+          "x": 400,
+          "y": 140,
+          "w": 160,
+          "h": 240,
+          "num": "03",
+          "title": "Flat zone",
+          "body": "Shown, not scored: the largest flat square with every slope under 10°, after NASA’s Artemis landing rule.",
+          "source": "The same elevation data"
+        },
+        {
+          "type": "card",
+          "x": 570,
+          "y": 140,
+          "w": 160,
+          "h": 240,
+          "num": "04",
+          "title": "Geology",
+          "body": "The main rock type: the same, related or different.",
+          "source": "Published geology · IGME5000 map (BGR)"
+        },
+        {
+          "type": "card",
+          "x": 740,
+          "y": 140,
+          "w": 160,
+          "h": 240,
+          "num": "05",
+          "title": "Resources",
+          "body": "Water ice, caves for shelter, regolith to build with, salts and brines.",
+          "source": "Every tag has a source and an exact quote"
+        },
+        {
+          "type": "rect",
+          "x": 60,
+          "y": 398,
+          "w": 840,
+          "h": 44,
+          "fill": "#FFB547",
+          "transparency": 0.82,
+          "line": "#FFB547",
+          "radius": 0.2
+        },
+        {
+          "type": "text",
+          "x": 76,
+          "y": 398,
+          "w": 810,
+          "h": 44,
+          "text": "No guessing: a value that was not measured is shown as “not measured”, and weak data gets a ⚑ flag.",
+          "size": 14,
+          "color": "#F6F8FC",
+          "font": "Segoe UI Semibold",
+          "valign": "m"
+        },
+        {
+          "type": "rect",
+          "x": 60,
+          "y": 452,
+          "w": 840,
+          "h": 30,
+          "fill": "#070A12",
+          "transparency": 0.2,
+          "radius": 0.2
+        },
+        {
+          "type": "text",
+          "x": 76,
+          "y": 452,
+          "w": 810,
+          "h": 30,
+          "text": "Also measured from orbit, shown but never scored: MODIS, Sentinel-2, ASTER and NASA EMIT show what the top of the ground is made of.",
+          "size": 11.5,
+          "color": "#5CE1E6",
+          "valign": "m"
+        },
+        {
+          "type": "text",
+          "x": 560,
+          "y": 520,
+          "w": 385,
+          "h": 12,
+          "text": "Photo: Harrat al-Shaam, Mohammad hajeer / Wikimedia Commons, CC BY-SA 4.0 (cropped, darkened)",
+          "size": 7,
+          "color": "#E6EAF2",
+          "align": "r"
+        }
       ]
     },
     {
       "bg": "bg5.png",
-      "notes": "Here are some results.\nFor Jezero Crater, where Perseverance is driving, the best Earth twin is Harrat al-Shaam, the black basalt desert in north-east Jordan, at 71 percent. It also has lava caves, and it comes first for the cave targets on the Moon and Mars.\nHarrat al-Shaam also comes first for the Apollo 11 and Apollo 17 sites, at 69 and 64 percent. We apply one rule to every regolith tag, and the simulant source for SP Crater in Arizona names a cone about 40 kilometres away, so SP Crater lost that tag. Apollo 11 carries a flag in the app: most of its values are Moon-wide figures, not measurements at the site.\nFor the permanent Moon base sites near the south pole, Antarctica's Dry Valleys come first for Malapert, at 62 percent, Rio Tinto in Spain for Mons Mouton, and Jordan's Wadi Rum shares first place with Rio Tinto for the Shackleton connecting ridge, at 56 percent. These three use only 3 of 5 pillars. Their climate now includes Sun height, how high the Sun gets, the same formula on Earth and Moon, so polar Earth sites match best on climate. But the order still comes mostly from slope and the flat landing zone. Taken together, Haughton Crater in Canada is the only Earth site in the top 5 for all three base sites.\nA score is not proof. It tells you where to test first.\nThen we scored all of Jordan, 886 boxes of 10 kilometres, with the same method. For most targets the best boxes are on the same Harrat basalt plain as our hand-picked site, or close to one of our sites, and score within two points of the best hand-picked Jordan site. So for 9 of the 13 targets the data confirms our picks, and shows that the Harrat basalt is a whole plain, not one point. For two Moon base sites, Mons Mouton and the Shackleton ridge, single mountain boxes lead, on slope only. For the Shackleton crater floor, granite boxes next to Wadi Rum lead, only because granite is in the same rock family as anorthosite. For Phoenix, our Lisan Peninsula site stays ahead. The basalt stands out mainly because its rock type matches. Nobody has checked these boxes on the ground yet.",
+      "notes": "Here are some results, with the default screening settings.\nFor Jezero Crater, where Perseverance is driving, the best Earth twin is Harrat al-Shaam, the black basalt desert in north-east Jordan, at 66 percent. It also has lava caves: it is the best Jordan match for the cave targets, 71 percent for the Moon's Mare Tranquillitatis pit, where it is also the world number one, and 84 percent for the Arsia Mons skylight on Mars, one point behind Craters of the Moon in the USA. These two are our starred pairs, and the base plan is built on them.\nFor Gale Crater, Dalangtan playa in China comes first at 68 percent; for Phoenix, Tso Kar in India at 73. Harrat al-Shaam comes first for Apollo 11 at 67 percent, and second for Apollo 17.\nFor the three permanent Moon base sites near the south pole, the Dry Valleys of Antarctica lead for Malapert, Haughton Crater in Canada for Mons Mouton, and Jordan's Wadi Rum for the Shackleton connecting ridge, at 54 percent.\nA score is not proof. It tells you where to test first.\nThen we scored all of Jordan, 886 boxes of 10 kilometres, with the same method. One box 37 kilometres north-west of Wadi Rum has a median slope of 8.44 degrees; the Shackleton ridge has 8.56. That is a satellite result; nobody has checked it on the ground yet.",
       "items": [
-        { "type": "text", "x": 60, "y": 52, "w": 440, "h": 18, "text": "04 · WHAT WE FOUND", "size": 11, "color": "#FFB547", "font": "Segoe UI Semibold", "spacing": 2.5 },
-        { "type": "text", "x": 60, "y": 72, "w": 460, "h": 44, "text": "Earth twins of the Moon and Mars", "size": 26, "color": "#F6F8FC", "bold": true },
-        { "type": "row", "y": 126, "tag": "MARS · JEZERO CRATER", "site": "Harrat al-Shaam, Jordan", "pct": "71 %" },
-        { "type": "row", "y": 178, "tag": "MOON + MARS · CAVE SKYLIGHTS", "site": "Harrat al-Shaam lava caves, Jordan", "pct": "75 · 88 %" },
-        { "type": "row", "y": 230, "tag": "MARS · GALE CRATER + PHOENIX", "site": "Dalangtan playa, Qaidam Basin, China", "pct": "72 · 71 %" },
-        { "type": "row", "y": 282, "tag": "MOON · APOLLO 11 + APOLLO 17", "site": "Harrat al-Shaam, Jordan", "pct": "69 · 64 %" },
-        { "type": "row", "y": 334, "tag": "MARS · ICE-RICH LANDING ZONES", "site": "Tso Kar basin, Ladakh, India", "pct": "64 · 63 %" },
-        { "type": "row", "y": 386, "tag": "MOON · ALL 3 PERMANENT BASE SITES", "site": "Haughton Crater, Canada (top 5 for each)", "pct": "42 · 66 · 53 %" },
-        { "type": "text", "x": 60, "y": 444, "w": 450, "h": 44, "text": "Full analog match, default weights; a match says where to test first, not proof. Moon base sites use 3 of 5 pillars. Haughton is the only Earth site in the top 5 for all 3 base sites; each site alone has a different #1, mostly on slope (Malapert: McMurdo Dry Valleys 62 %). Data flag ⚑: the climate cells of Tso Kar and the Dry Valleys sit over 400 m off the ground.", "size": 9.5, "color": "#9AA6BD" },
-        { "type": "text", "x": 530, "y": 126, "w": 400, "h": 22, "text": "Discover Jordan", "size": 17, "color": "#FFB547", "bold": true },
-        { "type": "text", "x": 530, "y": 150, "w": 400, "h": 40, "text": "We scored all of Jordan the same way: 886 boxes of 10 km. For 9 of 13 targets the best boxes are on or near our chosen sites: the data confirms them. For 2 Moon base sites, mountain boxes lead on slope.", "size": 11, "color": "#DDE3EE" },
-        { "type": "text", "x": 530, "y": 433, "w": 400, "h": 14, "text": "Discover Jordan: each square is a 10 km box, not field-checked", "size": 9, "color": "#9AA6BD", "align": "c" },
-        { "type": "text", "x": 530, "y": 506, "w": 415, "h": 24, "text": "App screenshot. Climate: NASA POWER · terrain: Copernicus DEM GLO-90 · geology: IGME5000, © BGR, Hannover, 2005 (modified) · boundary: Natural Earth · Earth: Bing Maps Aerial via Cesium ion", "size": 7, "color": "#7D889C", "align": "r" }
+        {
+          "type": "text",
+          "x": 60,
+          "y": 52,
+          "w": 440,
+          "h": 18,
+          "text": "04 · WHAT WE FOUND",
+          "size": 11,
+          "color": "#FFB547",
+          "font": "Segoe UI Semibold",
+          "spacing": 2.5
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 72,
+          "w": 460,
+          "h": 44,
+          "text": "Earth twins of the Moon and Mars",
+          "size": 26,
+          "color": "#F6F8FC",
+          "bold": true
+        },
+        {
+          "type": "row",
+          "y": 126,
+          "tag": "MARS · JEZERO CRATER",
+          "site": "Harrat al-Shaam, Jordan",
+          "pct": "66 %"
+        },
+        {
+          "type": "row",
+          "y": 178,
+          "tag": "⭐ MOON + MARS · CAVE SKYLIGHTS",
+          "site": "Harrat al-Shaam lava caves, Jordan",
+          "pct": "71 · 84 %"
+        },
+        {
+          "type": "row",
+          "y": 230,
+          "tag": "MARS · GALE CRATER + PHOENIX",
+          "site": "Dalangtan playa, China · Tso Kar, India",
+          "pct": "68 · 73 %"
+        },
+        {
+          "type": "row",
+          "y": 282,
+          "tag": "MOON · APOLLO 11 + APOLLO 17",
+          "site": "Harrat al-Shaam, Jordan (Apollo 17: #2)",
+          "pct": "67 · 57 %"
+        },
+        {
+          "type": "row",
+          "y": 334,
+          "tag": "MARS · ICE-RICH LANDING ZONES",
+          "site": "Tso Kar basin, Ladakh, India",
+          "pct": "63 · 62 %"
+        },
+        {
+          "type": "row",
+          "y": 386,
+          "tag": "MOON · 3 PERMANENT BASE SITES",
+          "site": "Dry Valleys · Haughton · Wadi Rum, Jordan",
+          "pct": "52 · 58 · 54 %"
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 444,
+          "w": 450,
+          "h": 44,
+          "text": "Screening score, default settings: 4 pillars. A match says where to test first, not proof. ⭐ = strongest Jordan match on each world (Mars: Craters of the Moon, USA, is #1 at 85 %, one point ahead). Apollo 17: Craters of the Moon 58 %. Base sites: Malapert, Mons Mouton, Shackleton ridge. Data flag ⚑: the climate cells of Tso Kar and the Dry Valleys sit over 400 m off the ground.",
+          "size": 9.5,
+          "color": "#9AA6BD"
+        },
+        {
+          "type": "text",
+          "x": 530,
+          "y": 126,
+          "w": 400,
+          "h": 22,
+          "text": "Discover Jordan",
+          "size": 17,
+          "color": "#FFB547",
+          "bold": true
+        },
+        {
+          "type": "text",
+          "x": 530,
+          "y": 150,
+          "w": 400,
+          "h": 40,
+          "text": "We scored all of Jordan the same way: 886 boxes of 10 km. One box 37 km north-west of Wadi Rum has a median slope of 8.44°; the Shackleton connecting ridge on the Moon has 8.56°. Found by satellite data, not field-checked yet.",
+          "size": 11,
+          "color": "#DDE3EE"
+        },
+        {
+          "type": "text",
+          "x": 530,
+          "y": 433,
+          "w": 400,
+          "h": 14,
+          "text": "Discover Jordan: each square is a 10 km box, not field-checked",
+          "size": 9,
+          "color": "#9AA6BD",
+          "align": "c"
+        },
+        {
+          "type": "text",
+          "x": 530,
+          "y": 506,
+          "w": 415,
+          "h": 24,
+          "text": "App screenshot. Climate: NASA POWER · terrain: Copernicus DEM GLO-90 · geology: IGME5000, © BGR, Hannover, 2005 (modified) · boundary: Natural Earth · Earth: Bing Maps Aerial via Cesium ion",
+          "size": 7,
+          "color": "#7D889C",
+          "align": "r"
+        }
       ]
     },
     {
       "bg": "bg6.png",
-      "notes": "We also built a small field kit: an ESP32 with six sensors, including UV. It plugs into the app by USB, logs a full day, and compares that day with NASA's numbers.\nOur honest status: so far the kit data is simulated. Our next step is a real 24-hour log at a Jordan site.\nAlready in the app, as a concept for future work: Base plan draws a 3D base on the best twin, with a hydroponic greenhouse, where potato, soybean and lettuce are the best low-cost set, and a communication room: a message to Mars takes 3 to 22 minutes, so families send video messages. And you can ask the atlas questions in plain words.\nAfter that: more countries, and sharing the atlas with mission teams and students.",
+      "notes": "Our honest status: every match today comes from satellite data and published sources. Nobody has checked the Discover boxes on the ground yet. Our next step is a field visit in Jordan, to Harrat al-Shaam and the box near Wadi Rum, to measure temperature, slope and rock, and compare them with the data.\nAlready in the app, as a concept for future work: Base plan draws a 3D base at each starred pair, with a hydroponic greenhouse, where potato, soybean and lettuce are the best low-cost set, and a communications room: a message to Mars takes 3 to 22 minutes, so families send video messages.\nAfter that: more countries, and sharing the atlas with mission teams and students.",
       "items": [
-        { "type": "text", "x": 60, "y": 52, "w": 440, "h": 18, "text": "05 · FROM DATA TO THE FIELD", "size": 11, "color": "#FFB547", "font": "Segoe UI Semibold", "spacing": 2.5 },
-        { "type": "text", "x": 60, "y": 72, "w": 460, "h": 84, "text": "Our field kit checks the ground itself.", "size": 30, "color": "#F6F8FC", "bold": true },
-        { "type": "text", "x": 60, "y": 162, "w": 440, "h": 110, "text": "An ESP32 with six sensors: air temperature and humidity, soil temperature, infrared surface temperature, UV, and sunlight up and down for albedo.\nIt plugs into the app by USB, logs 24 hours, and compares the day with NASA data.", "size": 13, "color": "#DDE3EE", "bullets": true, "spaceAfter": 8 },
-        { "type": "text", "x": 60, "y": 290, "w": 440, "h": 24, "text": "Next steps", "size": 18, "color": "#FFB547", "bold": true },
-        { "type": "text", "x": 60, "y": 318, "w": 440, "h": 160, "text": "Record a real 24-hour log at a Jordan site (so far, all kit data is simulated).\nBase plan (a concept, in the app): a 3D test base at the best twin, with a hydroponic greenhouse and a room to call home.\nAsk Atlas: questions in plain words, answered from our data (with SI when online).\nBring Discover to more countries; share it with mission teams and students.", "size": 13, "color": "#DDE3EE", "numbered": true, "spaceAfter": 6 },
-        { "type": "text", "x": 560, "y": 520, "w": 385, "h": 12, "text": "Photo: Wadi Rum, Hansueli Krapf / Wikimedia Commons, CC BY-SA 3.0 (cropped, darkened, drawing added)", "size": 7, "color": "#D6DCE6", "align": "r" }
+        {
+          "type": "text",
+          "x": 60,
+          "y": 52,
+          "w": 440,
+          "h": 18,
+          "text": "05 · FROM DATA TO THE FIELD",
+          "size": 11,
+          "color": "#FFB547",
+          "font": "Segoe UI Semibold",
+          "spacing": 2.5
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 72,
+          "w": 460,
+          "h": 84,
+          "text": "Next: check the ground in Jordan.",
+          "size": 30,
+          "color": "#F6F8FC",
+          "bold": true
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 162,
+          "w": 440,
+          "h": 110,
+          "text": "Every match today comes from satellites and published sources.\nThe next step is a field visit: measure temperature, slope and rock at Harrat al-Shaam and at the box near Wadi Rum, and compare with the data.",
+          "size": 13,
+          "color": "#DDE3EE",
+          "bullets": true,
+          "spaceAfter": 8
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 290,
+          "w": 440,
+          "h": 24,
+          "text": "Next steps",
+          "size": 18,
+          "color": "#FFB547",
+          "bold": true
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 318,
+          "w": 440,
+          "h": 160,
+          "text": "Field-check the top Discover boxes in Jordan.\nBase plan (a concept, in the app): a 3D test base at each ⭐ pair, with a hydroponic greenhouse and a communications room.\nBring Discover to more countries; share it with mission teams and students.",
+          "size": 13,
+          "color": "#DDE3EE",
+          "numbered": true,
+          "spaceAfter": 6
+        },
+        {
+          "type": "text",
+          "x": 560,
+          "y": 520,
+          "w": 385,
+          "h": 12,
+          "text": "Photo: Wadi Rum, Hansueli Krapf / Wikimedia Commons, CC BY-SA 3.0 (cropped, darkened, drawing added)",
+          "size": 7,
+          "color": "#D6DCE6",
+          "align": "r"
+        }
       ]
     },
     {
       "bg": "bg7.png",
       "notes": "So: find the Moon and Mars on Earth.\nNow let us show you the app, live. Thank you!",
       "items": [
-        { "type": "text", "x": 60, "y": 168, "w": 840, "h": 60, "text": "FIND THE MOON AND MARS", "size": 46, "color": "#F6F8FC", "bold": true, "align": "c", "spacing": 1 },
-        { "type": "text", "x": 60, "y": 224, "w": 840, "h": 80, "text": "ON EARTH.", "size": 60, "color": "#FFB547", "bold": true, "align": "c", "spacing": 1 },
-        { "type": "text", "x": 60, "y": 318, "w": 840, "h": 28, "text": "Live demo · Analog Atlas", "size": 19, "color": "#F6F8FC", "font": "Segoe UI Semibold", "align": "c" },
-        { "type": "text", "x": 60, "y": 352, "w": 840, "h": 22, "text": "Team Cosmic Cats", "size": 15, "color": "#F6F8FC", "font": "Segoe UI Semibold", "align": "c" },
-        { "type": "text", "x": 60, "y": 377, "w": 840, "h": 20, "text": "Mohammad Fathi Awni Ahmad · Ameer Hamam · Abdalrhman Ali Samih Alhaj Hassan · Moath Abu Aisha", "size": 12, "color": "#9AA6BD", "align": "c" },
-        { "type": "text", "x": 110, "y": 460, "w": 740, "h": 44, "text": "Data: NASA POWER · NASA MODIS · NASA EMIT · ASTER · LRO Diviner and LOLA · Mars Climate Sounder · MGS TES and MOLA · Copernicus DEM and Sentinel-2 · IGME5000 (BGR) · Natural Earth. Every value, photo credit and our AI-use note are listed in the app under Method & data.", "size": 8, "color": "#7D889C", "align": "c" }
+        {
+          "type": "text",
+          "x": 60,
+          "y": 168,
+          "w": 840,
+          "h": 60,
+          "text": "FIND THE MOON AND MARS",
+          "size": 46,
+          "color": "#F6F8FC",
+          "bold": true,
+          "align": "c",
+          "spacing": 1
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 224,
+          "w": 840,
+          "h": 80,
+          "text": "ON EARTH.",
+          "size": 60,
+          "color": "#FFB547",
+          "bold": true,
+          "align": "c",
+          "spacing": 1
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 318,
+          "w": 840,
+          "h": 28,
+          "text": "Live demo · Analog Atlas",
+          "size": 19,
+          "color": "#F6F8FC",
+          "font": "Segoe UI Semibold",
+          "align": "c"
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 352,
+          "w": 840,
+          "h": 22,
+          "text": "Team Cosmic Cats",
+          "size": 15,
+          "color": "#F6F8FC",
+          "font": "Segoe UI Semibold",
+          "align": "c"
+        },
+        {
+          "type": "text",
+          "x": 60,
+          "y": 377,
+          "w": 840,
+          "h": 20,
+          "text": "Mohammad Fathi Awni Ahmad · Ameer Hamam · Abdalrhman Ali Samih Alhaj Hassan · Moath Abu Aisha",
+          "size": 12,
+          "color": "#9AA6BD",
+          "align": "c"
+        },
+        {
+          "type": "text",
+          "x": 110,
+          "y": 460,
+          "w": 740,
+          "h": 44,
+          "text": "Data: NASA POWER · NASA MODIS · NASA EMIT · ASTER · LRO Diviner and LOLA · Mars Climate Sounder · MGS TES and MOLA · Copernicus DEM and Sentinel-2 · IGME5000 (BGR) · Natural Earth. Every value, photo credit and our AI-use note are listed in the app under Method & data.",
+          "size": 8,
+          "color": "#7D889C",
+          "align": "c"
+        }
       ]
     }
   ]
